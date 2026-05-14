@@ -5,19 +5,18 @@ InferEdge is a local-first Edge AI inference validation pipeline that turns an O
 ## 30-Second Structure
 
 ```text
-Validation path:
-ONNX Model
--> InferEdgeForge
--> InferEdge-Runtime
--> InferEdgeLab
--> optional InferEdgeAIGuard
--> Deployment Decision Report
--> Local Studio
+Can we deploy this model?
+-> Forge -> Runtime -> Lab (+ optional AIGuard)
 
-Supporting layers:
-InferEdgeEnv -> v1-complete run evidence registry / comparability checker
-InferEdgeOrchestrator -> post-deployment runtime operation control
+Can this benchmark evidence be trusted and compared?
+-> InferEdgeEnv v0.1.5 comparability layer
+
+Can deployed workloads stay stable under load?
+-> InferEdgeOrchestrator operation layer
 ```
+
+For a diagram-first version of this same structure, see
+[InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md).
 
 ## Repository Roles
 
@@ -40,7 +39,7 @@ The Core 4 validation path is:
 - Lab compares, evaluates, reports, and decides.
 - AIGuard optionally explains suspicious evidence.
 
-The supporting layers stay separate:
+The ecosystem extension layers stay separate:
 
 - Env records benchmark evidence and comparability. Its `v0.1.5` release freezes this role as the v1-complete baseline.
 - Orchestrator controls runtime behavior after deployment.
@@ -49,13 +48,14 @@ The supporting layers stay separate:
 
 For an external reviewer, use this order:
 
-1. This summary.
-2. `README.md`.
-3. `docs/pipeline_map.md`.
-4. `repos/InferEdgeLab/README.md`.
-5. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`.
-6. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`.
-7. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`.
+1. `docs/ecosystem_1page.md`.
+2. This summary.
+3. `README.md`.
+4. `docs/pipeline_map.md`.
+5. `repos/InferEdgeLab/README.md`.
+6. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`.
+7. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`.
+8. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`.
 
 ## What Not To Claim
 

@@ -1,0 +1,82 @@
+# InferEdge Ecosystem 1-Page Summary
+
+InferEdge is a local-first Edge AI lifecycle portfolio. It separates three
+questions that are often mixed together in inference projects:
+
+```text
+Can we deploy this model?
+Can this benchmark evidence be trusted and compared?
+Can deployed workloads stay stable under load?
+```
+
+## Ecosystem Diagram
+
+```mermaid
+flowchart LR
+    Model["ONNX model"]
+
+    subgraph Validation["Validation Layer: deployability"]
+        Forge["InferEdgeForge\nbuild provenance\nmetadata / manifest"]
+        Runtime["InferEdge-Runtime\nreal execution\nLab-compatible result.json"]
+        Lab["InferEdgeLab\ncompare / evaluate / report\ndeployment decision"]
+        Guard["InferEdgeAIGuard\noptional deterministic\nrisk diagnosis"]
+    end
+
+    subgraph Comparability["Experiment Hygiene / Comparability Layer"]
+        Env["InferEdgeEnv v0.1.5\nrun evidence registry\ncomparability judgement"]
+    end
+
+    subgraph Operation["Operation Layer: post-deployment stability"]
+        Orch["InferEdgeOrchestrator\npriority scheduling\nload shedding\nruntime telemetry"]
+    end
+
+    Model --> Forge --> Runtime --> Lab
+    Lab -. optional evidence .-> Guard
+    Guard -. guard_analysis .-> Lab
+    Runtime -. benchmark evidence .-> Env
+    Lab -->|"deployable result.json"| Orch
+```
+
+## Layer Roles
+
+| Layer | Project | Question | Evidence |
+|---|---|---|---|
+| Validation | InferEdgeForge | How was this artifact built? | metadata, manifest, provenance |
+| Validation | InferEdge-Runtime | How did it run on a real/device runtime boundary? | Lab-compatible `result.json`, latency/FPS/backend metadata |
+| Validation | InferEdgeLab | Can we deploy this model? | compare output, evaluation report, deployment decision |
+| Validation | InferEdgeAIGuard | Is there deterministic risk evidence? | `guard_analysis`, risk/diagnosis report |
+| Comparability | InferEdgeEnv | Can this benchmark evidence be trusted and compared? | local artifacts, SQLite registry, export/import bundle, comparability report |
+| Operation | InferEdgeOrchestrator | Can deployed workloads stay stable under load? | scheduler telemetry, overload comparison, drop/backlog/latency evidence |
+
+## Submission Message
+
+```text
+InferEdge validates deployability.
+InferEdgeEnv preserves benchmark evidence and judges comparability.
+InferEdgeOrchestrator controls deployed workloads under overload.
+```
+
+The portfolio is not a benchmark leaderboard and not a production SaaS
+dashboard. Its value is the separation of lifecycle responsibilities:
+provenance, execution evidence, validation decision, comparability, and
+post-deployment operation control.
+
+## Reviewer Path
+
+1. Start here for the ecosystem diagram and role split.
+2. Read [Portfolio Summary](portfolio_summary.md) for the 30-second narrative.
+3. Read [Pipeline Map](pipeline_map.md) for repository responsibilities.
+4. Run the local submission smoke:
+
+```bash
+bash scripts/clone_all.sh --locked
+bash scripts/smoke_all.sh
+```
+
+Then inspect the individual repository evidence:
+
+- InferEdgeLab Local Studio and deployment decision evidence
+- InferEdge-Runtime Jetson/runtime result evidence
+- InferEdgeAIGuard deterministic diagnosis evidence
+- InferEdgeEnv comparability evidence
+- InferEdgeOrchestrator operation-control telemetry

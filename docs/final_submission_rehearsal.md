@@ -25,9 +25,9 @@ It validates the current local-first portfolio path:
 - Local Studio demo evidence summary
 - portfolio summary role boundaries
 
-Supporting layers remain separate:
+Ecosystem extension layers remain separate:
 
-- InferEdgeEnv records run evidence and comparability.
+- InferEdgeEnv records benchmark evidence and comparability.
 - InferEdgeOrchestrator controls runtime operation after deployment.
 
 ## Clean Clone Setup
@@ -180,6 +180,7 @@ bash scripts/smoke_all.sh
 Then review:
 
 ```text
+docs/ecosystem_1page.md
 docs/portfolio_summary.md
 README.md
 docs/pipeline_map.md
