@@ -15,7 +15,7 @@ ONNX Model
 -> Local Studio
 
 Supporting layers:
-InferEdgeEnv -> run evidence registry / comparability checker
+InferEdgeEnv -> v1-complete run evidence registry / comparability checker
 InferEdgeOrchestrator -> post-deployment runtime operation control
 ```
 
@@ -28,7 +28,7 @@ InferEdgeOrchestrator -> post-deployment runtime operation control
 | InferEdge-Runtime | C++ execution and Lab-compatible result export layer | Runs/profiles artifacts and exports result JSON; does not own comparison policy |
 | InferEdgeLab | Validation, comparison, report, API, Local Studio, and deployment decision layer | Owns `deployment_decision`; consumes evidence rather than generating build artifacts |
 | InferEdgeAIGuard | Optional deterministic diagnosis evidence layer | Adds `guard_analysis`; does not make the final deployment decision |
-| InferEdgeEnv | Local-first run evidence registry and comparability checker | Records whether benchmark evidence can be trusted and compared; does not validate deployability |
+| InferEdgeEnv | v1-complete local-first run evidence registry and comparability checker | Records whether benchmark evidence can be trusted and compared; does not validate deployability |
 | InferEdgeOrchestrator | Post-deployment runtime operation-control layer | Schedules and sheds load after deployment; does not decide whether a model should deploy |
 
 ## Core Message
@@ -42,7 +42,7 @@ The Core 4 validation path is:
 
 The supporting layers stay separate:
 
-- Env records benchmark evidence and comparability.
+- Env records benchmark evidence and comparability. Its `v0.1.5` release freezes this role as the v1-complete baseline.
 - Orchestrator controls runtime behavior after deployment.
 
 ## What To Show First
