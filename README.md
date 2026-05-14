@@ -7,6 +7,14 @@ It is a contract/preset based validation workflow that connects build
 provenance, real Runtime execution, validation evidence, optional deterministic
 diagnosis evidence, and Lab-owned deployment decisions.
 
+The ecosystem is organized by lifecycle questions:
+
+```text
+Can we deploy this model?                         -> InferEdge validation layer
+Can this benchmark evidence be trusted and compared? -> InferEdgeEnv comparability layer
+Can deployed workloads stay stable under load?   -> InferEdgeOrchestrator operation layer
+```
+
 ```text
 ONNX Model
 -> InferEdgeForge
@@ -26,15 +34,15 @@ ONNX Model
 | InferEdgeLab | Compare/evaluate/report/API/Local Studio/deployment decision owner | https://github.com/gwonxhj/InferEdgeLab |
 | InferEdgeAIGuard | Optional deterministic diagnosis evidence provider | https://github.com/gwonxhj/InferEdgeAIGuard |
 
-## Supporting / Extended Repositories
+## Ecosystem Extension Layers
 
-These repositories are linked as ecosystem support, but they are intentionally
-not part of the pinned Core 4 validation message.
+These repositories extend the lifecycle beyond the pinned Core 4 validation
+message without replacing Forge, Runtime, Lab, or AIGuard.
 
 | Repository | Role | URL |
 |---|---|---|
-| InferEdgeOrchestrator | Runtime operation control after deployment validation: scheduling, overload control, and telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
-| InferEdgeEnv | v1-complete local-first run evidence registry and comparability checker for Edge AI inference benchmark results | https://github.com/gwonxhj/InferEdgeEnv |
+| InferEdgeEnv | v0.1.5 v1-complete comparability layer: local run evidence registry and benchmark evidence trust/comparison judgement | https://github.com/gwonxhj/InferEdgeEnv |
+| InferEdgeOrchestrator | Operation layer after deployment validation: scheduling, overload control, and runtime telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
 
 ## Quick Start
 
