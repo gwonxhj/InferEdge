@@ -1,0 +1,63 @@
+<svg width="1280" height="720" viewBox="0 0 1280 720" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">InferEdge ecosystem lifecycle diagram</title>
+  <desc id="desc">A submission-ready diagram showing the InferEdge validation layer, InferEdgeEnv comparability layer, and InferEdgeOrchestrator operation layer as three separate lifecycle questions.</desc>
+  <rect width="1280" height="720" fill="#0B1020"/>
+  <text x="64" y="72" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="38" font-weight="700">InferEdge Ecosystem</text>
+  <text x="64" y="112" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="20">Edge AI lifecycle portfolio: deployability, comparability, and operation stability</text>
+
+  <rect x="64" y="150" width="1152" height="136" rx="18" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="92" y="188" fill="#93C5FD" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Question 1</text>
+  <text x="92" y="222" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700">Can we deploy this model?</text>
+  <text x="92" y="249" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="17">Validation layer turns model artifacts into traceable execution evidence.</text>
+  <text x="92" y="268" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="17">Lab owns the compare, report, and deployment decision boundary.</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="92" y="305" width="175" height="92" rx="14" fill="#172554" stroke="#60A5FA" stroke-width="2"/>
+    <text x="116" y="341" fill="#F8FAFC" font-size="22" font-weight="700">Forge</text>
+    <text x="116" y="371" fill="#BFDBFE" font-size="15">build provenance</text>
+
+    <rect x="302" y="305" width="175" height="92" rx="14" fill="#172554" stroke="#60A5FA" stroke-width="2"/>
+    <text x="326" y="341" fill="#F8FAFC" font-size="22" font-weight="700">Runtime</text>
+    <text x="326" y="371" fill="#BFDBFE" font-size="15">result.json evidence</text>
+
+    <rect x="512" y="305" width="175" height="92" rx="14" fill="#172554" stroke="#60A5FA" stroke-width="2"/>
+    <text x="536" y="341" fill="#F8FAFC" font-size="22" font-weight="700">Lab</text>
+    <text x="536" y="371" fill="#BFDBFE" font-size="15">deployment decision</text>
+
+    <rect x="722" y="305" width="175" height="92" rx="14" fill="#1E1B4B" stroke="#A78BFA" stroke-width="2" stroke-dasharray="8 6"/>
+    <text x="746" y="341" fill="#F8FAFC" font-size="22" font-weight="700">AIGuard</text>
+    <text x="746" y="371" fill="#DDD6FE" font-size="15">optional diagnosis</text>
+
+    <path d="M267 351H302" stroke="#93C5FD" stroke-width="3" stroke-linecap="round"/>
+    <path d="M292 341L302 351L292 361" stroke="#93C5FD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M477 351H512" stroke="#93C5FD" stroke-width="3" stroke-linecap="round"/>
+    <path d="M502 341L512 351L502 361" stroke="#93C5FD" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M687 351H722" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-dasharray="7 7"/>
+    <path d="M712 341L722 351L712 361" stroke="#A78BFA" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+
+  <rect x="64" y="442" width="548" height="172" rx="18" fill="#082F49" stroke="#38BDF8" stroke-width="2"/>
+  <text x="92" y="482" fill="#67E8F9" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Question 2</text>
+  <text x="92" y="516" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="700">Can benchmark evidence be</text>
+  <text x="92" y="546" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="700">trusted and compared?</text>
+  <text x="92" y="576" fill="#BAE6FD" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">InferEdgeEnv</text>
+  <text x="92" y="604" fill="#CFFAFE" font-family="Inter, Arial, sans-serif" font-size="15">Run evidence registry, portable bundles, and comparability judgement.</text>
+
+  <rect x="668" y="442" width="548" height="172" rx="18" fill="#064E3B" stroke="#34D399" stroke-width="2"/>
+  <text x="696" y="482" fill="#86EFAC" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">Question 3</text>
+  <text x="696" y="516" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="700">Can deployed workloads stay</text>
+  <text x="696" y="546" fill="#F8FAFC" font-family="Inter, Arial, sans-serif" font-size="25" font-weight="700">stable under load?</text>
+  <text x="696" y="576" fill="#BBF7D0" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="700">InferEdgeOrchestrator</text>
+  <text x="696" y="604" fill="#D1FAE5" font-family="Inter, Arial, sans-serif" font-size="15">Priority scheduling, bounded queues, load shedding, and telemetry.</text>
+
+  <path d="M390 397C390 425 330 425 330 442" stroke="#38BDF8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M320 432L330 442L340 432" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="350" y="430" fill="#BAE6FD" font-family="Inter, Arial, sans-serif" font-size="14">benchmark evidence</text>
+
+  <path d="M600 397C600 425 940 425 940 442" stroke="#34D399" stroke-width="3" stroke-linecap="round"/>
+  <path d="M930 432L940 442L950 432" stroke="#34D399" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="730" y="430" fill="#BBF7D0" font-family="Inter, Arial, sans-serif" font-size="14">deployable result.json</text>
+
+  <rect x="64" y="650" width="1152" height="1" fill="#334155"/>
+  <text x="64" y="682" fill="#94A3B8" font-family="Inter, Arial, sans-serif" font-size="16">Boundary: not a benchmark leaderboard, not a SaaS dashboard, not a Triton/DeepStream replacement.</text>
+</svg>
