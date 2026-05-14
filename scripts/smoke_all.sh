@@ -64,6 +64,7 @@ run_step "Forge manifest validation" bash -lc "cd '$FORGE' && poetry run python 
 run_step "Runtime smoke" bash -lc "cd '$RUNTIME' && bash scripts/smoke_default.sh"
 run_step "Runtime manifest identity" bash -lc "cd '$RUNTIME' && python3 tests/test_manifest_compare_identity.py"
 
+run_step "Lab install" bash -lc "cd '$LAB' && poetry install --no-interaction"
 run_step "Lab portfolio demo check" bash -lc "cd '$LAB' && poetry run inferedgelab portfolio-demo-check"
 run_step "Lab Core 4 conformance check" bash -lc "cd '$LAB' && poetry run inferedgelab core4-conformance-check"
 if [[ "$FULL" -eq 1 ]]; then
