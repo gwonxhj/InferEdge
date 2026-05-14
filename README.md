@@ -26,6 +26,16 @@ ONNX Model
 | InferEdgeLab | Compare/evaluate/report/API/Local Studio/deployment decision owner | https://github.com/gwonxhj/InferEdgeLab |
 | InferEdgeAIGuard | Optional deterministic diagnosis evidence provider | https://github.com/gwonxhj/InferEdgeAIGuard |
 
+## Supporting / Extended Repositories
+
+These repositories are linked as ecosystem support, but they are intentionally
+not part of the pinned Core 4 validation message.
+
+| Repository | Role | URL |
+|---|---|---|
+| InferEdgeOrchestrator | Runtime operation control after deployment validation: scheduling, overload control, and telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
+| InferEdgeEnv | Local environment and reproducibility helper for InferEdge development workflows | https://github.com/gwonxhj/InferEdgeEnv |
+
 ## Quick Start
 
 Clone this entrypoint repo first:
@@ -157,4 +167,3 @@ For a reviewer or interviewer, start here:
 4. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`
 5. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`
 6. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`
-

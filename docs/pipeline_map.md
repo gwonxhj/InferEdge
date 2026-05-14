@@ -67,6 +67,23 @@ Optional deterministic diagnosis evidence provider.
 
 AIGuard does not make final deployment decisions and does not use LLM guessing.
 
+## Supporting / Extended Repositories
+
+The pinned portfolio message stays focused on this entrypoint plus the Core 4
+validation repositories. The following repositories are useful ecosystem
+extensions, but they are not required for the core validation smoke path.
+
+- **InferEdgeOrchestrator:** deployment 이후 runtime operation control,
+  scheduling, overload control, telemetry.
+- **InferEdgeEnv:** local environment and reproducibility helper for InferEdge
+  development workflows.
+
+Role boundary:
+
+- InferEdge Core: deployment validation before release.
+- InferEdgeOrchestrator: runtime operation control after deployment validation.
+- InferEdgeEnv: supporting environment/reproducibility helper.
+
 ## Contract Boundaries
 
 Do not silently break:
@@ -101,4 +118,3 @@ INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub bash scripts/smoke_all.
 InferEdge is not presented as a production SaaS platform. DB/queue/auth/billing,
 file upload, cloud dashboard deployment, and production worker daemons are
 future work.
-
