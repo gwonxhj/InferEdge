@@ -1,0 +1,22 @@
+repos:
+  - name: InferEdgeForge
+    role: build provenance and artifact handoff
+    url: https://github.com/gwonxhj/InferEdgeForge.git
+    branch: main
+    path: repos/InferEdgeForge
+  - name: InferEdge-Runtime
+    role: C++ runtime execution and Jetson evidence export
+    url: https://github.com/gwonxhj/InferEdge-Runtime.git
+    branch: main
+    path: repos/InferEdge-Runtime
+  - name: InferEdgeLab
+    role: validation, Local Studio, report, deployment decision owner
+    url: https://github.com/gwonxhj/InferEdgeLab.git
+    branch: main
+    path: repos/InferEdgeLab
+  - name: InferEdgeAIGuard
+    role: optional deterministic diagnosis evidence
+    url: https://github.com/gwonxhj/InferEdgeAIGuard.git
+    branch: main
+    path: repos/InferEdgeAIGuard
+
