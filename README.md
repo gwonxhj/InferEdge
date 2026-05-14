@@ -44,6 +44,9 @@ message without replacing Forge, Runtime, Lab, or AIGuard.
 | InferEdgeEnv | v0.1.5 v1-complete comparability layer: local run evidence registry and benchmark evidence trust/comparison judgement | https://github.com/gwonxhj/InferEdgeEnv |
 | InferEdgeOrchestrator | Operation layer after deployment validation: scheduling, overload control, and runtime telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
 
+For the submission-ready diagram and layer split, start with
+[InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md).
+
 ## Quick Start
 
 Clone this entrypoint repo first:
@@ -127,6 +130,7 @@ bash scripts/update_all.sh --locked
 | `scripts/clone_all.sh` | Clone all InferEdge Core repositories |
 | `scripts/update_all.sh` | Update existing clones to latest or locked state |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
+| `docs/ecosystem_1page.md` | Submission-ready ecosystem diagram and three-question layer map |
 | `docs/portfolio_summary.md` | 30-second portfolio summary and one-line repository role map |
 | `docs/final_submission_rehearsal.md` | Clean-clone submission gate rehearsal and results |
 | `docs/pipeline_map.md` | Pipeline map and repository responsibility guide |

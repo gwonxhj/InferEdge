@@ -67,22 +67,24 @@ Optional deterministic diagnosis evidence provider.
 
 AIGuard does not make final deployment decisions and does not use LLM guessing.
 
-## Supporting / Extended Repositories
+## Ecosystem Extension Layers
 
-The pinned portfolio message stays focused on this entrypoint plus the Core 4
-validation repositories. The following repositories are useful ecosystem
-extensions, but they are not required for the core validation smoke path.
+The pinned Core 4 validation smoke stays focused on Forge, Runtime, Lab, and
+AIGuard. The full ecosystem portfolio adds two separate lifecycle layers.
 
-- **InferEdgeOrchestrator:** deployment 이후 runtime operation control,
-  scheduling, overload control, telemetry.
-- **InferEdgeEnv:** local-first run evidence registry and comparability checker
-  for Edge AI inference benchmark results.
+- **InferEdgeEnv:** `v0.1.5` v1-complete experiment hygiene /
+  comparability layer for local benchmark evidence trust and comparison
+  judgement.
+- **InferEdgeOrchestrator:** post-deployment runtime operation control,
+  scheduling, overload control, and telemetry.
 
 Role boundary:
 
 - InferEdge Core: deployment validation before release.
-- InferEdgeOrchestrator: runtime operation control after deployment validation.
 - InferEdgeEnv: benchmark run evidence registry and comparability layer.
+- InferEdgeOrchestrator: runtime operation control after deployment validation.
+
+The submission-ready diagram is in [Ecosystem 1-Page Summary](ecosystem_1page.md).
 
 ## Contract Boundaries
 
