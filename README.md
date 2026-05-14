@@ -34,7 +34,7 @@ not part of the pinned Core 4 validation message.
 | Repository | Role | URL |
 |---|---|---|
 | InferEdgeOrchestrator | Runtime operation control after deployment validation: scheduling, overload control, and telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
-| InferEdgeEnv | Local-first run evidence registry and comparability checker for Edge AI inference benchmark results | https://github.com/gwonxhj/InferEdgeEnv |
+| InferEdgeEnv | v1-complete local-first run evidence registry and comparability checker for Edge AI inference benchmark results | https://github.com/gwonxhj/InferEdgeEnv |
 
 ## Quick Start
 
