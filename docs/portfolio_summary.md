@@ -18,6 +18,12 @@ Can deployed workloads stay stable under load?
 For a diagram-first version of this same structure, see
 [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md).
 
+Reusable first-slide / README visual:
+
+```text
+docs/assets/inferedge_ecosystem_diagram.svg
+```
+
 ## Repository Roles
 
 | Repository | One-line role | Boundary |

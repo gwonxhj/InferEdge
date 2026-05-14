@@ -11,6 +11,19 @@ Can deployed workloads stay stable under load?
 
 ## Ecosystem Diagram
 
+Use this SVG as the submission-ready first visual for README, portfolio pages,
+and slide decks:
+
+![InferEdge ecosystem lifecycle diagram](assets/inferedge_ecosystem_diagram.svg)
+
+Source asset:
+
+```text
+docs/assets/inferedge_ecosystem_diagram.svg
+```
+
+The Mermaid version below keeps the same structure editable in Markdown.
+
 ```mermaid
 flowchart LR
     Model["ONNX model"]

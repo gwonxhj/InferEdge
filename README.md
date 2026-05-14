@@ -15,6 +15,8 @@ Can this benchmark evidence be trusted and compared? -> InferEdgeEnv comparabili
 Can deployed workloads stay stable under load?   -> InferEdgeOrchestrator operation layer
 ```
 
+![InferEdge ecosystem lifecycle diagram](docs/assets/inferedge_ecosystem_diagram.svg)
+
 ```text
 ONNX Model
 -> InferEdgeForge
@@ -131,6 +133,7 @@ bash scripts/update_all.sh --locked
 | `scripts/update_all.sh` | Update existing clones to latest or locked state |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
 | `docs/ecosystem_1page.md` | Submission-ready ecosystem diagram and three-question layer map |
+| `docs/assets/inferedge_ecosystem_diagram.svg` | Reusable ecosystem diagram asset for README, portfolio pages, and slides |
 | `docs/portfolio_summary.md` | 30-second portfolio summary and one-line repository role map |
 | `docs/final_submission_rehearsal.md` | Clean-clone submission gate rehearsal and results |
 | `docs/pipeline_map.md` | Pipeline map and repository responsibility guide |
