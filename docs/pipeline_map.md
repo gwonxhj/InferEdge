@@ -75,14 +75,14 @@ extensions, but they are not required for the core validation smoke path.
 
 - **InferEdgeOrchestrator:** deployment 이후 runtime operation control,
   scheduling, overload control, telemetry.
-- **InferEdgeEnv:** local environment and reproducibility helper for InferEdge
-  development workflows.
+- **InferEdgeEnv:** local-first run evidence registry and comparability checker
+  for Edge AI inference benchmark results.
 
 Role boundary:
 
 - InferEdge Core: deployment validation before release.
 - InferEdgeOrchestrator: runtime operation control after deployment validation.
-- InferEdgeEnv: supporting environment/reproducibility helper.
+- InferEdgeEnv: benchmark run evidence registry and comparability layer.
 
 ## Contract Boundaries
 

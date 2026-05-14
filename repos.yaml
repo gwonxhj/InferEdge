@@ -25,5 +25,5 @@ supporting_repositories:
     role: runtime operation control after deployment validation
     url: https://github.com/gwonxhj/InferEdgeOrchestrator
   - name: InferEdgeEnv
-    role: local environment and reproducibility helper
+    role: local-first run evidence registry and comparability checker
     url: https://github.com/gwonxhj/InferEdgeEnv
