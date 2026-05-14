@@ -20,3 +20,10 @@ repos:
     branch: main
     path: repos/InferEdgeAIGuard
 
+supporting_repositories:
+  - name: InferEdgeOrchestrator
+    role: runtime operation control after deployment validation
+    url: https://github.com/gwonxhj/InferEdgeOrchestrator
+  - name: InferEdgeEnv
+    role: local environment and reproducibility helper
+    url: https://github.com/gwonxhj/InferEdgeEnv
