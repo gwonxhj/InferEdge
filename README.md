@@ -119,6 +119,7 @@ bash scripts/update_all.sh --locked
 | `scripts/clone_all.sh` | Clone all InferEdge Core repositories |
 | `scripts/update_all.sh` | Update existing clones to latest or locked state |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
+| `docs/portfolio_summary.md` | 30-second portfolio summary and one-line repository role map |
 | `docs/pipeline_map.md` | Pipeline map and repository responsibility guide |
 
 ## Current Demo Evidence
@@ -161,9 +162,10 @@ Not included:
 
 For a reviewer or interviewer, start here:
 
-1. This README
-2. `docs/pipeline_map.md`
-3. `repos/InferEdgeLab/README.md`
-4. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`
-5. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`
-6. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`
+1. `docs/portfolio_summary.md`
+2. This README
+3. `docs/pipeline_map.md`
+4. `repos/InferEdgeLab/README.md`
+5. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`
+6. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`
+7. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`
