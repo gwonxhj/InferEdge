@@ -6,6 +6,11 @@ Edge Agent Runtime contracts across the InferEdge ecosystem.
 The demo is intentionally local-first and file-based. It is not a production
 orchestration service, cloud dashboard, or general AI OS.
 
+The current smoke uses the Orchestrator sustained high-load 3-agent scenario.
+It verifies that queue-depth timeline evidence, policy decision reasons,
+AIGuard `sustained_overload_risk`, and Lab `sustained_overload_review` are
+preserved across the chain.
+
 ## Contract Chain
 
 ```text
@@ -63,6 +68,13 @@ bash scripts/demo_agent_runtime_e2e.sh
 | `04_aiguard_guard_analysis.md` | Human-readable AIGuard report |
 | `05_lab_agent_runtime_report.json` | Lab-owned agent runtime reliability report |
 | `05_lab_agent_runtime_report.md` | Human-readable Lab deployment decision context |
+
+Expected sustained evidence markers:
+
+- `sustained_high_load` in Orchestrator output
+- `sustained_overload_risk` in AIGuard output
+- `max_total_queue_depth` in Lab report metrics
+- `sustained_overload_review` in Lab decision rules
 
 ## Scope Boundary
 

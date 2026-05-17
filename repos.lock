@@ -1,6 +1,5 @@
 # name	url	branch	commit	path
-InferEdgeForge	https://github.com/gwonxhj/InferEdgeForge.git	main	df7e56b97cb967f3cc740197189d453d26bc50b1	repos/InferEdgeForge
-InferEdge-Runtime	https://github.com/gwonxhj/InferEdge-Runtime.git	main	59b35b5cc12ade26afdc5be801d9479c79de32b8	repos/InferEdge-Runtime
-InferEdgeLab	https://github.com/gwonxhj/InferEdgeLab.git	main	e75ff9f3a1cd4a1434c007f62221caf9e5371062	repos/InferEdgeLab
-InferEdgeAIGuard	https://github.com/gwonxhj/InferEdgeAIGuard.git	main	b827046284a5fc36196fedde4b51d5e359a74602	repos/InferEdgeAIGuard
-
+InferEdgeForge	https://github.com/gwonxhj/InferEdgeForge.git	main	d2725cd8e5212c57ebcbab60e4ab82df471a7c6d	repos/InferEdgeForge
+InferEdge-Runtime	https://github.com/gwonxhj/InferEdge-Runtime.git	main	14862c38e64629fd92e86d96efc83ebc6c8d25dd	repos/InferEdge-Runtime
+InferEdgeLab	https://github.com/gwonxhj/InferEdgeLab.git	main	3b3d3ef24990f7d98ad998ae32789f5753c829b9	repos/InferEdgeLab
+InferEdgeAIGuard	https://github.com/gwonxhj/InferEdgeAIGuard.git	main	e32c757b4d82fd6e25a7e10e1fe1985331eedd79	repos/InferEdgeAIGuard
