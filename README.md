@@ -80,6 +80,17 @@ Run the portfolio smoke checks:
 bash scripts/smoke_all.sh
 ```
 
+Run the Reliable Edge Agent Runtime extension smoke when the supporting
+Orchestrator repo is available in the same workspace:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh
+```
+
+This reproduces the file-based chain from `agent_manifest` to Runtime
+`result.agent`, Orchestrator scheduling evidence, AIGuard runtime reliability
+analysis, and the Lab-owned Agent Runtime Reliability report.
+
 Open the Local Studio demo:
 
 ```bash
@@ -132,8 +143,10 @@ bash scripts/update_all.sh --locked
 | `scripts/clone_all.sh` | Clone all InferEdge Core repositories |
 | `scripts/update_all.sh` | Update existing clones to latest or locked state |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
+| `scripts/demo_agent_runtime_e2e.sh` | Replay the Reliable Edge Agent Runtime extension smoke |
 | `docs/ecosystem_1page.md` | Submission-ready ecosystem diagram and three-question layer map |
 | `docs/assets/inferedge_ecosystem_diagram.svg` | Reusable ecosystem diagram asset for README, portfolio pages, and slides |
+| `docs/agent_runtime_e2e_demo.md` | Agent runtime contract-chain demo guide |
 | `docs/portfolio_summary.md` | 30-second portfolio summary and one-line repository role map |
 | `docs/final_submission_rehearsal.md` | Clean-clone submission gate rehearsal and results |
 | `docs/pipeline_map.md` | Pipeline map and repository responsibility guide |
