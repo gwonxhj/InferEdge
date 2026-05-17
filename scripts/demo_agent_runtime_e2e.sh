@@ -24,7 +24,7 @@ replace the Core 4 portfolio smoke in scripts/smoke_all.sh.
 Options:
   --output-dir DIR  Directory for generated evidence.
                     Default: ./reports/agent_runtime_e2e
-  --frames N        Number of synthetic frames for the Orchestrator demo.
+  --frames N        Number of synthetic frames for the Orchestrator sustained demo.
                     Default: 8
   -h, --help        Show this help.
 
@@ -135,17 +135,18 @@ AIGUARD_PYTHON="$(choose_python "$AIGUARD_REPO")"
 
 FORGE_AGENT_MANIFEST="$FORGE_REPO/tests/fixtures/agent_manifest_vision.json"
 RUNTIME_AGENT_RESULT="$ORCHESTRATOR_REPO/examples/agent_runtime/vision_runtime_result.json"
-ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_3_workload_sustained_high_load.json"
+ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_multi_workload_sustained_local.json"
 
 require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
-require_file "$ORCHESTRATOR_CONFIG" "Orchestrator sustained high-load 3-agent config"
+require_file "$ORCHESTRATOR_CONFIG" "Orchestrator multi-workload sustained config"
 
 mkdir -p "$OUTPUT_DIR"
 
 FORGE_OUT="$OUTPUT_DIR/01_forge_agent_manifest_vision.json"
 RUNTIME_OUT="$OUTPUT_DIR/02_runtime_result_agent.json"
 ORCHESTRATION_OUT="$OUTPUT_DIR/03_orchestration_summary.json"
+TEGRSTATS_SAMPLE_OUT="$OUTPUT_DIR/03_tegrastats_sample.log"
 AIGUARD_JSON_OUT="$OUTPUT_DIR/04_aiguard_guard_analysis.json"
 AIGUARD_MD_OUT="$OUTPUT_DIR/04_aiguard_guard_analysis.md"
 LAB_JSON_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.json"
@@ -154,8 +155,12 @@ LAB_MD_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.md"
 run_step "Record Forge agent_manifest contract input" cp "$FORGE_AGENT_MANIFEST" "$FORGE_OUT"
 run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT" "$RUNTIME_OUT"
 
-run_step "Generate Orchestrator 3-agent scheduling summary" \
-  bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator run --config '$ORCHESTRATOR_CONFIG' --output '$ORCHESTRATION_OUT' --frames '$FRAMES'"
+cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
+RAM 2048/7771MB SWAP 0/3885MB CPU [12%@1510] GR3D_FREQ 42% cpu@45.5C gpu@44.0C
+EOF
+
+run_step "Generate Orchestrator profiled multi-workload sustained summary" \
+  bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator run-multi-workload-sustained --config '$ORCHESTRATOR_CONFIG' --output '$ORCHESTRATION_OUT' --frames '$FRAMES' --tegrastats-log '$TEGRSTATS_SAMPLE_OUT'"
 
 run_step "Generate AIGuard runtime reliability guard_analysis" \
   bash -lc "cd '$AIGUARD_REPO' && PYTHONDONTWRITEBYTECODE=1 '$AIGUARD_PYTHON' -m inferedge_aiguard.cli reason-orchestration --input '$ORCHESTRATION_OUT' --save-json '$AIGUARD_JSON_OUT' --save-md '$AIGUARD_MD_OUT'"
@@ -172,8 +177,14 @@ grep -q "inferedge-orchestration-summary-v1" "$ORCHESTRATION_OUT"
 grep -q "inferedge-aiguard-diagnosis-v1" "$AIGUARD_JSON_OUT"
 grep -q "inferedgelab-agent-runtime-reliability-report-v1" "$LAB_JSON_OUT"
 grep -q "sustained_high_load" "$ORCHESTRATION_OUT"
+grep -q "multi_workload_sustained_summary" "$ORCHESTRATION_OUT"
+grep -q "tegrastats_timeline" "$ORCHESTRATION_OUT"
 grep -q "sustained_overload_risk" "$AIGUARD_JSON_OUT"
+grep -q "profiled_workload_pressure" "$AIGUARD_JSON_OUT"
+grep -q "thermal_resource_pressure" "$AIGUARD_JSON_OUT"
 grep -q "max_total_queue_depth" "$LAB_JSON_OUT"
+grep -q "profiled_workload_pressure" "$LAB_JSON_OUT"
+grep -q "thermal_resource_pressure" "$LAB_JSON_OUT"
 grep -q "sustained_overload_review" "$LAB_JSON_OUT"
 
 echo
@@ -183,6 +194,7 @@ echo "Outputs:"
 echo "  Forge agent manifest:       $FORGE_OUT"
 echo "  Runtime result.agent:       $RUNTIME_OUT"
 echo "  Orchestration summary:      $ORCHESTRATION_OUT"
+echo "  Tegrastats sample:          $TEGRSTATS_SAMPLE_OUT"
 echo "  AIGuard guard analysis:     $AIGUARD_JSON_OUT"
 echo "  AIGuard Markdown report:    $AIGUARD_MD_OUT"
 echo "  Lab report JSON:            $LAB_JSON_OUT"
