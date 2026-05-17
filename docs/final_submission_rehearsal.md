@@ -103,14 +103,14 @@ Key checks:
 
 | Step | Result |
 |---|---|
-| Forge tests | `87 passed` |
+| Forge tests | `92 passed` |
 | Forge manifest validation | valid, 0 errors, 0 warnings |
 | Runtime smoke | success |
 | Runtime manifest identity | `Ran 3 tests`, OK |
 | Lab install | installed current project `inferedgelab (0.1.0)` |
 | Lab portfolio demo check | pass, 50 total / 0 failed |
 | Lab Core 4 conformance check | pass, 133 total / 0 failed |
-| AIGuard tests | `134 passed` |
+| AIGuard tests | `139 passed` |
 | AIGuard portfolio demo | generated 4 deterministic demo cases |
 
 ## Local Studio Demo Evidence
