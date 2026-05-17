@@ -135,11 +135,11 @@ AIGUARD_PYTHON="$(choose_python "$AIGUARD_REPO")"
 
 FORGE_AGENT_MANIFEST="$FORGE_REPO/tests/fixtures/agent_manifest_vision.json"
 RUNTIME_AGENT_RESULT="$ORCHESTRATOR_REPO/examples/agent_runtime/vision_runtime_result.json"
-ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_3_workload_demo.json"
+ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_3_workload_sustained_high_load.json"
 
 require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
-require_file "$ORCHESTRATOR_CONFIG" "Orchestrator 3-agent config"
+require_file "$ORCHESTRATOR_CONFIG" "Orchestrator sustained high-load 3-agent config"
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -171,6 +171,10 @@ grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
 grep -q "inferedge-orchestration-summary-v1" "$ORCHESTRATION_OUT"
 grep -q "inferedge-aiguard-diagnosis-v1" "$AIGUARD_JSON_OUT"
 grep -q "inferedgelab-agent-runtime-reliability-report-v1" "$LAB_JSON_OUT"
+grep -q "sustained_high_load" "$ORCHESTRATION_OUT"
+grep -q "sustained_overload_risk" "$AIGUARD_JSON_OUT"
+grep -q "max_total_queue_depth" "$LAB_JSON_OUT"
+grep -q "sustained_overload_review" "$LAB_JSON_OUT"
 
 echo
 echo "Reliable Edge Agent Runtime e2e smoke: pass"

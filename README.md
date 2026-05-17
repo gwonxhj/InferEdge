@@ -90,6 +90,9 @@ bash scripts/demo_agent_runtime_e2e.sh
 This reproduces the file-based chain from `agent_manifest` to Runtime
 `result.agent`, Orchestrator scheduling evidence, AIGuard runtime reliability
 analysis, and the Lab-owned Agent Runtime Reliability report.
+The current extension smoke uses the sustained high-load 3-agent scenario and
+checks that queue-depth, policy decision reason, `sustained_overload_risk`, and
+Lab `sustained_overload_review` evidence are preserved end to end.
 
 Open the Local Studio demo:
 
