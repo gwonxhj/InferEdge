@@ -6,8 +6,8 @@ Edge Agent Runtime contracts across the InferEdge ecosystem.
 The demo is intentionally local-first and file-based. It is not a production
 orchestration service, cloud dashboard, or general AI OS.
 
-The current smoke uses the Orchestrator profiled synthetic sustained workload
-path for Vision / Voice-Command / Safety-Monitor agents. It verifies that
+The current smoke uses Orchestrator lightweight local CPU profile adapters
+for Vision / Voice-Command / Safety-Monitor agents. It verifies that
 queue-depth timeline evidence, policy decision reasons,
 `multi_workload_sustained_summary`, optional `tegrastats_timeline`, AIGuard
 `profiled_workload_pressure` / `thermal_resource_pressure`, and Lab
@@ -90,7 +90,7 @@ Included:
 - Vision / Voice-Command / Safety-Monitor workload contracts
 - priority/deadline scheduling evidence
 - drop/fallback/deadline signal propagation
-- profiled sustained workload summary
+- lightweight local CPU profile sustained workload summary
 - local tegrastats-style thermal/resource sample propagation
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
