@@ -24,7 +24,7 @@ replace the Core 4 portfolio smoke in scripts/smoke_all.sh.
 Options:
   --output-dir DIR  Directory for generated evidence.
                     Default: ./reports/agent_runtime_e2e
-  --frames N        Number of synthetic frames for the Orchestrator sustained demo.
+  --frames N        Number of frame cycles for the Orchestrator sustained demo.
                     Default: 8
   -h, --help        Show this help.
 
