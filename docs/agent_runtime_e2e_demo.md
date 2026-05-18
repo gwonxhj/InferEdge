@@ -57,6 +57,43 @@ Use `--resource-snapshot /path/to/resources.json` instead of
 fixture. These overrides intentionally require `--device-local` so the default
 producer-backed smoke remains stable and dependency-light.
 
+## Minimum Sample Inputs
+
+If `InferEdgeOrchestrator` is cloned next to this entrypoint repo, the smallest
+committed input set is:
+
+| Workload | Path | Source marker |
+|---|---|---|
+| Vision | `../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm` | `image_file` |
+| Voice / Command | `../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json` | `fastapi_request_fixture` |
+| Safety / Monitor | `../InferEdgeOrchestrator/examples/inputs/safety_resource_snapshots.json` | `resource_snapshot_fixture` |
+
+Concrete replay command:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --output-dir /tmp/inferedge_agent_runtime_device_local_inputs \
+  --frames 8 \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --voice-ingress-payload ../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json \
+  --resource-snapshot ../InferEdgeOrchestrator/examples/inputs/safety_resource_snapshots.json
+```
+
+Concrete process-snapshot variant:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --output-dir /tmp/inferedge_agent_runtime_device_local_process \
+  --frames 8 \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --voice-ingress-payload ../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json \
+  --capture-process-resource-snapshot
+```
+
+This remains a device-local starter path. It validates that local producer
+inputs flow through Orchestrator, AIGuard, and Lab report contracts. It does not
+claim full live YOLO/Whisper/FastAPI/Jetson sustained validation.
+
 The script writes generated evidence under:
 
 ```text

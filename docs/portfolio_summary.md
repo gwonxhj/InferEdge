@@ -50,6 +50,45 @@ The ecosystem extension layers stay separate:
 - Env records benchmark evidence and comparability. Its `v0.1.5` release freezes this role as the v1-complete baseline.
 - Orchestrator controls runtime behavior after deployment.
 
+## Device-Local Sustained Validation Starter
+
+The current runtime-operation extension is a local-first starter, not a full
+production remote execution system. It lets a reviewer replay the same
+contract chain with committed Orchestrator input fixtures, then replace those
+fixtures with local device inputs when available.
+
+Assuming `InferEdgeOrchestrator` is cloned next to this entrypoint repo, the
+minimum committed sample inputs are:
+
+| Workload | Sample input path | Purpose |
+|---|---|---|
+| Vision | `../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm` | Local image producer input |
+| Voice / Command | `../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json` | FastAPI-style request burst fixture |
+| Safety / Monitor | `../InferEdgeOrchestrator/examples/inputs/safety_resource_snapshots.json` | Resource snapshot fixture |
+
+Replay the committed device-local starter:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --output-dir /tmp/inferedge_agent_runtime_device_local \
+  --frames 8
+```
+
+Replay the same entrypoint with explicit local input overrides:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --output-dir /tmp/inferedge_agent_runtime_device_local_inputs \
+  --frames 8 \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --voice-ingress-payload ../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json \
+  --resource-snapshot ../InferEdgeOrchestrator/examples/inputs/safety_resource_snapshots.json
+```
+
+For a minimal live local resource signal, replace `--resource-snapshot` with
+`--capture-process-resource-snapshot`. This records process-level resource
+evidence only; it should not be described as full Jetson thermal validation.
+
 ## What To Show First
 
 For an external reviewer, use this order:
