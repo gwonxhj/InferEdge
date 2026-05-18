@@ -13,7 +13,9 @@ It verifies that queue-depth timeline evidence, policy decision reasons,
 `multi_workload_sustained_summary`, producer source markers, optional
 `tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
 `thermal_resource_pressure`, and Lab `sustained_overload_review` are preserved
-across the chain before device-local sustained validation is added.
+across the chain before live device-local sustained validation is added. The
+optional `--device-local` mode uses committed local image, request, and resource
+snapshot producers in Orchestrator `scenario_mode=device_local`.
 
 ## Contract Chain
 
@@ -33,6 +35,13 @@ From the InferEdge entrypoint repository:
 bash scripts/demo_agent_runtime_e2e.sh
 ```
 
+Run the explicit device-local starter path when you want the Orchestrator
+`scenario_mode=device_local` config:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local
+```
+
 The script writes generated evidence under:
 
 ```text
@@ -43,6 +52,7 @@ Use a temporary output directory for clean validation:
 
 ```bash
 bash scripts/demo_agent_runtime_e2e.sh --output-dir /tmp/inferedge_agent_runtime_e2e
+bash scripts/demo_agent_runtime_e2e.sh --device-local --output-dir /tmp/inferedge_agent_runtime_e2e_device_local
 ```
 
 ## Inputs
@@ -79,6 +89,7 @@ Expected sustained evidence markers:
 - `sustained_high_load` in Orchestrator output
 - `multi_workload_sustained_summary` and `tegrastats_timeline` in Orchestrator output
 - `image_file`, `fastapi_request_fixture`, `resource_snapshot_fixture`, and `resource_degradation_score` in Orchestrator output
+- `producer_sources` and `device_local_producer_count` in Orchestrator output when `--device-local` is used
 - `sustained_overload_risk` in AIGuard output
 - `profiled_workload_pressure` and `thermal_resource_pressure` in AIGuard output
 - `max_total_queue_depth` in Lab report metrics
@@ -94,6 +105,7 @@ Included:
 - drop/fallback/deadline signal propagation
 - lightweight producer-backed sustained workload summary
 - Vision local image fixture, Voice FastAPI-style request fixture, and Safety resource snapshot fixture propagation
+- optional `--device-local` replay for the explicit Orchestrator device-local starter config
 - local tegrastats-style thermal/resource sample propagation
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context

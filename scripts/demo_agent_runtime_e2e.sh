@@ -5,10 +5,11 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 REPOS_ROOT="${INFEREDGE_REPOS_DIR:-$ROOT_DIR/repos}"
 OUTPUT_DIR="$ROOT_DIR/reports/agent_runtime_e2e"
 FRAMES=8
+SUSTAINED_MODE="producer-backed"
 
 usage() {
   cat <<'USAGE'
-Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N]
+Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [--device-local]
 
 Replay the Reliable Edge Agent Runtime contract chain:
 
@@ -26,6 +27,8 @@ Options:
                     Default: ./reports/agent_runtime_e2e
   --frames N        Number of frame cycles for the Orchestrator sustained demo.
                     Default: 8
+  --device-local   Use the Orchestrator device_local starter config.
+                    Default uses the producer-backed sustained smoke config.
   -h, --help        Show this help.
 
 Environment:
@@ -47,6 +50,10 @@ while [[ $# -gt 0 ]]; do
     --frames)
       FRAMES="${2:?missing value for --frames}"
       shift 2
+      ;;
+    --device-local)
+      SUSTAINED_MODE="device-local"
+      shift
       ;;
     -h|--help)
       usage
@@ -135,11 +142,22 @@ AIGUARD_PYTHON="$(choose_python "$AIGUARD_REPO")"
 
 FORGE_AGENT_MANIFEST="$FORGE_REPO/tests/fixtures/agent_manifest_vision.json"
 RUNTIME_AGENT_RESULT="$ORCHESTRATOR_REPO/examples/agent_runtime/vision_runtime_result.json"
-ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_multi_workload_sustained_safety_resource.json"
+
+if [[ "$SUSTAINED_MODE" == "device-local" ]]; then
+  ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_multi_workload_sustained_device_local.json"
+  ORCHESTRATOR_CONFIG_LABEL="Orchestrator device_local sustained config"
+  ORCHESTRATOR_MODE_MARKER="device_local"
+  EXTRA_ORCHESTRATOR_MARKERS=("producer_sources" "device_local_producer_count")
+else
+  ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_multi_workload_sustained_safety_resource.json"
+  ORCHESTRATOR_CONFIG_LABEL="Orchestrator producer-backed sustained config"
+  ORCHESTRATOR_MODE_MARKER="sustained_high_load"
+  EXTRA_ORCHESTRATOR_MARKERS=()
+fi
 
 require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
-require_file "$ORCHESTRATOR_CONFIG" "Orchestrator producer-backed sustained config"
+require_file "$ORCHESTRATOR_CONFIG" "$ORCHESTRATOR_CONFIG_LABEL"
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -159,7 +177,7 @@ cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
 RAM 2048/7771MB SWAP 0/3885MB CPU [12%@1510] GR3D_FREQ 42% cpu@45.5C gpu@44.0C
 EOF
 
-run_step "Generate Orchestrator producer-backed multi-workload sustained summary" \
+run_step "Generate Orchestrator $SUSTAINED_MODE multi-workload sustained summary" \
   bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator run-multi-workload-sustained --config '$ORCHESTRATOR_CONFIG' --output '$ORCHESTRATION_OUT' --frames '$FRAMES' --tegrastats-log '$TEGRSTATS_SAMPLE_OUT'"
 
 run_step "Generate AIGuard runtime reliability guard_analysis" \
@@ -176,8 +194,13 @@ grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
 grep -q "inferedge-orchestration-summary-v1" "$ORCHESTRATION_OUT"
 grep -q "inferedge-aiguard-diagnosis-v1" "$AIGUARD_JSON_OUT"
 grep -q "inferedgelab-agent-runtime-reliability-report-v1" "$LAB_JSON_OUT"
-grep -q "sustained_high_load" "$ORCHESTRATION_OUT"
+grep -q "$ORCHESTRATOR_MODE_MARKER" "$ORCHESTRATION_OUT"
 grep -q "multi_workload_sustained_summary" "$ORCHESTRATION_OUT"
+if ((${#EXTRA_ORCHESTRATOR_MARKERS[@]} > 0)); then
+  for marker in "${EXTRA_ORCHESTRATOR_MARKERS[@]}"; do
+    grep -q "$marker" "$ORCHESTRATION_OUT"
+  done
+fi
 grep -q "image_file" "$ORCHESTRATION_OUT"
 grep -q "fastapi_request_fixture" "$ORCHESTRATION_OUT"
 grep -q "resource_snapshot_fixture" "$ORCHESTRATION_OUT"
@@ -192,7 +215,7 @@ grep -q "thermal_resource_pressure" "$LAB_JSON_OUT"
 grep -q "sustained_overload_review" "$LAB_JSON_OUT"
 
 echo
-echo "Reliable Edge Agent Runtime e2e smoke: pass"
+echo "Reliable Edge Agent Runtime e2e smoke ($SUSTAINED_MODE): pass"
 echo
 echo "Outputs:"
 echo "  Forge agent manifest:       $FORGE_OUT"
