@@ -68,6 +68,19 @@ Orchestrator device-local Vision producer and preserve
 `vision_inference_backend`, input/output shapes, and probe latency through the
 e2e smoke outputs. It is not a full live YOLO service.
 
+If you already captured a Jetson `tegrastats` log, pass it through the same
+entrypoint smoke:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --tegrastats-log /path/to/tegrastats.log
+```
+
+The script copies the provided log into the generated evidence directory and
+routes it through the Orchestrator `tegrastats_timeline`, AIGuard reliability
+analysis, and Lab report. This is telemetry handoff evidence, not a full
+thermal endurance validation.
+
 Use `--resource-snapshot /path/to/resources.json` instead of
 `--capture-process-resource-snapshot` when you already have a resource snapshot
 fixture. These overrides intentionally require `--device-local` so the default
@@ -201,7 +214,7 @@ bash scripts/demo_agent_runtime_e2e.sh
 | `01_forge_agent_manifest_vision.json` | Agent workload handoff contract example |
 | `02_runtime_result_agent.json` | Runtime result with backward-compatible `agent` block |
 | `03_orchestration_summary.json` | Profiled multi-workload scheduler policy decision evidence |
-| `03_tegrastats_sample.log` | Local tegrastats-style sample for thermal/resource evidence |
+| `03_tegrastats_sample.log` | Local tegrastats-style sample or copied captured log for thermal/resource evidence |
 | `04_aiguard_guard_analysis.json` | Deterministic runtime reliability diagnosis evidence |
 | `04_aiguard_guard_analysis.md` | Human-readable AIGuard report |
 | `05_lab_agent_runtime_report.json` | Lab-owned agent runtime reliability report |
@@ -238,6 +251,7 @@ Included:
   `--voice-ingress-payload`, `--resource-snapshot`, or
   `--capture-process-resource-snapshot`
 - local tegrastats-style thermal/resource sample propagation
+- optional captured `tegrastats` log propagation through `--tegrastats-log`
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
 
