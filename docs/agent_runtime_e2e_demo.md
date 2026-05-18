@@ -13,7 +13,9 @@ It verifies that queue-depth timeline evidence, policy decision reasons,
 `multi_workload_sustained_summary`, producer source markers, optional
 `tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
 `thermal_resource_pressure`, and Lab `sustained_overload_review` are preserved
-across the chain before live device-local sustained validation is added. The
+across the chain before live device-local sustained validation is added. It also
+checks that Lab preserves Orchestrator operation context, including queue state,
+worker health, runtime event summary, and timeline samples in report output. The
 optional `--device-local` mode uses committed local image, request, and resource
 snapshot producers in Orchestrator `scenario_mode=device_local`.
 
