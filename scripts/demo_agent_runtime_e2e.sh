@@ -6,10 +6,20 @@ REPOS_ROOT="${INFEREDGE_REPOS_DIR:-$ROOT_DIR/repos}"
 OUTPUT_DIR="$ROOT_DIR/reports/agent_runtime_e2e"
 FRAMES=8
 SUSTAINED_MODE="producer-backed"
+VISION_INPUT=""
+VOICE_INGRESS_PAYLOAD=""
+RESOURCE_SNAPSHOT=""
+CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
+VISION_PRODUCER_MARKER="image_file"
+SAFETY_PRODUCER_MARKER="resource_snapshot_fixture"
 
 usage() {
   cat <<'USAGE'
 Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [--device-local]
+                                             [--vision-input PATH]
+                                             [--voice-ingress-payload PATH]
+                                             [--resource-snapshot PATH]
+                                             [--capture-process-resource-snapshot]
 
 Replay the Reliable Edge Agent Runtime contract chain:
 
@@ -29,6 +39,19 @@ Options:
                     Default: 8
   --device-local   Use the Orchestrator device_local starter config.
                     Default uses the producer-backed sustained smoke config.
+  --vision-input PATH
+                    Device-local override for the Vision producer input.
+                    Requires --device-local.
+  --voice-ingress-payload PATH
+                    Device-local override for the Voice/FastAPI request payload.
+                    Requires --device-local.
+  --resource-snapshot PATH
+                    Device-local override for the Safety resource snapshot.
+                    Requires --device-local.
+  --capture-process-resource-snapshot
+                    Capture a small local process resource snapshot for Safety.
+                    Requires --device-local. Mutually exclusive with
+                    --resource-snapshot.
   -h, --help        Show this help.
 
 Environment:
@@ -53,6 +76,22 @@ while [[ $# -gt 0 ]]; do
       ;;
     --device-local)
       SUSTAINED_MODE="device-local"
+      shift
+      ;;
+    --vision-input)
+      VISION_INPUT="${2:?missing value for --vision-input}"
+      shift 2
+      ;;
+    --voice-ingress-payload)
+      VOICE_INGRESS_PAYLOAD="${2:?missing value for --voice-ingress-payload}"
+      shift 2
+      ;;
+    --resource-snapshot)
+      RESOURCE_SNAPSHOT="${2:?missing value for --resource-snapshot}"
+      shift 2
+      ;;
+    --capture-process-resource-snapshot)
+      CAPTURE_PROCESS_RESOURCE_SNAPSHOT=1
       shift
       ;;
     -h|--help)
@@ -123,6 +162,15 @@ require_file() {
   fi
 }
 
+absolute_file_path() {
+  local path="$1"
+  local dir
+  local base
+  dir="$(cd "$(dirname "$path")" && pwd)"
+  base="$(basename "$path")"
+  printf '%s/%s\n' "$dir" "$base"
+}
+
 run_step() {
   local label="$1"
   shift
@@ -130,6 +178,18 @@ run_step() {
   echo "==> $label"
   "$@"
 }
+
+if [[ -n "$VISION_INPUT$VOICE_INGRESS_PAYLOAD$RESOURCE_SNAPSHOT" || "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
+  if [[ "$SUSTAINED_MODE" != "device-local" ]]; then
+    echo "device-local input overrides require --device-local" >&2
+    exit 2
+  fi
+fi
+
+if [[ -n "$RESOURCE_SNAPSHOT" && "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
+  echo "use either --resource-snapshot or --capture-process-resource-snapshot" >&2
+  exit 2
+fi
 
 FORGE_REPO="$(resolve_repo "${INFEREDGE_FORGE_REPO:-}" InferEdgeForge "Forge")"
 RUNTIME_REPO="$(resolve_repo "${INFEREDGE_RUNTIME_REPO:-}" InferEdge-Runtime "Runtime")"
@@ -159,6 +219,39 @@ require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
 require_file "$ORCHESTRATOR_CONFIG" "$ORCHESTRATOR_CONFIG_LABEL"
 
+ORCHESTRATOR_EXTRA_ARGS=()
+if [[ -n "$VISION_INPUT" ]]; then
+  require_file "$VISION_INPUT" "Vision producer override input"
+  case "${VISION_INPUT##*.}" in
+    mp4|MP4|mov|MOV|mkv|MKV|avi|AVI|webm|WEBM)
+      VISION_PRODUCER_MARKER="video_file"
+      ;;
+    *)
+      VISION_PRODUCER_MARKER="image_file"
+      ;;
+  esac
+  VISION_INPUT="$(absolute_file_path "$VISION_INPUT")"
+  ORCHESTRATOR_EXTRA_ARGS+=(--vision-input "$VISION_INPUT")
+  EXTRA_ORCHESTRATOR_MARKERS+=("device_local_cli_override")
+fi
+if [[ -n "$VOICE_INGRESS_PAYLOAD" ]]; then
+  require_file "$VOICE_INGRESS_PAYLOAD" "Voice ingress override payload"
+  VOICE_INGRESS_PAYLOAD="$(absolute_file_path "$VOICE_INGRESS_PAYLOAD")"
+  ORCHESTRATOR_EXTRA_ARGS+=(--voice-ingress-payload "$VOICE_INGRESS_PAYLOAD")
+  EXTRA_ORCHESTRATOR_MARKERS+=("device_local_cli_override")
+fi
+if [[ -n "$RESOURCE_SNAPSHOT" ]]; then
+  require_file "$RESOURCE_SNAPSHOT" "Safety resource snapshot override"
+  RESOURCE_SNAPSHOT="$(absolute_file_path "$RESOURCE_SNAPSHOT")"
+  ORCHESTRATOR_EXTRA_ARGS+=(--resource-snapshot "$RESOURCE_SNAPSHOT")
+  EXTRA_ORCHESTRATOR_MARKERS+=("device_local_cli_override")
+fi
+if [[ "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
+  ORCHESTRATOR_EXTRA_ARGS+=(--capture-process-resource-snapshot)
+  SAFETY_PRODUCER_MARKER="process_resource_snapshot"
+  EXTRA_ORCHESTRATOR_MARKERS+=("device_local_cli_override" "process_resource_snapshot")
+fi
+
 mkdir -p "$OUTPUT_DIR"
 
 FORGE_OUT="$OUTPUT_DIR/01_forge_agent_manifest_vision.json"
@@ -177,8 +270,26 @@ cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
 RAM 2048/7771MB SWAP 0/3885MB CPU [12%@1510] GR3D_FREQ 42% cpu@45.5C gpu@44.0C
 EOF
 
+run_orchestrator_sustained() {
+  cd "$ORCHESTRATOR_REPO"
+  if ((${#ORCHESTRATOR_EXTRA_ARGS[@]} > 0)); then
+    PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src "$ORCH_PYTHON" -m inferedge_orchestrator run-multi-workload-sustained \
+      --config "$ORCHESTRATOR_CONFIG" \
+      --output "$ORCHESTRATION_OUT" \
+      --frames "$FRAMES" \
+      --tegrastats-log "$TEGRSTATS_SAMPLE_OUT" \
+      "${ORCHESTRATOR_EXTRA_ARGS[@]}"
+  else
+    PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src "$ORCH_PYTHON" -m inferedge_orchestrator run-multi-workload-sustained \
+      --config "$ORCHESTRATOR_CONFIG" \
+      --output "$ORCHESTRATION_OUT" \
+      --frames "$FRAMES" \
+      --tegrastats-log "$TEGRSTATS_SAMPLE_OUT"
+  fi
+}
+
 run_step "Generate Orchestrator $SUSTAINED_MODE multi-workload sustained summary" \
-  bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator run-multi-workload-sustained --config '$ORCHESTRATOR_CONFIG' --output '$ORCHESTRATION_OUT' --frames '$FRAMES' --tegrastats-log '$TEGRSTATS_SAMPLE_OUT'"
+  run_orchestrator_sustained
 
 run_step "Generate AIGuard runtime reliability guard_analysis" \
   bash -lc "cd '$AIGUARD_REPO' && PYTHONDONTWRITEBYTECODE=1 '$AIGUARD_PYTHON' -m inferedge_aiguard.cli reason-orchestration --input '$ORCHESTRATION_OUT' --save-json '$AIGUARD_JSON_OUT' --save-md '$AIGUARD_MD_OUT'"
@@ -201,9 +312,9 @@ if ((${#EXTRA_ORCHESTRATOR_MARKERS[@]} > 0)); then
     grep -q "$marker" "$ORCHESTRATION_OUT"
   done
 fi
-grep -q "image_file" "$ORCHESTRATION_OUT"
+grep -q "$VISION_PRODUCER_MARKER" "$ORCHESTRATION_OUT"
 grep -q "fastapi_request_fixture" "$ORCHESTRATION_OUT"
-grep -q "resource_snapshot_fixture" "$ORCHESTRATION_OUT"
+grep -q "$SAFETY_PRODUCER_MARKER" "$ORCHESTRATION_OUT"
 grep -q "resource_degradation_score" "$ORCHESTRATION_OUT"
 grep -q "tegrastats_timeline" "$ORCHESTRATION_OUT"
 grep -q "sustained_overload_risk" "$AIGUARD_JSON_OUT"
