@@ -153,6 +153,28 @@ through Orchestrator, AIGuard, and Lab reports. It is still a device-local
 starter smoke, not a claim of full live YOLO/Whisper/FastAPI sustained
 validation.
 
+Recent Jetson ONNX probe validation:
+
+| Evidence | Value |
+|---|---:|
+| Device mode | Jetson Orin Nano 25W |
+| Scenario | `device_local` starter with Vision ONNX Runtime probe |
+| Frames | 16 |
+| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
+| Vision probe output shape | `[1, 2]` |
+| Vision probe latency | 1.255 ms |
+| Max queue depth | 6 |
+| Dropped / fallback count | 13 / 13 |
+| Deadline misses | 1 |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This second record validates that the entrypoint can pass a local ONNX model
+into the Jetson device-local Vision producer and preserve ONNX Runtime probe
+evidence through Orchestrator, AIGuard, and Lab reports. The probe used a tiny
+identity ONNX model, so it should be described as device-local ONNX probe
+evidence rather than full live YOLO validation.
+
 Open the Local Studio demo:
 
 ```bash
