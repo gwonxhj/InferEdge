@@ -90,9 +90,11 @@ bash scripts/demo_agent_runtime_e2e.sh
 This reproduces the file-based chain from `agent_manifest` to Runtime
 `result.agent`, Orchestrator scheduling evidence, AIGuard runtime reliability
 analysis, and the Lab-owned Agent Runtime Reliability report.
-The current extension smoke uses Orchestrator lightweight local CPU profile
-adapters for Vision / Voice-Command / Safety-Monitor agents. It checks queue-depth,
-policy decision reason, `multi_workload_sustained_summary`, optional
+The current extension smoke uses the latest Orchestrator producer-backed
+sustained path: Vision reads a local image fixture, Voice-Command replays a
+FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot
+telemetry. It checks queue-depth, policy decision reason,
+`multi_workload_sustained_summary`, producer source markers, optional
 `tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
 `thermal_resource_pressure`, and Lab `sustained_overload_review` evidence
 before device-specific sustained validation is added.

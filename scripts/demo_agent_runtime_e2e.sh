@@ -135,11 +135,11 @@ AIGUARD_PYTHON="$(choose_python "$AIGUARD_REPO")"
 
 FORGE_AGENT_MANIFEST="$FORGE_REPO/tests/fixtures/agent_manifest_vision.json"
 RUNTIME_AGENT_RESULT="$ORCHESTRATOR_REPO/examples/agent_runtime/vision_runtime_result.json"
-ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_multi_workload_sustained_local.json"
+ORCHESTRATOR_CONFIG="$ORCHESTRATOR_REPO/configs/agent_multi_workload_sustained_safety_resource.json"
 
 require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
-require_file "$ORCHESTRATOR_CONFIG" "Orchestrator multi-workload sustained config"
+require_file "$ORCHESTRATOR_CONFIG" "Orchestrator producer-backed sustained config"
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -159,7 +159,7 @@ cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
 RAM 2048/7771MB SWAP 0/3885MB CPU [12%@1510] GR3D_FREQ 42% cpu@45.5C gpu@44.0C
 EOF
 
-run_step "Generate Orchestrator profiled multi-workload sustained summary" \
+run_step "Generate Orchestrator producer-backed multi-workload sustained summary" \
   bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator run-multi-workload-sustained --config '$ORCHESTRATOR_CONFIG' --output '$ORCHESTRATION_OUT' --frames '$FRAMES' --tegrastats-log '$TEGRSTATS_SAMPLE_OUT'"
 
 run_step "Generate AIGuard runtime reliability guard_analysis" \
@@ -178,6 +178,10 @@ grep -q "inferedge-aiguard-diagnosis-v1" "$AIGUARD_JSON_OUT"
 grep -q "inferedgelab-agent-runtime-reliability-report-v1" "$LAB_JSON_OUT"
 grep -q "sustained_high_load" "$ORCHESTRATION_OUT"
 grep -q "multi_workload_sustained_summary" "$ORCHESTRATION_OUT"
+grep -q "image_file" "$ORCHESTRATION_OUT"
+grep -q "fastapi_request_fixture" "$ORCHESTRATION_OUT"
+grep -q "resource_snapshot_fixture" "$ORCHESTRATION_OUT"
+grep -q "resource_degradation_score" "$ORCHESTRATION_OUT"
 grep -q "tegrastats_timeline" "$ORCHESTRATION_OUT"
 grep -q "sustained_overload_risk" "$AIGUARD_JSON_OUT"
 grep -q "profiled_workload_pressure" "$AIGUARD_JSON_OUT"

@@ -6,13 +6,14 @@ Edge Agent Runtime contracts across the InferEdge ecosystem.
 The demo is intentionally local-first and file-based. It is not a production
 orchestration service, cloud dashboard, or general AI OS.
 
-The current smoke uses Orchestrator lightweight local CPU profile adapters
-for Vision / Voice-Command / Safety-Monitor agents. It verifies that
-queue-depth timeline evidence, policy decision reasons,
-`multi_workload_sustained_summary`, optional `tegrastats_timeline`, AIGuard
-`profiled_workload_pressure` / `thermal_resource_pressure`, and Lab
-`sustained_overload_review` are preserved across the chain before
-device-specific sustained validation is added.
+The current smoke uses the latest Orchestrator producer-backed sustained
+path: Vision reads a local image fixture, Voice-Command replays a FastAPI-style
+request burst fixture, and Safety-Monitor reads resource snapshot telemetry.
+It verifies that queue-depth timeline evidence, policy decision reasons,
+`multi_workload_sustained_summary`, producer source markers, optional
+`tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
+`thermal_resource_pressure`, and Lab `sustained_overload_review` are preserved
+across the chain before device-specific sustained validation is added.
 
 ## Contract Chain
 
@@ -77,6 +78,7 @@ Expected sustained evidence markers:
 
 - `sustained_high_load` in Orchestrator output
 - `multi_workload_sustained_summary` and `tegrastats_timeline` in Orchestrator output
+- `image_file`, `fastapi_request_fixture`, `resource_snapshot_fixture`, and `resource_degradation_score` in Orchestrator output
 - `sustained_overload_risk` in AIGuard output
 - `profiled_workload_pressure` and `thermal_resource_pressure` in AIGuard output
 - `max_total_queue_depth` in Lab report metrics
@@ -90,7 +92,8 @@ Included:
 - Vision / Voice-Command / Safety-Monitor workload contracts
 - priority/deadline scheduling evidence
 - drop/fallback/deadline signal propagation
-- lightweight local CPU profile sustained workload summary
+- lightweight producer-backed sustained workload summary
+- Vision local image fixture, Voice FastAPI-style request fixture, and Safety resource snapshot fixture propagation
 - local tegrastats-style thermal/resource sample propagation
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
