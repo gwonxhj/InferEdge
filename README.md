@@ -85,6 +85,9 @@ Orchestrator repo is available in the same workspace:
 
 ```bash
 bash scripts/demo_agent_runtime_e2e.sh
+
+# Optional: run the explicit device_local starter path.
+bash scripts/demo_agent_runtime_e2e.sh --device-local
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -97,7 +100,9 @@ telemetry. It checks queue-depth, policy decision reason,
 `multi_workload_sustained_summary`, producer source markers, optional
 `tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
 `thermal_resource_pressure`, and Lab `sustained_overload_review` evidence
-before device-local sustained validation is added.
+before live device-local sustained validation is added. Use `--device-local` to
+replay the committed local image, request, and resource snapshot producers in
+Orchestrator `scenario_mode=device_local`.
 
 Open the Local Studio demo:
 
