@@ -168,6 +168,7 @@ bash scripts/update_all.sh --locked
 | `docs/assets/inferedge_ecosystem_diagram.svg` | Reusable ecosystem diagram asset for README, portfolio pages, and slides |
 | `docs/agent_runtime_e2e_demo.md` | Agent runtime contract-chain demo guide |
 | `docs/portfolio_summary.md` | 30-second portfolio summary and one-line repository role map |
+| `docs/interview_narrative.md` | Interview-ready narrative for explaining the ecosystem and Jetson evidence role |
 | `docs/final_submission_rehearsal.md` | Clean-clone submission gate rehearsal and results |
 | `docs/pipeline_map.md` | Pipeline map and repository responsibility guide |
 
@@ -212,10 +213,11 @@ Not included:
 For a reviewer or interviewer, start here:
 
 1. `docs/portfolio_summary.md`
-2. `docs/final_submission_rehearsal.md`
-3. This README
-4. `docs/pipeline_map.md`
-5. `repos/InferEdgeLab/README.md`
-6. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`
-7. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`
-8. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`
+2. `docs/interview_narrative.md`
+3. `docs/final_submission_rehearsal.md`
+4. This README
+5. `docs/pipeline_map.md`
+6. `repos/InferEdgeLab/README.md`
+7. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`
+8. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`
+9. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`

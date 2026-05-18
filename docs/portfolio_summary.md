@@ -56,12 +56,13 @@ For an external reviewer, use this order:
 
 1. `docs/ecosystem_1page.md`.
 2. This summary.
-3. `README.md`.
-4. `docs/pipeline_map.md`.
-5. `repos/InferEdgeLab/README.md`.
-6. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`.
-7. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`.
-8. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`.
+3. `docs/interview_narrative.md`.
+4. `README.md`.
+5. `docs/pipeline_map.md`.
+6. `repos/InferEdgeLab/README.md`.
+7. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`.
+8. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`.
+9. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`.
 
 ## What Not To Claim
 
