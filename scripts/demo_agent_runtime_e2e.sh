@@ -7,6 +7,7 @@ OUTPUT_DIR="$ROOT_DIR/reports/agent_runtime_e2e"
 FRAMES=8
 SUSTAINED_MODE="producer-backed"
 VISION_INPUT=""
+VISION_ONNX_MODEL=""
 VOICE_INGRESS_PAYLOAD=""
 RESOURCE_SNAPSHOT=""
 CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
@@ -17,6 +18,7 @@ usage() {
   cat <<'USAGE'
 Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [--device-local]
                                              [--vision-input PATH]
+                                             [--vision-onnx-model PATH]
                                              [--voice-ingress-payload PATH]
                                              [--resource-snapshot PATH]
                                              [--capture-process-resource-snapshot]
@@ -42,6 +44,9 @@ Options:
   --vision-input PATH
                     Device-local override for the Vision producer input.
                     Requires --device-local.
+  --vision-onnx-model PATH
+                    Optional local ONNX model for the Vision producer probe.
+                    Requires --device-local and Orchestrator ONNX dependencies.
   --voice-ingress-payload PATH
                     Device-local override for the Voice/FastAPI request payload.
                     Requires --device-local.
@@ -80,6 +85,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --vision-input)
       VISION_INPUT="${2:?missing value for --vision-input}"
+      shift 2
+      ;;
+    --vision-onnx-model)
+      VISION_ONNX_MODEL="${2:?missing value for --vision-onnx-model}"
       shift 2
       ;;
     --voice-ingress-payload)
@@ -179,7 +188,7 @@ run_step() {
   "$@"
 }
 
-if [[ -n "$VISION_INPUT$VOICE_INGRESS_PAYLOAD$RESOURCE_SNAPSHOT" || "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
+if [[ -n "$VISION_INPUT$VISION_ONNX_MODEL$VOICE_INGRESS_PAYLOAD$RESOURCE_SNAPSHOT" || "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
   if [[ "$SUSTAINED_MODE" != "device-local" ]]; then
     echo "device-local input overrides require --device-local" >&2
     exit 2
@@ -233,6 +242,17 @@ if [[ -n "$VISION_INPUT" ]]; then
   VISION_INPUT="$(absolute_file_path "$VISION_INPUT")"
   ORCHESTRATOR_EXTRA_ARGS+=(--vision-input "$VISION_INPUT")
   EXTRA_ORCHESTRATOR_MARKERS+=("device_local_cli_override")
+fi
+if [[ -n "$VISION_ONNX_MODEL" ]]; then
+  require_file "$VISION_ONNX_MODEL" "Vision ONNX producer probe model"
+  VISION_ONNX_MODEL="$(absolute_file_path "$VISION_ONNX_MODEL")"
+  ORCHESTRATOR_EXTRA_ARGS+=(--vision-onnx-model "$VISION_ONNX_MODEL")
+  EXTRA_ORCHESTRATOR_MARKERS+=(
+    "device_local_cli_override"
+    "vision_inference_backend"
+    "onnxruntime"
+    "vision_probe_elapsed_ms"
+  )
 fi
 if [[ -n "$VOICE_INGRESS_PAYLOAD" ]]; then
   require_file "$VOICE_INGRESS_PAYLOAD" "Voice ingress override payload"
