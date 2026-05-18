@@ -13,7 +13,7 @@ It verifies that queue-depth timeline evidence, policy decision reasons,
 `multi_workload_sustained_summary`, producer source markers, optional
 `tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
 `thermal_resource_pressure`, and Lab `sustained_overload_review` are preserved
-across the chain before device-specific sustained validation is added.
+across the chain before device-local sustained validation is added.
 
 ## Contract Chain
 

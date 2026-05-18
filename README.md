@@ -97,7 +97,7 @@ telemetry. It checks queue-depth, policy decision reason,
 `multi_workload_sustained_summary`, producer source markers, optional
 `tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
 `thermal_resource_pressure`, and Lab `sustained_overload_review` evidence
-before device-specific sustained validation is added.
+before device-local sustained validation is added.
 
 Open the Local Studio demo:
 
