@@ -89,6 +89,16 @@ For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
 evidence only; it should not be described as full Jetson thermal validation.
 
+Jetson starter validation has also been checked on a Jetson Orin Nano in 25W
+mode using the same `device_local` starter flow with live `tegrastats` capture.
+The observed starter run used 64 frames, reached max queue depth 6, recorded
+61 dropped tasks and 61 fallback events, had 0 deadline misses, parsed 4
+`tegrastats` samples, and reported max temperature 39.625 C / max RAM 1783 MB.
+This is useful as a portfolio evidence bridge because it shows live Jetson
+resource telemetry flowing through Orchestrator -> AIGuard -> Lab, while still
+remaining below the claim level of full live YOLO/Whisper/FastAPI sustained
+validation.
+
 ## What To Show First
 
 For an external reviewer, use this order:

@@ -126,6 +126,26 @@ with runtime input overrides. See
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
 minimum committed sample paths and a resource-snapshot variant.
 
+Recent Jetson starter validation:
+
+| Evidence | Value |
+|---|---:|
+| Device mode | Jetson Orin Nano 25W |
+| Scenario | `device_local` starter with live `tegrastats` log |
+| Frames | 64 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 61 / 61 |
+| Deadline misses | 0 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature | 39.625 C |
+| Max RAM used | 1783 MB |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This record proves the starter path can carry live Jetson resource telemetry
+through Orchestrator, AIGuard, and Lab reports. It is still a device-local
+starter smoke, not a claim of full live YOLO/Whisper/FastAPI sustained
+validation.
+
 Open the Local Studio demo:
 
 ```bash

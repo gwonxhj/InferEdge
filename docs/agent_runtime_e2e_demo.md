@@ -96,6 +96,34 @@ This remains a device-local starter path. It validates that local producer
 inputs flow through Orchestrator, AIGuard, and Lab report contracts. It does not
 claim full live YOLO/Whisper/FastAPI/Jetson sustained validation.
 
+## Jetson Starter Validation Record
+
+The same device-local starter path was replayed on a Jetson Orin Nano with a
+live `tegrastats` capture. This validates the telemetry handoff path without
+claiming full live workload validation.
+
+| Field | Observed value |
+|---|---:|
+| Power mode | 25W |
+| Scenario mode | `device_local` |
+| Frames | 64 |
+| Max queue depth | 6 |
+| Dropped count | 61 |
+| Fallback count | 61 |
+| Deadline missed count | 0 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature | 39.625 C |
+| Max RAM used | 1783 MB |
+| Max GPU percent | 0 |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+The generated Orchestrator summary preserved `image_file`,
+`fastapi_request_fixture`, and `process_resource_snapshot` producer sources.
+The Lab report preserved `queue_state_summary`, `worker_health_snapshot`,
+`runtime_event_summary`, and `runtime_event_timeline_sample` under
+`agent_runtime_summary.operation_context`.
+
 The script writes generated evidence under:
 
 ```text
