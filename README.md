@@ -98,8 +98,8 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local
 
 # Optional: replace the device-local starter fixtures with local inputs.
 bash scripts/demo_agent_runtime_e2e.sh --device-local \
-  --vision-input /path/to/frame.ppm \
-  --voice-ingress-payload /path/to/requests.json \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --voice-ingress-payload ../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json \
   --capture-process-resource-snapshot
 ```
 
@@ -119,7 +119,9 @@ Orchestrator `scenario_mode=device_local`.
 For local device experiments, keep `--device-local` and pass
 `--vision-input`, `--voice-ingress-payload`, and either `--resource-snapshot`
 or `--capture-process-resource-snapshot` to reuse the same entrypoint script
-with runtime input overrides.
+with runtime input overrides. See
+[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
+minimum committed sample paths and a resource-snapshot variant.
 
 Open the Local Studio demo:
 
