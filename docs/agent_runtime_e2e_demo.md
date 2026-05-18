@@ -146,6 +146,11 @@ Expected sustained evidence markers:
 - `profiled_workload_pressure` and `thermal_resource_pressure` in AIGuard output
 - `max_total_queue_depth` in Lab report metrics
 - `profiled_workload_pressure` and `thermal_resource_pressure` preserved in Lab report evidence
+- `operation_context`, `queue_state_summary`, `worker_health_snapshot`,
+  `runtime_event_summary`, and `runtime_event_timeline_sample` preserved in
+  the Lab report
+- `Orchestrator Operation Context`, `Worker Health`, and
+  `Runtime Event Summary` visible in the Lab Markdown report
 - `sustained_overload_review` in Lab decision rules
 
 ## Scope Boundary
