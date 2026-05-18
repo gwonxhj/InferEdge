@@ -54,6 +54,20 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --capture-process-resource-snapshot
 ```
 
+If optional ONNX Runtime dependencies are installed in the Orchestrator
+environment, add a lightweight Vision producer probe:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input /path/to/frame.ppm \
+  --vision-onnx-model /path/to/vision_model.onnx
+```
+
+This verifies that the entrypoint can pass an ONNX model path into the
+Orchestrator device-local Vision producer and preserve
+`vision_inference_backend`, input/output shapes, and probe latency through the
+e2e smoke outputs. It is not a full live YOLO service.
+
 Use `--resource-snapshot /path/to/resources.json` instead of
 `--capture-process-resource-snapshot` when you already have a resource snapshot
 fixture. These overrides intentionally require `--device-local` so the default
