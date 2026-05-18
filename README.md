@@ -95,6 +95,12 @@ bash scripts/demo_agent_runtime_e2e.sh
 
 # Optional: run the explicit device_local starter path.
 bash scripts/demo_agent_runtime_e2e.sh --device-local
+
+# Optional: replace the device-local starter fixtures with local inputs.
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input /path/to/frame.ppm \
+  --voice-ingress-payload /path/to/requests.json \
+  --capture-process-resource-snapshot
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -110,6 +116,10 @@ telemetry. It checks queue-depth, policy decision reason,
 before live device-local sustained validation is added. Use `--device-local` to
 replay the committed local image, request, and resource snapshot producers in
 Orchestrator `scenario_mode=device_local`.
+For local device experiments, keep `--device-local` and pass
+`--vision-input`, `--voice-ingress-payload`, and either `--resource-snapshot`
+or `--capture-process-resource-snapshot` to reuse the same entrypoint script
+with runtime input overrides.
 
 Open the Local Studio demo:
 

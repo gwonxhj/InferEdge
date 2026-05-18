@@ -42,6 +42,21 @@ Run the explicit device-local starter path when you want the Orchestrator
 bash scripts/demo_agent_runtime_e2e.sh --device-local
 ```
 
+Replace the committed device-local fixtures with local inputs from the
+entrypoint script:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input /path/to/frame.ppm \
+  --voice-ingress-payload /path/to/requests.json \
+  --capture-process-resource-snapshot
+```
+
+Use `--resource-snapshot /path/to/resources.json` instead of
+`--capture-process-resource-snapshot` when you already have a resource snapshot
+fixture. These overrides intentionally require `--device-local` so the default
+producer-backed smoke remains stable and dependency-light.
+
 The script writes generated evidence under:
 
 ```text
@@ -106,6 +121,9 @@ Included:
 - lightweight producer-backed sustained workload summary
 - Vision local image fixture, Voice FastAPI-style request fixture, and Safety resource snapshot fixture propagation
 - optional `--device-local` replay for the explicit Orchestrator device-local starter config
+- optional device-local input overrides through `--vision-input`,
+  `--voice-ingress-payload`, `--resource-snapshot`, or
+  `--capture-process-resource-snapshot`
 - local tegrastats-style thermal/resource sample propagation
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
