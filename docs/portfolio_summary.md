@@ -99,6 +99,14 @@ resource telemetry flowing through Orchestrator -> AIGuard -> Lab, while still
 remaining below the claim level of full live YOLO/Whisper/FastAPI sustained
 validation.
 
+A follow-up Jetson ONNX probe run used the same entrypoint `device_local` path
+with `--vision-onnx-model`. It ran 16 frames on Jetson Orin Nano 25W,
+preserved `vision_inference_backend=onnxruntime`, `CPUExecutionProvider`,
+output shape `[1, 2]`, and 1.255 ms probe latency in the Orchestrator summary,
+then carried `blocked` / `high` AIGuard evidence into a Lab `blocked` decision.
+This is device-local ONNX Runtime probe evidence using a tiny identity model,
+not full live YOLO validation.
+
 ## What To Show First
 
 For an external reviewer, use this order:

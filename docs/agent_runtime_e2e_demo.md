@@ -138,6 +138,33 @@ The Lab report preserved `queue_state_summary`, `worker_health_snapshot`,
 `runtime_event_summary`, and `runtime_event_timeline_sample` under
 `agent_runtime_summary.operation_context`.
 
+## Jetson ONNX Probe Validation Record
+
+The device-local entrypoint path was also replayed on the same Jetson Orin Nano
+with `--vision-onnx-model`. This validates that a local ONNX model can be passed
+into the Orchestrator Vision producer and preserved as lightweight inference
+probe evidence across Orchestrator, AIGuard, and Lab reports.
+
+| Field | Observed value |
+|---|---:|
+| Power mode | 25W |
+| Scenario mode | `device_local` |
+| Frames | 16 |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Vision output shape | `[1, 2]` |
+| Vision probe latency | 1.255 ms |
+| Max queue depth | 6 |
+| Dropped count | 13 |
+| Fallback count | 13 |
+| Deadline missed count | 1 |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+The ONNX model used for this validation was a tiny identity probe model. This
+record should be described as device-local ONNX Runtime probe evidence, not as
+full live YOLO/Whisper/FastAPI sustained validation.
+
 The script writes generated evidence under:
 
 ```text
