@@ -88,6 +88,11 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
 evidence only; it should not be described as full Jetson thermal validation.
+If a Jetson `tegrastats` log was captured separately, pass
+`--tegrastats-log /path/to/tegrastats.log` to the same entrypoint smoke. The
+script copies that log into the evidence bundle and routes it through
+Orchestrator `tegrastats_timeline`, AIGuard, and the Lab report without
+claiming full thermal endurance validation.
 
 Jetson starter validation has also been checked on a Jetson Orin Nano in 25W
 mode using the same `device_local` starter flow with live `tegrastats` capture.

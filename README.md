@@ -106,6 +106,10 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
 bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
   --vision-onnx-model /path/to/vision_model.onnx
+
+# Optional: route a captured Jetson tegrastats log through the same timeline.
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --tegrastats-log /path/to/tegrastats.log
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -129,7 +133,9 @@ For local device experiments, keep `--device-local` and pass
 either `--resource-snapshot` or `--capture-process-resource-snapshot` to reuse
 the same entrypoint script with runtime input overrides. The ONNX option records
 provider, input/output shapes, and probe latency as lightweight Vision producer
-evidence; it does not claim a full live YOLO service. See
+evidence; `--tegrastats-log` can carry a captured Jetson/resource log through
+the Orchestrator `tegrastats_timeline`. These options do not claim a full live
+YOLO/Whisper/FastAPI sustained service. See
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
 minimum committed sample paths and a resource-snapshot variant.
 

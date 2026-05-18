@@ -10,6 +10,7 @@ VISION_INPUT=""
 VISION_ONNX_MODEL=""
 VOICE_INGRESS_PAYLOAD=""
 RESOURCE_SNAPSHOT=""
+TEGRASTATS_LOG=""
 CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
 VISION_PRODUCER_MARKER="image_file"
 SAFETY_PRODUCER_MARKER="resource_snapshot_fixture"
@@ -21,6 +22,7 @@ Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [-
                                              [--vision-onnx-model PATH]
                                              [--voice-ingress-payload PATH]
                                              [--resource-snapshot PATH]
+                                             [--tegrastats-log PATH]
                                              [--capture-process-resource-snapshot]
 
 Replay the Reliable Edge Agent Runtime contract chain:
@@ -53,6 +55,10 @@ Options:
   --resource-snapshot PATH
                     Device-local override for the Safety resource snapshot.
                     Requires --device-local.
+  --tegrastats-log PATH
+                    Optional captured tegrastats log to route through the
+                    Orchestrator sustained timeline. If omitted, the script
+                    writes a small local tegrastats-style sample.
   --capture-process-resource-snapshot
                     Capture a small local process resource snapshot for Safety.
                     Requires --device-local. Mutually exclusive with
@@ -97,6 +103,10 @@ while [[ $# -gt 0 ]]; do
       ;;
     --resource-snapshot)
       RESOURCE_SNAPSHOT="${2:?missing value for --resource-snapshot}"
+      shift 2
+      ;;
+    --tegrastats-log)
+      TEGRASTATS_LOG="${2:?missing value for --tegrastats-log}"
       shift 2
       ;;
     --capture-process-resource-snapshot)
@@ -271,6 +281,10 @@ if [[ "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
   SAFETY_PRODUCER_MARKER="process_resource_snapshot"
   EXTRA_ORCHESTRATOR_MARKERS+=("device_local_cli_override" "process_resource_snapshot")
 fi
+if [[ -n "$TEGRASTATS_LOG" ]]; then
+  require_file "$TEGRASTATS_LOG" "tegrastats log"
+  TEGRASTATS_LOG="$(absolute_file_path "$TEGRASTATS_LOG")"
+fi
 
 mkdir -p "$OUTPUT_DIR"
 
@@ -286,9 +300,13 @@ LAB_MD_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.md"
 run_step "Record Forge agent_manifest contract input" cp "$FORGE_AGENT_MANIFEST" "$FORGE_OUT"
 run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT" "$RUNTIME_OUT"
 
-cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
+if [[ -n "$TEGRASTATS_LOG" ]]; then
+  run_step "Record provided tegrastats log" cp "$TEGRASTATS_LOG" "$TEGRSTATS_SAMPLE_OUT"
+else
+  cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
 RAM 2048/7771MB SWAP 0/3885MB CPU [12%@1510] GR3D_FREQ 42% cpu@45.5C gpu@44.0C
 EOF
+fi
 
 run_orchestrator_sustained() {
   cd "$ORCHESTRATOR_REPO"
@@ -360,7 +378,7 @@ echo "Outputs:"
 echo "  Forge agent manifest:       $FORGE_OUT"
 echo "  Runtime result.agent:       $RUNTIME_OUT"
 echo "  Orchestration summary:      $ORCHESTRATION_OUT"
-echo "  Tegrastats sample:          $TEGRSTATS_SAMPLE_OUT"
+echo "  Tegrastats log:             $TEGRSTATS_SAMPLE_OUT"
 echo "  AIGuard guard analysis:     $AIGUARD_JSON_OUT"
 echo "  AIGuard Markdown report:    $AIGUARD_MD_OUT"
 echo "  Lab report JSON:            $LAB_JSON_OUT"
