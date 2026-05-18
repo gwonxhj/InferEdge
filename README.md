@@ -46,6 +46,13 @@ message without replacing Forge, Runtime, Lab, or AIGuard.
 | InferEdgeEnv | v0.1.5 v1-complete comparability layer: local run evidence registry and benchmark evidence trust/comparison judgement | https://github.com/gwonxhj/InferEdgeEnv |
 | InferEdgeOrchestrator | Operation layer after deployment validation: scheduling, overload control, and runtime telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
 
+## Real-Device Evidence
+
+[Jetson Orin Nano Internal Lab](https://github.com/gwonxhj/jetson-orin-nano-internal-lab)
+provides hardware-level runtime evidence, including TensorRT, ONNX Runtime,
+YOLO, Whisper, FastAPI serving, telemetry logs, sustained multi-workload
+interaction evidence, and InferEdge-compatible handoff artifacts.
+
 For the submission-ready diagram and layer split, start with
 [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md).
 
