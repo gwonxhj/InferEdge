@@ -96,6 +96,20 @@ routes it through the Orchestrator `tegrastats_timeline`, AIGuard reliability
 analysis, and Lab report. This is telemetry handoff evidence, not a full
 thermal endurance validation.
 
+On Jetson, use `--capture-tegrastats` when you want the entrypoint smoke to
+capture `tegrastats` during the Orchestrator sustained run:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input /path/to/frame.ppm \
+  --vision-onnx-model /path/to/model.onnx \
+  --capture-tegrastats
+```
+
+This starts `tegrastats` for the duration of the Orchestrator run and routes the
+captured log through the same `tegrastats_timeline`. It is still a device-local
+smoke path, not thermal endurance validation.
+
 Use `--resource-snapshot /path/to/resources.json` instead of
 `--capture-process-resource-snapshot` when you already have a resource snapshot
 fixture. These overrides intentionally require `--device-local` so the default
@@ -296,6 +310,34 @@ This validates a real ONNX model probe through the entrypoint contract chain on
 Jetson. It should not be described as decoded YOLO accuracy validation, live
 camera operation, or full thermal endurance validation.
 
+The real YOLOv8n ONNX probe was then replayed with `--capture-tegrastats` so
+that live Jetson telemetry was captured during the Orchestrator sustained run
+and routed through AIGuard and the Lab report.
+
+| Field | Jetson YOLOv8n + live tegrastats value |
+|---|---:|
+| Scenario mode | `device_local` |
+| Model | `yolov8n.onnx` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 640, 640]` |
+| Vision output shape | `[1, 84, 8400]` |
+| Frames | 32 |
+| Max queue depth | 6 |
+| Dropped count | 29 |
+| Fallback count | 29 |
+| Deadline missed count | 18 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature | `43.937 C` |
+| Max RAM used | `966 MB` |
+| Vision probe elapsed range | `119.912-137.729 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This validates the live Jetson telemetry capture path and a real ONNX model
+probe in one evidence bundle. It is still not decoded YOLO accuracy validation,
+live camera operation, or thermal endurance validation.
+
 The script writes generated evidence under:
 
 ```text
@@ -332,7 +374,7 @@ bash scripts/demo_agent_runtime_e2e.sh
 | `01_forge_agent_manifest_vision.json` | Agent workload handoff contract example |
 | `02_runtime_result_agent.json` | Runtime result with backward-compatible `agent` block |
 | `03_orchestration_summary.json` | Profiled multi-workload scheduler policy decision evidence |
-| `03_tegrastats_sample.log` | Local tegrastats-style sample or copied captured log for thermal/resource evidence |
+| `03_tegrastats_sample.log` | Local tegrastats-style sample, copied captured log, or live captured Jetson log for thermal/resource evidence |
 | `generated_models/detector_tiny.onnx` | Optional local artifact written only when `--generate-vision-detector-probe` is used |
 | `04_aiguard_guard_analysis.json` | Deterministic runtime reliability diagnosis evidence |
 | `04_aiguard_guard_analysis.md` | Human-readable AIGuard report |
@@ -373,6 +415,7 @@ Included:
   `--generate-vision-detector-probe`
 - local tegrastats-style thermal/resource sample propagation
 - optional captured `tegrastats` log propagation through `--tegrastats-log`
+- optional live Jetson `tegrastats` capture through `--capture-tegrastats`
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
 

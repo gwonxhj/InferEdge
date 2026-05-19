@@ -104,6 +104,12 @@ Using a real user-provided `yolov8n.onnx` probe on Jetson preserved
 10 deadline misses, and a Lab `blocked` decision. This is a real ONNX model
 probe through the orchestration contract chain, not decoded YOLO accuracy or
 live camera validation.
+The same real model probe was then replayed with live `--capture-tegrastats`:
+32 frames, max queue depth 6, dropped/fallback count 29/29, 18 deadline misses,
+4 parsed `tegrastats` samples, max temperature 43.937 C, max RAM 966 MB, and a
+Lab `blocked` decision. This ties real ONNX model execution evidence and live
+Jetson telemetry into one device-local smoke bundle, not a thermal endurance
+claim.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
@@ -113,6 +119,9 @@ If a Jetson `tegrastats` log was captured separately, pass
 script copies that log into the evidence bundle and routes it through
 Orchestrator `tegrastats_timeline`, AIGuard, and the Lab report without
 claiming full thermal endurance validation.
+On Jetson, `--capture-tegrastats` can capture telemetry during the Orchestrator
+sustained run and route the live captured log through the same evidence path.
+This remains device-local smoke evidence, not a thermal endurance claim.
 
 Jetson starter validation has also been checked on a Jetson Orin Nano in 25W
 mode using the same `device_local` starter flow with live `tegrastats` capture.

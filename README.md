@@ -115,6 +115,12 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
 # Optional: route a captured Jetson tegrastats log through the same timeline.
 bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --tegrastats-log /path/to/tegrastats.log
+
+# Optional: capture Jetson tegrastats during the Orchestrator sustained run.
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --vision-onnx-model /path/to/vision_model.onnx \
+  --capture-tegrastats
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -139,8 +145,10 @@ either `--resource-snapshot` or `--capture-process-resource-snapshot` to reuse
 the same entrypoint script with runtime input overrides. The ONNX option records
 provider, input/output shapes, and probe latency as lightweight Vision producer
 evidence; `--tegrastats-log` can carry a captured Jetson/resource log through
-the Orchestrator `tegrastats_timeline`. These options do not claim a full live
-YOLO/Whisper/FastAPI sustained service. See
+the Orchestrator `tegrastats_timeline`; `--capture-tegrastats` captures Jetson
+telemetry during the Orchestrator run when the `tegrastats` command is
+available. These options do not claim a full live YOLO/Whisper/FastAPI
+sustained service. See
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
 minimum committed sample paths and a resource-snapshot variant.
 Use `--generate-vision-detector-probe` when you want a reproducible detector-like
@@ -269,6 +277,29 @@ Recent Jetson YOLOv8n ONNX probe smoke:
 This record validates the entrypoint chain with a real YOLOv8n ONNX model on
 Jetson. It is still an ONNX Runtime probe inside the device-local orchestration
 smoke, not a full live camera or decoded detection validation.
+
+Recent Jetson YOLOv8n ONNX probe with live tegrastats capture:
+
+| Evidence | Value |
+|---|---:|
+| Device | Jetson Orin Nano |
+| Model | user-provided `yolov8n.onnx` |
+| Scenario | `device_local` starter with `--capture-tegrastats` |
+| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
+| Vision input/output shape | `[1, 3, 640, 640]` -> `[1, 84, 8400]` |
+| Frames | 32 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 29 / 29 |
+| Deadline missed count | 18 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature / RAM | 43.937 C / 966 MB |
+| Vision probe elapsed range | `119.912-137.729 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This record ties a real YOLOv8n ONNX probe and live Jetson telemetry capture
+into the same entrypoint evidence chain. It remains a device-local smoke, not
+thermal endurance or live camera validation.
 
 Open the Local Studio demo:
 
