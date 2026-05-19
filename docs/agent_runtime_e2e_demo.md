@@ -226,7 +226,10 @@ sustained validation.
 
 The entrypoint `--generate-vision-detector-probe` option was validated with the
 Orchestrator synthetic detector ONNX generator. The generated model stayed under
-the temporary output directory and was used only as local probe evidence.
+the temporary output directory and was used only as local probe evidence. The
+Lab report step uses `poetry run inferedgelab` when Poetry is available, and
+falls back to an installed `inferedgelab` CLI when running on a device image
+without Poetry.
 
 | Field | Observed value |
 |---|---:|
@@ -245,6 +248,28 @@ the temporary output directory and was used only as local probe evidence.
 This validates the generated detector-like ONNX probe path. It should be
 described as a reproducible lightweight vision probe, not as full live YOLO
 validation.
+
+The same path was also replayed on Jetson Orin Nano with the generated detector
+probe and process resource snapshot enabled.
+
+| Field | Jetson observed value |
+|---|---:|
+| Scenario mode | `device_local` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 16, 16]` |
+| Vision output shape | `[1, 6]` |
+| Frames | 16 |
+| Max queue depth | 6 |
+| Dropped count | 13 |
+| Fallback count | 13 |
+| Deadline missed count | 1 |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This is Jetson device-local smoke evidence for the entrypoint contract chain.
+It should not be described as full live YOLO/Whisper/FastAPI sustained
+validation or thermal endurance validation.
 
 The script writes generated evidence under:
 

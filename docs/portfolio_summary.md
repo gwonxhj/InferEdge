@@ -94,6 +94,10 @@ The local validation run generated `detector_tiny.onnx`, preserved
 `CPUExecutionProvider`, input shape `[1, 3, 16, 16]`, output shape `[1, 6]`,
 and carried the resulting runtime reliability evidence into a Lab `blocked`
 decision.
+The same entrypoint path was replayed on Jetson Orin Nano with 16 frames,
+max queue depth 6, dropped/fallback count 13/13, one deadline miss, and a Lab
+`blocked` decision. This is device-local smoke evidence, not full live YOLO or
+thermal endurance validation.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource

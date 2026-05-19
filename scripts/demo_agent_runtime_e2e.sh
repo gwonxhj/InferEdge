@@ -183,6 +183,29 @@ choose_python() {
   fi
 }
 
+run_lab_agent_runtime_report() {
+  local format="$1"
+  local output="$2"
+
+  cd "$LAB_REPO"
+  if command -v poetry >/dev/null 2>&1; then
+    poetry run inferedgelab agent-runtime-report \
+      --orchestration-summary "$ORCHESTRATION_OUT" \
+      --guard-analysis "$AIGUARD_JSON_OUT" \
+      --format "$format" \
+      --output "$output"
+  elif command -v inferedgelab >/dev/null 2>&1; then
+    inferedgelab agent-runtime-report \
+      --orchestration-summary "$ORCHESTRATION_OUT" \
+      --guard-analysis "$AIGUARD_JSON_OUT" \
+      --format "$format" \
+      --output "$output"
+  else
+    echo "missing Lab CLI: install poetry or ensure inferedgelab is on PATH" >&2
+    exit 1
+  fi
+}
+
 require_file() {
   local path="$1"
   local label="$2"
@@ -359,10 +382,10 @@ run_step "Generate AIGuard runtime reliability guard_analysis" \
   bash -lc "cd '$AIGUARD_REPO' && PYTHONDONTWRITEBYTECODE=1 '$AIGUARD_PYTHON' -m inferedge_aiguard.cli reason-orchestration --input '$ORCHESTRATION_OUT' --save-json '$AIGUARD_JSON_OUT' --save-md '$AIGUARD_MD_OUT'"
 
 run_step "Generate Lab Agent Runtime Reliability report JSON" \
-  bash -lc "cd '$LAB_REPO' && poetry run inferedgelab agent-runtime-report --orchestration-summary '$ORCHESTRATION_OUT' --guard-analysis '$AIGUARD_JSON_OUT' --format json --output '$LAB_JSON_OUT'"
+  run_lab_agent_runtime_report json "$LAB_JSON_OUT"
 
 run_step "Generate Lab Agent Runtime Reliability report Markdown" \
-  bash -lc "cd '$LAB_REPO' && poetry run inferedgelab agent-runtime-report --orchestration-summary '$ORCHESTRATION_OUT' --guard-analysis '$AIGUARD_JSON_OUT' --format markdown --output '$LAB_MD_OUT'"
+  run_lab_agent_runtime_report markdown "$LAB_MD_OUT"
 
 run_step "Validate schema markers" grep -q "inferedge-agent-manifest-v1" "$FORGE_OUT"
 grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
