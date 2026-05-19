@@ -11,6 +11,7 @@ VISION_ONNX_MODEL=""
 VOICE_INGRESS_PAYLOAD=""
 RESOURCE_SNAPSHOT=""
 TEGRASTATS_LOG=""
+GENERATE_VISION_DETECTOR_PROBE=0
 CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
 VISION_PRODUCER_MARKER="image_file"
 SAFETY_PRODUCER_MARKER="resource_snapshot_fixture"
@@ -20,6 +21,7 @@ usage() {
 Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [--device-local]
                                              [--vision-input PATH]
                                              [--vision-onnx-model PATH]
+                                             [--generate-vision-detector-probe]
                                              [--voice-ingress-payload PATH]
                                              [--resource-snapshot PATH]
                                              [--tegrastats-log PATH]
@@ -49,6 +51,11 @@ Options:
   --vision-onnx-model PATH
                     Optional local ONNX model for the Vision producer probe.
                     Requires --device-local and Orchestrator ONNX dependencies.
+  --generate-vision-detector-probe
+                    Generate a tiny detector-like ONNX model under the output
+                    directory and use it as the Vision producer probe.
+                    Requires --device-local and Orchestrator ONNX dependencies.
+                    Mutually exclusive with --vision-onnx-model.
   --voice-ingress-payload PATH
                     Device-local override for the Voice/FastAPI request payload.
                     Requires --device-local.
@@ -96,6 +103,10 @@ while [[ $# -gt 0 ]]; do
     --vision-onnx-model)
       VISION_ONNX_MODEL="${2:?missing value for --vision-onnx-model}"
       shift 2
+      ;;
+    --generate-vision-detector-probe)
+      GENERATE_VISION_DETECTOR_PROBE=1
+      shift
       ;;
     --voice-ingress-payload)
       VOICE_INGRESS_PAYLOAD="${2:?missing value for --voice-ingress-payload}"
@@ -198,11 +209,16 @@ run_step() {
   "$@"
 }
 
-if [[ -n "$VISION_INPUT$VISION_ONNX_MODEL$VOICE_INGRESS_PAYLOAD$RESOURCE_SNAPSHOT" || "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
+if [[ -n "$VISION_INPUT$VISION_ONNX_MODEL$VOICE_INGRESS_PAYLOAD$RESOURCE_SNAPSHOT" || "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 || "$GENERATE_VISION_DETECTOR_PROBE" -eq 1 ]]; then
   if [[ "$SUSTAINED_MODE" != "device-local" ]]; then
     echo "device-local input overrides require --device-local" >&2
     exit 2
   fi
+fi
+
+if [[ -n "$VISION_ONNX_MODEL" && "$GENERATE_VISION_DETECTOR_PROBE" -eq 1 ]]; then
+  echo "use either --vision-onnx-model or --generate-vision-detector-probe" >&2
+  exit 2
 fi
 
 if [[ -n "$RESOURCE_SNAPSHOT" && "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; then
@@ -237,6 +253,18 @@ fi
 require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
 require_file "$ORCHESTRATOR_CONFIG" "$ORCHESTRATOR_CONFIG_LABEL"
+
+mkdir -p "$OUTPUT_DIR"
+
+if [[ "$GENERATE_VISION_DETECTOR_PROBE" -eq 1 ]]; then
+  GENERATED_MODEL_DIR="$OUTPUT_DIR/generated_models"
+  run_step "Generate tiny detector ONNX probe model" \
+    "$ORCH_PYTHON" "$ORCHESTRATOR_REPO/scripts/create_tensorrt_diverse_onnx.py" \
+    --output-dir "$GENERATED_MODEL_DIR" \
+    --model detector
+  VISION_ONNX_MODEL="$GENERATED_MODEL_DIR/detector_tiny.onnx"
+  require_file "$VISION_ONNX_MODEL" "generated Vision detector ONNX probe model"
+fi
 
 ORCHESTRATOR_EXTRA_ARGS=()
 if [[ -n "$VISION_INPUT" ]]; then
@@ -285,8 +313,6 @@ if [[ -n "$TEGRASTATS_LOG" ]]; then
   require_file "$TEGRASTATS_LOG" "tegrastats log"
   TEGRASTATS_LOG="$(absolute_file_path "$TEGRASTATS_LOG")"
 fi
-
-mkdir -p "$OUTPUT_DIR"
 
 FORGE_OUT="$OUTPUT_DIR/01_forge_agent_manifest_vision.json"
 RUNTIME_OUT="$OUTPUT_DIR/02_runtime_result_agent.json"
