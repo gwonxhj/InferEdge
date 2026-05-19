@@ -214,7 +214,7 @@ Recent generated detector probe validation:
 
 | Evidence | Value |
 |---|---:|
-| Scenario | `device_local` starter with generated detector-like ONNX probe |
+| Scenario | local `device_local` starter with generated detector-like ONNX probe |
 | Generated model | `generated_models/detector_tiny.onnx` |
 | Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
 | Vision input shape | `[1, 3, 16, 16]` |
@@ -227,6 +227,26 @@ Recent generated detector probe validation:
 This record validates a reproducible detector-like ONNX probe generated at run
 time. It is closer to image-shaped perception work than the identity probe, but
 it is still not full live YOLO validation.
+
+Recent Jetson generated detector probe smoke:
+
+| Evidence | Value |
+|---|---:|
+| Device | Jetson Orin Nano |
+| Scenario | `device_local` starter with generated detector-like ONNX probe |
+| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 16, 16]` |
+| Vision output shape | `[1, 6]` |
+| Frames | 16 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 13 / 13 |
+| Deadline missed count | 1 |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This record validates the same entrypoint chain on Jetson using a generated
+detector-like probe. It is device-local smoke evidence, not full live YOLO or
+thermal endurance validation.
 
 Open the Local Studio demo:
 
