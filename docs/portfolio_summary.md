@@ -74,6 +74,18 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --frames 8
 ```
 
+Replay the same chain with the remote dispatch starter:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch \
+  --output-dir /tmp/inferedge_agent_runtime_remote_dispatch \
+  --frames 8
+```
+
+This adds `06_remote_dispatch_result.json` with remote worker selection
+evidence. It proves the file-based worker registry/task request contract, not
+production remote worker execution.
+
 Replay the same entrypoint with explicit local input overrides:
 
 ```bash

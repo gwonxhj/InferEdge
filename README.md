@@ -121,6 +121,9 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
   --vision-onnx-model /path/to/vision_model.onnx \
   --capture-tegrastats
+
+# Optional: also replay the file-based remote worker selection starter.
+bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -129,6 +132,9 @@ analysis, and the Lab-owned Agent Runtime Reliability report.
 The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
 context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
+With `--remote-dispatch`, the same script also writes Orchestrator's
+file-based remote worker selection result. This is a remote dispatch starter
+contract, not production SSH/HTTP remote execution.
 The current extension smoke uses the latest Orchestrator producer-backed
 sustained path: Vision reads a local image fixture, Voice-Command replays a
 FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot
