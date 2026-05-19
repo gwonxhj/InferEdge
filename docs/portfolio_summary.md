@@ -98,6 +98,12 @@ The same entrypoint path was replayed on Jetson Orin Nano with 16 frames,
 max queue depth 6, dropped/fallback count 13/13, one deadline miss, and a Lab
 `blocked` decision. This is device-local smoke evidence, not full live YOLO or
 thermal endurance validation.
+Using a real user-provided `yolov8n.onnx` probe on Jetson preserved
+`CPUExecutionProvider`, input shape `[1, 3, 640, 640]`, output shape
+`[1, 84, 8400]`, 16 frames, max queue depth 6, dropped/fallback count 13/13,
+10 deadline misses, and a Lab `blocked` decision. This is a real ONNX model
+probe through the orchestration contract chain, not decoded YOLO accuracy or
+live camera validation.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource

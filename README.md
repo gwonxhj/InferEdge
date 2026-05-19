@@ -248,6 +248,28 @@ This record validates the same entrypoint chain on Jetson using a generated
 detector-like probe. It is device-local smoke evidence, not full live YOLO or
 thermal endurance validation.
 
+Recent Jetson YOLOv8n ONNX probe smoke:
+
+| Evidence | Value |
+|---|---:|
+| Device | Jetson Orin Nano |
+| Model | user-provided `yolov8n.onnx` |
+| Scenario | `device_local` starter with real ONNX model probe |
+| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 640, 640]` |
+| Vision output shape | `[1, 84, 8400]` |
+| Frames | 16 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 13 / 13 |
+| Deadline missed count | 10 |
+| Vision probe elapsed range | `120.147-146.878 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This record validates the entrypoint chain with a real YOLOv8n ONNX model on
+Jetson. It is still an ONNX Runtime probe inside the device-local orchestration
+smoke, not a full live camera or decoded detection validation.
+
 Open the Local Studio demo:
 
 ```bash
