@@ -113,6 +113,9 @@ If a Jetson `tegrastats` log was captured separately, pass
 script copies that log into the evidence bundle and routes it through
 Orchestrator `tegrastats_timeline`, AIGuard, and the Lab report without
 claiming full thermal endurance validation.
+On Jetson, `--capture-tegrastats` can capture telemetry during the Orchestrator
+sustained run and route the live captured log through the same evidence path.
+This remains device-local smoke evidence, not a thermal endurance claim.
 
 Jetson starter validation has also been checked on a Jetson Orin Nano in 25W
 mode using the same `device_local` starter flow with live `tegrastats` capture.

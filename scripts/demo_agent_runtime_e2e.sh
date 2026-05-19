@@ -12,6 +12,7 @@ VOICE_INGRESS_PAYLOAD=""
 RESOURCE_SNAPSHOT=""
 TEGRASTATS_LOG=""
 GENERATE_VISION_DETECTOR_PROBE=0
+CAPTURE_TEGRASTATS=0
 CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
 VISION_PRODUCER_MARKER="image_file"
 SAFETY_PRODUCER_MARKER="resource_snapshot_fixture"
@@ -25,6 +26,7 @@ Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [-
                                              [--voice-ingress-payload PATH]
                                              [--resource-snapshot PATH]
                                              [--tegrastats-log PATH]
+                                             [--capture-tegrastats]
                                              [--capture-process-resource-snapshot]
 
 Replay the Reliable Edge Agent Runtime contract chain:
@@ -66,6 +68,11 @@ Options:
                     Optional captured tegrastats log to route through the
                     Orchestrator sustained timeline. If omitted, the script
                     writes a small local tegrastats-style sample.
+  --capture-tegrastats
+                    Capture tegrastats during the Orchestrator sustained run
+                    and route the captured log through the same evidence
+                    bundle. Intended for Jetson device-local validation.
+                    Mutually exclusive with --tegrastats-log.
   --capture-process-resource-snapshot
                     Capture a small local process resource snapshot for Safety.
                     Requires --device-local. Mutually exclusive with
@@ -119,6 +126,10 @@ while [[ $# -gt 0 ]]; do
     --tegrastats-log)
       TEGRASTATS_LOG="${2:?missing value for --tegrastats-log}"
       shift 2
+      ;;
+    --capture-tegrastats)
+      CAPTURE_TEGRASTATS=1
+      shift
       ;;
     --capture-process-resource-snapshot)
       CAPTURE_PROCESS_RESOURCE_SNAPSHOT=1
@@ -249,6 +260,11 @@ if [[ -n "$RESOURCE_SNAPSHOT" && "$CAPTURE_PROCESS_RESOURCE_SNAPSHOT" -eq 1 ]]; 
   exit 2
 fi
 
+if [[ -n "$TEGRASTATS_LOG" && "$CAPTURE_TEGRASTATS" -eq 1 ]]; then
+  echo "use either --tegrastats-log or --capture-tegrastats" >&2
+  exit 2
+fi
+
 FORGE_REPO="$(resolve_repo "${INFEREDGE_FORGE_REPO:-}" InferEdgeForge "Forge")"
 RUNTIME_REPO="$(resolve_repo "${INFEREDGE_RUNTIME_REPO:-}" InferEdge-Runtime "Runtime")"
 ORCHESTRATOR_REPO="$(resolve_repo "${INFEREDGE_ORCHESTRATOR_REPO:-}" InferEdgeOrchestrator "Orchestrator")"
@@ -351,6 +367,8 @@ run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT"
 
 if [[ -n "$TEGRASTATS_LOG" ]]; then
   run_step "Record provided tegrastats log" cp "$TEGRASTATS_LOG" "$TEGRSTATS_SAMPLE_OUT"
+elif [[ "$CAPTURE_TEGRASTATS" -eq 1 ]]; then
+  : > "$TEGRSTATS_SAMPLE_OUT"
 else
   cat > "$TEGRSTATS_SAMPLE_OUT" <<'EOF'
 RAM 2048/7771MB SWAP 0/3885MB CPU [12%@1510] GR3D_FREQ 42% cpu@45.5C gpu@44.0C
@@ -359,20 +377,39 @@ fi
 
 run_orchestrator_sustained() {
   cd "$ORCHESTRATOR_REPO"
+  local tegrastats_pid=""
+  if [[ "$CAPTURE_TEGRASTATS" -eq 1 ]]; then
+    if ! command -v tegrastats >/dev/null 2>&1; then
+      echo "tegrastats command not found; use --tegrastats-log with a captured log instead" >&2
+      return 1
+    fi
+    tegrastats --interval 1000 --logfile "$TEGRSTATS_SAMPLE_OUT" >/dev/null 2>&1 &
+    tegrastats_pid=$!
+    sleep 1
+  fi
+
+  local status=0
   if ((${#ORCHESTRATOR_EXTRA_ARGS[@]} > 0)); then
     PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src "$ORCH_PYTHON" -m inferedge_orchestrator run-multi-workload-sustained \
       --config "$ORCHESTRATOR_CONFIG" \
       --output "$ORCHESTRATION_OUT" \
       --frames "$FRAMES" \
       --tegrastats-log "$TEGRSTATS_SAMPLE_OUT" \
-      "${ORCHESTRATOR_EXTRA_ARGS[@]}"
+      "${ORCHESTRATOR_EXTRA_ARGS[@]}" || status=$?
   else
     PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src "$ORCH_PYTHON" -m inferedge_orchestrator run-multi-workload-sustained \
       --config "$ORCHESTRATOR_CONFIG" \
       --output "$ORCHESTRATION_OUT" \
       --frames "$FRAMES" \
-      --tegrastats-log "$TEGRSTATS_SAMPLE_OUT"
+      --tegrastats-log "$TEGRSTATS_SAMPLE_OUT" || status=$?
   fi
+
+  if [[ -n "$tegrastats_pid" ]]; then
+    sleep 1
+    kill "$tegrastats_pid" >/dev/null 2>&1 || true
+    wait "$tegrastats_pid" >/dev/null 2>&1 || true
+  fi
+  return "$status"
 }
 
 run_step "Generate Orchestrator $SUSTAINED_MODE multi-workload sustained summary" \
