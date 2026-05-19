@@ -85,6 +85,16 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --resource-snapshot ../InferEdgeOrchestrator/examples/inputs/safety_resource_snapshots.json
 ```
 
+If no local ONNX model should be committed but a vision-shaped probe is needed,
+add `--generate-vision-detector-probe`. This creates a small detector-like ONNX
+artifact inside the output directory and routes it through the same Vision
+producer probe path. It is stronger than the identity probe for workflow
+evidence, but it is still not full live YOLO validation.
+The local validation run generated `detector_tiny.onnx`, preserved
+`CPUExecutionProvider`, input shape `[1, 3, 16, 16]`, output shape `[1, 6]`,
+and carried the resulting runtime reliability evidence into a Lab `blocked`
+decision.
+
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
 evidence only; it should not be described as full Jetson thermal validation.

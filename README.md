@@ -107,6 +107,11 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
   --vision-onnx-model /path/to/vision_model.onnx
 
+# Optional: generate a tiny detector-like ONNX probe model locally.
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --generate-vision-detector-probe
+
 # Optional: route a captured Jetson tegrastats log through the same timeline.
 bash scripts/demo_agent_runtime_e2e.sh --device-local \
   --tegrastats-log /path/to/tegrastats.log
@@ -138,6 +143,8 @@ the Orchestrator `tegrastats_timeline`. These options do not claim a full live
 YOLO/Whisper/FastAPI sustained service. See
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
 minimum committed sample paths and a resource-snapshot variant.
+Use `--generate-vision-detector-probe` when you want a reproducible detector-like
+ONNX probe without committing a model artifact.
 
 Recent Jetson starter validation:
 
@@ -202,6 +209,24 @@ Recent captured tegrastats handoff validation:
 This record validates the new `--tegrastats-log` entrypoint option with a
 captured Jetson log. It is telemetry handoff evidence, not a full thermal
 endurance or live workload validation.
+
+Recent generated detector probe validation:
+
+| Evidence | Value |
+|---|---:|
+| Scenario | `device_local` starter with generated detector-like ONNX probe |
+| Generated model | `generated_models/detector_tiny.onnx` |
+| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 16, 16]` |
+| Vision output shape | `[1, 6]` |
+| Frames | 8 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 5 / 5 |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This record validates a reproducible detector-like ONNX probe generated at run
+time. It is closer to image-shaped perception work than the identity probe, but
+it is still not full live YOLO validation.
 
 Open the Local Studio demo:
 

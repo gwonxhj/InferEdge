@@ -68,6 +68,21 @@ Orchestrator device-local Vision producer and preserve
 `vision_inference_backend`, input/output shapes, and probe latency through the
 e2e smoke outputs. It is not a full live YOLO service.
 
+When you do not have a local ONNX file but want a detector-like probe instead
+of the tiny identity model, generate one under the output directory:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local \
+  --vision-input /path/to/frame.ppm \
+  --generate-vision-detector-probe
+```
+
+This calls the Orchestrator synthetic detector ONNX generator and uses the
+generated `detector_tiny.onnx` as the Vision probe. The generated model is a
+local artifact and is not committed. It is closer to image-shaped perception
+work than the identity probe, but it still should not be described as full live
+YOLO validation.
+
 If you already captured a Jetson `tegrastats` log, pass it through the same
 entrypoint smoke:
 
@@ -207,6 +222,30 @@ This validates the captured-log telemetry handoff path. It should not be
 described as thermal endurance validation or full live YOLO/Whisper/FastAPI
 sustained validation.
 
+## Generated Detector Probe Validation
+
+The entrypoint `--generate-vision-detector-probe` option was validated with the
+Orchestrator synthetic detector ONNX generator. The generated model stayed under
+the temporary output directory and was used only as local probe evidence.
+
+| Field | Observed value |
+|---|---:|
+| Scenario mode | `device_local` |
+| Generated model | `generated_models/detector_tiny.onnx` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 16, 16]` |
+| Vision output shape | `[1, 6]` |
+| Frames | 8 |
+| Max queue depth | 6 |
+| Dropped count | 5 |
+| Fallback count | 5 |
+| Lab decision | `blocked` |
+
+This validates the generated detector-like ONNX probe path. It should be
+described as a reproducible lightweight vision probe, not as full live YOLO
+validation.
+
 The script writes generated evidence under:
 
 ```text
@@ -244,6 +283,7 @@ bash scripts/demo_agent_runtime_e2e.sh
 | `02_runtime_result_agent.json` | Runtime result with backward-compatible `agent` block |
 | `03_orchestration_summary.json` | Profiled multi-workload scheduler policy decision evidence |
 | `03_tegrastats_sample.log` | Local tegrastats-style sample or copied captured log for thermal/resource evidence |
+| `generated_models/detector_tiny.onnx` | Optional local artifact written only when `--generate-vision-detector-probe` is used |
 | `04_aiguard_guard_analysis.json` | Deterministic runtime reliability diagnosis evidence |
 | `04_aiguard_guard_analysis.md` | Human-readable AIGuard report |
 | `05_lab_agent_runtime_report.json` | Lab-owned agent runtime reliability report |
@@ -279,6 +319,8 @@ Included:
 - optional device-local input overrides through `--vision-input`,
   `--voice-ingress-payload`, `--resource-snapshot`, or
   `--capture-process-resource-snapshot`
+- optional generated detector-like ONNX probe through
+  `--generate-vision-detector-probe`
 - local tegrastats-style thermal/resource sample propagation
 - optional captured `tegrastats` log propagation through `--tegrastats-log`
 - AIGuard runtime reliability interpretation
