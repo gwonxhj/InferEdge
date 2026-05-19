@@ -178,6 +178,35 @@ The ONNX model used for this validation was a tiny identity probe model. This
 record should be described as device-local ONNX Runtime probe evidence, not as
 full live YOLO/Whisper/FastAPI sustained validation.
 
+## Captured Tegrastats Log Option Validation
+
+The entrypoint `--tegrastats-log` option was validated with a separately
+captured Jetson Orin Nano `tegrastats` log. The log was captured for about
+12 seconds and then passed into the local entrypoint smoke, which copied it into
+the evidence bundle and routed it through Orchestrator, AIGuard, and Lab.
+
+| Field | Observed value |
+|---|---:|
+| Power mode | 25W |
+| Scenario mode | `device_local` |
+| Captured log duration | ~12 seconds |
+| Parsed `tegrastats` samples | 11 |
+| Frames | 16 |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Max queue depth | 6 |
+| Dropped count | 13 |
+| Fallback count | 13 |
+| Deadline missed count | 1 |
+| Max temperature | 41.5 C |
+| Max RAM used | 830 MB |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This validates the captured-log telemetry handoff path. It should not be
+described as thermal endurance validation or full live YOLO/Whisper/FastAPI
+sustained validation.
+
 The script writes generated evidence under:
 
 ```text
