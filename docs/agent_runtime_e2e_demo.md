@@ -271,6 +271,31 @@ This is Jetson device-local smoke evidence for the entrypoint contract chain.
 It should not be described as full live YOLO/Whisper/FastAPI sustained
 validation or thermal endurance validation.
 
+The same device-local entrypoint path was also replayed with a user-provided
+YOLOv8n ONNX model copied to the Jetson temporary directory and passed through
+`--vision-onnx-model`.
+
+| Field | Jetson YOLOv8n observed value |
+|---|---:|
+| Scenario mode | `device_local` |
+| Model | `yolov8n.onnx` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 640, 640]` |
+| Vision output shape | `[1, 84, 8400]` |
+| Frames | 16 |
+| Max queue depth | 6 |
+| Dropped count | 13 |
+| Fallback count | 13 |
+| Deadline missed count | 10 |
+| Vision probe elapsed range | `120.147-146.878 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This validates a real ONNX model probe through the entrypoint contract chain on
+Jetson. It should not be described as decoded YOLO accuracy validation, live
+camera operation, or full thermal endurance validation.
+
 The script writes generated evidence under:
 
 ```text
