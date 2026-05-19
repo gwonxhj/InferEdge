@@ -112,6 +112,13 @@ then carried `blocked` / `high` AIGuard evidence into a Lab `blocked` decision.
 This is device-local ONNX Runtime probe evidence using a tiny identity model,
 not full live YOLO validation.
 
+The new `--tegrastats-log` option was then validated with a separately captured
+~12 second Jetson log. The entrypoint parsed 11 `tegrastats` samples, preserved
+max temperature 41.5 C and max RAM 830 MB, and carried the same device-local
+ONNX probe path into AIGuard `blocked` / `high` evidence and a Lab `blocked`
+decision. This is captured telemetry handoff evidence, not full thermal
+endurance validation.
+
 ## What To Show First
 
 For an external reviewer, use this order:

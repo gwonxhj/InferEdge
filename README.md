@@ -181,6 +181,28 @@ evidence through Orchestrator, AIGuard, and Lab reports. The probe used a tiny
 identity ONNX model, so it should be described as device-local ONNX probe
 evidence rather than full live YOLO validation.
 
+Recent captured tegrastats handoff validation:
+
+| Evidence | Value |
+|---|---:|
+| Device mode | Jetson Orin Nano 25W |
+| Scenario | `device_local` starter with `--tegrastats-log` |
+| Captured log duration | ~12 seconds |
+| Parsed `tegrastats` samples | 11 |
+| Frames | 16 |
+| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
+| Max queue depth | 6 |
+| Dropped / fallback count | 13 / 13 |
+| Deadline misses | 1 |
+| Max temperature | 41.5 C |
+| Max RAM used | 830 MB |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This record validates the new `--tegrastats-log` entrypoint option with a
+captured Jetson log. It is telemetry handoff evidence, not a full thermal
+endurance or live workload validation.
+
 Open the Local Studio demo:
 
 ```bash
