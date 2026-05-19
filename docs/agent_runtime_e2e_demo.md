@@ -310,6 +310,34 @@ This validates a real ONNX model probe through the entrypoint contract chain on
 Jetson. It should not be described as decoded YOLO accuracy validation, live
 camera operation, or full thermal endurance validation.
 
+The real YOLOv8n ONNX probe was then replayed with `--capture-tegrastats` so
+that live Jetson telemetry was captured during the Orchestrator sustained run
+and routed through AIGuard and the Lab report.
+
+| Field | Jetson YOLOv8n + live tegrastats value |
+|---|---:|
+| Scenario mode | `device_local` |
+| Model | `yolov8n.onnx` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Vision input shape | `[1, 3, 640, 640]` |
+| Vision output shape | `[1, 84, 8400]` |
+| Frames | 32 |
+| Max queue depth | 6 |
+| Dropped count | 29 |
+| Fallback count | 29 |
+| Deadline missed count | 18 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature | `43.937 C` |
+| Max RAM used | `966 MB` |
+| Vision probe elapsed range | `119.912-137.729 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This validates the live Jetson telemetry capture path and a real ONNX model
+probe in one evidence bundle. It is still not decoded YOLO accuracy validation,
+live camera operation, or thermal endurance validation.
+
 The script writes generated evidence under:
 
 ```text

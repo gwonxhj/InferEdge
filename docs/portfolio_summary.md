@@ -104,6 +104,12 @@ Using a real user-provided `yolov8n.onnx` probe on Jetson preserved
 10 deadline misses, and a Lab `blocked` decision. This is a real ONNX model
 probe through the orchestration contract chain, not decoded YOLO accuracy or
 live camera validation.
+The same real model probe was then replayed with live `--capture-tegrastats`:
+32 frames, max queue depth 6, dropped/fallback count 29/29, 18 deadline misses,
+4 parsed `tegrastats` samples, max temperature 43.937 C, max RAM 966 MB, and a
+Lab `blocked` decision. This ties real ONNX model execution evidence and live
+Jetson telemetry into one device-local smoke bundle, not a thermal endurance
+claim.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
