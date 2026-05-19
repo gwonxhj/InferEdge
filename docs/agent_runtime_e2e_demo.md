@@ -68,6 +68,19 @@ Orchestrator device-local Vision producer and preserve
 `vision_inference_backend`, input/output shapes, and probe latency through the
 e2e smoke outputs. It is not a full live YOLO service.
 
+Add the remote dispatch starter when you want the entrypoint smoke to include
+remote worker selection evidence:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
+```
+
+By default this uses Orchestrator's committed remote worker registry and task
+request examples. It writes `06_remote_dispatch_result.json`, including
+`selected_worker_id`, `decision_reason`, worker health snapshot, and
+`production_remote_execution=false`. This is a file-based remote dispatch
+contract, not production SSH/HTTP execution.
+
 When you do not have a local ONNX file but want a detector-like probe instead
 of the tiny identity model, generate one under the output directory:
 
@@ -380,6 +393,7 @@ bash scripts/demo_agent_runtime_e2e.sh
 | `04_aiguard_guard_analysis.md` | Human-readable AIGuard report |
 | `05_lab_agent_runtime_report.json` | Lab-owned agent runtime reliability report |
 | `05_lab_agent_runtime_report.md` | Human-readable Lab deployment decision context |
+| `06_remote_dispatch_result.json` | Optional file-based remote worker selection evidence when `--remote-dispatch` is used |
 
 Expected sustained evidence markers:
 
@@ -397,6 +411,9 @@ Expected sustained evidence markers:
 - `Orchestrator Operation Context`, `Worker Health`, and
   `Runtime Event Summary` visible in the Lab Markdown report
 - `sustained_overload_review` in Lab decision rules
+- `inferedge-remote-dispatch-result-v1`, `file_contract_starter`, and
+  `selected_worker_id` in `06_remote_dispatch_result.json` when
+  `--remote-dispatch` is used
 
 ## Scope Boundary
 
@@ -416,6 +433,8 @@ Included:
 - local tegrastats-style thermal/resource sample propagation
 - optional captured `tegrastats` log propagation through `--tegrastats-log`
 - optional live Jetson `tegrastats` capture through `--capture-tegrastats`
+- optional file-based remote worker selection evidence through
+  `--remote-dispatch`
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
 
@@ -424,5 +443,7 @@ Not included:
 - production SaaS infrastructure
 - DB/queue persistence
 - cloud orchestration
+- production remote worker execution, SSH/HTTP dispatch, or secure tunnel
+  operation
 - LLM agent framework implementation
 - universal AI OS claims

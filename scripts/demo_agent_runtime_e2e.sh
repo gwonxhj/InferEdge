@@ -14,6 +14,9 @@ TEGRASTATS_LOG=""
 GENERATE_VISION_DETECTOR_PROBE=0
 CAPTURE_TEGRASTATS=0
 CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
+RUN_REMOTE_DISPATCH=0
+REMOTE_WORKER_REGISTRY=""
+REMOTE_TASK_REQUEST=""
 VISION_PRODUCER_MARKER="image_file"
 SAFETY_PRODUCER_MARKER="resource_snapshot_fixture"
 
@@ -28,6 +31,9 @@ Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [-
                                              [--tegrastats-log PATH]
                                              [--capture-tegrastats]
                                              [--capture-process-resource-snapshot]
+                                             [--remote-dispatch]
+                                             [--remote-worker-registry PATH]
+                                             [--remote-task-request PATH]
 
 Replay the Reliable Edge Agent Runtime contract chain:
 
@@ -77,6 +83,15 @@ Options:
                     Capture a small local process resource snapshot for Safety.
                     Requires --device-local. Mutually exclusive with
                     --resource-snapshot.
+  --remote-dispatch
+                    Also run the Orchestrator file-based remote dispatch
+                    starter and write 06_remote_dispatch_result.json.
+  --remote-worker-registry PATH
+                    Override the remote worker registry JSON.
+                    Implies --remote-dispatch.
+  --remote-task-request PATH
+                    Override the remote task request JSON.
+                    Implies --remote-dispatch.
   -h, --help        Show this help.
 
 Environment:
@@ -134,6 +149,20 @@ while [[ $# -gt 0 ]]; do
     --capture-process-resource-snapshot)
       CAPTURE_PROCESS_RESOURCE_SNAPSHOT=1
       shift
+      ;;
+    --remote-dispatch)
+      RUN_REMOTE_DISPATCH=1
+      shift
+      ;;
+    --remote-worker-registry)
+      REMOTE_WORKER_REGISTRY="${2:?missing value for --remote-worker-registry}"
+      RUN_REMOTE_DISPATCH=1
+      shift 2
+      ;;
+    --remote-task-request)
+      REMOTE_TASK_REQUEST="${2:?missing value for --remote-task-request}"
+      RUN_REMOTE_DISPATCH=1
+      shift 2
       ;;
     -h|--help)
       usage
@@ -361,6 +390,7 @@ AIGUARD_JSON_OUT="$OUTPUT_DIR/04_aiguard_guard_analysis.json"
 AIGUARD_MD_OUT="$OUTPUT_DIR/04_aiguard_guard_analysis.md"
 LAB_JSON_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.json"
 LAB_MD_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.md"
+REMOTE_DISPATCH_OUT="$OUTPUT_DIR/06_remote_dispatch_result.json"
 
 run_step "Record Forge agent_manifest contract input" cp "$FORGE_AGENT_MANIFEST" "$FORGE_OUT"
 run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT" "$RUNTIME_OUT"
@@ -424,6 +454,21 @@ run_step "Generate Lab Agent Runtime Reliability report JSON" \
 run_step "Generate Lab Agent Runtime Reliability report Markdown" \
   run_lab_agent_runtime_report markdown "$LAB_MD_OUT"
 
+if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
+  if [[ -z "$REMOTE_WORKER_REGISTRY" ]]; then
+    REMOTE_WORKER_REGISTRY="$ORCHESTRATOR_REPO/examples/remote_worker_registry.json"
+  fi
+  if [[ -z "$REMOTE_TASK_REQUEST" ]]; then
+    REMOTE_TASK_REQUEST="$ORCHESTRATOR_REPO/examples/remote_task_request.json"
+  fi
+  require_file "$REMOTE_WORKER_REGISTRY" "remote worker registry"
+  require_file "$REMOTE_TASK_REQUEST" "remote task request"
+  REMOTE_WORKER_REGISTRY="$(absolute_file_path "$REMOTE_WORKER_REGISTRY")"
+  REMOTE_TASK_REQUEST="$(absolute_file_path "$REMOTE_TASK_REQUEST")"
+  run_step "Generate Orchestrator remote dispatch starter result" \
+    bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator remote-dispatch --registry '$REMOTE_WORKER_REGISTRY' --request '$REMOTE_TASK_REQUEST' --output '$REMOTE_DISPATCH_OUT'"
+fi
+
 run_step "Validate schema markers" grep -q "inferedge-agent-manifest-v1" "$FORGE_OUT"
 grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
 grep -q "inferedge-orchestration-summary-v1" "$ORCHESTRATION_OUT"
@@ -456,6 +501,12 @@ grep -q "sustained_overload_review" "$LAB_JSON_OUT"
 grep -q "Orchestrator Operation Context" "$LAB_MD_OUT"
 grep -q "Worker Health" "$LAB_MD_OUT"
 grep -q "Runtime Event Summary" "$LAB_MD_OUT"
+if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
+  grep -q "inferedge-remote-dispatch-result-v1" "$REMOTE_DISPATCH_OUT"
+  grep -q "file_contract_starter" "$REMOTE_DISPATCH_OUT"
+  grep -q "production_remote_execution" "$REMOTE_DISPATCH_OUT"
+  grep -q "selected_worker_id" "$REMOTE_DISPATCH_OUT"
+fi
 
 echo
 echo "Reliable Edge Agent Runtime e2e smoke ($SUSTAINED_MODE): pass"
@@ -469,3 +520,6 @@ echo "  AIGuard guard analysis:     $AIGUARD_JSON_OUT"
 echo "  AIGuard Markdown report:    $AIGUARD_MD_OUT"
 echo "  Lab report JSON:            $LAB_JSON_OUT"
 echo "  Lab report Markdown:        $LAB_MD_OUT"
+if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
+  echo "  Remote dispatch result:     $REMOTE_DISPATCH_OUT"
+fi
