@@ -127,10 +127,12 @@ A latest main-branch replay used the same Jetson Orin Nano 25W path with a
 user-provided `yolov8n.onnx`, local image input, process resource snapshot
 capture, and live `tegrastats` capture. It ran 24 frames, reached max queue
 depth 6, recorded dropped/fallback count 21/21, 14 deadline misses, parsed 3
-`tegrastats` samples, and preserved max temperature 40.656 C / max RAM 967 MB.
-The Vision ONNX probe reported mean/p95 latency 172.593 ms / 437.55 ms, while
-AIGuard reported `blocked` / `high` and Lab produced a `blocked` decision. This
-is current-main device-local ONNX probe and telemetry handoff evidence, not
+`tegrastats` samples, and preserved max temperature 38.687 C / max RAM 999 MB.
+The Vision ONNX probe reported mean/p95 latency 170.174 ms / 402.416 ms, while
+AIGuard reported `blocked` / `high` and Lab produced a `blocked` decision. The
+Lab report also preserved Runtime operation guard evidence
+(`runtime_latency_budget_overrun`, `runtime_error_classification`). This is
+current-main device-local ONNX probe and telemetry handoff evidence, not
 decoded YOLO accuracy, live camera, or thermal endurance validation.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
