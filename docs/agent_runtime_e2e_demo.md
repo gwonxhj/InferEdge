@@ -412,22 +412,23 @@ process resource snapshot capture, and live `tegrastats` capture.
 | Model | `yolov8n.onnx` |
 | Vision inference backend | `onnxruntime` |
 | Vision provider | `CPUExecutionProvider` |
-| Frames | 24 |
+| Frames | 96 |
 | Max queue depth | 6 |
-| Dropped count | 21 |
-| Fallback count | 21 |
-| Deadline missed count | 14 |
-| Parsed `tegrastats` samples | 3 |
-| Max temperature | `38.687 C` |
-| Max RAM used | `999 MB` |
-| Vision mean / p95 latency | `170.174 ms / 402.416 ms` |
+| Dropped count | 93 |
+| Fallback count | 93 |
+| Deadline missed count | 50 |
+| Parsed `tegrastats` samples | 9 |
+| Max temperature | `38.875 C` |
+| Max RAM used | `977 MB` |
+| Vision mean / p95 latency | `157.819 ms / 158.964 ms` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 
 This latest replay confirms that the current main branches still carry real
 Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
-and Lab. It also confirms the Lab report preserves Runtime operation guard
-evidence (`runtime_latency_budget_overrun`, `runtime_error_classification`).
+and Lab over a longer 96-frame starter replay. It also confirms the Lab report
+preserves Runtime operation guard evidence (`runtime_latency_budget_overrun`,
+`runtime_error_classification`).
 It remains a device-local smoke record, not decoded YOLO accuracy, live camera,
 Whisper/FastAPI, or sustained thermal endurance validation.
 
