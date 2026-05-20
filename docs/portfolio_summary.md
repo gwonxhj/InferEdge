@@ -83,8 +83,9 @@ bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch \
 ```
 
 This adds `06_remote_dispatch_result.json` with remote worker selection
-evidence. It proves the file-based worker registry/task request contract, not
-production remote worker execution.
+evidence, worker selection reasons, retry/fallback planning, and a plan-only
+remote execution plan. It proves the file-based worker registry/task request
+contract, not production remote worker execution.
 
 Replay the same entrypoint with explicit local input overrides:
 

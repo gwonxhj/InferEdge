@@ -77,9 +77,10 @@ bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
 
 By default this uses Orchestrator's committed remote worker registry and task
 request examples. It writes `06_remote_dispatch_result.json`, including
-`selected_worker_id`, `decision_reason`, worker health snapshot, and
+`selected_worker_id`, `decision_reason`, worker health snapshot,
+`worker_selection`, `retry_fallback_plan`, `remote_execution_plan`, and
 `production_remote_execution=false`. This is a file-based remote dispatch
-contract, not production SSH/HTTP execution.
+contract with plan-only fallback evidence, not production SSH/HTTP execution.
 
 When you do not have a local ONNX file but want a detector-like probe instead
 of the tiny identity model, generate one under the output directory:
@@ -441,6 +442,8 @@ Expected sustained evidence markers:
 - `inferedge-remote-dispatch-result-v1`, `file_contract_starter`, and
   `selected_worker_id` in `06_remote_dispatch_result.json` when
   `--remote-dispatch` is used
+- `remote_execution_plan`, `worker_selection`, and `retry_fallback_plan` in
+  `06_remote_dispatch_result.json` when `--remote-dispatch` is used
 
 ## Scope Boundary
 
