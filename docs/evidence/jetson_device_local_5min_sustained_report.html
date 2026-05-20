@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jetson Device-Local 5-Minute Sustained Smoke Report</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0b0f14;
+      --card: #111827;
+      --line: #263247;
+      --text: #e5edf7;
+      --muted: #9aa8bb;
+      --cyan: #22d3ee;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --red: #fb7185;
+    }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    main {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 48px 24px 72px;
+    }
+    h1, h2 {
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: 42px;
+    }
+    h2 {
+      margin-top: 36px;
+      font-size: 24px;
+    }
+    p, li {
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .badge {
+      display: inline-block;
+      border: 1px solid rgba(34, 211, 238, 0.45);
+      color: var(--cyan);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+    }
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+    }
+    .metric-label {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .metric-value {
+      display: block;
+      margin-top: 8px;
+      color: var(--cyan);
+      font-size: 30px;
+      font-weight: 800;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--card);
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 10px 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+    td {
+      color: var(--text);
+    }
+    code, pre {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    pre {
+      overflow: auto;
+      background: #07111f;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 16px;
+      color: #dbeafe;
+    }
+    .decision {
+      border-color: rgba(251, 113, 133, 0.55);
+      background: linear-gradient(135deg, rgba(251, 113, 133, 0.12), rgba(17, 24, 39, 1));
+    }
+    .decision .metric-value {
+      color: var(--red);
+    }
+    .note {
+      border-color: rgba(250, 204, 21, 0.45);
+      color: #fde68a;
+    }
+  </style>
+</head>
+<body>
+<main>
+  <span class="badge">Device-local sustained smoke</span>
+  <h1>Jetson Device-Local 5-Minute Sustained Smoke Report</h1>
+  <p>
+    This report summarizes a longer InferEdge runtime-operation evidence replay
+    on Jetson Orin Nano 25W. It is ONNX Runtime probe + live tegrastats smoke
+    evidence, not decoded YOLO accuracy validation, live camera operation,
+    Whisper/FastAPI service execution, production remote execution, or sustained
+    thermal endurance validation.
+  </p>
+
+  <section class="grid" aria-label="Key metrics">
+    <div class="card"><span class="metric-label">Frames</span><span class="metric-value">3600</span></div>
+    <div class="card"><span class="metric-label">Runtime window</span><span class="metric-value">~297s</span></div>
+    <div class="card"><span class="metric-label">Max queue depth</span><span class="metric-value">6</span></div>
+    <div class="card"><span class="metric-label">Dropped / fallback</span><span class="metric-value">3597 / 3597</span></div>
+    <div class="card"><span class="metric-label">Deadline missed</span><span class="metric-value">1802</span></div>
+    <div class="card"><span class="metric-label">Tegrastats samples</span><span class="metric-value">282</span></div>
+    <div class="card"><span class="metric-label">Max temp / RAM</span><span class="metric-value">43.125 C / 1028 MB</span></div>
+    <div class="card decision"><span class="metric-label">Lab decision</span><span class="metric-value">blocked</span></div>
+  </section>
+
+  <h2>Replay Command</h2>
+  <pre><code>cd ~/InferEdge
+PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH \
+INFEREDGE_FORGE_REPO=/tmp/inferedge_clean_repos/InferEdgeForge \
+timeout 420 bash scripts/demo_agent_runtime_e2e.sh \
+  --device-local \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_3600 \
+  --frames 3600 \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx \
+  --capture-process-resource-snapshot \
+  --capture-tegrastats</code></pre>
+
+  <h2>Workload Summary</h2>
+  <table>
+    <thead>
+      <tr><th>Agent</th><th>Type</th><th>Executed</th><th>Dropped</th><th>Deadline Missed</th><th>Fallback</th><th>Mean ms</th><th>P95 ms</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>safety_monitor_agent</td><td>safety</td><td>1800</td><td>0</td><td>0</td><td>0</td><td>3.117</td><td>3.282</td></tr>
+      <tr><td>vision_agent</td><td>vision</td><td>1802</td><td>1798</td><td>1802</td><td>1798</td><td>153.231</td><td>157.2</td></tr>
+      <tr><td>voice_command_agent</td><td>voice</td><td>1</td><td>1799</td><td>0</td><td>1799</td><td>39.0</td><td>39.0</td></tr>
+    </tbody>
+  </table>
+
+  <h2>AIGuard and Lab Decision</h2>
+  <table>
+    <tbody>
+      <tr><th>AIGuard verdict</th><td>blocked / high / confidence 0.88</td></tr>
+      <tr><th>Primary reason</th><td>deadline_miss_rate indicates runtime reliability risk under orchestrated multi-agent load.</td></tr>
+      <tr><th>Lab policy</th><td>inferedge-lab-agent-runtime-policy-v1</td></tr>
+      <tr><th>Lab decision</th><td>blocked</td></tr>
+      <tr><th>Triggered rules</th><td>guard_blocked_runtime_block, deadline_miss_block, drop_rate_review, fallback_rate_review, queue_backlog_review, sustained_overload_review, runtime_timeout_observed_review, runtime_operation_guard_block</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card note">
+    <strong>Interpretation:</strong>
+    This replay intentionally captures unsafe runtime-operation evidence. It
+    proves that InferEdge carries longer device-local workload pressure through
+    Orchestrator, AIGuard, and Lab-owned deployment decision context, rather
+    than only reporting successful benchmark runs.
+  </div>
+</main>
+</body>
+</html>
+

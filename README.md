@@ -387,6 +387,34 @@ Runtime worktrees, see
 For a submission-facing snapshot of the generated Lab evidence, see
 [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md).
 
+Latest 5-minute-class Jetson sustained smoke:
+
+| Evidence | Value |
+|---|---:|
+| Device | Jetson Orin Nano 25W |
+| Model | user-provided `yolov8n.onnx` |
+| Scenario | `device_local` starter with real ONNX model + live `tegrastats` |
+| Runtime window | about 297 seconds |
+| Frames | 3600 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 3597 / 3597 |
+| Deadline missed count | 1802 |
+| Parsed `tegrastats` samples | 282 |
+| Max temperature / RAM | 43.125 C / 1028 MB |
+| Vision mean / p95 latency | 153.231 ms / 157.2 ms |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This longer replay strengthens the runtime-operation evidence path by carrying
+5-minute-class queue pressure, drop/fallback, deadline miss, and live Jetson
+telemetry through Orchestrator, AIGuard, and Lab. It remains device-local smoke
+evidence, not decoded YOLO accuracy validation, live camera operation,
+Whisper/FastAPI service execution, production remote execution, or sustained
+thermal endurance validation. See
+[`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md)
+and its
+[`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html).
+
 Open the Local Studio demo:
 
 ```bash
