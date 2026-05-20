@@ -92,6 +92,21 @@ the committed file-contract fixture records skipped starter evidence. This
 proves the worker registry/task request/remote execution starter contract, not
 production remote worker execution.
 
+Remote fallback recovery can also be replayed with the committed
+`examples/remote_fallback` fixtures. Start only the local fallback HTTP starter
+worker on port `8765`, then run the entrypoint smoke with `--remote-execute-plan`
+and the fallback registry/request overrides. The resulting evidence chain is:
+
+```text
+primary-http-worker connection_error
+-> fallback-http-worker starter succeeds
+-> AIGuard remote_execution_recovered_by_fallback
+-> Lab Remote fallback starter evidence
+```
+
+This shows bounded recovery evidence propagation. It is still a starter smoke,
+not production-grade remote retry control.
+
 Replay the same entrypoint with explicit local input overrides:
 
 ```bash

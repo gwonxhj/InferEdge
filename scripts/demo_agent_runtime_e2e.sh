@@ -348,6 +348,15 @@ require_file "$FORGE_AGENT_MANIFEST" "Forge agent_manifest fixture"
 require_file "$RUNTIME_AGENT_RESULT" "Runtime result.agent fixture"
 require_file "$ORCHESTRATOR_CONFIG" "$ORCHESTRATOR_CONFIG_LABEL"
 
+if [[ -n "$REMOTE_WORKER_REGISTRY" ]]; then
+  require_file "$REMOTE_WORKER_REGISTRY" "remote worker registry"
+  REMOTE_WORKER_REGISTRY="$(absolute_file_path "$REMOTE_WORKER_REGISTRY")"
+fi
+if [[ -n "$REMOTE_TASK_REQUEST" ]]; then
+  require_file "$REMOTE_TASK_REQUEST" "remote task request"
+  REMOTE_TASK_REQUEST="$(absolute_file_path "$REMOTE_TASK_REQUEST")"
+fi
+
 mkdir -p "$OUTPUT_DIR"
 
 if [[ "$GENERATE_VISION_DETECTOR_PROBE" -eq 1 ]]; then
@@ -659,7 +668,7 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "execution_performed" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-aiguard-diagnosis-v1" "$REMOTE_AIGUARD_JSON_OUT"
   grep -q "remote_execution" "$REMOTE_AIGUARD_JSON_OUT"
-  grep -Eq "remote_dispatch_health|remote_execution_(plan_only|skipped|failed|starter_success)" "$REMOTE_AIGUARD_JSON_OUT"
+  grep -Eq "remote_dispatch_health|remote_execution_(plan_only|skipped|failed|starter_success|recovered_by_fallback)" "$REMOTE_AIGUARD_JSON_OUT"
   grep -q "worker_selection" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-remote-worker-selection-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "retry_fallback_plan" "$REMOTE_DISPATCH_OUT"
@@ -669,6 +678,10 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "remote_execution_result" "$LAB_JSON_OUT"
   grep -q "Remote execution starter evidence" "$LAB_MD_OUT"
   grep -q "Remote Dispatch Context" "$LAB_MD_OUT"
+  if grep -q "fallback_execution_result" "$REMOTE_DISPATCH_OUT"; then
+    grep -q "fallback_execution_result" "$LAB_JSON_OUT"
+    grep -q "Remote fallback starter evidence" "$LAB_MD_OUT"
+  fi
 fi
 
 echo
