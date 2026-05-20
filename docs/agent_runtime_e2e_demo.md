@@ -418,9 +418,9 @@ process resource snapshot capture, and live `tegrastats` capture.
 | Fallback count | 93 |
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
-| Max temperature | `38.843 C` |
-| Max RAM used | `978 MB` |
-| Vision mean / p95 latency | `157.972 ms / 169.688 ms` |
+| Max temperature | `39.0 C` |
+| Max RAM used | `979 MB` |
+| Vision mean / p95 latency | `156.43 ms / 159.629 ms` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 
@@ -431,6 +431,8 @@ preserves Runtime operation guard evidence (`runtime_latency_budget_overrun`,
 `runtime_error_classification`).
 It remains a device-local smoke record, not decoded YOLO accuracy, live camera,
 Whisper/FastAPI, or sustained thermal endurance validation.
+A submission-facing snapshot of the generated Lab evidence is captured in
+[`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md).
 
 The script writes generated evidence under:
 

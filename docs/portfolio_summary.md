@@ -147,14 +147,16 @@ A latest main-branch replay used the same Jetson Orin Nano 25W path with a
 user-provided `yolov8n.onnx`, local image input, process resource snapshot
 capture, and live `tegrastats` capture. It ran 96 frames, reached max queue
 depth 6, recorded dropped/fallback count 93/93, 50 deadline misses, parsed 9
-`tegrastats` samples, and preserved max temperature 38.843 C / max RAM 978 MB.
-The Vision ONNX probe reported mean/p95 latency 157.972 ms / 169.688 ms, while
+`tegrastats` samples, and preserved max temperature 39.0 C / max RAM 979 MB.
+The Vision ONNX probe reported mean/p95 latency 156.43 ms / 159.629 ms, while
 AIGuard reported `blocked` / `high` and Lab produced a `blocked` decision. The
 Lab report also preserved Runtime operation guard evidence
 (`runtime_latency_budget_overrun`, `runtime_error_classification`). This is
 current-main device-local ONNX probe and telemetry handoff evidence from a
 longer 96-frame starter replay, not decoded YOLO accuracy, live camera, or
 thermal endurance validation.
+The submission-facing Lab evidence snapshot is stored in
+[`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md).
 The clean Jetson replay runbook uses a temporary Forge clone under `/tmp` so
 dirty local Jetson Forge/Runtime worktrees do not need to be deleted or reset
 for reproduction.
