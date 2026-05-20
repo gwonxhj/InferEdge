@@ -444,6 +444,36 @@ Whisper/FastAPI, or sustained thermal endurance validation.
 A submission-facing snapshot of the generated Lab evidence is captured in
 [`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md).
 
+The longer 5-minute-class Jetson replay used the same path with `--frames 3600`
+and a 420-second guard timeout.
+
+| Field | 5-minute-class Jetson sustained smoke |
+|---|---:|
+| Runtime window | about 297 seconds |
+| Scenario mode | `device_local` |
+| Model | `yolov8n.onnx` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Frames | 3600 |
+| Max queue depth | 6 |
+| Dropped count | 3597 |
+| Fallback count | 3597 |
+| Deadline missed count | 1802 |
+| Parsed `tegrastats` samples | 282 |
+| Max temperature | `43.125 C` |
+| Max RAM used | `1028 MB` |
+| Vision mean / p95 latency | `153.231 ms / 157.2 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This replay is captured as
+[`Jetson Device-Local 5-Minute Sustained Smoke Report`](evidence/jetson_device_local_5min_sustained_report.md)
+and
+[`HTML report`](evidence/jetson_device_local_5min_sustained_report.html).
+It is still runtime-operation smoke evidence, not decoded YOLO accuracy
+validation, live camera operation, Whisper/FastAPI service execution, production
+remote execution, or sustained thermal endurance validation.
+
 The script writes generated evidence under:
 
 ```text
