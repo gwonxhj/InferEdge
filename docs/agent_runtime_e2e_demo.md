@@ -351,6 +351,33 @@ This validates the live Jetson telemetry capture path and a real ONNX model
 probe in one evidence bundle. It is still not decoded YOLO accuracy validation,
 live camera operation, or thermal endurance validation.
 
+The latest main-branch replay was run again on Jetson Orin Nano 25W with the
+same entrypoint path, a user-provided `yolov8n.onnx`, local image input,
+process resource snapshot capture, and live `tegrastats` capture.
+
+| Field | Latest Jetson device-local replay |
+|---|---:|
+| Scenario mode | `device_local` |
+| Model | `yolov8n.onnx` |
+| Vision inference backend | `onnxruntime` |
+| Vision provider | `CPUExecutionProvider` |
+| Frames | 24 |
+| Max queue depth | 6 |
+| Dropped count | 21 |
+| Fallback count | 21 |
+| Deadline missed count | 14 |
+| Parsed `tegrastats` samples | 3 |
+| Max temperature | `40.656 C` |
+| Max RAM used | `967 MB` |
+| Vision mean / p95 latency | `172.593 ms / 437.55 ms` |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This latest replay confirms that the current main branches still carry real
+Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
+and Lab. It remains a device-local smoke record, not decoded YOLO accuracy,
+live camera, Whisper/FastAPI, or sustained thermal endurance validation.
+
 The script writes generated evidence under:
 
 ```text
