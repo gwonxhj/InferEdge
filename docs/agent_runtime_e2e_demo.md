@@ -418,9 +418,9 @@ process resource snapshot capture, and live `tegrastats` capture.
 | Fallback count | 93 |
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
-| Max temperature | `38.875 C` |
-| Max RAM used | `977 MB` |
-| Vision mean / p95 latency | `157.819 ms / 158.964 ms` |
+| Max temperature | `38.843 C` |
+| Max RAM used | `978 MB` |
+| Vision mean / p95 latency | `157.972 ms / 169.688 ms` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 
@@ -444,6 +444,63 @@ Use a temporary output directory for clean validation:
 bash scripts/demo_agent_runtime_e2e.sh --output-dir /tmp/inferedge_agent_runtime_e2e
 bash scripts/demo_agent_runtime_e2e.sh --device-local --output-dir /tmp/inferedge_agent_runtime_e2e_device_local
 ```
+
+## Clean Jetson Replay Runbook
+
+Use this runbook when the Jetson has local Forge or Runtime worktrees with
+experimental builds, untracked artifacts, or branch-specific changes. Do not
+delete or reset those worktrees just to reproduce the entrypoint smoke. Instead,
+use a temporary clean Forge clone for the fixture contract and keep the evidence
+bundle under `/tmp`.
+
+Prepare a clean Forge fixture source:
+
+```bash
+rm -rf /tmp/inferedge_clean_repos
+mkdir -p /tmp/inferedge_clean_repos
+git clone --depth 1 https://github.com/gwonxhj/InferEdgeForge.git \
+  /tmp/inferedge_clean_repos/InferEdgeForge
+test -f /tmp/inferedge_clean_repos/InferEdgeForge/tests/fixtures/agent_manifest_vision.json
+```
+
+Replay the 96-frame Jetson device-local path from the entrypoint repo:
+
+```bash
+cd ~/InferEdge
+PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH \
+INFEREDGE_FORGE_REPO=/tmp/inferedge_clean_repos/InferEdgeForge \
+bash scripts/demo_agent_runtime_e2e.sh \
+  --device-local \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_96_main \
+  --frames 96 \
+  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
+  --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx \
+  --capture-process-resource-snapshot \
+  --capture-tegrastats
+```
+
+Expected output files:
+
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/03_orchestration_summary.json`
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/04_aiguard_guard_analysis.json`
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.json`
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.md`
+
+Expected evidence markers:
+
+- `multi_workload_sustained_summary`
+- `tegrastats_timeline`
+- `profiled_workload_pressure`
+- `thermal_resource_pressure`
+- `runtime_latency_budget_overrun`
+- `runtime_error_classification`
+- `agent_deployment_decision`
+
+The observed timing and resource values can vary slightly by Jetson mode,
+current load, and thermal state. This runbook validates a clean replay of the
+device-local ONNX probe and live telemetry handoff path. It is not decoded YOLO
+accuracy validation, live camera operation, Whisper/FastAPI service execution,
+or sustained thermal endurance validation.
 
 ## Inputs
 
