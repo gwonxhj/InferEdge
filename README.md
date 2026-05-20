@@ -56,6 +56,22 @@ interaction evidence, and InferEdge-compatible handoff artifacts.
 For the submission-ready diagram and layer split, start with
 [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md).
 
+## Implementation Status
+
+Not every roadmap item is at the same maturity level. Use this table as the
+submission boundary.
+
+| Area | Status | What is implemented | Do not claim |
+|---|---|---|---|
+| Core Forge -> Runtime -> Lab -> optional AIGuard validation pipeline | Implemented | Build provenance, Runtime result evidence, Lab compare/report/decision, and optional deterministic AIGuard evidence | Production SaaS readiness |
+| Local Studio demo evidence replay | Implemented | Local browser workflow for demo evidence, compare, decision, and AIGuard cases | Cloud dashboard or multi-user workspace |
+| YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation | Full COCO benchmark or automatic evaluation for every model |
+| AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
+| Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
+| Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
+| Remote dispatch / fallback starter | Smoke/Starter | File-based worker selection and bounded fallback evidence | Production remote execution or secure multi-device orchestration |
+| Cloudflare / dashboard / production worker services | Future Work | Documented direction only | Completed remote operation platform |
+
 ## Quick Start
 
 Clone this entrypoint repo first:

@@ -50,6 +50,23 @@ The ecosystem extension layers stay separate:
 - Env records benchmark evidence and comparability. Its `v0.1.5` release freezes this role as the v1-complete baseline.
 - Orchestrator controls runtime behavior after deployment.
 
+## Implementation Status
+
+This status table prevents roadmap language from being read as completed
+production capability.
+
+| Capability | Status | Portfolio wording |
+|---|---|---|
+| Core 4 validation pipeline | Implemented | Local-first validation pipeline with provenance, Runtime evidence, Lab decision, and optional AIGuard evidence |
+| Local Studio | Implemented | Browser-based local workflow for demo evidence replay, compare, decision, and AIGuard cases |
+| Evaluation / contract validation | Implemented | YOLOv8 COCO subset, simplified mAP50, bbox/score/model contract evidence |
+| AIGuard diagnosis cases | Implemented | Deterministic evidence for bbox collapse, score saturation, temporal instability, and baseline deviation |
+| Runtime operation e2e chain | Implemented | Entrypoint smoke connects agent manifest, Runtime result, Orchestrator summary, AIGuard analysis, and Lab report |
+| Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
+| Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
+| Remote dispatch/fallback | Smoke/Starter | Worker selection/fallback starter evidence, not production remote execution |
+| Live camera, Whisper/FastAPI sustained services, Cloudflare hardening, dashboard | Future Work | Roadmap only |
+
 ## Device-Local Sustained Validation Starter
 
 The current runtime-operation extension is a local-first starter, not a full
