@@ -129,6 +129,23 @@ bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
 # worker registry entry supports it. File-contract workers are recorded as
 # skipped starter evidence.
 bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch --remote-execute-plan
+
+# Optional: reproduce primary failure followed by bounded fallback recovery.
+# Terminal A:
+python3 ../InferEdgeOrchestrator/scripts/remote_http_worker.py \
+  --host 127.0.0.1 \
+  --port 8765 \
+  --worker-id fallback-http-worker
+
+# Terminal B:
+bash scripts/demo_agent_runtime_e2e.sh \
+  --output-dir /tmp/inferedge_agent_runtime_fallback_e2e \
+  --frames 8 \
+  --remote-dispatch \
+  --remote-execute-plan \
+  --remote-timeout-sec 1 \
+  --remote-worker-registry examples/remote_fallback/remote_worker_registry_fallback.json \
+  --remote-task-request examples/remote_fallback/remote_task_request_fallback.json
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -144,6 +161,13 @@ the Orchestrator HTTP/SSH starter execution path when the selected worker
 registry entry supports it. File-contract workers remain selection-only and are
 recorded as skipped starter evidence. This is remote dispatch starter evidence,
 not production SSH/HTTP remote execution.
+The `examples/remote_fallback` fixtures intentionally point the primary worker
+at an unavailable HTTP endpoint and the fallback worker at a local starter
+server. When the fallback worker is running, the same entrypoint smoke records
+`remote_execution_failed`, `fallback_execution_result.final_status=succeeded`,
+AIGuard `remote_execution_recovered_by_fallback`, and Lab's `Remote fallback
+starter evidence` section. This proves bounded recovery evidence propagation,
+not production-grade retry control.
 The current extension smoke uses the latest Orchestrator producer-backed
 sustained path: Vision reads a local image fixture, Voice-Command replays a
 FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot

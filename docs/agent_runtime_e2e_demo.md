@@ -96,6 +96,42 @@ an `http_request` or `ssh_command` endpoint can use the same option to record
 starter execution status, transport, and error category. This is remote dispatch
 starter evidence, not production SSH/HTTP execution.
 
+To reproduce bounded remote fallback recovery, run only the fallback HTTP
+starter worker and leave the primary endpoint unavailable:
+
+```bash
+# Terminal A
+python3 ../InferEdgeOrchestrator/scripts/remote_http_worker.py \
+  --host 127.0.0.1 \
+  --port 8765 \
+  --worker-id fallback-http-worker
+
+# Terminal B
+bash scripts/demo_agent_runtime_e2e.sh \
+  --output-dir /tmp/inferedge_agent_runtime_fallback_e2e \
+  --frames 8 \
+  --remote-dispatch \
+  --remote-execute-plan \
+  --remote-timeout-sec 1 \
+  --remote-worker-registry examples/remote_fallback/remote_worker_registry_fallback.json \
+  --remote-task-request examples/remote_fallback/remote_task_request_fallback.json
+```
+
+The fallback fixture selects `primary-http-worker` first, where
+`http://127.0.0.1:9876/execute` is intentionally unavailable. The retry policy
+allows one fallback attempt on `connection_error`, and the local
+`fallback-http-worker` listens on `http://127.0.0.1:8765/execute`. A successful
+starter replay should include:
+
+- `06_remote_dispatch_result.json` with `fallback_execution_result.final_status`
+  set to `succeeded`
+- `07_remote_dispatch_guard_analysis.json` with
+  `remote_execution_recovered_by_fallback`
+- `05_lab_agent_runtime_report.md` with `Remote fallback starter evidence`
+
+This is a bounded starter recovery smoke. It does not provide production retry
+control, auth, heartbeat, or a long-lived remote worker.
+
 When you do not have a local ONNX file but want a detector-like probe instead
 of the tiny identity model, generate one under the output directory:
 
