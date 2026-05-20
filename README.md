@@ -124,6 +124,11 @@ bash scripts/demo_agent_runtime_e2e.sh --device-local \
 
 # Optional: also replay the file-based remote worker selection starter.
 bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
+
+# Optional: explicitly request HTTP/SSH starter execution when the selected
+# worker registry entry supports it. File-contract workers are recorded as
+# skipped starter evidence.
+bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch --remote-execute-plan
 ```
 
 This reproduces the file-based chain from `agent_manifest` to Runtime
@@ -133,9 +138,12 @@ The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
 context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
 With `--remote-dispatch`, the same script also writes Orchestrator's
-file-based remote worker selection result. This is a remote dispatch starter
-contract with worker selection, retry/fallback planning, and plan-only
-execution metadata, not production SSH/HTTP remote execution.
+file-based remote worker selection result and runs AIGuard remote-dispatch
+diagnosis on that artifact. Add `--remote-execute-plan` to explicitly request
+the Orchestrator HTTP/SSH starter execution path when the selected worker
+registry entry supports it. File-contract workers remain selection-only and are
+recorded as skipped starter evidence. This is remote dispatch starter evidence,
+not production SSH/HTTP remote execution.
 The current extension smoke uses the latest Orchestrator producer-backed
 sustained path: Vision reads a local image fixture, Voice-Command replays a
 FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot

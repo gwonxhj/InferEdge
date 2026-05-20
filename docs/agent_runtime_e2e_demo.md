@@ -79,8 +79,22 @@ By default this uses Orchestrator's committed remote worker registry and task
 request examples. It writes `06_remote_dispatch_result.json`, including
 `selected_worker_id`, `decision_reason`, worker health snapshot,
 `worker_selection`, `retry_fallback_plan`, `remote_execution_plan`, and
-`production_remote_execution=false`. This is a file-based remote dispatch
-contract with plan-only fallback evidence, not production SSH/HTTP execution.
+`remote_execution_result`. It also writes
+`07_remote_dispatch_guard_analysis.json` so AIGuard can explain whether the
+remote dispatch starter stayed selection-only, skipped execution, failed, or
+completed the explicit starter path.
+
+Explicit HTTP/SSH starter execution is opt-in:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch --remote-execute-plan
+```
+
+The committed file-contract worker examples are selection-only, so the
+execution result is recorded as skipped starter evidence. A registry entry with
+an `http_request` or `ssh_command` endpoint can use the same option to record
+starter execution status, transport, and error category. This is remote dispatch
+starter evidence, not production SSH/HTTP execution.
 
 When you do not have a local ONNX file but want a detector-like probe instead
 of the tiny identity model, generate one under the output directory:
@@ -446,6 +460,11 @@ Expected sustained evidence markers:
   `--remote-dispatch` is used
 - `remote_execution_plan`, `worker_selection`, and `retry_fallback_plan` in
   `06_remote_dispatch_result.json` when `--remote-dispatch` is used
+- `remote_execution_result` in `06_remote_dispatch_result.json` and
+  `Remote execution starter evidence` in the Lab Markdown report when
+  `--remote-dispatch` is used
+- `07_remote_dispatch_guard_analysis.json` with deterministic AIGuard evidence
+  for the remote dispatch starter when `--remote-dispatch` is used
 
 ## Scope Boundary
 
