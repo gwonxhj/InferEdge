@@ -347,13 +347,13 @@ Latest Jetson device-local replay:
 | Device | Jetson Orin Nano 25W |
 | Model | user-provided `yolov8n.onnx` |
 | Scenario | `device_local` starter with real ONNX model + live `tegrastats` |
-| Frames | 24 |
+| Frames | 96 |
 | Max queue depth | 6 |
-| Dropped / fallback count | 21 / 21 |
-| Deadline missed count | 14 |
-| Parsed `tegrastats` samples | 3 |
-| Max temperature / RAM | 38.687 C / 999 MB |
-| Vision mean / p95 latency | 170.174 ms / 402.416 ms |
+| Dropped / fallback count | 93 / 93 |
+| Deadline missed count | 50 |
+| Parsed `tegrastats` samples | 9 |
+| Max temperature / RAM | 38.875 C / 977 MB |
+| Vision mean / p95 latency | 157.819 ms / 158.964 ms |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
@@ -361,7 +361,8 @@ This replay was run from the entrypoint script with `--device-local`,
 `--vision-onnx-model`, `--capture-process-resource-snapshot`, and
 `--capture-tegrastats`. It confirms the latest main branch still carries real
 Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
-and Lab. The Lab report also preserves Runtime operation guard evidence
+and Lab over a longer 96-frame starter replay. The Lab report also preserves
+Runtime operation guard evidence
 (`runtime_latency_budget_overrun`, `runtime_error_classification`). It is not a
 decoded YOLO accuracy validation or sustained thermal endurance claim.
 
