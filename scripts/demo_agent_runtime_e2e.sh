@@ -226,20 +226,24 @@ choose_python() {
 run_lab_agent_runtime_report() {
   local format="$1"
   local output="$2"
+  local report_args=(
+    agent-runtime-report
+    --orchestration-summary "$ORCHESTRATION_OUT"
+    --guard-analysis "$AIGUARD_JSON_OUT"
+    --runtime-result "$RUNTIME_OUT"
+    --format "$format"
+    --output "$output"
+  )
+
+  if [[ "$RUN_REMOTE_DISPATCH" -eq 1 && -f "$REMOTE_DISPATCH_OUT" ]]; then
+    report_args+=(--remote-dispatch "$REMOTE_DISPATCH_OUT")
+  fi
 
   cd "$LAB_REPO"
   if command -v poetry >/dev/null 2>&1; then
-    poetry run inferedgelab agent-runtime-report \
-      --orchestration-summary "$ORCHESTRATION_OUT" \
-      --guard-analysis "$AIGUARD_JSON_OUT" \
-      --format "$format" \
-      --output "$output"
+    poetry run inferedgelab "${report_args[@]}"
   elif command -v inferedgelab >/dev/null 2>&1; then
-    inferedgelab agent-runtime-report \
-      --orchestration-summary "$ORCHESTRATION_OUT" \
-      --guard-analysis "$AIGUARD_JSON_OUT" \
-      --format "$format" \
-      --output "$output"
+    inferedgelab "${report_args[@]}"
   else
     echo "missing Lab CLI: install poetry or ensure inferedgelab is on PATH" >&2
     exit 1
@@ -395,6 +399,71 @@ REMOTE_DISPATCH_OUT="$OUTPUT_DIR/06_remote_dispatch_result.json"
 run_step "Record Forge agent_manifest contract input" cp "$FORGE_AGENT_MANIFEST" "$FORGE_OUT"
 run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT" "$RUNTIME_OUT"
 
+run_step "Attach Runtime operation evidence to local smoke result" \
+  "$ORCH_PYTHON" - "$RUNTIME_OUT" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+data = json.loads(path.read_text(encoding="utf-8"))
+agent = data.get("agent") or {}
+telemetry = agent.get("telemetry_snapshot") or {}
+mean_ms = float(telemetry.get("latency_mean_ms") or 28.0)
+p99_ms = float(telemetry.get("latency_p99_ms") or 36.0)
+fps = float(telemetry.get("fps") or 30.0)
+timeout_budget_ms = 20
+
+data["runtime_health_snapshot"] = {
+    "schema_version": "inferedge-runtime-health-v1",
+    "status": "degraded",
+    "engine_backend": data.get("backend_key", "onnxruntime__cpu").split("__")[0],
+    "device": (data.get("backend_key", "onnxruntime__cpu").split("__")[-1] or "cpu"),
+    "engine_available": True,
+    "run_count": 5,
+    "mean_ms": mean_ms,
+    "p99_ms": p99_ms,
+    "fps": fps,
+    "latency_budget_ms": timeout_budget_ms,
+    "latency_budget_exceeded": mean_ms > timeout_budget_ms,
+    "deadline_missed": bool(agent.get("deadline_missed", False)),
+    "timeout_policy": "latency_threshold",
+    "timeout_budget_ms": timeout_budget_ms,
+    "timeout_observed": mean_ms > timeout_budget_ms,
+    "thermal_memory_evidence_available": False,
+}
+data["runtime_error_classification"] = {
+    "category": "runtime_timeout_observed" if mean_ms > timeout_budget_ms else "none",
+    "severity": "medium" if mean_ms > timeout_budget_ms else "none",
+    "retryable": mean_ms > timeout_budget_ms,
+    "retry_hint": (
+        "reduce_input_rate_or_relax_latency_budget"
+        if mean_ms > timeout_budget_ms
+        else "none"
+    ),
+    "observed_mean_ms": mean_ms,
+    "timeout_budget_ms": timeout_budget_ms,
+    "timeout_observed": mean_ms > timeout_budget_ms,
+}
+data["runtime_events"] = [
+    {
+        "event_index": 0,
+        "event_type": "runtime_health_snapshot",
+        "status": "degraded" if mean_ms > timeout_budget_ms else "ok",
+        "engine_backend": data["runtime_health_snapshot"]["engine_backend"],
+        "detail": "entrypoint smoke attached Runtime operation context",
+    },
+    {
+        "event_index": 1,
+        "event_type": "runtime_error_classified",
+        "status": data["runtime_error_classification"]["severity"],
+        "category": data["runtime_error_classification"]["category"],
+        "timeout_budget_ms": timeout_budget_ms,
+    },
+]
+path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+PY
+
 if [[ -n "$TEGRASTATS_LOG" ]]; then
   run_step "Record provided tegrastats log" cp "$TEGRASTATS_LOG" "$TEGRSTATS_SAMPLE_OUT"
 elif [[ "$CAPTURE_TEGRASTATS" -eq 1 ]]; then
@@ -445,14 +514,28 @@ run_orchestrator_sustained() {
 run_step "Generate Orchestrator $SUSTAINED_MODE multi-workload sustained summary" \
   run_orchestrator_sustained
 
+run_step "Attach Runtime result to local orchestration bundle" \
+  "$ORCH_PYTHON" - "$ORCHESTRATION_OUT" "$RUNTIME_OUT" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+summary_path = Path(sys.argv[1])
+runtime_path = Path(sys.argv[2])
+summary = json.loads(summary_path.read_text(encoding="utf-8"))
+runtime_result = json.loads(runtime_path.read_text(encoding="utf-8"))
+summary["runtime_results"] = [runtime_result]
+summary.setdefault("source_contracts", {})["runtime_result"] = runtime_result.get(
+    "schema_version"
+)
+summary_path.write_text(
+    json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+    encoding="utf-8",
+)
+PY
+
 run_step "Generate AIGuard runtime reliability guard_analysis" \
   bash -lc "cd '$AIGUARD_REPO' && PYTHONDONTWRITEBYTECODE=1 '$AIGUARD_PYTHON' -m inferedge_aiguard.cli reason-orchestration --input '$ORCHESTRATION_OUT' --save-json '$AIGUARD_JSON_OUT' --save-md '$AIGUARD_MD_OUT'"
-
-run_step "Generate Lab Agent Runtime Reliability report JSON" \
-  run_lab_agent_runtime_report json "$LAB_JSON_OUT"
-
-run_step "Generate Lab Agent Runtime Reliability report Markdown" \
-  run_lab_agent_runtime_report markdown "$LAB_MD_OUT"
 
 if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   if [[ -z "$REMOTE_WORKER_REGISTRY" ]]; then
@@ -469,9 +552,17 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
     bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator remote-dispatch --registry '$REMOTE_WORKER_REGISTRY' --request '$REMOTE_TASK_REQUEST' --output '$REMOTE_DISPATCH_OUT'"
 fi
 
+run_step "Generate Lab Agent Runtime Reliability report JSON" \
+  run_lab_agent_runtime_report json "$LAB_JSON_OUT"
+
+run_step "Generate Lab Agent Runtime Reliability report Markdown" \
+  run_lab_agent_runtime_report markdown "$LAB_MD_OUT"
+
 run_step "Validate schema markers" grep -q "inferedge-agent-manifest-v1" "$FORGE_OUT"
 grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
+grep -q "runtime_health_snapshot" "$RUNTIME_OUT"
 grep -q "inferedge-orchestration-summary-v1" "$ORCHESTRATION_OUT"
+grep -q "runtime_results" "$ORCHESTRATION_OUT"
 grep -q "inferedge-aiguard-diagnosis-v1" "$AIGUARD_JSON_OUT"
 grep -q "inferedgelab-agent-runtime-reliability-report-v1" "$LAB_JSON_OUT"
 grep -q "$ORCHESTRATOR_MODE_MARKER" "$ORCHESTRATION_OUT"
@@ -489,8 +580,11 @@ grep -q "tegrastats_timeline" "$ORCHESTRATION_OUT"
 grep -q "sustained_overload_risk" "$AIGUARD_JSON_OUT"
 grep -q "profiled_workload_pressure" "$AIGUARD_JSON_OUT"
 grep -q "thermal_resource_pressure" "$AIGUARD_JSON_OUT"
+grep -q "runtime_latency_budget_overrun" "$AIGUARD_JSON_OUT"
 grep -q "max_total_queue_depth" "$LAB_JSON_OUT"
 grep -q "operation_context" "$LAB_JSON_OUT"
+grep -q "runtime_result_context" "$LAB_JSON_OUT"
+grep -q "runtime_operation_guard_summary" "$LAB_JSON_OUT"
 grep -q "queue_state_summary" "$LAB_JSON_OUT"
 grep -q "worker_health_snapshot" "$LAB_JSON_OUT"
 grep -q "runtime_event_summary" "$LAB_JSON_OUT"
@@ -501,6 +595,8 @@ grep -q "sustained_overload_review" "$LAB_JSON_OUT"
 grep -q "Orchestrator Operation Context" "$LAB_MD_OUT"
 grep -q "Worker Health" "$LAB_MD_OUT"
 grep -q "Runtime Event Summary" "$LAB_MD_OUT"
+grep -q "Runtime Result Operation Evidence" "$LAB_MD_OUT"
+grep -q "AIGuard Runtime Operation Evidence" "$LAB_MD_OUT"
 if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "inferedge-remote-dispatch-result-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "file_contract_starter" "$REMOTE_DISPATCH_OUT"
@@ -513,6 +609,9 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "inferedge-remote-worker-selection-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "retry_fallback_plan" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-remote-retry-fallback-plan-v1" "$REMOTE_DISPATCH_OUT"
+  grep -q "remote_dispatch_context" "$LAB_JSON_OUT"
+  grep -q "remote_execution_plan" "$LAB_JSON_OUT"
+  grep -q "Remote Dispatch Context" "$LAB_MD_OUT"
 fi
 
 echo
