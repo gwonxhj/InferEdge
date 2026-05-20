@@ -368,16 +368,18 @@ process resource snapshot capture, and live `tegrastats` capture.
 | Fallback count | 21 |
 | Deadline missed count | 14 |
 | Parsed `tegrastats` samples | 3 |
-| Max temperature | `40.656 C` |
-| Max RAM used | `967 MB` |
-| Vision mean / p95 latency | `172.593 ms / 437.55 ms` |
+| Max temperature | `38.687 C` |
+| Max RAM used | `999 MB` |
+| Vision mean / p95 latency | `170.174 ms / 402.416 ms` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 
 This latest replay confirms that the current main branches still carry real
 Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
-and Lab. It remains a device-local smoke record, not decoded YOLO accuracy,
-live camera, Whisper/FastAPI, or sustained thermal endurance validation.
+and Lab. It also confirms the Lab report preserves Runtime operation guard
+evidence (`runtime_latency_budget_overrun`, `runtime_error_classification`).
+It remains a device-local smoke record, not decoded YOLO accuracy, live camera,
+Whisper/FastAPI, or sustained thermal endurance validation.
 
 The script writes generated evidence under:
 
