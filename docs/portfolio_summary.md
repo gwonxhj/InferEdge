@@ -83,9 +83,14 @@ bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch \
 ```
 
 This adds `06_remote_dispatch_result.json` with remote worker selection
-evidence, worker selection reasons, retry/fallback planning, and a plan-only
-remote execution plan. It proves the file-based worker registry/task request
-contract, not production remote worker execution.
+evidence, worker selection reasons, retry/fallback planning,
+`remote_execution_plan`, and `remote_execution_result`. It also adds
+`07_remote_dispatch_guard_analysis.json` so AIGuard can explain the remote
+dispatch starter evidence. Use `--remote-execute-plan` to explicitly request
+the HTTP/SSH starter execution path when a worker registry entry supports it;
+the committed file-contract fixture records skipped starter evidence. This
+proves the worker registry/task request/remote execution starter contract, not
+production remote worker execution.
 
 Replay the same entrypoint with explicit local input overrides:
 

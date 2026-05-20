@@ -15,6 +15,8 @@ GENERATE_VISION_DETECTOR_PROBE=0
 CAPTURE_TEGRASTATS=0
 CAPTURE_PROCESS_RESOURCE_SNAPSHOT=0
 RUN_REMOTE_DISPATCH=0
+RUN_REMOTE_EXECUTE_PLAN=0
+REMOTE_EXECUTE_TIMEOUT_SEC=10.0
 REMOTE_WORKER_REGISTRY=""
 REMOTE_TASK_REQUEST=""
 VISION_PRODUCER_MARKER="image_file"
@@ -32,6 +34,8 @@ Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [-
                                              [--capture-tegrastats]
                                              [--capture-process-resource-snapshot]
                                              [--remote-dispatch]
+                                             [--remote-execute-plan]
+                                             [--remote-timeout-sec SEC]
                                              [--remote-worker-registry PATH]
                                              [--remote-task-request PATH]
 
@@ -86,6 +90,14 @@ Options:
   --remote-dispatch
                     Also run the Orchestrator file-based remote dispatch
                     starter and write 06_remote_dispatch_result.json.
+  --remote-execute-plan
+                    Explicitly ask Orchestrator to execute the selected
+                    HTTP/SSH remote starter endpoint. Implies
+                    --remote-dispatch. File-contract workers are recorded as
+                    skipped starter evidence, not production remote execution.
+  --remote-timeout-sec SEC
+                    Timeout for explicit HTTP/SSH remote starter execution.
+                    Default: 10.0. Implies --remote-dispatch.
   --remote-worker-registry PATH
                     Override the remote worker registry JSON.
                     Implies --remote-dispatch.
@@ -153,6 +165,16 @@ while [[ $# -gt 0 ]]; do
     --remote-dispatch)
       RUN_REMOTE_DISPATCH=1
       shift
+      ;;
+    --remote-execute-plan)
+      RUN_REMOTE_DISPATCH=1
+      RUN_REMOTE_EXECUTE_PLAN=1
+      shift
+      ;;
+    --remote-timeout-sec)
+      REMOTE_EXECUTE_TIMEOUT_SEC="${2:?missing value for --remote-timeout-sec}"
+      RUN_REMOTE_DISPATCH=1
+      shift 2
       ;;
     --remote-worker-registry)
       REMOTE_WORKER_REGISTRY="${2:?missing value for --remote-worker-registry}"
@@ -395,6 +417,8 @@ AIGUARD_MD_OUT="$OUTPUT_DIR/04_aiguard_guard_analysis.md"
 LAB_JSON_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.json"
 LAB_MD_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.md"
 REMOTE_DISPATCH_OUT="$OUTPUT_DIR/06_remote_dispatch_result.json"
+REMOTE_AIGUARD_JSON_OUT="$OUTPUT_DIR/07_remote_dispatch_guard_analysis.json"
+REMOTE_AIGUARD_MD_OUT="$OUTPUT_DIR/07_remote_dispatch_guard_analysis.md"
 
 run_step "Record Forge agent_manifest contract input" cp "$FORGE_AGENT_MANIFEST" "$FORGE_OUT"
 run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT" "$RUNTIME_OUT"
@@ -511,6 +535,28 @@ run_orchestrator_sustained() {
   return "$status"
 }
 
+run_remote_dispatch_starter() {
+  cd "$ORCHESTRATOR_REPO"
+  local dispatch_args=(
+    remote-dispatch
+    --registry "$REMOTE_WORKER_REGISTRY"
+    --request "$REMOTE_TASK_REQUEST"
+    --output "$REMOTE_DISPATCH_OUT"
+  )
+  if [[ "$RUN_REMOTE_EXECUTE_PLAN" -eq 1 ]]; then
+    dispatch_args+=(--execute-plan --timeout-sec "$REMOTE_EXECUTE_TIMEOUT_SEC")
+  fi
+  PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src "$ORCH_PYTHON" -m inferedge_orchestrator "${dispatch_args[@]}"
+}
+
+run_remote_dispatch_aiguard() {
+  cd "$AIGUARD_REPO"
+  PYTHONDONTWRITEBYTECODE=1 "$AIGUARD_PYTHON" -m inferedge_aiguard.cli reason-remote-dispatch \
+    --input "$REMOTE_DISPATCH_OUT" \
+    --save-json "$REMOTE_AIGUARD_JSON_OUT" \
+    --save-md "$REMOTE_AIGUARD_MD_OUT"
+}
+
 run_step "Generate Orchestrator $SUSTAINED_MODE multi-workload sustained summary" \
   run_orchestrator_sustained
 
@@ -549,7 +595,10 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   REMOTE_WORKER_REGISTRY="$(absolute_file_path "$REMOTE_WORKER_REGISTRY")"
   REMOTE_TASK_REQUEST="$(absolute_file_path "$REMOTE_TASK_REQUEST")"
   run_step "Generate Orchestrator remote dispatch starter result" \
-    bash -lc "cd '$ORCHESTRATOR_REPO' && PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=src '$ORCH_PYTHON' -m inferedge_orchestrator remote-dispatch --registry '$REMOTE_WORKER_REGISTRY' --request '$REMOTE_TASK_REQUEST' --output '$REMOTE_DISPATCH_OUT'"
+    run_remote_dispatch_starter
+
+  run_step "Generate AIGuard remote dispatch starter guard_analysis" \
+    run_remote_dispatch_aiguard
 fi
 
 run_step "Generate Lab Agent Runtime Reliability report JSON" \
@@ -605,12 +654,20 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "remote_execution_plan" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-remote-execution-plan-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "network_execution_performed" "$REMOTE_DISPATCH_OUT"
+  grep -q "remote_execution_result" "$REMOTE_DISPATCH_OUT"
+  grep -q "execution_requested" "$REMOTE_DISPATCH_OUT"
+  grep -q "execution_performed" "$REMOTE_DISPATCH_OUT"
+  grep -q "inferedge-aiguard-diagnosis-v1" "$REMOTE_AIGUARD_JSON_OUT"
+  grep -q "remote_execution" "$REMOTE_AIGUARD_JSON_OUT"
+  grep -Eq "remote_dispatch_health|remote_execution_(plan_only|skipped|failed|starter_success)" "$REMOTE_AIGUARD_JSON_OUT"
   grep -q "worker_selection" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-remote-worker-selection-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "retry_fallback_plan" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-remote-retry-fallback-plan-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "remote_dispatch_context" "$LAB_JSON_OUT"
   grep -q "remote_execution_plan" "$LAB_JSON_OUT"
+  grep -q "remote_execution_result" "$LAB_JSON_OUT"
+  grep -q "Remote execution starter evidence" "$LAB_MD_OUT"
   grep -q "Remote Dispatch Context" "$LAB_MD_OUT"
 fi
 
@@ -628,4 +685,6 @@ echo "  Lab report JSON:            $LAB_JSON_OUT"
 echo "  Lab report Markdown:        $LAB_MD_OUT"
 if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   echo "  Remote dispatch result:     $REMOTE_DISPATCH_OUT"
+  echo "  Remote dispatch AIGuard:    $REMOTE_AIGUARD_JSON_OUT"
+  echo "  Remote dispatch AIGuard MD: $REMOTE_AIGUARD_MD_OUT"
 fi
