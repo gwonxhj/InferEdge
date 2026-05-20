@@ -134,7 +134,8 @@ context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
 With `--remote-dispatch`, the same script also writes Orchestrator's
 file-based remote worker selection result. This is a remote dispatch starter
-contract, not production SSH/HTTP remote execution.
+contract with worker selection, retry/fallback planning, and plan-only
+execution metadata, not production SSH/HTTP remote execution.
 The current extension smoke uses the latest Orchestrator producer-backed
 sustained path: Vision reads a local image fixture, Voice-Command replays a
 FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot

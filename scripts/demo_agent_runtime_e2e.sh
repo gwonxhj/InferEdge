@@ -506,6 +506,13 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "file_contract_starter" "$REMOTE_DISPATCH_OUT"
   grep -q "production_remote_execution" "$REMOTE_DISPATCH_OUT"
   grep -q "selected_worker_id" "$REMOTE_DISPATCH_OUT"
+  grep -q "remote_execution_plan" "$REMOTE_DISPATCH_OUT"
+  grep -q "inferedge-remote-execution-plan-v1" "$REMOTE_DISPATCH_OUT"
+  grep -q "network_execution_performed" "$REMOTE_DISPATCH_OUT"
+  grep -q "worker_selection" "$REMOTE_DISPATCH_OUT"
+  grep -q "inferedge-remote-worker-selection-v1" "$REMOTE_DISPATCH_OUT"
+  grep -q "retry_fallback_plan" "$REMOTE_DISPATCH_OUT"
+  grep -q "inferedge-remote-retry-fallback-plan-v1" "$REMOTE_DISPATCH_OUT"
 fi
 
 echo
