@@ -307,6 +307,30 @@ This record ties a real YOLOv8n ONNX probe and live Jetson telemetry capture
 into the same entrypoint evidence chain. It remains a device-local smoke, not
 thermal endurance or live camera validation.
 
+Latest Jetson device-local replay:
+
+| Evidence | Value |
+|---|---:|
+| Device | Jetson Orin Nano 25W |
+| Model | user-provided `yolov8n.onnx` |
+| Scenario | `device_local` starter with real ONNX model + live `tegrastats` |
+| Frames | 24 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 21 / 21 |
+| Deadline missed count | 14 |
+| Parsed `tegrastats` samples | 3 |
+| Max temperature / RAM | 40.656 C / 967 MB |
+| Vision mean / p95 latency | 172.593 ms / 437.55 ms |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This replay was run from the entrypoint script with `--device-local`,
+`--vision-onnx-model`, `--capture-process-resource-snapshot`, and
+`--capture-tegrastats`. It confirms the latest main branch still carries real
+Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
+and Lab. It is not a decoded YOLO accuracy validation or sustained thermal
+endurance claim.
+
 Open the Local Studio demo:
 
 ```bash

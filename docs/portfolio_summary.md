@@ -122,6 +122,15 @@ The same real model probe was then replayed with live `--capture-tegrastats`:
 Lab `blocked` decision. This ties real ONNX model execution evidence and live
 Jetson telemetry into one device-local smoke bundle, not a thermal endurance
 claim.
+A latest main-branch replay used the same Jetson Orin Nano 25W path with a
+user-provided `yolov8n.onnx`, local image input, process resource snapshot
+capture, and live `tegrastats` capture. It ran 24 frames, reached max queue
+depth 6, recorded dropped/fallback count 21/21, 14 deadline misses, parsed 3
+`tegrastats` samples, and preserved max temperature 40.656 C / max RAM 967 MB.
+The Vision ONNX probe reported mean/p95 latency 172.593 ms / 437.55 ms, while
+AIGuard reported `blocked` / `high` and Lab produced a `blocked` decision. This
+is current-main device-local ONNX probe and telemetry handoff evidence, not
+decoded YOLO accuracy, live camera, or thermal endurance validation.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
