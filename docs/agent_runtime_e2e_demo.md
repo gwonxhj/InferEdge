@@ -19,6 +19,16 @@ worker health, runtime event summary, and timeline samples in report output. The
 optional `--device-local` mode uses committed local image, request, and resource
 snapshot producers in Orchestrator `scenario_mode=device_local`.
 
+## Status Boundary
+
+| Path | Status | Meaning |
+|---|---|---|
+| Default e2e chain | Implemented | `agent_manifest -> Runtime result.agent -> Orchestrator -> AIGuard -> Lab` contract is reproducible |
+| Producer-backed sustained workload path | Smoke/Starter | Queue/drop/fallback/deadline evidence is generated from committed fixtures |
+| Device-local override path | Smoke/Starter | Local image, optional ONNX model, request payload, resource snapshot, and `tegrastats` input can be routed through the same chain |
+| Jetson ONNX + live `tegrastats` replay | Smoke/Starter | Real device telemetry handoff is validated through the report path |
+| Live camera, Whisper/FastAPI service, thermal endurance, production remote execution | Future Work | Not completed and should not be described as current functionality |
+
 ## Contract Chain
 
 ```text
