@@ -352,8 +352,8 @@ Latest Jetson device-local replay:
 | Dropped / fallback count | 93 / 93 |
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
-| Max temperature / RAM | 38.843 C / 978 MB |
-| Vision mean / p95 latency | 157.972 ms / 169.688 ms |
+| Max temperature / RAM | 39.0 C / 979 MB |
+| Vision mean / p95 latency | 156.43 ms / 159.629 ms |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
@@ -368,6 +368,8 @@ decoded YOLO accuracy validation or sustained thermal endurance claim.
 For the clean Jetson replay procedure that avoids touching dirty local Forge or
 Runtime worktrees, see
 [`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook).
+For a submission-facing snapshot of the generated Lab evidence, see
+[`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md).
 
 Open the Local Studio demo:
 
