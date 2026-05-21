@@ -564,6 +564,22 @@ dispatch source contracts. Registry tables preserve scenario label and category
 when Orchestrator emits them, while keeping scenario mode for backward
 compatibility with older bundles.
 
+For a focused runtime-operation comparison, generate one device-local
+probe/process bundle and one remote fallback bundle, then build a registry from
+those two output directories:
+
+```bash
+python3 scripts/build_agent_runtime_run_registry.py \
+  --run-dir /tmp/inferedge_agent_runtime_device_local_probe_process \
+  --run-dir /tmp/inferedge_agent_runtime_fallback_e2e \
+  --output-json /tmp/inferedge_agent_runtime_compare_registry.json \
+  --output-md /tmp/inferedge_agent_runtime_compare_registry.md
+```
+
+This lets reviewers compare the device-local input/probe path and the bounded
+remote fallback path in one table while still drilling back into each run's
+Orchestrator, AIGuard, Lab, and remote-dispatch source artifacts.
+
 Expected evidence markers:
 
 - `multi_workload_sustained_summary`

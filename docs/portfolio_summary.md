@@ -124,6 +124,12 @@ primary-http-worker connection_error
 This shows bounded recovery evidence propagation. It is still a starter smoke,
 not production-grade remote retry control.
 
+The generated `00_evidence_index.json` files can be combined into a local run
+registry so the device-local probe/process path and remote fallback path are
+reviewed side by side. This registry is only a navigation and comparison layer;
+it preserves links back to the source Orchestrator, AIGuard, Lab, and remote
+dispatch artifacts instead of replacing those contracts.
+
 Replay the same entrypoint with explicit local input overrides:
 
 ```bash
