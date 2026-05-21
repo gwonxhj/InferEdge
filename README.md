@@ -154,6 +154,9 @@ bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
 # skipped starter evidence.
 bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch --remote-execute-plan
 
+# Optional: preserve Runtime operation summary through EdgeEnv's local registry.
+bash scripts/demo_agent_runtime_e2e.sh --device-local --edgeenv-run-evidence
+
 # Optional: reproduce primary failure followed by bounded fallback recovery.
 # Terminal A:
 python3 ../InferEdgeOrchestrator/scripts/remote_http_worker.py \
@@ -184,6 +187,9 @@ without changing the source contracts. It also records an `operation_path` and,
 when present, remote dispatch starter status, selected worker, remote execution
 status, and fallback final status so device-local and remote/fallback runs can
 be compared in one registry table.
+When present, EdgeEnv evidence status is also recorded so reviewers can see
+that Runtime operation summary was preserved in the local registry/artifact
+flow without making it a deployment decision or comparability gate.
 For device-local override runs, the index and registry also surface
 `producer_sources`, `device_local_producer_count`, and `producer_stages` so a
 reviewer can tell whether the bundle used committed starter fixtures or runtime
@@ -217,6 +223,10 @@ the Orchestrator HTTP/SSH starter execution path when the selected worker
 registry entry supports it. File-contract workers remain selection-only and are
 recorded as skipped starter evidence. This is remote dispatch starter evidence,
 not production SSH/HTTP remote execution.
+With `--edgeenv-run-evidence`, the script writes `08_edgeenv_run_show.json` and
+`08_edgeenv/.edgeenv/runs.db`. This is EdgeEnv local evidence preservation for
+the Runtime operation summary, not cloud monitoring or Lab deployment decision
+ownership.
 The `examples/remote_fallback` fixtures intentionally point the primary worker
 at an unavailable HTTP endpoint and the fallback worker at a local starter
 server. When the fallback worker is running, the same entrypoint smoke records

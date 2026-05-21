@@ -110,6 +110,18 @@ an `http_request` or `ssh_command` endpoint can use the same option to record
 starter execution status, transport, and error category. This is remote dispatch
 starter evidence, not production SSH/HTTP execution.
 
+Preserve Runtime operation summary through EdgeEnv when you want the entrypoint
+bundle to include local registry evidence:
+
+```bash
+bash scripts/demo_agent_runtime_e2e.sh --device-local --edgeenv-run-evidence
+```
+
+This writes `08_edgeenv_run_show.json` and `08_edgeenv/.edgeenv/runs.db`.
+EdgeEnv stores the Runtime operation summary as supplemental run evidence; it
+does not become a deployment decision owner, cloud monitoring path, or
+same-condition comparability gate.
+
 To reproduce bounded remote fallback recovery, run only the fallback HTTP
 starter worker and leave the primary endpoint unavailable:
 
@@ -655,6 +667,10 @@ bash scripts/demo_agent_runtime_e2e.sh
 | `05_lab_agent_runtime_report.json` | Lab-owned agent runtime reliability report |
 | `05_lab_agent_runtime_report.md` | Human-readable Lab deployment decision context |
 | `06_remote_dispatch_result.json` | Optional file-based remote worker selection evidence when `--remote-dispatch` is used |
+| `07_remote_dispatch_guard_analysis.json` | Optional AIGuard diagnosis for remote dispatch starter evidence |
+| `07_remote_dispatch_guard_analysis.md` | Optional human-readable remote dispatch diagnosis |
+| `08_edgeenv_run_show.json` | Optional EdgeEnv run evidence when `--edgeenv-run-evidence` is used |
+| `08_edgeenv/.edgeenv/runs.db` | Optional EdgeEnv local registry for the Runtime operation evidence run |
 
 Expected sustained evidence markers:
 
@@ -708,6 +724,9 @@ Expected sustained evidence markers:
   `--remote-dispatch` is used
 - `07_remote_dispatch_guard_analysis.json` with deterministic AIGuard evidence
   for the remote dispatch starter when `--remote-dispatch` is used
+- `runtime_operation_summary` in `08_edgeenv_run_show.json` and
+  `edgeenv_summary` in `00_evidence_index.json` when
+  `--edgeenv-run-evidence` is used
 
 ## Scope Boundary
 
@@ -729,6 +748,8 @@ Included:
 - optional live Jetson `tegrastats` capture through `--capture-tegrastats`
 - optional file-based remote worker selection evidence through
   `--remote-dispatch`
+- optional EdgeEnv local run registry evidence through
+  `--edgeenv-run-evidence`
 - AIGuard runtime reliability interpretation
 - Lab-owned report and deployment decision context
 
