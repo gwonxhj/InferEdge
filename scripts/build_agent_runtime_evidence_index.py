@@ -157,6 +157,7 @@ def operation_path(run_summary: dict[str, Any], remote_summary: dict[str, Any]) 
 
 
 def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict[str, Any]:
+    runtime = load_json(output_dir / "02_runtime_result_agent.json")
     orchestration = load_json(output_dir / "03_orchestration_summary.json")
     aiguard = load_json(output_dir / "04_aiguard_guard_analysis.json")
     lab = load_json(output_dir / "05_lab_agent_runtime_report.json")
@@ -460,6 +461,83 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 "unknown",
             ),
         ),
+        "runtime_operation_health_reason": first_value(
+            runtime,
+            [
+                ("runtime_operation_summary", "health_reason"),
+                ("runtime_health_snapshot", "health_reason"),
+            ],
+            first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "runtime_result_context",
+                        "runtime_operation_summary",
+                        "health_reason",
+                    ),
+                    (
+                        "agent_runtime_summary",
+                        "runtime_result_context",
+                        "runtime_health_snapshot",
+                        "health_reason",
+                    ),
+                ],
+                "unknown",
+            ),
+        ),
+        "runtime_operation_recommended_action": first_value(
+            runtime,
+            [("runtime_operation_summary", "recommended_action")],
+            first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "runtime_result_context",
+                        "runtime_operation_summary",
+                        "recommended_action",
+                    )
+                ],
+                "unknown",
+            ),
+        ),
+        "runtime_operation_risk_labels": unique_list(
+            first_value(
+                runtime,
+                [("runtime_operation_summary", "risk_labels")],
+                first_value(
+                    lab,
+                    [
+                        (
+                            "agent_runtime_summary",
+                            "runtime_result_context",
+                            "runtime_operation_summary",
+                            "risk_labels",
+                        )
+                    ],
+                    [],
+                ),
+            )
+        ),
+        "runtime_operation_evidence_gaps": unique_list(
+            first_value(
+                runtime,
+                [("runtime_operation_summary", "evidence_gaps")],
+                first_value(
+                    lab,
+                    [
+                        (
+                            "agent_runtime_summary",
+                            "runtime_result_context",
+                            "runtime_operation_summary",
+                            "evidence_gaps",
+                        )
+                    ],
+                    [],
+                ),
+            )
+        ),
     }
 
     guard_summary = {
@@ -649,6 +727,10 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| max_pressure_task | {md_value(run['max_pressure_task'])} |",
             f"| device_local_event_count | {md_value(run['device_local_event_count'])} |",
             f"| producer_event_count | {md_value(run['producer_event_count'])} |",
+            f"| runtime_operation_health_reason | {md_value(run['runtime_operation_health_reason'])} |",
+            f"| runtime_operation_recommended_action | {md_value(run['runtime_operation_recommended_action'])} |",
+            f"| runtime_operation_risk_labels | {md_value(run['runtime_operation_risk_labels'])} |",
+            f"| runtime_operation_evidence_gaps | {md_value(run['runtime_operation_evidence_gaps'])} |",
             "",
             "## Guard And Decision",
             "",

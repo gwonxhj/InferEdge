@@ -129,6 +129,15 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "producer_event_count": run_summary.get(
                     "producer_event_count", "unknown"
                 ),
+                "runtime_operation_health_reason": run_summary.get(
+                    "runtime_operation_health_reason", "unknown"
+                ),
+                "runtime_operation_recommended_action": run_summary.get(
+                    "runtime_operation_recommended_action", "unknown"
+                ),
+                "runtime_operation_risk_labels": run_summary.get(
+                    "runtime_operation_risk_labels", []
+                ),
                 "guard_verdict": guard_summary.get("guard_verdict", "unknown"),
                 "severity": guard_summary.get("severity", "unknown"),
                 "lab_decision": decision_summary.get("decision", "unknown"),
@@ -184,8 +193,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Producer Stages | Guard | Lab Decision | Remote |",
-        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|",
+        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote |",
+        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -211,6 +220,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["device_local_producer_count"]),
                     md_value(run["device_local_event_count"]),
                     md_value(run["producer_event_count"]),
+                    md_value(run["runtime_operation_recommended_action"]),
+                    md_value(run["runtime_operation_risk_labels"]),
                     md_value(run["producer_stages"]),
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),

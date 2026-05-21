@@ -27,6 +27,21 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "scripts/build_agent_runtime_evidence_index.py",
     )
     write_json(
+        tmp_path / "02_runtime_result_agent.json",
+        {
+            "runtime_operation_summary": {
+                "schema_version": "inferedge-runtime-operation-summary-v1",
+                "health_reason": "timeout_threshold_exceeded",
+                "recommended_action": "review_latency_budget_or_degrade",
+                "risk_labels": [
+                    "runtime_timeout_observed",
+                    "latency_budget_exceeded",
+                ],
+                "evidence_gaps": ["thermal_memory_evidence_missing"],
+            }
+        },
+    )
+    write_json(
         tmp_path / "03_orchestration_summary.json",
         {
             "multi_workload_sustained_summary": {
@@ -109,6 +124,19 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert run_summary["max_pressure_task"] == "vision_agent"
     assert run_summary["device_local_event_count"] == 7
     assert run_summary["producer_event_count"] == 7
+    assert run_summary["runtime_operation_health_reason"] == (
+        "timeout_threshold_exceeded"
+    )
+    assert run_summary["runtime_operation_recommended_action"] == (
+        "review_latency_budget_or_degrade"
+    )
+    assert run_summary["runtime_operation_risk_labels"] == [
+        "runtime_timeout_observed",
+        "latency_budget_exceeded",
+    ]
+    assert run_summary["runtime_operation_evidence_gaps"] == [
+        "thermal_memory_evidence_missing"
+    ]
 
 
 def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -> None:
@@ -143,6 +171,14 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "device_local_event_count": 7,
                 "producer_event_count": 7,
                 "producer_stages": ["device_local_cli_override"],
+                "runtime_operation_health_reason": "timeout_threshold_exceeded",
+                "runtime_operation_recommended_action": (
+                    "review_latency_budget_or_degrade"
+                ),
+                "runtime_operation_risk_labels": [
+                    "runtime_timeout_observed",
+                    "latency_budget_exceeded",
+                ],
                 "queue_pressure_reason": (
                     "max_total_queue_depth_exceeded_overload_threshold"
                 ),
@@ -176,3 +212,11 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["max_pressure_task"] == "vision_agent"
     assert run["device_local_event_count"] == 7
     assert run["producer_event_count"] == 7
+    assert run["runtime_operation_health_reason"] == "timeout_threshold_exceeded"
+    assert run["runtime_operation_recommended_action"] == (
+        "review_latency_budget_or_degrade"
+    )
+    assert run["runtime_operation_risk_labels"] == [
+        "runtime_timeout_observed",
+        "latency_budget_exceeded",
+    ]

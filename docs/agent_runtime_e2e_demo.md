@@ -676,8 +676,13 @@ Expected sustained evidence markers:
   `--device-local` records producer source and runtime event coverage
 - `runtime_retryable_error` and `runtime_error_retryable` when Runtime marks a
   timeout or skipped execution as retryable evidence
+- `runtime_operation_summary` in Runtime and Orchestrator-bundled Runtime
+  result evidence, plus `runtime_operation_health` in AIGuard output when
+  Runtime provides summary risk labels or a review action
 - `runtime_retryable_error_review` in the Lab report when retryable Runtime
   failure-handling evidence requires deployment review
+- `runtime_operation_summary_review` in the Lab report when Runtime summary
+  evidence is carried into Lab-owned decision context
 - `max_total_queue_depth` in Lab report metrics
 - `profiled_workload_pressure` and `thermal_resource_pressure` preserved in Lab report evidence
 - `AIGuard Orchestrator Operation Evidence` in the Lab Markdown report,
@@ -687,6 +692,8 @@ Expected sustained evidence markers:
   the Lab report
 - `queue_pressure_reason`, `max_pressure_task`, `operation_risk_summary`, and
   producer context preserved in Lab JSON/Markdown reports
+- `operation_summary_recommended_action`, Runtime risk labels, and Runtime
+  evidence gaps visible in Lab Markdown and the generated evidence index
 - `Orchestrator Operation Context`, `Worker Health`, and
   `Runtime Event Summary` visible in the Lab Markdown report, including worker
   operation risk and queue pressure reason tables
