@@ -173,7 +173,10 @@ output bundle so the generated Orchestrator, AIGuard, Lab, telemetry, and
 optional remote-dispatch artifacts are easy to navigate without changing the
 source evidence contracts. The index preserves Orchestrator scenario label,
 category, and mode fields so repeated smoke runs can be grouped by intent
-without changing the source contracts.
+without changing the source contracts. It also records an `operation_path` and,
+when present, remote dispatch starter status, selected worker, remote execution
+status, and fallback final status so device-local and remote/fallback runs can
+be compared in one registry table.
 When comparing repeated entrypoint smoke runs, build a local navigation
 registry from the generated indexes:
 

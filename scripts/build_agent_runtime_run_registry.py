@@ -98,6 +98,7 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "lab_markdown_report": make_relative(lab_md_path, output_base)
                 if lab_md_path.exists()
                 else None,
+                "operation_path": index.get("operation_path", "unknown"),
                 "scenario_label": run_summary.get("scenario_label", "unknown"),
                 "scenario_category": run_summary.get("scenario_category", "unknown"),
                 "scenario_description": run_summary.get("scenario_description", "unknown"),
@@ -114,6 +115,18 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "severity": guard_summary.get("severity", "unknown"),
                 "lab_decision": decision_summary.get("decision", "unknown"),
                 "triggered_rules": decision_summary.get("triggered_rules", []),
+                "remote_dispatch_status": remote_summary.get("dispatch_status")
+                if remote_summary
+                else None,
+                "remote_selected_worker_id": remote_summary.get("selected_worker_id")
+                if remote_summary
+                else None,
+                "remote_execution_status": remote_summary.get("remote_execution_status")
+                if remote_summary
+                else None,
+                "fallback_final_status": remote_summary.get("fallback_final_status")
+                if remote_summary
+                else None,
                 "remote_final_status": remote_summary.get("final_status")
                 if remote_summary
                 else None,
@@ -153,8 +166,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Scenario Label | Category | Mode | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Guard | Lab Decision |",
-        "|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|",
+        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Guard | Lab Decision | Remote |",
+        "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -164,6 +177,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             + " | ".join(
                 [
                     run_label,
+                    md_value(run["operation_path"]),
                     md_value(run["scenario_label"]),
                     md_value(run["scenario_category"]),
                     md_value(run["scenario_mode"]),
@@ -175,6 +189,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["tegrastats_sample_count"]),
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),
+                    _remote_cell(run),
                 ]
             )
             + " |"
@@ -192,6 +207,22 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _remote_cell(run: dict[str, Any]) -> str:
+    dispatch = run.get("remote_dispatch_status")
+    selected = run.get("remote_selected_worker_id")
+    remote_status = run.get("remote_execution_status")
+    fallback_status = run.get("fallback_final_status")
+    if all(value in (None, "", "unknown") for value in (dispatch, selected, remote_status, fallback_status)):
+        return "-"
+    parts = [
+        f"dispatch={dispatch}" if dispatch not in (None, "", "unknown") else None,
+        f"worker={selected}" if selected not in (None, "", "unknown") else None,
+        f"remote={remote_status}" if remote_status not in (None, "", "unknown") else None,
+        f"fallback={fallback_status}" if fallback_status not in (None, "", "unknown") else None,
+    ]
+    return ", ".join(part for part in parts if part)
 
 
 def main() -> int:

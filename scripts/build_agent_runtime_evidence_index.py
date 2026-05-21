@@ -106,6 +106,17 @@ def evidence_types(data: dict[str, Any]) -> list[str]:
     return types
 
 
+def operation_path(run_summary: dict[str, Any], remote_summary: dict[str, Any]) -> str:
+    if remote_summary:
+        fallback_status = remote_summary.get("fallback_final_status")
+        if fallback_status not in (None, "", "unknown"):
+            return "remote_dispatch_with_fallback"
+        return "remote_dispatch_starter"
+    if run_summary.get("scenario_mode") == "device_local":
+        return "device_local_starter"
+    return "producer_backed_starter"
+
+
 def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict[str, Any]:
     orchestration = load_json(output_dir / "03_orchestration_summary.json")
     aiguard = load_json(output_dir / "04_aiguard_guard_analysis.json")
@@ -348,10 +359,56 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     remote_summary: dict[str, Any] = {}
     if remote:
         remote_summary = {
+            "dispatch_status": first_value(remote, [("dispatch_status",), ("status",)], "unknown"),
             "selected_worker_id": first_value(remote, [("selected_worker_id",)], "unknown"),
+            "decision_reason": first_value(remote, [("decision_reason",)], "unknown"),
+            "execution_requested": first_value(
+                remote,
+                [
+                    ("remote_execution_result", "execution_requested"),
+                    ("remote_execution", "execution_requested"),
+                ],
+                "unknown",
+            ),
             "network_execution_performed": first_value(
                 remote,
-                [("network_execution_performed",), ("remote_execution_result", "performed")],
+                [
+                    ("network_execution_performed",),
+                    ("remote_execution_result", "performed"),
+                    ("remote_execution_result", "network_execution_performed"),
+                ],
+                "unknown",
+            ),
+            "remote_execution_status": first_value(
+                remote,
+                [
+                    ("remote_execution_result", "status"),
+                    ("remote_execution_result", "final_status"),
+                ],
+                "unknown",
+            ),
+            "remote_error_category": first_value(
+                remote,
+                [
+                    ("remote_execution_result", "error_category"),
+                    ("remote_execution_result", "error", "category"),
+                ],
+                "unknown",
+            ),
+            "fallback_final_status": first_value(
+                remote,
+                [
+                    ("fallback_execution_result", "final_status"),
+                    ("fallback_execution_result", "status"),
+                ],
+                "unknown",
+            ),
+            "fallback_worker_id": first_value(
+                remote,
+                [
+                    ("fallback_execution_result", "worker_id"),
+                    ("retry_fallback_plan", "fallback_worker_id"),
+                ],
                 "unknown",
             ),
             "final_status": first_value(
@@ -371,6 +428,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         "output_dir": str(output_dir),
         "files": files,
         "run_summary": run_summary,
+        "operation_path": operation_path(run_summary, remote_summary),
         "guard_summary": guard_summary,
         "decision_summary": decision_summary,
         "remote_summary": remote_summary,
@@ -392,6 +450,7 @@ def md_value(value: Any) -> str:
 
 def write_markdown(index: dict[str, Any], path: Path) -> None:
     run = index["run_summary"]
+    operation = index.get("operation_path", "unknown")
     guard = index["guard_summary"]
     decision = index["decision_summary"]
     remote = index["remote_summary"]
@@ -421,6 +480,7 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             "",
             "| Metric | Value |",
             "|---|---:|",
+            f"| operation_path | {md_value(operation)} |",
             f"| scenario_label | {md_value(run['scenario_label'])} |",
             f"| scenario_category | {md_value(run['scenario_category'])} |",
             f"| scenario_description | {md_value(run['scenario_description'])} |",
@@ -458,8 +518,15 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 "",
                 "| Field | Value |",
                 "|---|---|",
+                f"| dispatch_status | {md_value(remote['dispatch_status'])} |",
                 f"| selected_worker_id | {md_value(remote['selected_worker_id'])} |",
+                f"| decision_reason | {md_value(remote['decision_reason'])} |",
+                f"| execution_requested | {md_value(remote['execution_requested'])} |",
                 f"| network_execution_performed | {md_value(remote['network_execution_performed'])} |",
+                f"| remote_execution_status | {md_value(remote['remote_execution_status'])} |",
+                f"| remote_error_category | {md_value(remote['remote_error_category'])} |",
+                f"| fallback_worker_id | {md_value(remote['fallback_worker_id'])} |",
+                f"| fallback_final_status | {md_value(remote['fallback_final_status'])} |",
                 f"| final_status | {md_value(remote['final_status'])} |",
             ]
         )
