@@ -19,6 +19,7 @@ RUN_REMOTE_EXECUTE_PLAN=0
 REMOTE_EXECUTE_TIMEOUT_SEC=10.0
 REMOTE_WORKER_REGISTRY=""
 REMOTE_TASK_REQUEST=""
+RUN_EDGEENV_EVIDENCE=0
 VISION_PRODUCER_MARKER="image_file"
 SAFETY_PRODUCER_MARKER="resource_snapshot_fixture"
 
@@ -38,6 +39,7 @@ Usage: bash scripts/demo_agent_runtime_e2e.sh [--output-dir DIR] [--frames N] [-
                                              [--remote-timeout-sec SEC]
                                              [--remote-worker-registry PATH]
                                              [--remote-task-request PATH]
+                                             [--edgeenv-run-evidence]
 
 Replay the Reliable Edge Agent Runtime contract chain:
 
@@ -104,6 +106,11 @@ Options:
   --remote-task-request PATH
                     Override the remote task request JSON.
                     Implies --remote-dispatch.
+  --edgeenv-run-evidence
+                    Also preserve the Runtime operation summary through
+                    InferEdgeEnv's local run registry contract. This writes
+                    08_edgeenv_run_show.json and a local .edgeenv directory
+                    under the output bundle.
   -h, --help        Show this help.
 
 Environment:
@@ -113,6 +120,7 @@ Environment:
   INFEREDGE_ORCHESTRATOR_REPO  Override InferEdgeOrchestrator path.
   INFEREDGE_AIGUARD_REPO       Override InferEdgeAIGuard path.
   INFEREDGE_LAB_REPO           Override InferEdgeLab path.
+  INFEREDGE_ENV_REPO           Override InferEdgeEnv path.
 USAGE
 }
 
@@ -185,6 +193,10 @@ while [[ $# -gt 0 ]]; do
       REMOTE_TASK_REQUEST="${2:?missing value for --remote-task-request}"
       RUN_REMOTE_DISPATCH=1
       shift 2
+      ;;
+    --edgeenv-run-evidence)
+      RUN_EDGEENV_EVIDENCE=1
+      shift
       ;;
     -h|--help)
       usage
@@ -325,9 +337,17 @@ RUNTIME_REPO="$(resolve_repo "${INFEREDGE_RUNTIME_REPO:-}" InferEdge-Runtime "Ru
 ORCHESTRATOR_REPO="$(resolve_repo "${INFEREDGE_ORCHESTRATOR_REPO:-}" InferEdgeOrchestrator "Orchestrator")"
 AIGUARD_REPO="$(resolve_repo "${INFEREDGE_AIGUARD_REPO:-}" InferEdgeAIGuard "AIGuard")"
 LAB_REPO="$(resolve_repo "${INFEREDGE_LAB_REPO:-}" InferEdgeLab "Lab")"
+EDGEENV_REPO=""
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  EDGEENV_REPO="$(resolve_repo "${INFEREDGE_ENV_REPO:-}" InferEdgeEnv "EdgeEnv")"
+fi
 
 ORCH_PYTHON="$(choose_python "$ORCHESTRATOR_REPO")"
 AIGUARD_PYTHON="$(choose_python "$AIGUARD_REPO")"
+EDGEENV_PYTHON=""
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  EDGEENV_PYTHON="$(choose_python "$EDGEENV_REPO")"
+fi
 
 FORGE_AGENT_MANIFEST="$FORGE_REPO/tests/fixtures/agent_manifest_vision.json"
 RUNTIME_AGENT_RESULT="$ORCHESTRATOR_REPO/examples/agent_runtime/vision_runtime_result.json"
@@ -428,6 +448,13 @@ LAB_MD_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.md"
 REMOTE_DISPATCH_OUT="$OUTPUT_DIR/06_remote_dispatch_result.json"
 REMOTE_AIGUARD_JSON_OUT="$OUTPUT_DIR/07_remote_dispatch_guard_analysis.json"
 REMOTE_AIGUARD_MD_OUT="$OUTPUT_DIR/07_remote_dispatch_guard_analysis.md"
+EDGEENV_DIR="$OUTPUT_DIR/08_edgeenv"
+EDGEENV_BENCH_CONFIG="$EDGEENV_DIR/runtime_operation_bench.yaml"
+EDGEENV_TARGET_PROFILE="$EDGEENV_DIR/local_target.yaml"
+EDGEENV_ADAPTER="$EDGEENV_DIR/emit_runtime_operation_summary.py"
+EDGEENV_ROOT="$EDGEENV_DIR/.edgeenv"
+EDGEENV_RUN_STDOUT="$OUTPUT_DIR/08_edgeenv_run_stdout.txt"
+EDGEENV_RUN_SHOW_OUT="$OUTPUT_DIR/08_edgeenv_run_show.json"
 EVIDENCE_INDEX_JSON_OUT="$OUTPUT_DIR/00_evidence_index.json"
 EVIDENCE_INDEX_MD_OUT="$OUTPUT_DIR/00_evidence_index.md"
 
@@ -610,6 +637,119 @@ run_remote_dispatch_aiguard() {
     --save-md "$REMOTE_AIGUARD_MD_OUT"
 }
 
+run_edgeenv_runtime_operation_evidence() {
+  mkdir -p "$EDGEENV_DIR"
+  "$EDGEENV_PYTHON" - "$EDGEENV_BENCH_CONFIG" "$EDGEENV_TARGET_PROFILE" "$EDGEENV_ADAPTER" "$EDGEENV_PYTHON" "$RUNTIME_OUT" <<'PY'
+import shlex
+import sys
+from pathlib import Path
+
+bench_path = Path(sys.argv[1])
+target_path = Path(sys.argv[2])
+adapter_path = Path(sys.argv[3])
+python_path = sys.argv[4]
+runtime_path = Path(sys.argv[5])
+
+adapter_path.write_text(
+    """#!/usr/bin/env python3
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--runtime-result", required=True)
+    args = parser.parse_args()
+
+    data = json.loads(Path(args.runtime_result).read_text(encoding="utf-8"))
+    summary = data.get("runtime_operation_summary") or {}
+    health = data.get("runtime_health_snapshot") or {}
+    telemetry = (data.get("agent") or {}).get("telemetry_snapshot") or {}
+
+    mean = float(health.get("mean_ms") or telemetry.get("latency_mean_ms") or 0.0)
+    p99 = float(health.get("p99_ms") or telemetry.get("latency_p99_ms") or mean)
+    fps = float(health.get("fps") or telemetry.get("fps") or 0.0)
+    metrics = {
+        "latency_mean_ms": mean,
+        "latency_p50_ms": mean,
+        "latency_p95_ms": p99,
+        "latency_p99_ms": p99,
+        "throughput_fps": fps,
+    }
+    print("EDGEENV_RUNTIME_OPERATION_SUMMARY_JSON=" + json.dumps(summary, sort_keys=True))
+    print("EDGEENV_METRICS_JSON=" + json.dumps(metrics, sort_keys=True))
+
+
+if __name__ == "__main__":
+    main()
+""",
+    encoding="utf-8",
+)
+
+command = (
+    f"{shlex.quote(python_path)} {shlex.quote(str(adapter_path))} "
+    f"--runtime-result {shlex.quote(str(runtime_path))}"
+)
+bench_path.write_text(
+    "\n".join(
+        [
+            "name: entrypoint-runtime-operation-evidence",
+            f"command: {command}",
+            "model_name: entrypoint-runtime-operation-result",
+            "model_version: v1",
+            "model_format: runtime-result-json",
+            f"model_path: {runtime_path}",
+            "task: runtime-operation-evidence",
+            "input_shape: [1]",
+            "input_dtype: json",
+            "runtime: entrypoint-smoke",
+            "execution_provider: local-python",
+            "precision: evidence",
+            "batch_size: 1",
+            "warmup_runs: 0",
+            "repeat_runs: 1",
+            "include_preprocess: false",
+            "include_postprocess: false",
+            "",
+        ]
+    ),
+    encoding="utf-8",
+)
+target_path.write_text(
+    "\n".join(
+        [
+            "target_name: entrypoint-local",
+            "target_type: local",
+            "board_name: local-dev-machine",
+            "os: local",
+            "runtime_tags: [entrypoint, runtime-operation-evidence]",
+            "",
+        ]
+    ),
+    encoding="utf-8",
+)
+PY
+
+  cd "$EDGEENV_REPO"
+  PYTHONDONTWRITEBYTECODE=1 "$EDGEENV_PYTHON" -m inferedge_env.cli bench run \
+    --target "$EDGEENV_TARGET_PROFILE" \
+    --config "$EDGEENV_BENCH_CONFIG" \
+    --edgeenv-root "$EDGEENV_ROOT" | tee "$EDGEENV_RUN_STDOUT"
+
+  local edgeenv_run_id
+  edgeenv_run_id="$(awk -F': ' '/^Run ID:/ {print $2; exit}' "$EDGEENV_RUN_STDOUT")"
+  if [[ -z "$edgeenv_run_id" ]]; then
+    echo "failed to parse EdgeEnv run id from $EDGEENV_RUN_STDOUT" >&2
+    return 1
+  fi
+  PYTHONDONTWRITEBYTECODE=1 "$EDGEENV_PYTHON" -m inferedge_env.cli runs show \
+    "$edgeenv_run_id" \
+    --edgeenv-root "$EDGEENV_ROOT" > "$EDGEENV_RUN_SHOW_OUT"
+}
+
 run_step "Generate Orchestrator $SUSTAINED_MODE multi-workload sustained summary" \
   run_orchestrator_sustained
 
@@ -652,6 +792,11 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
 
   run_step "Generate AIGuard remote dispatch starter guard_analysis" \
     run_remote_dispatch_aiguard
+fi
+
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  run_step "Preserve Runtime operation summary in EdgeEnv run registry" \
+    run_edgeenv_runtime_operation_evidence
 fi
 
 run_step "Generate Lab Agent Runtime Reliability report JSON" \
@@ -739,6 +884,12 @@ grep -q "max_pressure_task" "$EVIDENCE_INDEX_MD_OUT"
 grep -q "device_local_event_count" "$EVIDENCE_INDEX_MD_OUT"
 grep -q "runtime_operation_recommended_action" "$EVIDENCE_INDEX_MD_OUT"
 grep -q "runtime_operation_risk_labels" "$EVIDENCE_INDEX_MD_OUT"
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  grep -q "runtime_operation_summary" "$EDGEENV_RUN_SHOW_OUT"
+  grep -q "inferedge-runtime-operation-summary-v1" "$EDGEENV_RUN_SHOW_OUT"
+  grep -q "edgeenv_summary" "$EVIDENCE_INDEX_JSON_OUT"
+  grep -q "EdgeEnv Runtime Operation Evidence" "$EVIDENCE_INDEX_MD_OUT"
+fi
 if [[ "$SUSTAINED_MODE" == "device-local" ]]; then
   grep -q "device_local_operation_context" "$AIGUARD_JSON_OUT"
   grep -q "device_local_operation_context" "$LAB_JSON_OUT"
@@ -792,4 +943,8 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   echo "  Remote dispatch result:     $REMOTE_DISPATCH_OUT"
   echo "  Remote dispatch AIGuard:    $REMOTE_AIGUARD_JSON_OUT"
   echo "  Remote dispatch AIGuard MD: $REMOTE_AIGUARD_MD_OUT"
+fi
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  echo "  EdgeEnv run show:           $EDGEENV_RUN_SHOW_OUT"
+  echo "  EdgeEnv registry root:      $EDGEENV_ROOT"
 fi

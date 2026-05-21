@@ -62,6 +62,16 @@ KNOWN_OUTPUTS = [
         "07_remote_dispatch_guard_analysis.md",
         "Optional human-readable remote dispatch diagnosis",
     ),
+    (
+        "edgeenv_run_show",
+        "08_edgeenv_run_show.json",
+        "Optional EdgeEnv local run registry evidence for Runtime operation summary",
+    ),
+    (
+        "edgeenv_runs_db",
+        "08_edgeenv/.edgeenv/runs.db",
+        "Optional EdgeEnv local SQLite run registry",
+    ),
 ]
 
 
@@ -162,6 +172,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     aiguard = load_json(output_dir / "04_aiguard_guard_analysis.json")
     lab = load_json(output_dir / "05_lab_agent_runtime_report.json")
     remote = load_json(output_dir / "06_remote_dispatch_result.json")
+    edgeenv = load_json(output_dir / "08_edgeenv_run_show.json")
 
     files = []
     for key, filename, description in KNOWN_OUTPUTS:
@@ -647,6 +658,41 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             ),
         }
 
+    edgeenv_runtime_operation = (
+        edgeenv.get("runtime_operation_summary")
+        if isinstance(edgeenv.get("runtime_operation_summary"), dict)
+        else {}
+    )
+    edgeenv_result = load_json(Path(str(edgeenv.get("result_path", "")))) if edgeenv else {}
+    edgeenv_summary: dict[str, Any] = {}
+    if edgeenv:
+        edgeenv_summary = {
+            "run_id": edgeenv.get("run_id", "unknown"),
+            "result_path": edgeenv.get("result_path", "unknown"),
+            "result_schema_version": first_value(
+                edgeenv_result,
+                [("schema_version",)],
+                edgeenv.get("schema_version", "unknown"),
+            ),
+            "has_runtime_operation_summary": bool(edgeenv_runtime_operation),
+            "runtime_operation_schema_version": edgeenv_runtime_operation.get(
+                "schema_version",
+                "unknown",
+            ),
+            "runtime_operation_health_reason": edgeenv_runtime_operation.get(
+                "health_reason",
+                "unknown",
+            ),
+            "runtime_operation_recommended_action": edgeenv_runtime_operation.get(
+                "recommended_action",
+                "unknown",
+            ),
+            "runtime_operation_risk_labels": unique_list(
+                edgeenv_runtime_operation.get("risk_labels", [])
+            ),
+            "comparability_role": "supplemental_evidence_not_gate",
+        }
+
     return {
         "schema_version": "inferedge-agent-runtime-evidence-index-v1",
         "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
@@ -657,6 +703,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         "guard_summary": guard_summary,
         "decision_summary": decision_summary,
         "remote_summary": remote_summary,
+        "edgeenv_summary": edgeenv_summary,
         "notes": [
             "This index is a navigation aid for generated evidence files.",
             "It does not replace the source JSON contracts or Lab-owned deployment decision.",
@@ -679,6 +726,7 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
     guard = index["guard_summary"]
     decision = index["decision_summary"]
     remote = index["remote_summary"]
+    edgeenv = index["edgeenv_summary"]
 
     lines = [
         "# Agent Runtime Evidence Index",
@@ -765,6 +813,26 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| fallback_worker_id | {md_value(remote['fallback_worker_id'])} |",
                 f"| fallback_final_status | {md_value(remote['fallback_final_status'])} |",
                 f"| final_status | {md_value(remote['final_status'])} |",
+            ]
+        )
+
+    if edgeenv:
+        lines.extend(
+            [
+                "",
+                "## EdgeEnv Runtime Operation Evidence",
+                "",
+                "| Field | Value |",
+                "|---|---|",
+                f"| run_id | {md_value(edgeenv['run_id'])} |",
+                f"| result_path | {md_value(edgeenv['result_path'])} |",
+                f"| result_schema_version | {md_value(edgeenv['result_schema_version'])} |",
+                f"| has_runtime_operation_summary | {md_value(edgeenv['has_runtime_operation_summary'])} |",
+                f"| runtime_operation_schema_version | {md_value(edgeenv['runtime_operation_schema_version'])} |",
+                f"| runtime_operation_health_reason | {md_value(edgeenv['runtime_operation_health_reason'])} |",
+                f"| runtime_operation_recommended_action | {md_value(edgeenv['runtime_operation_recommended_action'])} |",
+                f"| runtime_operation_risk_labels | {md_value(edgeenv['runtime_operation_risk_labels'])} |",
+                f"| comparability_role | {md_value(edgeenv['comparability_role'])} |",
             ]
         )
 

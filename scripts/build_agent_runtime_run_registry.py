@@ -84,6 +84,11 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
         remote_summary = (
             index.get("remote_summary") if isinstance(index.get("remote_summary"), dict) else {}
         )
+        edgeenv_summary = (
+            index.get("edgeenv_summary")
+            if isinstance(index.get("edgeenv_summary"), dict)
+            else {}
+        )
         run_dir = index_path.parent
         markdown_path = run_dir / "00_evidence_index.md"
         lab_md_path = run_dir / "05_lab_agent_runtime_report.md"
@@ -157,6 +162,19 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "remote_final_status": remote_summary.get("final_status")
                 if remote_summary
                 else None,
+                "edgeenv_run_id": edgeenv_summary.get("run_id")
+                if edgeenv_summary
+                else None,
+                "edgeenv_has_runtime_operation_summary": edgeenv_summary.get(
+                    "has_runtime_operation_summary"
+                )
+                if edgeenv_summary
+                else None,
+                "edgeenv_runtime_operation_health_reason": edgeenv_summary.get(
+                    "runtime_operation_health_reason"
+                )
+                if edgeenv_summary
+                else None,
             }
         )
 
@@ -193,8 +211,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote |",
-        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|",
+        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | EdgeEnv |",
+        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -226,6 +244,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),
                     _remote_cell(run),
+                    _edgeenv_cell(run),
                 ]
             )
             + " |"
@@ -259,6 +278,16 @@ def _remote_cell(run: dict[str, Any]) -> str:
         f"fallback={fallback_status}" if fallback_status not in (None, "", "unknown") else None,
     ]
     return ", ".join(part for part in parts if part)
+
+
+def _edgeenv_cell(run: dict[str, Any]) -> str:
+    run_id = run.get("edgeenv_run_id")
+    if run_id in (None, "", "unknown"):
+        return "-"
+    has_summary = run.get("edgeenv_has_runtime_operation_summary")
+    health_reason = run.get("edgeenv_runtime_operation_health_reason") or "unknown"
+    status = "runtime_summary" if has_summary else "no_runtime_summary"
+    return f"{run_id}/{status}/{health_reason}"
 
 
 def main() -> int:

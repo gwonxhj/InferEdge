@@ -105,10 +105,28 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
             }
         },
     )
+    write_json(
+        tmp_path / "08_edgeenv_run_show.json",
+        {
+            "schema_version": "edgeenv.result.v1",
+            "run_id": "run-edgeenv-runtime-operation",
+            "result_path": "/tmp/.edgeenv/runs/run-edgeenv-runtime-operation/result.json",
+            "runtime_operation_summary": {
+                "schema_version": "inferedge-runtime-operation-summary-v1",
+                "health_reason": "timeout_threshold_exceeded",
+                "recommended_action": "review_latency_budget_or_degrade",
+                "risk_labels": [
+                    "runtime_timeout_observed",
+                    "latency_budget_exceeded",
+                ],
+            },
+        },
+    )
 
     index = index_module.build_summary(tmp_path, requested_frames="4")
 
     run_summary = index["run_summary"]
+    edgeenv_summary = index["edgeenv_summary"]
     assert index["operation_path"] == "device_local_starter"
     assert run_summary["producer_sources"] == [
         "resource_snapshot_fixture",
@@ -137,6 +155,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert run_summary["runtime_operation_evidence_gaps"] == [
         "thermal_memory_evidence_missing"
     ]
+    assert edgeenv_summary["run_id"] == "run-edgeenv-runtime-operation"
+    assert edgeenv_summary["has_runtime_operation_summary"] is True
+    assert edgeenv_summary["runtime_operation_schema_version"] == (
+        "inferedge-runtime-operation-summary-v1"
+    )
+    assert edgeenv_summary["comparability_role"] == "supplemental_evidence_not_gate"
 
 
 def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -> None:
@@ -189,6 +213,11 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "decision": "blocked",
                 "triggered_rules": ["sustained_overload_review"],
             },
+            "edgeenv_summary": {
+                "run_id": "run-edgeenv-runtime-operation",
+                "has_runtime_operation_summary": True,
+                "runtime_operation_health_reason": "timeout_threshold_exceeded",
+            },
         },
     )
 
@@ -220,3 +249,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         "runtime_timeout_observed",
         "latency_budget_exceeded",
     ]
+    assert run["edgeenv_run_id"] == "run-edgeenv-runtime-operation"
+    assert run["edgeenv_has_runtime_operation_summary"] is True
+    assert run["edgeenv_runtime_operation_health_reason"] == (
+        "timeout_threshold_exceeded"
+    )
