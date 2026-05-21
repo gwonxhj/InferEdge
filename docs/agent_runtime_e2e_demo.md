@@ -16,6 +16,10 @@ It verifies that queue-depth timeline evidence, policy decision reasons,
 across the chain before live device-local sustained validation is added. It also
 checks that Lab preserves Orchestrator operation context, including queue state,
 worker health, runtime event summary, and timeline samples in report output. The
+current chain also preserves AIGuard Orchestrator operation evidence:
+`worker_health_degradation` and `scheduler_delay_pattern` are surfaced in the
+Lab report when Orchestrator worker health or scheduler-delay telemetry
+provides those deterministic warning signals. The
 optional `--device-local` mode uses committed local image, request, and resource
 snapshot producers in Orchestrator `scenario_mode=device_local`.
 
@@ -589,6 +593,8 @@ Expected evidence markers:
 - `thermal_resource_pressure`
 - `runtime_latency_budget_overrun`
 - `runtime_error_classification`
+- `worker_health_degradation`
+- `scheduler_delay_pattern` when scheduler delay events are observed
 - `agent_deployment_decision`
 
 The observed timing and resource values can vary slightly by Jetson mode,
@@ -638,8 +644,14 @@ Expected sustained evidence markers:
 - `producer_sources` and `device_local_producer_count` in Orchestrator output when `--device-local` is used
 - `sustained_overload_risk` in AIGuard output
 - `profiled_workload_pressure` and `thermal_resource_pressure` in AIGuard output
+- `worker_health_degradation` in AIGuard output when Orchestrator worker health
+  marks degraded or constrained runtime loops
+- `scheduler_delay_pattern` in AIGuard output when scheduler delay events are
+  observed
 - `max_total_queue_depth` in Lab report metrics
 - `profiled_workload_pressure` and `thermal_resource_pressure` preserved in Lab report evidence
+- `AIGuard Orchestrator Operation Evidence` in the Lab Markdown report,
+  including worker reason summaries plus policy/drop reason counts
 - `operation_context`, `queue_state_summary`, `worker_health_snapshot`,
   `runtime_event_summary`, and `runtime_event_timeline_sample` preserved in
   the Lab report

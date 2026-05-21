@@ -62,6 +62,7 @@ production capability.
 | Evaluation / contract validation | Implemented | YOLOv8 COCO subset, simplified mAP50, bbox/score/model contract evidence |
 | AIGuard diagnosis cases | Implemented | Deterministic evidence for bbox collapse, score saturation, temporal instability, and baseline deviation |
 | Runtime operation e2e chain | Implemented | Entrypoint smoke connects agent manifest, Runtime result, Orchestrator summary, AIGuard analysis, and Lab report |
+| Orchestrator operation evidence in Lab report | Implemented | Lab surfaces AIGuard `worker_health_degradation` and `scheduler_delay_pattern` context from Orchestrator telemetry |
 | Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
 | Remote dispatch/fallback | Smoke/Starter | Worker selection/fallback starter evidence, not production remote execution |
@@ -130,6 +131,13 @@ remote fallback path are reviewed side by side. This registry is only a
 navigation and comparison layer; it preserves links back to the source
 Orchestrator, AIGuard, Lab, and remote dispatch artifacts instead of replacing
 those contracts or InferEdgeEnv's run evidence registry / comparability checker.
+
+The current Lab report also has a dedicated `AIGuard Orchestrator Operation
+Evidence` section. It preserves `worker_health_degradation` and
+`scheduler_delay_pattern` when AIGuard explains Orchestrator worker health or
+scheduler-delay telemetry, including worker reason summaries and policy/drop
+reason counts. This is deployment context for Lab-owned decisions, not a change
+in final decision ownership.
 
 Replay the same entrypoint with explicit local input overrides:
 

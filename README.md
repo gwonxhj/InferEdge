@@ -186,6 +186,11 @@ python3 scripts/build_agent_runtime_run_registry.py \
 The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
 context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
+It also verifies the current AIGuard -> Lab operation-evidence handoff:
+AIGuard can emit `worker_health_degradation` and `scheduler_delay_pattern`
+from Orchestrator telemetry, and Lab surfaces those signals in an
+`AIGuard Orchestrator Operation Evidence` section with worker reason summaries
+and policy/drop reason counts. Lab remains the final deployment decision owner.
 With `--remote-dispatch`, the same script also writes Orchestrator's
 file-based remote worker selection result and runs AIGuard remote-dispatch
 diagnosis on that artifact. Add `--remote-execute-plan` to explicitly request
@@ -395,8 +400,10 @@ This replay was run from the entrypoint script with `--device-local`,
 Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
 and Lab over a longer 96-frame starter replay. The Lab report also preserves
 Runtime operation guard evidence
-(`runtime_latency_budget_overrun`, `runtime_error_classification`). It is not a
-decoded YOLO accuracy validation or sustained thermal endurance claim.
+(`runtime_latency_budget_overrun`, `runtime_error_classification`) and
+Orchestrator operation guard context such as `worker_health_degradation` when
+worker health telemetry indicates degraded runtime loops. It is not a decoded
+YOLO accuracy validation or sustained thermal endurance claim.
 For the clean Jetson replay procedure that avoids touching dirty local Forge or
 Runtime worktrees, see
 [`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook).
