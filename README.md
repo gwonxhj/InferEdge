@@ -415,6 +415,12 @@ thermal endurance validation. See
 and its
 [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html).
 
+Reproduce the same class of Jetson smoke with the convenience runner:
+
+```bash
+bash scripts/demo_jetson_5min_sustained.sh
+```
+
 Open the Local Studio demo:
 
 ```bash
