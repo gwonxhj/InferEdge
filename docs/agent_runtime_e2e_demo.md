@@ -534,10 +534,17 @@ bash scripts/demo_agent_runtime_e2e.sh \
 
 Expected output files:
 
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/00_evidence_index.md`
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/00_evidence_index.json`
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/03_orchestration_summary.json`
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/04_aiguard_guard_analysis.json`
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.json`
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.md`
+
+The `00_evidence_index.*` files are generated after the Lab report and provide
+a compact navigation layer over the bundle. They summarize scenario mode, queue
+pressure, deadline/drop/fallback counts, AIGuard verdict, Lab decision, and
+optional remote-dispatch status without replacing the source JSON contracts.
 
 Expected evidence markers:
 
@@ -575,6 +582,8 @@ bash scripts/demo_agent_runtime_e2e.sh
 
 | Output | Purpose |
 |---|---|
+| `00_evidence_index.json` | Compact machine-readable navigation index for generated evidence files |
+| `00_evidence_index.md` | Human-readable evidence bundle index and decision summary |
 | `01_forge_agent_manifest_vision.json` | Agent workload handoff contract example |
 | `02_runtime_result_agent.json` | Runtime result with backward-compatible `agent` block |
 | `03_orchestration_summary.json` | Profiled multi-workload scheduler policy decision evidence |

@@ -134,9 +134,9 @@ cat <<EOF
 Jetson sustained smoke complete.
 
 Key outputs:
+  $OUTPUT_DIR/00_evidence_index.md
   $OUTPUT_DIR/03_orchestration_summary.json
   $OUTPUT_DIR/04_aiguard_guard_analysis.json
   $OUTPUT_DIR/05_lab_agent_runtime_report.json
   $OUTPUT_DIR/05_lab_agent_runtime_report.md
 EOF
-
