@@ -428,6 +428,8 @@ LAB_MD_OUT="$OUTPUT_DIR/05_lab_agent_runtime_report.md"
 REMOTE_DISPATCH_OUT="$OUTPUT_DIR/06_remote_dispatch_result.json"
 REMOTE_AIGUARD_JSON_OUT="$OUTPUT_DIR/07_remote_dispatch_guard_analysis.json"
 REMOTE_AIGUARD_MD_OUT="$OUTPUT_DIR/07_remote_dispatch_guard_analysis.md"
+EVIDENCE_INDEX_JSON_OUT="$OUTPUT_DIR/00_evidence_index.json"
+EVIDENCE_INDEX_MD_OUT="$OUTPUT_DIR/00_evidence_index.md"
 
 run_step "Record Forge agent_manifest contract input" cp "$FORGE_AGENT_MANIFEST" "$FORGE_OUT"
 run_step "Record Runtime result.agent contract input" cp "$RUNTIME_AGENT_RESULT" "$RUNTIME_OUT"
@@ -616,6 +618,11 @@ run_step "Generate Lab Agent Runtime Reliability report JSON" \
 run_step "Generate Lab Agent Runtime Reliability report Markdown" \
   run_lab_agent_runtime_report markdown "$LAB_MD_OUT"
 
+run_step "Generate Agent Runtime evidence index" \
+  "$ORCH_PYTHON" "$ROOT_DIR/scripts/build_agent_runtime_evidence_index.py" \
+    --output-dir "$OUTPUT_DIR" \
+    --requested-frames "$FRAMES"
+
 run_step "Validate schema markers" grep -q "inferedge-agent-manifest-v1" "$FORGE_OUT"
 grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
 grep -q "runtime_health_snapshot" "$RUNTIME_OUT"
@@ -655,6 +662,9 @@ grep -q "Worker Health" "$LAB_MD_OUT"
 grep -q "Runtime Event Summary" "$LAB_MD_OUT"
 grep -q "Runtime Result Operation Evidence" "$LAB_MD_OUT"
 grep -q "AIGuard Runtime Operation Evidence" "$LAB_MD_OUT"
+grep -q "inferedge-agent-runtime-evidence-index-v1" "$EVIDENCE_INDEX_JSON_OUT"
+grep -q "Agent Runtime Evidence Index" "$EVIDENCE_INDEX_MD_OUT"
+grep -q "Lab decision" "$EVIDENCE_INDEX_MD_OUT"
 if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "inferedge-remote-dispatch-result-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "file_contract_starter" "$REMOTE_DISPATCH_OUT"
@@ -696,6 +706,8 @@ echo "  AIGuard guard analysis:     $AIGUARD_JSON_OUT"
 echo "  AIGuard Markdown report:    $AIGUARD_MD_OUT"
 echo "  Lab report JSON:            $LAB_JSON_OUT"
 echo "  Lab report Markdown:        $LAB_MD_OUT"
+echo "  Evidence index JSON:        $EVIDENCE_INDEX_JSON_OUT"
+echo "  Evidence index Markdown:    $EVIDENCE_INDEX_MD_OUT"
 if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   echo "  Remote dispatch result:     $REMOTE_DISPATCH_OUT"
   echo "  Remote dispatch AIGuard:    $REMOTE_AIGUARD_JSON_OUT"

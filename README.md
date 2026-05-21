@@ -167,6 +167,10 @@ bash scripts/demo_agent_runtime_e2e.sh \
 This reproduces the file-based chain from `agent_manifest` to Runtime
 `result.agent`, Orchestrator scheduling evidence, AIGuard runtime reliability
 analysis, and the Lab-owned Agent Runtime Reliability report.
+Each run also writes `00_evidence_index.md` and `00_evidence_index.json` in the
+output bundle so the generated Orchestrator, AIGuard, Lab, telemetry, and
+optional remote-dispatch artifacts are easy to navigate without changing the
+source evidence contracts.
 The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
 context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
