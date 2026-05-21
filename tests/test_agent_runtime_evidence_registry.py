@@ -60,7 +60,17 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
                         "producer_stage": "device_local_cli_override",
                     },
                 ],
-            }
+            },
+            "queue_state_summary": {
+                "queue_pressure_reason": (
+                    "max_total_queue_depth_exceeded_overload_threshold"
+                ),
+                "max_pressure_task": "vision_agent",
+            },
+            "runtime_event_summary": {
+                "device_local_event_count": 7,
+                "producer_event_count": 7,
+            },
         },
     )
     write_json(
@@ -93,6 +103,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert run_summary["producer_source_count"] == 7
     assert run_summary["device_local_producer_count"] == 7
     assert run_summary["producer_stages"] == ["device_local_cli_override"]
+    assert run_summary["queue_pressure_reason"] == (
+        "max_total_queue_depth_exceeded_overload_threshold"
+    )
+    assert run_summary["max_pressure_task"] == "vision_agent"
+    assert run_summary["device_local_event_count"] == 7
+    assert run_summary["producer_event_count"] == 7
 
 
 def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -> None:
@@ -124,7 +140,13 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 ],
                 "producer_source_count": 7,
                 "device_local_producer_count": 7,
+                "device_local_event_count": 7,
+                "producer_event_count": 7,
                 "producer_stages": ["device_local_cli_override"],
+                "queue_pressure_reason": (
+                    "max_total_queue_depth_exceeded_overload_threshold"
+                ),
+                "max_pressure_task": "vision_agent",
             },
             "guard_summary": {"guard_verdict": "blocked", "severity": "high"},
             "decision_summary": {
@@ -148,3 +170,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["producer_source_count"] == 7
     assert run["device_local_producer_count"] == 7
     assert run["producer_stages"] == ["device_local_cli_override"]
+    assert run["queue_pressure_reason"] == (
+        "max_total_queue_depth_exceeded_overload_threshold"
+    )
+    assert run["max_pressure_task"] == "vision_agent"
+    assert run["device_local_event_count"] == 7
+    assert run["producer_event_count"] == 7

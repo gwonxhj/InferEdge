@@ -388,6 +388,78 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             "unknown",
         ),
         "producer_stages": producer_stages(orchestration),
+        "queue_pressure_reason": first_value(
+            orchestration,
+            [
+                ("queue_state_summary", "queue_pressure_reason"),
+            ],
+            first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "operation_context",
+                        "queue_state_summary",
+                        "queue_pressure_reason",
+                    )
+                ],
+                "unknown",
+            ),
+        ),
+        "max_pressure_task": first_value(
+            orchestration,
+            [
+                ("queue_state_summary", "max_pressure_task"),
+            ],
+            first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "operation_context",
+                        "queue_state_summary",
+                        "max_pressure_task",
+                    )
+                ],
+                "unknown",
+            ),
+        ),
+        "device_local_event_count": first_value(
+            orchestration,
+            [
+                ("runtime_event_summary", "device_local_event_count"),
+            ],
+            first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "operation_context",
+                        "device_local_operation_context",
+                        "device_local_event_count",
+                    )
+                ],
+                "unknown",
+            ),
+        ),
+        "producer_event_count": first_value(
+            orchestration,
+            [
+                ("runtime_event_summary", "producer_event_count"),
+            ],
+            first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "operation_context",
+                        "device_local_operation_context",
+                        "producer_event_count",
+                    )
+                ],
+                "unknown",
+            ),
+        ),
     }
 
     guard_summary = {
@@ -573,6 +645,10 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| producer_source_count | {md_value(run['producer_source_count'])} |",
             f"| device_local_producer_count | {md_value(run['device_local_producer_count'])} |",
             f"| producer_stages | {md_value(run['producer_stages'])} |",
+            f"| queue_pressure_reason | {md_value(run['queue_pressure_reason'])} |",
+            f"| max_pressure_task | {md_value(run['max_pressure_task'])} |",
+            f"| device_local_event_count | {md_value(run['device_local_event_count'])} |",
+            f"| producer_event_count | {md_value(run['producer_event_count'])} |",
             "",
             "## Guard And Decision",
             "",
