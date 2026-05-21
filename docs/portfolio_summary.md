@@ -183,10 +183,14 @@ depth 6, recorded dropped/fallback count 93/93, 50 deadline misses, parsed 9
 The Vision ONNX probe reported mean/p95 latency 156.43 ms / 159.629 ms, while
 AIGuard reported `blocked` / `high` and Lab produced a `blocked` decision. The
 Lab report also preserved Runtime operation guard evidence
-(`runtime_latency_budget_overrun`, `runtime_error_classification`). This is
-current-main device-local ONNX probe and telemetry handoff evidence from a
-longer 96-frame starter replay, not decoded YOLO accuracy, live camera, or
-thermal endurance validation.
+(`runtime_latency_budget_overrun`, `runtime_error_classification`) and now
+surfaces retryable Runtime failure-handling context through
+`runtime_error_retryable`, `runtime_error_retry_hint`, and
+`runtime_retryable_error_review`. AIGuard preserves the Runtime retry hint as
+deterministic evidence, and Lab remains the final deployment decision owner.
+This is current-main device-local ONNX probe and telemetry handoff evidence
+from a longer 96-frame starter replay, not decoded YOLO accuracy, live camera,
+or thermal endurance validation.
 The submission-facing Lab evidence snapshot is stored in
 [`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md).
 The clean Jetson replay runbook uses a temporary Forge clone under `/tmp` so
