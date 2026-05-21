@@ -173,7 +173,8 @@ optional remote-dispatch artifacts are easy to navigate without changing the
 source evidence contracts. The index preserves Orchestrator scenario label,
 category, and mode fields so repeated smoke runs can be grouped by intent
 without changing the source contracts.
-When comparing repeated runs, build a local registry from the generated indexes:
+When comparing repeated entrypoint smoke runs, build a local navigation
+registry from the generated indexes:
 
 ```bash
 python3 scripts/build_agent_runtime_run_registry.py \
