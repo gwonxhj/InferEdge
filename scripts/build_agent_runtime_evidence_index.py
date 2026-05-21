@@ -125,11 +125,43 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         )
 
     run_summary = {
+        "scenario_label": first_value(
+            orchestration,
+            [
+                ("run", "scenario_label"),
+                ("multi_workload_sustained_summary", "scenario_label"),
+                ("sustained_runtime_summary", "scenario_label"),
+                ("scenario_label",),
+            ],
+            "unknown",
+        ),
+        "scenario_category": first_value(
+            orchestration,
+            [
+                ("run", "scenario_category"),
+                ("multi_workload_sustained_summary", "scenario_category"),
+                ("sustained_runtime_summary", "scenario_category"),
+                ("scenario_category",),
+            ],
+            "unknown",
+        ),
+        "scenario_description": first_value(
+            orchestration,
+            [
+                ("run", "scenario_description"),
+                ("multi_workload_sustained_summary", "scenario_description"),
+                ("sustained_runtime_summary", "scenario_description"),
+                ("scenario_description",),
+            ],
+            "unknown",
+        ),
         "scenario_mode": first_value(
             orchestration,
             [
+                ("run", "scenario_mode"),
                 ("scenario_mode",),
                 ("multi_workload_sustained_summary", "scenario_mode"),
+                ("sustained_runtime_summary", "scenario_mode"),
                 ("operation_context", "scenario_mode"),
             ],
             "unknown",
@@ -389,6 +421,9 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             "",
             "| Metric | Value |",
             "|---|---:|",
+            f"| scenario_label | {md_value(run['scenario_label'])} |",
+            f"| scenario_category | {md_value(run['scenario_category'])} |",
+            f"| scenario_description | {md_value(run['scenario_description'])} |",
             f"| scenario_mode | {md_value(run['scenario_mode'])} |",
             f"| frames | {md_value(run['frames'])} |",
             f"| executed_count | {md_value(run['executed_count'])} |",

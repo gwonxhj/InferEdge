@@ -98,6 +98,9 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "lab_markdown_report": make_relative(lab_md_path, output_base)
                 if lab_md_path.exists()
                 else None,
+                "scenario_label": run_summary.get("scenario_label", "unknown"),
+                "scenario_category": run_summary.get("scenario_category", "unknown"),
+                "scenario_description": run_summary.get("scenario_description", "unknown"),
                 "scenario_mode": run_summary.get("scenario_mode", "unknown"),
                 "frames": run_summary.get("frames", "unknown"),
                 "max_total_queue_depth": run_summary.get("max_total_queue_depth", "unknown"),
@@ -150,8 +153,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Scenario | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Guard | Lab Decision |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---|---|",
+        "| Run | Scenario Label | Category | Mode | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Guard | Lab Decision |",
+        "|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -161,6 +164,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             + " | ".join(
                 [
                     run_label,
+                    md_value(run["scenario_label"]),
+                    md_value(run["scenario_category"]),
                     md_value(run["scenario_mode"]),
                     md_value(run["frames"]),
                     md_value(run["max_total_queue_depth"]),
