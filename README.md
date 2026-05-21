@@ -184,6 +184,10 @@ without changing the source contracts. It also records an `operation_path` and,
 when present, remote dispatch starter status, selected worker, remote execution
 status, and fallback final status so device-local and remote/fallback runs can
 be compared in one registry table.
+For device-local override runs, the index and registry also surface
+`producer_sources`, `device_local_producer_count`, and `producer_stages` so a
+reviewer can tell whether the bundle used committed starter fixtures or runtime
+input overrides without opening the full Orchestrator JSON first.
 When comparing repeated entrypoint smoke runs, build a local navigation
 registry from the generated indexes:
 

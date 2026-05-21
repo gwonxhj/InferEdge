@@ -111,6 +111,14 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "tegrastats_sample_count": run_summary.get(
                     "tegrastats_sample_count", "unknown"
                 ),
+                "producer_sources": run_summary.get("producer_sources", []),
+                "producer_source_count": run_summary.get(
+                    "producer_source_count", "unknown"
+                ),
+                "device_local_producer_count": run_summary.get(
+                    "device_local_producer_count", "unknown"
+                ),
+                "producer_stages": run_summary.get("producer_stages", []),
                 "guard_verdict": guard_summary.get("guard_verdict", "unknown"),
                 "severity": guard_summary.get("severity", "unknown"),
                 "lab_decision": decision_summary.get("decision", "unknown"),
@@ -166,8 +174,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Guard | Lab Decision | Remote |",
-        "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---|---|",
+        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Producer Stages | Guard | Lab Decision | Remote |",
+        "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---:|---|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -187,6 +195,9 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["fallback_count"]),
                     md_value(run["deadline_missed_count"]),
                     md_value(run["tegrastats_sample_count"]),
+                    md_value(run["producer_sources"]),
+                    md_value(run["device_local_producer_count"]),
+                    md_value(run["producer_stages"]),
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),
                     _remote_cell(run),
