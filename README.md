@@ -203,10 +203,12 @@ context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
 It also verifies the current AIGuard -> Lab operation-evidence handoff:
 AIGuard can emit `worker_health_degradation`, `scheduler_delay_pattern`,
-`queue_pressure_context`, `worker_operation_risk_summary`, and, for
-device-local runs, `device_local_operation_context` from Orchestrator telemetry.
+`queue_pressure_context`, `worker_operation_risk_summary`,
+`runtime_operation_health`, and, for device-local runs,
+`device_local_operation_context` from Orchestrator and Runtime telemetry.
 Lab surfaces those signals in operation context sections with queue pressure
-reasons, worker risk summaries, producer context, and policy/drop reason counts.
+reasons, worker risk summaries, Runtime operation summary actions, producer
+context, and policy/drop reason counts.
 Lab remains the final deployment decision owner.
 With `--remote-dispatch`, the same script also writes Orchestrator's
 file-based remote worker selection result and runs AIGuard remote-dispatch

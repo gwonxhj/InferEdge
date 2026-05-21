@@ -448,43 +448,73 @@ mean_ms = float(telemetry.get("latency_mean_ms") or 28.0)
 p99_ms = float(telemetry.get("latency_p99_ms") or 36.0)
 fps = float(telemetry.get("fps") or 30.0)
 timeout_budget_ms = 20
+runtime_exceeded = mean_ms > timeout_budget_ms
+health_reason = "timeout_threshold_exceeded" if runtime_exceeded else "benchmark_completed"
+risk_labels = (
+    ["runtime_timeout_observed", "latency_budget_exceeded"]
+    if runtime_exceeded
+    else []
+)
+evidence_gaps = ["thermal_memory_evidence_missing"]
 
 data["runtime_health_snapshot"] = {
     "schema_version": "inferedge-runtime-health-v1",
-    "status": "degraded",
+    "status": "degraded" if runtime_exceeded else "ok",
     "engine_backend": data.get("backend_key", "onnxruntime__cpu").split("__")[0],
     "device": (data.get("backend_key", "onnxruntime__cpu").split("__")[-1] or "cpu"),
     "engine_available": True,
     "run_count": 5,
+    "health_reason": health_reason,
     "mean_ms": mean_ms,
     "p99_ms": p99_ms,
     "fps": fps,
     "latency_budget_ms": timeout_budget_ms,
-    "latency_budget_exceeded": mean_ms > timeout_budget_ms,
+    "latency_budget_exceeded": runtime_exceeded,
     "deadline_missed": bool(agent.get("deadline_missed", False)),
     "timeout_policy": "latency_threshold",
     "timeout_budget_ms": timeout_budget_ms,
-    "timeout_observed": mean_ms > timeout_budget_ms,
+    "timeout_observed": runtime_exceeded,
     "thermal_memory_evidence_available": False,
 }
 data["runtime_error_classification"] = {
-    "category": "runtime_timeout_observed" if mean_ms > timeout_budget_ms else "none",
-    "severity": "medium" if mean_ms > timeout_budget_ms else "none",
-    "retryable": mean_ms > timeout_budget_ms,
+    "category": "runtime_timeout_observed" if runtime_exceeded else "none",
+    "severity": "medium" if runtime_exceeded else "none",
+    "retryable": runtime_exceeded,
     "retry_hint": (
         "reduce_input_rate_or_relax_latency_budget"
-        if mean_ms > timeout_budget_ms
+        if runtime_exceeded
         else "none"
     ),
     "observed_mean_ms": mean_ms,
     "timeout_budget_ms": timeout_budget_ms,
-    "timeout_observed": mean_ms > timeout_budget_ms,
+    "timeout_observed": runtime_exceeded,
+}
+data["runtime_operation_summary"] = {
+    "schema_version": "inferedge-runtime-operation-summary-v1",
+    "observation_scope": "single_runtime_result",
+    "decision_owner": "lab",
+    "scheduler_owner": "orchestrator",
+    "production_cancellation": False,
+    "health_status": data["runtime_health_snapshot"]["status"],
+    "health_reason": health_reason,
+    "error_category": data["runtime_error_classification"]["category"],
+    "retryable": data["runtime_error_classification"]["retryable"],
+    "recommended_action": (
+        "review_latency_budget_or_degrade" if runtime_exceeded else "none"
+    ),
+    "risk_labels": risk_labels,
+    "evidence_gaps": evidence_gaps,
+    "timeout_observed": runtime_exceeded,
+    "latency_budget_exceeded": runtime_exceeded,
+    "deadline_missed": data["runtime_health_snapshot"]["deadline_missed"],
+    "thermal_memory_evidence_available": False,
 }
 data["runtime_events"] = [
     {
         "event_index": 0,
         "event_type": "runtime_health_snapshot",
-        "status": "degraded" if mean_ms > timeout_budget_ms else "ok",
+        "status": data["runtime_health_snapshot"]["status"],
+        "health_reason": health_reason,
         "engine_backend": data["runtime_health_snapshot"]["engine_backend"],
         "detail": "entrypoint smoke attached Runtime operation context",
     },
@@ -496,6 +526,16 @@ data["runtime_events"] = [
         "retryable": data["runtime_error_classification"]["retryable"],
         "retry_hint": data["runtime_error_classification"]["retry_hint"],
         "timeout_budget_ms": timeout_budget_ms,
+    },
+    {
+        "event_index": 2,
+        "event_type": "runtime_operation_summary_recorded",
+        "type": "runtime_operation_summary_recorded",
+        "status": data["runtime_operation_summary"]["health_status"],
+        "health_reason": health_reason,
+        "recommended_action": data["runtime_operation_summary"]["recommended_action"],
+        "risk_labels": risk_labels,
+        "evidence_gaps": evidence_gaps,
     },
 ]
 path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -628,8 +668,11 @@ run_step "Generate Agent Runtime evidence index" \
 run_step "Validate schema markers" grep -q "inferedge-agent-manifest-v1" "$FORGE_OUT"
 grep -q "inferedge-runtime-agent-task-v1" "$RUNTIME_OUT"
 grep -q "runtime_health_snapshot" "$RUNTIME_OUT"
+grep -q "runtime_operation_summary" "$RUNTIME_OUT"
+grep -q "runtime_operation_summary_recorded" "$RUNTIME_OUT"
 grep -q "inferedge-orchestration-summary-v1" "$ORCHESTRATION_OUT"
 grep -q "runtime_results" "$ORCHESTRATION_OUT"
+grep -q "runtime_operation_summary" "$ORCHESTRATION_OUT"
 grep -q "inferedge-aiguard-diagnosis-v1" "$AIGUARD_JSON_OUT"
 grep -q "inferedgelab-agent-runtime-reliability-report-v1" "$LAB_JSON_OUT"
 grep -q "$ORCHESTRATOR_MODE_MARKER" "$ORCHESTRATION_OUT"
@@ -650,11 +693,16 @@ grep -q "thermal_resource_pressure" "$AIGUARD_JSON_OUT"
 grep -q "runtime_latency_budget_overrun" "$AIGUARD_JSON_OUT"
 grep -q "runtime_error_retryable" "$AIGUARD_JSON_OUT"
 grep -q "runtime_retryable_error" "$AIGUARD_JSON_OUT"
+grep -q "runtime_operation_health" "$AIGUARD_JSON_OUT"
+grep -q "runtime_operation_summary_risk_count" "$AIGUARD_JSON_OUT"
+grep -q "review_latency_budget_or_degrade" "$AIGUARD_JSON_OUT"
 grep -q "max_total_queue_depth" "$LAB_JSON_OUT"
 grep -q "operation_context" "$LAB_JSON_OUT"
 grep -q "runtime_result_context" "$LAB_JSON_OUT"
+grep -q "runtime_operation_summary" "$LAB_JSON_OUT"
 grep -q "runtime_operation_guard_summary" "$LAB_JSON_OUT"
 grep -q "runtime_retryable_error_review" "$LAB_JSON_OUT"
+grep -q "runtime_operation_summary_review" "$LAB_JSON_OUT"
 grep -q "queue_state_summary" "$LAB_JSON_OUT"
 grep -q "worker_health_snapshot" "$LAB_JSON_OUT"
 grep -q "runtime_event_summary" "$LAB_JSON_OUT"
@@ -680,6 +728,8 @@ grep -q "Runtime Event Summary" "$LAB_MD_OUT"
 grep -q "Runtime Result Operation Evidence" "$LAB_MD_OUT"
 grep -q "runtime_error_retryable" "$LAB_MD_OUT"
 grep -q "runtime_error_retry_hint" "$LAB_MD_OUT"
+grep -q "operation_summary_recommended_action" "$LAB_MD_OUT"
+grep -q "runtime_operation_summary_review" "$LAB_MD_OUT"
 grep -q "AIGuard Runtime Operation Evidence" "$LAB_MD_OUT"
 grep -q "inferedge-agent-runtime-evidence-index-v1" "$EVIDENCE_INDEX_JSON_OUT"
 grep -q "Agent Runtime Evidence Index" "$EVIDENCE_INDEX_MD_OUT"
@@ -687,6 +737,8 @@ grep -q "Lab decision" "$EVIDENCE_INDEX_MD_OUT"
 grep -q "queue_pressure_reason" "$EVIDENCE_INDEX_MD_OUT"
 grep -q "max_pressure_task" "$EVIDENCE_INDEX_MD_OUT"
 grep -q "device_local_event_count" "$EVIDENCE_INDEX_MD_OUT"
+grep -q "runtime_operation_recommended_action" "$EVIDENCE_INDEX_MD_OUT"
+grep -q "runtime_operation_risk_labels" "$EVIDENCE_INDEX_MD_OUT"
 if [[ "$SUSTAINED_MODE" == "device-local" ]]; then
   grep -q "device_local_operation_context" "$AIGUARD_JSON_OUT"
   grep -q "device_local_operation_context" "$LAB_JSON_OUT"
