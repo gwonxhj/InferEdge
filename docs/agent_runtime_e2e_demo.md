@@ -474,6 +474,17 @@ It is still runtime-operation smoke evidence, not decoded YOLO accuracy
 validation, live camera operation, Whisper/FastAPI service execution, production
 remote execution, or sustained thermal endurance validation.
 
+For repeat runs on Jetson, use the convenience wrapper:
+
+```bash
+bash scripts/demo_jetson_5min_sustained.sh
+```
+
+The wrapper calls `scripts/demo_agent_runtime_e2e.sh` with the documented
+`device_local`, ONNX Runtime probe, process resource snapshot, and live
+`tegrastats` capture options. Use `--help` to override output directory,
+frame count, timeout, ONNX model, or clean Forge repo path.
+
 The script writes generated evidence under:
 
 ```text
