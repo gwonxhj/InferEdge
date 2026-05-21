@@ -106,6 +106,45 @@ def evidence_types(data: dict[str, Any]) -> list[str]:
     return types
 
 
+def unique_list(values: Any) -> list[str]:
+    if not isinstance(values, list):
+        return []
+    result: list[str] = []
+    for value in values:
+        if value in (None, ""):
+            continue
+        text = str(value)
+        if text not in result:
+            result.append(text)
+    return result
+
+
+def producer_stages(orchestration: dict[str, Any]) -> list[str]:
+    stages: list[str] = []
+    profiles = first_value(
+        orchestration,
+        [("multi_workload_sustained_summary", "workload_profiles")],
+        [],
+    )
+    if isinstance(profiles, list):
+        for profile in profiles:
+            if isinstance(profile, dict):
+                stage = profile.get("producer_stage")
+                if stage not in (None, "") and str(stage) not in stages:
+                    stages.append(str(stage))
+    if stages:
+        return stages
+
+    workers = first_value(orchestration, [("worker_health_snapshot", "workers")], {})
+    if isinstance(workers, dict):
+        for worker in workers.values():
+            if isinstance(worker, dict):
+                stage = worker.get("producer_stage")
+                if stage not in (None, "") and str(stage) not in stages:
+                    stages.append(str(stage))
+    return stages
+
+
 def operation_path(run_summary: dict[str, Any], remote_summary: dict[str, Any]) -> str:
     if remote_summary:
         fallback_status = remote_summary.get("fallback_final_status")
@@ -313,6 +352,42 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 ),
             ],
         ),
+        "producer_sources": unique_list(
+            first_value(
+                orchestration,
+                [
+                    (
+                        "multi_workload_sustained_summary",
+                        "observed_runtime_signals",
+                        "producer_sources",
+                    ),
+                ],
+                [],
+            )
+        ),
+        "producer_source_count": first_value(
+            orchestration,
+            [
+                (
+                    "multi_workload_sustained_summary",
+                    "observed_runtime_signals",
+                    "producer_source_count",
+                ),
+            ],
+            "unknown",
+        ),
+        "device_local_producer_count": first_value(
+            orchestration,
+            [
+                (
+                    "multi_workload_sustained_summary",
+                    "observed_runtime_signals",
+                    "device_local_producer_count",
+                ),
+            ],
+            "unknown",
+        ),
+        "producer_stages": producer_stages(orchestration),
     }
 
     guard_summary = {
@@ -494,6 +569,10 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| policy_decision_count | {md_value(run['policy_decision_count'])} |",
             f"| timeline_sample_count | {md_value(run['timeline_sample_count'])} |",
             f"| tegrastats_sample_count | {md_value(run['tegrastats_sample_count'])} |",
+            f"| producer_sources | {md_value(run['producer_sources'])} |",
+            f"| producer_source_count | {md_value(run['producer_source_count'])} |",
+            f"| device_local_producer_count | {md_value(run['device_local_producer_count'])} |",
+            f"| producer_stages | {md_value(run['producer_stages'])} |",
             "",
             "## Guard And Decision",
             "",

@@ -595,6 +595,12 @@ python3 scripts/build_agent_runtime_run_registry.py \
 This lets reviewers compare the device-local input/probe path and the bounded
 remote fallback path in one table while still drilling back into each run's
 Orchestrator, AIGuard, Lab, and remote-dispatch source artifacts.
+For device-local input override runs, the generated `00_evidence_index.json`
+and run registry now include `producer_sources`, `device_local_producer_count`,
+and `producer_stages`. In the override path these fields should show
+`image_file`, `fastapi_request_fixture`, `resource_snapshot_fixture`, and
+`device_local_cli_override`, which confirms that the entrypoint passed local
+inputs through Orchestrator before the AIGuard and Lab reports were generated.
 
 Expected evidence markers:
 
