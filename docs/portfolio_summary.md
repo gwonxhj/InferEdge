@@ -124,6 +124,11 @@ primary-http-worker connection_error
 
 This shows bounded recovery evidence propagation. It is still a starter smoke,
 not production-grade remote retry control.
+The matching Orchestrator source sample is tracked only as a supporting
+reference in `repos.yaml`: commit
+`654e0ab27b383317ec816d054b293bfa3061cf32`,
+`examples/telemetry/remote_fallback_recovery_sample.json`. Core `repos.lock`
+remains scoped to Forge, Runtime, Lab, and AIGuard.
 
 The generated `00_evidence_index.json` files can be combined into a local
 entrypoint navigation registry so the device-local probe/process path and

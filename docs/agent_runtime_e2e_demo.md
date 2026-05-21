@@ -146,6 +146,12 @@ starter replay should include:
 This is a bounded starter recovery smoke. It does not provide production retry
 control, auth, heartbeat, or a long-lived remote worker.
 
+The Orchestrator source-side fixture for this recovery path is recorded in
+`repos.yaml` as supporting reference
+`654e0ab27b383317ec816d054b293bfa3061cf32`
+(`examples/telemetry/remote_fallback_recovery_sample.json`). It is not part of
+the Core `repos.lock` clone/update contract.
+
 When you do not have a local ONNX file but want a detector-like probe instead
 of the tiny identity model, generate one under the output directory:
 

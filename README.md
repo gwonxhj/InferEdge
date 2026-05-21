@@ -46,6 +46,13 @@ message without replacing Forge, Runtime, Lab, or AIGuard.
 | InferEdgeEnv | v0.1.5 v1-complete comparability layer: local run evidence registry and benchmark evidence trust/comparison judgement | https://github.com/gwonxhj/InferEdgeEnv |
 | InferEdgeOrchestrator | Operation layer after deployment validation: scheduling, overload control, and runtime telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
 
+`repos.lock` intentionally remains scoped to the Core 4 validation pipeline
+that `clone_all.sh` and `update_all.sh` manage. For runtime-operation starter
+evidence, `repos.yaml` records the supporting Orchestrator reference currently
+used for the bounded remote fallback recovery sample:
+`654e0ab27b383317ec816d054b293bfa3061cf32` with
+`examples/telemetry/remote_fallback_recovery_sample.json`.
+
 ## Real-Device Evidence
 
 [Jetson Orin Nano Internal Lab](https://github.com/gwonxhj/jetson-orin-nano-internal-lab)
@@ -209,6 +216,11 @@ server. When the fallback worker is running, the same entrypoint smoke records
 AIGuard `remote_execution_recovered_by_fallback`, and Lab's `Remote fallback
 starter evidence` section. This proves bounded recovery evidence propagation,
 not production-grade retry control.
+The Orchestrator source-side sample for this path is tracked as supporting
+reference `654e0ab27b383317ec816d054b293bfa3061cf32`
+(`examples/telemetry/remote_fallback_recovery_sample.json`) rather than as a
+Core `repos.lock` entry.
+
 The current extension smoke uses the latest Orchestrator producer-backed
 sustained path: Vision reads a local image fixture, Voice-Command replays a
 FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot

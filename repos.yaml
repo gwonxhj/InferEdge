@@ -24,6 +24,11 @@ supporting_repositories:
   - name: InferEdgeOrchestrator
     role: runtime operation control after deployment validation
     url: https://github.com/gwonxhj/InferEdgeOrchestrator
+    branch: main
+    path_hint: ../InferEdgeOrchestrator
+    supporting_reference_commit: 654e0ab27b383317ec816d054b293bfa3061cf32
+    supporting_reference_artifact: examples/telemetry/remote_fallback_recovery_sample.json
+    boundary: supporting reference only; Core clone/update scripts stay scoped to repos.lock
   - name: InferEdgeEnv
     role: local-first run evidence registry and comparability checker
     url: https://github.com/gwonxhj/InferEdgeEnv
