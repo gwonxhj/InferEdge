@@ -546,6 +546,21 @@ a compact navigation layer over the bundle. They summarize scenario mode, queue
 pressure, deadline/drop/fallback counts, AIGuard verdict, Lab decision, and
 optional remote-dispatch status without replacing the source JSON contracts.
 
+To compare multiple generated run bundles, build a local run registry from their
+indexes:
+
+```bash
+python3 scripts/build_agent_runtime_run_registry.py \
+  --run-dir /tmp/inferedge_agent_runtime_e2e \
+  --run-dir /tmp/inferedge_agent_runtime_e2e_device_local \
+  --output-json /tmp/inferedge_agent_runtime_registry.json \
+  --output-md /tmp/inferedge_agent_runtime_registry.md
+```
+
+The registry is derived from `00_evidence_index.json` files and is only a
+navigation layer. It does not replace the Orchestrator, AIGuard, Lab, or remote
+dispatch source contracts.
+
 Expected evidence markers:
 
 - `multi_workload_sustained_summary`

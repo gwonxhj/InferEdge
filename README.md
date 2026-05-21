@@ -171,6 +171,15 @@ Each run also writes `00_evidence_index.md` and `00_evidence_index.json` in the
 output bundle so the generated Orchestrator, AIGuard, Lab, telemetry, and
 optional remote-dispatch artifacts are easy to navigate without changing the
 source evidence contracts.
+When comparing repeated runs, build a local registry from the generated indexes:
+
+```bash
+python3 scripts/build_agent_runtime_run_registry.py \
+  --scan-root /tmp \
+  --output-json /tmp/inferedge_agent_runtime_registry.json \
+  --output-md /tmp/inferedge_agent_runtime_registry.md
+```
+
 The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
 context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.
