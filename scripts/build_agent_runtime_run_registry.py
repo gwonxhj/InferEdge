@@ -119,6 +119,16 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                     "device_local_producer_count", "unknown"
                 ),
                 "producer_stages": run_summary.get("producer_stages", []),
+                "queue_pressure_reason": run_summary.get(
+                    "queue_pressure_reason", "unknown"
+                ),
+                "max_pressure_task": run_summary.get("max_pressure_task", "unknown"),
+                "device_local_event_count": run_summary.get(
+                    "device_local_event_count", "unknown"
+                ),
+                "producer_event_count": run_summary.get(
+                    "producer_event_count", "unknown"
+                ),
                 "guard_verdict": guard_summary.get("guard_verdict", "unknown"),
                 "severity": guard_summary.get("severity", "unknown"),
                 "lab_decision": decision_summary.get("decision", "unknown"),
@@ -174,8 +184,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Producer Stages | Guard | Lab Decision | Remote |",
-        "|---|---|---|---|---|---:|---:|---:|---:|---:|---:|---|---:|---|---|---|---|",
+        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Producer Stages | Guard | Lab Decision | Remote |",
+        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -191,12 +201,16 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["scenario_mode"]),
                     md_value(run["frames"]),
                     md_value(run["max_total_queue_depth"]),
+                    md_value(run["queue_pressure_reason"]),
+                    md_value(run["max_pressure_task"]),
                     md_value(run["dropped_count"]),
                     md_value(run["fallback_count"]),
                     md_value(run["deadline_missed_count"]),
                     md_value(run["tegrastats_sample_count"]),
                     md_value(run["producer_sources"]),
                     md_value(run["device_local_producer_count"]),
+                    md_value(run["device_local_event_count"]),
+                    md_value(run["producer_event_count"]),
                     md_value(run["producer_stages"]),
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),

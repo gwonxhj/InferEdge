@@ -668,6 +668,12 @@ Expected sustained evidence markers:
   marks degraded or constrained runtime loops
 - `scheduler_delay_pattern` in AIGuard output when scheduler delay events are
   observed
+- `queue_pressure_context` in AIGuard output when Orchestrator reports elevated
+  or threshold-exceeded queue pressure reasons
+- `worker_operation_risk_summary` in AIGuard output when Orchestrator records
+  non-healthy worker operation risk labels
+- `device_local_operation_context` in AIGuard and Lab output when
+  `--device-local` records producer source and runtime event coverage
 - `runtime_retryable_error` and `runtime_error_retryable` when Runtime marks a
   timeout or skipped execution as retryable evidence
 - `runtime_retryable_error_review` in the Lab report when retryable Runtime
@@ -679,8 +685,11 @@ Expected sustained evidence markers:
 - `operation_context`, `queue_state_summary`, `worker_health_snapshot`,
   `runtime_event_summary`, and `runtime_event_timeline_sample` preserved in
   the Lab report
+- `queue_pressure_reason`, `max_pressure_task`, `operation_risk_summary`, and
+  producer context preserved in Lab JSON/Markdown reports
 - `Orchestrator Operation Context`, `Worker Health`, and
-  `Runtime Event Summary` visible in the Lab Markdown report
+  `Runtime Event Summary` visible in the Lab Markdown report, including worker
+  operation risk and queue pressure reason tables
 - `sustained_overload_review` in Lab decision rules
 - `inferedge-remote-dispatch-result-v1`, `file_contract_starter`, and
   `selected_worker_id` in `06_remote_dispatch_result.json` when
