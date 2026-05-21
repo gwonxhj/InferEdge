@@ -567,7 +567,12 @@ navigation layer. It does not replace the Orchestrator, AIGuard, Lab, remote
 dispatch source contracts, or InferEdgeEnv's SQLite run evidence registry and
 comparability checker. Registry tables preserve scenario label and category when
 Orchestrator emits them, while keeping scenario mode for backward compatibility
-with older bundles.
+with older bundles. Each index also records an `operation_path` such as
+`device_local_starter`, `producer_backed_starter`, `remote_dispatch_starter`,
+or `remote_dispatch_with_fallback`. When remote dispatch evidence is present,
+the registry table preserves selected worker, remote execution status, and
+fallback final status as starter evidence rather than production remote
+execution proof.
 
 For a focused runtime-operation comparison, generate one device-local
 probe/process bundle and one remote fallback bundle, then build a registry from

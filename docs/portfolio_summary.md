@@ -131,6 +131,8 @@ remote fallback path are reviewed side by side. This registry is only a
 navigation and comparison layer; it preserves links back to the source
 Orchestrator, AIGuard, Lab, and remote dispatch artifacts instead of replacing
 those contracts or InferEdgeEnv's run evidence registry / comparability checker.
+The registry includes `operation_path`, selected remote worker, remote execution
+status, and fallback final status when those starter artifacts exist.
 
 The current Lab report also has a dedicated `AIGuard Orchestrator Operation
 Evidence` section. It preserves `worker_health_degradation` and
