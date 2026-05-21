@@ -69,6 +69,7 @@ submission boundary.
 | AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
 | Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
+| Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
 | Remote dispatch / fallback starter | Smoke/Starter | File-based worker selection and bounded fallback evidence | Production remote execution or secure multi-device orchestration |
 | Cloudflare / dashboard / production worker services | Future Work | Documented direction only | Completed remote operation platform |
 
@@ -401,6 +402,11 @@ Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
 and Lab over a longer 96-frame starter replay. The Lab report also preserves
 Runtime operation guard evidence
 (`runtime_latency_budget_overrun`, `runtime_error_classification`) and
+retryable Runtime-side failure context (`runtime_error_retryable`,
+`runtime_error_retry_hint`, `runtime_retryable_error_review`) when Runtime
+reports a retryable timeout or skipped execution. AIGuard preserves the
+deterministic retry hint as evidence, while Lab remains the deployment decision
+owner. The same report preserves
 Orchestrator operation guard context such as `worker_health_degradation` when
 worker health telemetry indicates degraded runtime loops. It is not a decoded
 YOLO accuracy validation or sustained thermal endurance claim.

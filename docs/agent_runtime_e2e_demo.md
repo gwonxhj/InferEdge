@@ -593,6 +593,9 @@ Expected evidence markers:
 - `thermal_resource_pressure`
 - `runtime_latency_budget_overrun`
 - `runtime_error_classification`
+- `runtime_error_retryable`
+- `runtime_error_retry_hint`
+- `runtime_retryable_error_review`
 - `worker_health_degradation`
 - `scheduler_delay_pattern` when scheduler delay events are observed
 - `agent_deployment_decision`
@@ -648,6 +651,10 @@ Expected sustained evidence markers:
   marks degraded or constrained runtime loops
 - `scheduler_delay_pattern` in AIGuard output when scheduler delay events are
   observed
+- `runtime_retryable_error` and `runtime_error_retryable` when Runtime marks a
+  timeout or skipped execution as retryable evidence
+- `runtime_retryable_error_review` in the Lab report when retryable Runtime
+  failure-handling evidence requires deployment review
 - `max_total_queue_depth` in Lab report metrics
 - `profiled_workload_pressure` and `thermal_resource_pressure` preserved in Lab report evidence
 - `AIGuard Orchestrator Operation Evidence` in the Lab Markdown report,

@@ -493,6 +493,8 @@ data["runtime_events"] = [
         "event_type": "runtime_error_classified",
         "status": data["runtime_error_classification"]["severity"],
         "category": data["runtime_error_classification"]["category"],
+        "retryable": data["runtime_error_classification"]["retryable"],
+        "retry_hint": data["runtime_error_classification"]["retry_hint"],
         "timeout_budget_ms": timeout_budget_ms,
     },
 ]
@@ -646,10 +648,13 @@ grep -q "sustained_overload_risk" "$AIGUARD_JSON_OUT"
 grep -q "profiled_workload_pressure" "$AIGUARD_JSON_OUT"
 grep -q "thermal_resource_pressure" "$AIGUARD_JSON_OUT"
 grep -q "runtime_latency_budget_overrun" "$AIGUARD_JSON_OUT"
+grep -q "runtime_error_retryable" "$AIGUARD_JSON_OUT"
+grep -q "runtime_retryable_error" "$AIGUARD_JSON_OUT"
 grep -q "max_total_queue_depth" "$LAB_JSON_OUT"
 grep -q "operation_context" "$LAB_JSON_OUT"
 grep -q "runtime_result_context" "$LAB_JSON_OUT"
 grep -q "runtime_operation_guard_summary" "$LAB_JSON_OUT"
+grep -q "runtime_retryable_error_review" "$LAB_JSON_OUT"
 grep -q "queue_state_summary" "$LAB_JSON_OUT"
 grep -q "worker_health_snapshot" "$LAB_JSON_OUT"
 grep -q "runtime_event_summary" "$LAB_JSON_OUT"
@@ -661,6 +666,8 @@ grep -q "Orchestrator Operation Context" "$LAB_MD_OUT"
 grep -q "Worker Health" "$LAB_MD_OUT"
 grep -q "Runtime Event Summary" "$LAB_MD_OUT"
 grep -q "Runtime Result Operation Evidence" "$LAB_MD_OUT"
+grep -q "runtime_error_retryable" "$LAB_MD_OUT"
+grep -q "runtime_error_retry_hint" "$LAB_MD_OUT"
 grep -q "AIGuard Runtime Operation Evidence" "$LAB_MD_OUT"
 grep -q "inferedge-agent-runtime-evidence-index-v1" "$EVIDENCE_INDEX_JSON_OUT"
 grep -q "Agent Runtime Evidence Index" "$EVIDENCE_INDEX_MD_OUT"
