@@ -170,7 +170,9 @@ analysis, and the Lab-owned Agent Runtime Reliability report.
 Each run also writes `00_evidence_index.md` and `00_evidence_index.json` in the
 output bundle so the generated Orchestrator, AIGuard, Lab, telemetry, and
 optional remote-dispatch artifacts are easy to navigate without changing the
-source evidence contracts.
+source evidence contracts. The index preserves Orchestrator scenario label,
+category, and mode fields so repeated smoke runs can be grouped by intent
+without changing the source contracts.
 When comparing repeated runs, build a local registry from the generated indexes:
 
 ```bash

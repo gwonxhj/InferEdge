@@ -542,9 +542,10 @@ Expected output files:
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.md`
 
 The `00_evidence_index.*` files are generated after the Lab report and provide
-a compact navigation layer over the bundle. They summarize scenario mode, queue
-pressure, deadline/drop/fallback counts, AIGuard verdict, Lab decision, and
-optional remote-dispatch status without replacing the source JSON contracts.
+a compact navigation layer over the bundle. They summarize scenario label,
+scenario category, scenario mode, queue pressure, deadline/drop/fallback counts,
+AIGuard verdict, Lab decision, and optional remote-dispatch status without
+replacing the source JSON contracts.
 
 To compare multiple generated run bundles, build a local run registry from their
 indexes:
@@ -559,7 +560,9 @@ python3 scripts/build_agent_runtime_run_registry.py \
 
 The registry is derived from `00_evidence_index.json` files and is only a
 navigation layer. It does not replace the Orchestrator, AIGuard, Lab, or remote
-dispatch source contracts.
+dispatch source contracts. Registry tables preserve scenario label and category
+when Orchestrator emits them, while keeping scenario mode for backward
+compatibility with older bundles.
 
 Expected evidence markers:
 
