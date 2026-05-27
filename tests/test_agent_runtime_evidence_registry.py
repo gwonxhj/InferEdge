@@ -34,6 +34,21 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "remote-dispatch boundary rows" in readme
 
 
+def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (readme, portfolio):
+        assert "Runtime Intelligence artifact gate" in text
+        assert "Cross-repo smoke" in text
+        assert "Orchestrator -> EdgeEnv -> AIGuard -> Lab" in text
+
+    assert "Production observability platform or GitLab control plane" in readme
+    assert "production control plane" in portfolio
+
+
 def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path) -> None:
     index_module = load_script_module(
         "build_agent_runtime_evidence_index",
