@@ -15,6 +15,7 @@ Default checks:
   - Forge pytest + manifest validation
   - Runtime smoke + manifest identity test
   - Lab portfolio demo check + Core 4 conformance check
+  - Lab Runtime Intelligence artifact smoke
   - AIGuard pytest + portfolio demo
 
 Options:
@@ -22,6 +23,8 @@ Options:
 
 Environment:
   INFEREDGE_REPOS_DIR  Override repository directory root.
+  INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT
+                       Override Runtime Intelligence smoke output directory.
 USAGE
 }
 
@@ -57,6 +60,7 @@ FORGE="$(require_repo InferEdgeForge)"
 RUNTIME="$(require_repo InferEdge-Runtime)"
 LAB="$(require_repo InferEdgeLab)"
 AIGUARD="$(require_repo InferEdgeAIGuard)"
+RUNTIME_INTELLIGENCE_SMOKE_OUT="${INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT:-/tmp/inferedge_runtime_intelligence_chain_smoke}"
 
 run_step "Forge tests" bash -lc "cd '$FORGE' && poetry run pytest -q"
 run_step "Forge manifest validation" bash -lc "cd '$FORGE' && poetry run python -m inferedgeforge.cli validate-manifest --manifest tests/fixtures/runtime_handoff_manifest.json"
@@ -67,6 +71,7 @@ run_step "Runtime manifest identity" bash -lc "cd '$RUNTIME' && python3 tests/te
 run_step "Lab install" bash -lc "cd '$LAB' && poetry install --no-interaction"
 run_step "Lab portfolio demo check" bash -lc "cd '$LAB' && poetry run inferedgelab portfolio-demo-check"
 run_step "Lab Core 4 conformance check" bash -lc "cd '$LAB' && poetry run inferedgelab core4-conformance-check"
+run_step "Lab Runtime Intelligence artifact smoke" bash -lc "cd '$LAB' && bash scripts/smoke_runtime_intelligence_chain.sh --output-dir '$RUNTIME_INTELLIGENCE_SMOKE_OUT'"
 if [[ "$FULL" -eq 1 ]]; then
   run_step "Lab full pytest" bash -lc "cd '$LAB' && poetry run python3 -m pytest -q"
 fi

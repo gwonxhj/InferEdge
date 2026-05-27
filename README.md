@@ -144,6 +144,12 @@ Run the portfolio smoke checks:
 bash scripts/smoke_all.sh
 ```
 
+The cross-repo smoke also runs Lab's local-first Runtime Intelligence artifact
+chain gate. That gate verifies the committed Orchestrator -> EdgeEnv ->
+AIGuard -> Lab report bundle, including the Runtime Intelligence Risk Summary
+and remote-dispatch boundary rows, without treating GitLab, telemetry
+artifacts, or remote dispatch as a production control plane.
+
 Run the Reliable Edge Agent Runtime extension smoke when the supporting
 Orchestrator repo is available in the same workspace:
 
