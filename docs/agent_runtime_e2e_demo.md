@@ -43,6 +43,21 @@ Forge agent_manifest
 -> Lab agent-runtime-report
 ```
 
+## Smoke Gate Split
+
+The entrypoint e2e smoke and the Runtime Intelligence artifact smoke validate
+different parts of the ecosystem.
+
+| Gate | Command | What it proves | What it does not prove |
+|---|---|---|---|
+| Agent runtime operation smoke | `bash scripts/demo_agent_runtime_e2e.sh` | File-based agent manifest, Runtime `result.agent`, Orchestrator operation evidence, AIGuard runtime warning evidence, Lab agent-runtime report, optional remote-dispatch starter markers, and optional EdgeEnv run preservation are connected in one generated bundle | Runtime regression comparability, telemetry-history replay, or CI artifact bundle completeness |
+| Runtime Intelligence artifact smoke | `bash scripts/smoke_all.sh` or Lab's `bash scripts/smoke_runtime_intelligence_chain.sh --output-dir <dir>` | The committed Orchestrator -> EdgeEnv -> AIGuard -> Lab Runtime Intelligence bundle keeps manifest alignment, telemetry-history coverage, Runtime Intelligence Risk Summary rows, remote-dispatch boundary rows, report gates, and optional CI artifact outputs | Production observability, GitLab as a control plane, live remote execution, or a production scheduler |
+
+Keep both gates local-first. The agent runtime smoke is the operational
+scenario replay; the Runtime Intelligence smoke is the regression/anomaly
+artifact-bundle gate. Neither path makes Orchestrator or AIGuard the final
+deployment decision owner; Lab remains the report and decision owner.
+
 ## Run
 
 From the InferEdge entrypoint repository:
