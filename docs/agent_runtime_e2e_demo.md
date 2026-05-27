@@ -96,7 +96,10 @@ request examples. It writes `06_remote_dispatch_result.json`, including
 `remote_execution_result`. It also writes
 `07_remote_dispatch_guard_analysis.json` so AIGuard can explain whether the
 remote dispatch starter stayed selection-only, skipped execution, failed, or
-completed the explicit starter path.
+completed the explicit starter path. The smoke gate also checks that AIGuard,
+Lab JSON/Markdown, and the generated evidence index preserve the
+`remote_dispatch_runtime_event_compact_summary` role, `operation_boundary`, and
+`production_remote_execution=false` marker from the Orchestrator artifact.
 
 Explicit HTTP/SSH starter execution is opt-in:
 
@@ -592,7 +595,9 @@ the registry table preserves selected worker, remote execution status, and
 fallback final status as starter evidence rather than production remote
 execution proof. It also preserves `production_remote_execution` and
 `operation_boundary` when Orchestrator emits them so the starter boundary stays
-visible in the navigation layer.
+visible in the navigation layer. The entrypoint smoke now fails if the
+downstream AIGuard, Lab, or evidence-index artifacts drop the compact remote
+runtime event role or starter-only boundary marker.
 
 For a focused runtime-operation comparison, generate one device-local
 probe/process bundle and one remote fallback bundle, then build a registry from
@@ -726,6 +731,9 @@ Expected sustained evidence markers:
   `--remote-dispatch` is used
 - `07_remote_dispatch_guard_analysis.json` with deterministic AIGuard evidence
   for the remote dispatch starter when `--remote-dispatch` is used
+- `remote_dispatch_runtime_event_compact_summary` and
+  `remote dispatch starter evidence only` in AIGuard, Lab, and
+  `00_evidence_index.*` artifacts when `--remote-dispatch` is used
 - `runtime_operation_summary` in `08_edgeenv_run_show.json` and
   `edgeenv_summary` in `00_evidence_index.json` when
   `--edgeenv-run-evidence` is used
