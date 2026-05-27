@@ -162,6 +162,37 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "remote_final_status": remote_summary.get("final_status")
                 if remote_summary
                 else None,
+                "remote_production_remote_execution": remote_summary.get(
+                    "production_remote_execution"
+                )
+                if remote_summary
+                else None,
+                "remote_operation_boundary": remote_summary.get("operation_boundary")
+                if remote_summary
+                else None,
+                "remote_event_summary_role": remote_summary.get(
+                    "remote_event_summary_role"
+                )
+                if remote_summary
+                else None,
+                "remote_event_count": remote_summary.get("remote_event_count")
+                if remote_summary
+                else None,
+                "remote_runtime_event_count": remote_summary.get(
+                    "remote_runtime_event_count"
+                )
+                if remote_summary
+                else None,
+                "remote_downstream_aiguard_evidence_type": remote_summary.get(
+                    "downstream_aiguard_evidence_type"
+                )
+                if remote_summary
+                else None,
+                "remote_downstream_lab_report_context": remote_summary.get(
+                    "downstream_lab_report_context"
+                )
+                if remote_summary
+                else None,
                 "edgeenv_run_id": edgeenv_summary.get("run_id")
                 if edgeenv_summary
                 else None,
@@ -211,8 +242,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | EdgeEnv |",
-        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|",
+        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
+        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -244,6 +275,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),
                     _remote_cell(run),
+                    _remote_boundary_cell(run),
                     _edgeenv_cell(run),
                 ]
             )
@@ -276,6 +308,36 @@ def _remote_cell(run: dict[str, Any]) -> str:
         f"worker={selected}" if selected not in (None, "", "unknown") else None,
         f"remote={remote_status}" if remote_status not in (None, "", "unknown") else None,
         f"fallback={fallback_status}" if fallback_status not in (None, "", "unknown") else None,
+    ]
+    return ", ".join(part for part in parts if part)
+
+
+def _remote_boundary_cell(run: dict[str, Any]) -> str:
+    operation_boundary = run.get("remote_operation_boundary")
+    production_remote_execution = run.get("remote_production_remote_execution")
+    role = run.get("remote_event_summary_role")
+    aiguard_signal = run.get("remote_downstream_aiguard_evidence_type")
+    if all(
+        value in (None, "", "unknown")
+        for value in (
+            operation_boundary,
+            production_remote_execution,
+            role,
+            aiguard_signal,
+        )
+    ):
+        return "-"
+    parts = [
+        f"boundary={operation_boundary}"
+        if operation_boundary not in (None, "", "unknown")
+        else None,
+        f"production_remote_execution={production_remote_execution}"
+        if production_remote_execution not in (None, "", "unknown")
+        else None,
+        f"role={role}" if role not in (None, "", "unknown") else None,
+        f"aiguard={aiguard_signal}"
+        if aiguard_signal not in (None, "", "unknown")
+        else None,
     ]
     return ", ".join(part for part in parts if part)
 

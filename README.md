@@ -214,8 +214,10 @@ source evidence contracts. The index preserves Orchestrator scenario label,
 category, and mode fields so repeated smoke runs can be grouped by intent
 without changing the source contracts. It also records an `operation_path` and,
 when present, remote dispatch starter status, selected worker, remote execution
-status, and fallback final status so device-local and remote/fallback runs can
-be compared in one registry table.
+status, fallback final status, `production_remote_execution`, and
+`operation_boundary` so device-local and remote/fallback runs can be compared
+in one registry table without turning starter evidence into production remote
+operation proof.
 When present, EdgeEnv evidence status is also recorded so reviewers can see
 that Runtime operation summary was preserved in the local registry/artifact
 flow without making it a deployment decision or comparability gate.

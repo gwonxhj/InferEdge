@@ -595,14 +595,40 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     remote_summary: dict[str, Any] = {}
     if remote:
         remote_summary = {
-            "dispatch_status": first_value(remote, [("dispatch_status",), ("status",)], "unknown"),
-            "selected_worker_id": first_value(remote, [("selected_worker_id",)], "unknown"),
-            "decision_reason": first_value(remote, [("decision_reason",)], "unknown"),
+            "dispatch_status": first_value(
+                remote,
+                [
+                    ("dispatch_status",),
+                    ("dispatch_summary", "dispatch_status"),
+                    ("remote_operation_summary", "dispatch_status"),
+                    ("status",),
+                ],
+                "unknown",
+            ),
+            "selected_worker_id": first_value(
+                remote,
+                [
+                    ("selected_worker_id",),
+                    ("dispatch_summary", "selected_worker_id"),
+                    ("remote_operation_summary", "selected_worker_id"),
+                ],
+                "unknown",
+            ),
+            "decision_reason": first_value(
+                remote,
+                [
+                    ("decision_reason",),
+                    ("dispatch_summary", "decision_reason"),
+                    ("remote_operation_summary", "decision_reason"),
+                ],
+                "unknown",
+            ),
             "execution_requested": first_value(
                 remote,
                 [
                     ("remote_execution_result", "execution_requested"),
                     ("remote_execution", "execution_requested"),
+                    ("remote_operation_summary", "execution_requested"),
                 ],
                 "unknown",
             ),
@@ -612,6 +638,8 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                     ("network_execution_performed",),
                     ("remote_execution_result", "performed"),
                     ("remote_execution_result", "network_execution_performed"),
+                    ("remote_execution_result", "execution_performed"),
+                    ("remote_operation_summary", "execution_performed"),
                 ],
                 "unknown",
             ),
@@ -620,6 +648,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 [
                     ("remote_execution_result", "status"),
                     ("remote_execution_result", "final_status"),
+                    ("remote_operation_summary", "remote_execution_status"),
                 ],
                 "unknown",
             ),
@@ -628,6 +657,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 [
                     ("remote_execution_result", "error_category"),
                     ("remote_execution_result", "error", "category"),
+                    ("remote_operation_summary", "remote_error_category"),
                 ],
                 "unknown",
             ),
@@ -636,6 +666,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 [
                     ("fallback_execution_result", "final_status"),
                     ("fallback_execution_result", "status"),
+                    ("remote_operation_summary", "fallback_final_status"),
                 ],
                 "unknown",
             ),
@@ -650,10 +681,63 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             "final_status": first_value(
                 remote,
                 [
+                    ("remote_operation_summary", "final_status"),
                     ("remote_execution_result", "final_status"),
                     ("fallback_execution_result", "final_status"),
                     ("status",),
                 ],
+                "unknown",
+            ),
+            "production_remote_execution": first_value(
+                remote,
+                [
+                    ("remote_runtime_event_summary", "production_remote_execution"),
+                    ("remote_operation_summary", "production_remote_execution"),
+                    ("remote_execution_result", "production_remote_execution"),
+                    ("remote_execution", "production_remote_execution"),
+                ],
+                "unknown",
+            ),
+            "remote_event_count": first_value(
+                remote,
+                [
+                    ("remote_runtime_event_summary", "event_count"),
+                    ("remote_operation_summary", "event_count"),
+                ],
+                "unknown",
+            ),
+            "remote_runtime_event_count": first_value(
+                remote,
+                [
+                    ("remote_runtime_event_summary", "runtime_event_count"),
+                    ("remote_operation_summary", "runtime_event_count"),
+                ],
+                "unknown",
+            ),
+            "remote_event_summary_role": first_value(
+                remote,
+                [
+                    ("remote_runtime_event_summary", "evidence_role"),
+                    ("remote_operation_summary", "evidence_role"),
+                ],
+                "unknown",
+            ),
+            "operation_boundary": first_value(
+                remote,
+                [
+                    ("remote_runtime_event_summary", "operation_boundary"),
+                    ("remote_operation_summary", "operation_boundary"),
+                ],
+                "unknown",
+            ),
+            "downstream_aiguard_evidence_type": first_value(
+                remote,
+                [("downstream_expectation", "aiguard_evidence_type")],
+                "unknown",
+            ),
+            "downstream_lab_report_context": first_value(
+                remote,
+                [("downstream_expectation", "lab_report_context")],
                 "unknown",
             ),
         }
@@ -813,6 +897,13 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| fallback_worker_id | {md_value(remote['fallback_worker_id'])} |",
                 f"| fallback_final_status | {md_value(remote['fallback_final_status'])} |",
                 f"| final_status | {md_value(remote['final_status'])} |",
+                f"| production_remote_execution | {md_value(remote['production_remote_execution'])} |",
+                f"| remote_event_count | {md_value(remote['remote_event_count'])} |",
+                f"| remote_runtime_event_count | {md_value(remote['remote_runtime_event_count'])} |",
+                f"| remote_event_summary_role | {md_value(remote['remote_event_summary_role'])} |",
+                f"| operation_boundary | {md_value(remote['operation_boundary'])} |",
+                f"| downstream_aiguard_evidence_type | {md_value(remote['downstream_aiguard_evidence_type'])} |",
+                f"| downstream_lab_report_context | {md_value(remote['downstream_lab_report_context'])} |",
             ]
         )
 
