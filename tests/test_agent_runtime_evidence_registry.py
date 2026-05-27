@@ -340,6 +340,49 @@ def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> No
     )
 
 
+def test_evidence_index_markdown_surfaces_remote_dispatch_boundary(
+    tmp_path: Path,
+) -> None:
+    index_module = load_script_module(
+        "build_agent_runtime_evidence_index_remote_boundary_md",
+        "scripts/build_agent_runtime_evidence_index.py",
+    )
+    write_json(
+        tmp_path / "06_remote_dispatch_result.json",
+        {
+            "dispatch_summary": {
+                "dispatch_status": "accepted",
+                "selected_worker_id": "primary-http-worker",
+                "decision_reason": "selected online worker",
+            },
+            "remote_execution_result": {
+                "execution_requested": True,
+                "execution_performed": False,
+                "production_remote_execution": False,
+                "status": "failed",
+            },
+            "remote_runtime_event_summary": {
+                "event_count": 2,
+                "runtime_event_count": 2,
+                "production_remote_execution": False,
+                "evidence_role": "remote_dispatch_runtime_event_compact_summary",
+                "operation_boundary": "remote dispatch starter evidence only",
+            },
+        },
+    )
+
+    index = index_module.build_summary(tmp_path)
+    md_path = tmp_path / "00_evidence_index.md"
+    index_module.write_markdown(index, md_path)
+    markdown = md_path.read_text(encoding="utf-8")
+
+    assert "remote_event_summary_role" in markdown
+    assert "remote_dispatch_runtime_event_compact_summary" in markdown
+    assert "operation_boundary" in markdown
+    assert "remote dispatch starter evidence only" in markdown
+    assert "production_remote_execution" in markdown
+
+
 def test_run_registry_surfaces_remote_dispatch_boundary(tmp_path: Path) -> None:
     registry_module = load_script_module(
         "build_agent_runtime_run_registry_remote_boundary",
