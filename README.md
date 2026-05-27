@@ -104,6 +104,10 @@ Repository boundaries stay fixed:
 - AIGuard may emit deterministic evidence such as
   `remote_execution_recovered_by_fallback`, but it does not decide deployment.
 - Lab remains the final report and deployment decision owner.
+- The entrypoint smoke gate verifies that downstream AIGuard, Lab, and
+  `00_evidence_index.*` artifacts preserve the
+  `remote_dispatch_runtime_event_compact_summary` role,
+  `operation_boundary`, and `production_remote_execution=false` boundary.
 
 Do not describe this path as production SSH/HTTP execution, long-lived worker
 operation, secure tunnel operation, retry/failover infrastructure, or cloud
@@ -253,7 +257,9 @@ diagnosis on that artifact. Add `--remote-execute-plan` to explicitly request
 the Orchestrator HTTP/SSH starter execution path when the selected worker
 registry entry supports it. File-contract workers remain selection-only and are
 recorded as skipped starter evidence. This is remote dispatch starter evidence,
-not production SSH/HTTP remote execution.
+not production SSH/HTTP remote execution. The smoke validation also checks that
+the remote dispatch runtime event summary role and starter boundary are
+preserved through AIGuard, Lab JSON/Markdown, and the generated evidence index.
 With `--edgeenv-run-evidence`, the script writes `08_edgeenv_run_show.json` and
 `08_edgeenv/.edgeenv/runs.db`. This is EdgeEnv local evidence preservation for
 the Runtime operation summary, not cloud monitoring or Lab deployment decision
