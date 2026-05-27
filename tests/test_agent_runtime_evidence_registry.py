@@ -254,3 +254,161 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["edgeenv_runtime_operation_health_reason"] == (
         "timeout_threshold_exceeded"
     )
+
+
+def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:
+    index_module = load_script_module(
+        "build_agent_runtime_evidence_index_remote_boundary",
+        "scripts/build_agent_runtime_evidence_index.py",
+    )
+    write_json(
+        tmp_path / "06_remote_dispatch_result.json",
+        {
+            "dispatch_summary": {
+                "dispatch_status": "accepted",
+                "selected_worker_id": "primary-http-worker",
+                "decision_reason": "selected online worker",
+            },
+            "remote_execution_result": {
+                "execution_requested": True,
+                "execution_performed": False,
+                "production_remote_execution": False,
+                "transport": "http",
+                "status": "failed",
+                "error_category": "connection_error",
+            },
+            "fallback_execution_result": {
+                "final_status": "succeeded",
+                "attempts": [
+                    {
+                        "selected_worker_id": "fallback-http-worker",
+                        "status": "succeeded",
+                        "production_remote_execution": False,
+                    }
+                ],
+            },
+            "remote_operation_summary": {
+                "execution_requested": True,
+                "execution_performed": True,
+                "remote_execution_status": "failed",
+                "remote_error_category": "connection_error",
+                "fallback_final_status": "succeeded",
+                "final_status": "succeeded",
+                "production_remote_execution": False,
+                "evidence_role": (
+                    "remote_worker_selection_and_starter_execution_evidence"
+                ),
+            },
+            "remote_runtime_event_summary": {
+                "event_count": 4,
+                "runtime_event_count": 4,
+                "production_remote_execution": False,
+                "evidence_role": "remote_dispatch_runtime_event_compact_summary",
+                "operation_boundary": "remote dispatch starter evidence only",
+            },
+            "downstream_expectation": {
+                "aiguard_evidence_type": "remote_execution_recovered_by_fallback",
+                "lab_report_context": "Remote fallback starter evidence",
+            },
+        },
+    )
+
+    index = index_module.build_summary(tmp_path)
+
+    remote = index["remote_summary"]
+    assert index["operation_path"] == "remote_dispatch_with_fallback"
+    assert remote["dispatch_status"] == "accepted"
+    assert remote["selected_worker_id"] == "primary-http-worker"
+    assert remote["remote_execution_status"] == "failed"
+    assert remote["remote_error_category"] == "connection_error"
+    assert remote["fallback_final_status"] == "succeeded"
+    assert remote["final_status"] == "succeeded"
+    assert remote["production_remote_execution"] is False
+    assert remote["remote_event_count"] == 4
+    assert remote["remote_runtime_event_count"] == 4
+    assert remote["remote_event_summary_role"] == (
+        "remote_dispatch_runtime_event_compact_summary"
+    )
+    assert remote["operation_boundary"] == (
+        "remote dispatch starter evidence only"
+    )
+    assert remote["downstream_aiguard_evidence_type"] == (
+        "remote_execution_recovered_by_fallback"
+    )
+    assert remote["downstream_lab_report_context"] == (
+        "Remote fallback starter evidence"
+    )
+
+
+def test_run_registry_surfaces_remote_dispatch_boundary(tmp_path: Path) -> None:
+    registry_module = load_script_module(
+        "build_agent_runtime_run_registry_remote_boundary",
+        "scripts/build_agent_runtime_run_registry.py",
+    )
+    run_dir = tmp_path / "remote_fallback"
+    run_dir.mkdir()
+    write_json(
+        run_dir / "00_evidence_index.json",
+        {
+            "operation_path": "remote_dispatch_with_fallback",
+            "run_summary": {
+                "scenario_label": "remote_dispatch_fallback_starter",
+            },
+            "guard_summary": {
+                "guard_verdict": "review_required",
+                "severity": "medium",
+            },
+            "decision_summary": {
+                "decision": "review",
+                "triggered_rules": ["remote_fallback_starter_review"],
+            },
+            "remote_summary": {
+                "dispatch_status": "accepted",
+                "selected_worker_id": "primary-http-worker",
+                "remote_execution_status": "failed",
+                "fallback_final_status": "succeeded",
+                "final_status": "succeeded",
+                "production_remote_execution": False,
+                "operation_boundary": "remote dispatch starter evidence only",
+                "remote_event_summary_role": (
+                    "remote_dispatch_runtime_event_compact_summary"
+                ),
+                "remote_event_count": 4,
+                "remote_runtime_event_count": 4,
+                "downstream_aiguard_evidence_type": (
+                    "remote_execution_recovered_by_fallback"
+                ),
+                "downstream_lab_report_context": (
+                    "Remote fallback starter evidence"
+                ),
+            },
+        },
+    )
+
+    registry = registry_module.build_registry(
+        [run_dir / "00_evidence_index.json"],
+        output_base=tmp_path,
+    )
+
+    run = registry["runs"][0]
+    assert run["operation_path"] == "remote_dispatch_with_fallback"
+    assert run["remote_dispatch_status"] == "accepted"
+    assert run["remote_selected_worker_id"] == "primary-http-worker"
+    assert run["remote_execution_status"] == "failed"
+    assert run["fallback_final_status"] == "succeeded"
+    assert run["remote_final_status"] == "succeeded"
+    assert run["remote_production_remote_execution"] is False
+    assert run["remote_operation_boundary"] == (
+        "remote dispatch starter evidence only"
+    )
+    assert run["remote_event_summary_role"] == (
+        "remote_dispatch_runtime_event_compact_summary"
+    )
+    assert run["remote_event_count"] == 4
+    assert run["remote_runtime_event_count"] == 4
+    assert run["remote_downstream_aiguard_evidence_type"] == (
+        "remote_execution_recovered_by_fallback"
+    )
+    assert run["remote_downstream_lab_report_context"] == (
+        "Remote fallback starter evidence"
+    )

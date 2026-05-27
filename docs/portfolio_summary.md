@@ -169,7 +169,8 @@ navigation and comparison layer; it preserves links back to the source
 Orchestrator, AIGuard, Lab, and remote dispatch artifacts instead of replacing
 those contracts or InferEdgeEnv's run evidence registry / comparability checker.
 The registry includes `operation_path`, selected remote worker, remote execution
-status, and fallback final status when those starter artifacts exist.
+status, fallback final status, `production_remote_execution`, and
+`operation_boundary` when those starter artifacts exist.
 For device-local input override evidence, the same index/registry path now also
 shows `producer_sources`, `device_local_producer_count`, and `producer_stages`
 so the override path can be reviewed without turning the registry into a new

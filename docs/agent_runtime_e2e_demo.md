@@ -590,7 +590,9 @@ with older bundles. Each index also records an `operation_path` such as
 or `remote_dispatch_with_fallback`. When remote dispatch evidence is present,
 the registry table preserves selected worker, remote execution status, and
 fallback final status as starter evidence rather than production remote
-execution proof.
+execution proof. It also preserves `production_remote_execution` and
+`operation_boundary` when Orchestrator emits them so the starter boundary stays
+visible in the navigation layer.
 
 For a focused runtime-operation comparison, generate one device-local
 probe/process bundle and one remote fallback bundle, then build a registry from
