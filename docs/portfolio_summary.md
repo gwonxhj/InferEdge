@@ -326,3 +326,4 @@ Recent local validation record:
 | Date | Command | Result | Scope |
 |---|---|---|---|
 | 2026-05-28 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_runtime_intelligence_marker_gate_20260528 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after Lab hardened the Runtime Intelligence bundle manifest gate for required report markers. |
+| 2026-05-28 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_edgeenv_marker_alignment_20260528 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after Lab documented the expected report marker contract and EdgeEnv exposed the matching producer-side `lab_bundle_alignment.expected_report_markers` metadata. |
