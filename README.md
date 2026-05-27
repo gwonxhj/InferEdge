@@ -148,7 +148,10 @@ The cross-repo smoke also runs Lab's local-first Runtime Intelligence artifact
 chain gate. That gate verifies the committed Orchestrator -> EdgeEnv ->
 AIGuard -> Lab report bundle, including the Runtime Intelligence Risk Summary
 and remote-dispatch boundary rows, without treating GitLab, telemetry
-artifacts, or remote dispatch as a production control plane.
+artifacts, or remote dispatch as a production control plane. For the generated
+artifact list and the split between operation-smoke and Runtime Intelligence
+smoke gates, see
+[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split).
 
 Run the Reliable Edge Agent Runtime extension smoke when the supporting
 Orchestrator repo is available in the same workspace:
