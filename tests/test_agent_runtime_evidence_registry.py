@@ -21,6 +21,19 @@ def write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
+    smoke_script = (ROOT / "scripts" / "smoke_all.sh").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    assert "Lab Runtime Intelligence artifact smoke" in smoke_script
+    assert "scripts/smoke_runtime_intelligence_chain.sh --output-dir" in smoke_script
+    assert "INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT" in smoke_script
+    assert "Lab's local-first Runtime Intelligence artifact" in readme
+    assert "remote-dispatch boundary rows" in readme
+
+
 def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path) -> None:
     index_module = load_script_module(
         "build_agent_runtime_evidence_index",
