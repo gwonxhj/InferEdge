@@ -900,6 +900,8 @@ if [[ "$RUN_REMOTE_DISPATCH" -eq 1 ]]; then
   grep -q "inferedge-remote-dispatch-result-v1" "$REMOTE_DISPATCH_OUT"
   grep -q "file_contract_starter" "$REMOTE_DISPATCH_OUT"
   grep -q "production_remote_execution" "$REMOTE_DISPATCH_OUT"
+  grep -q "remote_dispatch_runtime_event_compact_summary" "$REMOTE_DISPATCH_OUT"
+  grep -q "remote dispatch starter evidence only" "$REMOTE_DISPATCH_OUT"
   grep -q "selected_worker_id" "$REMOTE_DISPATCH_OUT"
   grep -q "remote_execution_plan" "$REMOTE_DISPATCH_OUT"
   grep -q "inferedge-remote-execution-plan-v1" "$REMOTE_DISPATCH_OUT"
