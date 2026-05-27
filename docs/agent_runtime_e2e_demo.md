@@ -58,6 +58,22 @@ scenario replay; the Runtime Intelligence smoke is the regression/anomaly
 artifact-bundle gate. Neither path makes Orchestrator or AIGuard the final
 deployment decision owner; Lab remains the report and decision owner.
 
+Runtime Intelligence smoke writes these reviewer-facing artifacts under the
+configured output directory:
+
+| Artifact | Purpose |
+|---|---|
+| `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
+| `edgeenv_runtime_regression.md` / `.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
+| `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, and remote-dispatch boundary rows |
+| `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows and Lab ownership wording |
+| `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape without making CI a production control plane |
+| `aiguard_edgeenv_handoff_alignment.json` / `.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
+
+Use this output list when reviewing Runtime Intelligence evidence. Use
+`00_evidence_index.*` from the agent runtime smoke when reviewing generated
+operation scenario bundles.
+
 ## Run
 
 From the InferEdge entrypoint repository:
