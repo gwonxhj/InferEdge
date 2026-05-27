@@ -74,6 +74,14 @@ Use this output list when reviewing Runtime Intelligence evidence. Use
 `00_evidence_index.*` from the agent runtime smoke when reviewing generated
 operation scenario bundles.
 
+The current CI artifact gate also validates Lab-owned report marker context in
+the copied AIGuard/EdgeEnv alignment artifact. The expected context is:
+`lab_expected_report_markers`, `report_marker_context_role` set to
+`lab_report_contract_context`, and
+`aiguard_validates_expected_report_markers=false`. This keeps marker
+enforcement in Lab's bundle/report gates while AIGuard remains an external
+deterministic evidence provider.
+
 ## Run
 
 From the InferEdge entrypoint repository:

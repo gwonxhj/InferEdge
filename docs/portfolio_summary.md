@@ -63,7 +63,7 @@ production capability.
 | AIGuard diagnosis cases | Implemented | Deterministic evidence for bbox collapse, score saturation, temporal instability, and baseline deviation |
 | Runtime operation e2e chain | Implemented | Entrypoint smoke connects agent manifest, Runtime result, Orchestrator summary, AIGuard analysis, and Lab report |
 | Orchestrator operation evidence in Lab report | Implemented | Lab surfaces AIGuard `worker_health_degradation` and `scheduler_delay_pattern` context from Orchestrator telemetry |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke includes Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke includes Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including Lab-owned expected report marker context |
 | Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
 | Remote dispatch/fallback | Smoke/Starter | Orchestrator worker-selection/fallback evidence preserved through EdgeEnv context, AIGuard warning evidence, and Lab-owned report context; not production remote execution |
@@ -100,6 +100,18 @@ What not to claim:
 - Cloudflare / secure tunnel operation
 - production retry/failover infrastructure
 - Kubernetes-style or cloud orchestration
+
+Latest Runtime Intelligence gate hardening:
+
+- Lab's CI artifact gate now verifies that the copied
+  `aiguard_edgeenv_handoff_alignment.json/.md` artifacts preserve
+  `lab_expected_report_markers` and
+  `report_marker_context_role=lab_report_contract_context`.
+- The same gate requires `aiguard_validates_expected_report_markers=false`, so
+  AIGuard stays a deterministic external evidence provider while Lab remains
+  the report marker and deployment decision owner.
+- This is artifact contract hardening before deeper Jetson evidence capture;
+  it is not a production observability or GitLab control-plane claim.
 
 ## Device-Local Sustained Validation Starter
 

@@ -47,6 +47,10 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio
+    for text in (readme, portfolio):
+        assert "lab_expected_report_markers" in text
+        assert "lab_report_contract_context" in text
+        assert "aiguard_validates_expected_report_markers=false" in text
 
 
 def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path) -> None:
