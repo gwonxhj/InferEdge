@@ -65,8 +65,40 @@ production capability.
 | Orchestrator operation evidence in Lab report | Implemented | Lab surfaces AIGuard `worker_health_degradation` and `scheduler_delay_pattern` context from Orchestrator telemetry |
 | Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
-| Remote dispatch/fallback | Smoke/Starter | Worker selection/fallback starter evidence, not production remote execution |
+| Remote dispatch/fallback | Smoke/Starter | Orchestrator worker-selection/fallback evidence preserved through EdgeEnv context, AIGuard warning evidence, and Lab-owned report context; not production remote execution |
 | Live camera, Whisper/FastAPI sustained services, Cloudflare hardening, dashboard | Future Work | Roadmap only |
+
+## Runtime Operation Starter Evidence Chain
+
+The remote-dispatch/fallback path is valuable because it shows role separation
+across repositories, not because it claims production remote operation.
+
+```text
+Orchestrator worker selection / fallback starter
+-> EdgeEnv local registry and replay context
+-> AIGuard deterministic warning evidence
+-> Lab Runtime Intelligence / operation-risk report
+-> Lab-owned deployment decision
+```
+
+What to emphasize in a portfolio review:
+
+- Orchestrator records worker eligibility, selected/rejected worker reasons,
+  starter execution status, fallback final status, and compact event summary.
+- EdgeEnv can preserve that evidence as local registry / handoff context while
+  leaving comparability and deployment decisions to their owning layers.
+- AIGuard explains observed remote-dispatch failure or fallback recovery with
+  deterministic evidence, not LLM root-cause guessing.
+- Lab ties the evidence back to deployment risk and remains the final decision
+  owner.
+
+What not to claim:
+
+- production SSH/HTTP remote execution
+- long-lived remote worker daemon operation
+- Cloudflare / secure tunnel operation
+- production retry/failover infrastructure
+- Kubernetes-style or cloud orchestration
 
 ## Device-Local Sustained Validation Starter
 

@@ -61,6 +61,29 @@ flowchart LR
 | Comparability | InferEdgeEnv | Can this benchmark evidence be trusted and compared? | local artifacts, SQLite registry, export/import bundle, comparability report |
 | Operation | InferEdgeOrchestrator | Can deployed workloads stay stable under load? | scheduler telemetry, overload comparison, drop/backlog/latency evidence |
 
+## Runtime Operation Starter Chain
+
+The remote-dispatch path is currently a starter evidence chain:
+
+```text
+InferEdgeOrchestrator
+-> InferEdgeEnv
+-> InferEdgeAIGuard
+-> InferEdgeLab
+```
+
+- Orchestrator produces file-based worker-selection, starter execution status,
+  bounded fallback, and runtime event summary evidence.
+- EdgeEnv preserves local registry / replay / handoff context when that
+  operation evidence is attached to a run.
+- AIGuard turns the same observations into deterministic warning or review
+  evidence.
+- Lab owns the Runtime Intelligence / operation-risk report and final
+  deployment decision.
+
+This is not production remote execution, a cloud control plane, or secure
+multi-device orchestration.
+
 ## Submission Message
 
 ```text
