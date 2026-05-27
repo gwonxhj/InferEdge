@@ -84,6 +84,39 @@ Role boundary:
 - InferEdgeEnv: benchmark run evidence registry and comparability layer.
 - InferEdgeOrchestrator: runtime operation control after deployment validation.
 
+## Runtime Operation Starter Evidence Chain
+
+Runtime Operation Platform v2 adds operation evidence without changing the Core
+4 validation contracts. The current remote-dispatch starter follows this
+bounded path:
+
+```text
+Orchestrator remote dispatch starter
+-> EdgeEnv local evidence preservation
+-> AIGuard deterministic warning/review evidence
+-> Lab operation-risk report
+-> Lab-owned deployment decision
+```
+
+Responsibility split:
+
+- **Orchestrator** owns worker selection evidence, starter execution status,
+  fallback status, queue / runtime event summaries, and the
+  `operation_boundary=remote dispatch starter evidence only` marker.
+- **InferEdgeEnv** owns registry, replay, comparability, and handoff context
+  preservation. It does not verify production remote execution and does not
+  control workers.
+- **InferEdgeAIGuard** owns optional deterministic warning evidence such as
+  remote dispatch failure or fallback recovery. It does not make the final
+  deployment decision.
+- **InferEdgeLab** owns the operation-risk report and final deployment decision
+  context.
+
+This chain should be described as remote dispatch starter evidence or a remote
+worker selection contract. It should not be described as production SSH/HTTP
+execution, long-lived worker operation, secure tunnel operation, production
+retry/failover, or cloud orchestration.
+
 The submission-ready diagram is in [Ecosystem 1-Page Summary](ecosystem_1page.md).
 
 ## Contract Boundaries

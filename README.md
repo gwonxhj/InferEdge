@@ -77,8 +77,37 @@ submission boundary.
 | Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
 | Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
-| Remote dispatch / fallback starter | Smoke/Starter | File-based worker selection and bounded fallback evidence | Production remote execution or secure multi-device orchestration |
+| Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
 | Cloudflare / dashboard / production worker services | Future Work | Documented direction only | Completed remote operation platform |
+
+## Runtime Operation Starter Evidence Chain
+
+The current remote-dispatch path is intentionally a starter evidence chain, not
+production remote execution.
+
+```text
+Orchestrator remote dispatch starter
+-> EdgeEnv local evidence preservation context
+-> AIGuard deterministic remote-dispatch warning evidence
+-> Lab Runtime Intelligence / operation-risk report context
+-> Lab-owned deployment decision
+```
+
+Repository boundaries stay fixed:
+
+- Orchestrator records worker selection, skipped/failed starter execution,
+  fallback status, compact runtime event summaries, and
+  `operation_boundary=remote dispatch starter evidence only`.
+- EdgeEnv may preserve the operation context in local registry / replay /
+  handoff evidence, but it does not confirm remote execution or own operation
+  control.
+- AIGuard may emit deterministic evidence such as
+  `remote_execution_recovered_by_fallback`, but it does not decide deployment.
+- Lab remains the final report and deployment decision owner.
+
+Do not describe this path as production SSH/HTTP execution, long-lived worker
+operation, secure tunnel operation, retry/failover infrastructure, or cloud
+orchestration.
 
 ## Quick Start
 
