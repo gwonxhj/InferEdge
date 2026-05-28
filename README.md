@@ -538,6 +538,19 @@ Reproduce the same class of Jetson smoke with the convenience runner:
 bash scripts/demo_jetson_5min_sustained.sh
 ```
 
+Before starting a repeat Jetson run from a development machine, use the
+readiness preflight to catch SSH, `tegrastats`, clean Forge fixture, input, and
+model-path issues without creating new evidence:
+
+```bash
+bash scripts/check_jetson_sustained_readiness.sh
+```
+
+If the target is offline or SSH is blocked, keep the existing committed Jetson
+evidence as the latest confirmed record and rerun the preflight before
+attempting another sustained smoke. Do not describe a failed preflight as new
+Jetson runtime evidence.
+
 Open the Local Studio demo:
 
 ```bash

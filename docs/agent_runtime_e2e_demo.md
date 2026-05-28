@@ -549,6 +549,19 @@ The wrapper calls `scripts/demo_agent_runtime_e2e.sh` with the documented
 `tegrastats` capture options. Use `--help` to override output directory,
 frame count, timeout, ONNX model, or clean Forge repo path.
 
+From a development machine, run the readiness preflight before starting a
+repeat Jetson smoke:
+
+```bash
+bash scripts/check_jetson_sustained_readiness.sh
+```
+
+The preflight checks SSH reachability, `tegrastats`, the clean Forge fixture
+repo, the Vision input, the ONNX model path, and the sustained runner. It does
+not run inference, capture `tegrastats`, or produce new evidence. If it fails,
+fix the target connectivity or input setup first and continue treating the
+latest committed Jetson report as the latest confirmed evidence.
+
 The script writes generated evidence under:
 
 ```text
