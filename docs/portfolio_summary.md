@@ -114,6 +114,10 @@ Latest Runtime Intelligence gate hardening:
   runtime operation navigation context, and Lab surfaces that marker in the
   Runtime Intelligence Risk Summary without turning it into a comparability
   field, regression delta, or deployment decision override.
+- AIGuard now emits `edgeenv_orchestrator_operation_risk_summary` as
+  deterministic warning evidence, and Lab surfaces that AIGuard evidence as a
+  separate Runtime Intelligence row while preserving Lab as final deployment
+  decision owner.
 - This is artifact contract hardening before deeper Jetson evidence capture;
   it is not a production observability or GitLab control-plane claim.
 
@@ -344,3 +348,4 @@ Recent local validation record:
 | 2026-05-28 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_runtime_intelligence_marker_gate_20260528 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after Lab hardened the Runtime Intelligence bundle manifest gate for required report markers. |
 | 2026-05-28 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_edgeenv_marker_alignment_20260528 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after Lab documented the expected report marker contract and EdgeEnv exposed the matching producer-side `lab_bundle_alignment.expected_report_markers` metadata. |
 | 2026-05-28 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_aiguard_marker_context_20260528 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after AIGuard preserved Lab report marker context as external handoff metadata without taking ownership of Lab's report gate. |
+| 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_aiguard_operation_risk_summary_20260529 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after AIGuard added `edgeenv_orchestrator_operation_risk_summary` and Lab surfaced it as a Lab-owned Runtime Intelligence row. |

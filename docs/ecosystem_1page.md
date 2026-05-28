@@ -77,7 +77,8 @@ InferEdgeOrchestrator
 - EdgeEnv preserves local registry / replay / handoff context when that
   operation evidence is attached to a run.
 - AIGuard turns the same observations into deterministic warning or review
-  evidence.
+  evidence, including `edgeenv_orchestrator_operation_risk_summary` when
+  EdgeEnv preserves Orchestrator operation-risk markers.
 - Lab owns the Runtime Intelligence / operation-risk report and final
   deployment decision.
 

@@ -153,7 +153,10 @@ artifacts, or remote dispatch as a production control plane. The current chain
 also keeps the compact Orchestrator `operation_risk_summary` marker as
 EdgeEnv-preserved navigation context and surfaces it as a Lab-owned report row;
 it is not an EdgeEnv regression delta, comparability field, or deployment
-decision override. For the generated artifact list and the split between
+decision override. AIGuard now also emits
+`edgeenv_orchestrator_operation_risk_summary` as deterministic warning evidence,
+and Lab renders that evidence as a separate Runtime Intelligence row while
+keeping Lab as the final deployment decision owner. For the generated artifact list and the split between
 operation-smoke and Runtime Intelligence smoke gates, see
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split).
 The current Lab gate also checks the copied AIGuard/EdgeEnv handoff alignment
