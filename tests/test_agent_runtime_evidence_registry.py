@@ -135,6 +135,17 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
                 ),
                 "max_pressure_task": "vision_agent",
             },
+            "operation_risk_summary": {
+                "schema_version": "inferedge-entrypoint-operation-risk-summary-v1",
+                "queue_pressure_reason": (
+                    "max_total_queue_depth_exceeded_overload_threshold"
+                ),
+                "max_pressure_task": "vision_agent",
+                "primary_health_reason": "worker_health_degraded",
+                "device_local_event_count": 7,
+                "producer_event_count": 7,
+                "not_a_deployment_decision": True,
+            },
             "runtime_event_summary": {
                 "device_local_event_count": 7,
                 "producer_event_count": 7,
@@ -214,6 +225,41 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "inferedge-runtime-operation-summary-v1"
     )
     assert edgeenv_summary["comparability_role"] == "supplemental_evidence_not_gate"
+
+
+def test_evidence_index_uses_derived_operation_risk_summary(tmp_path: Path) -> None:
+    index_module = load_script_module(
+        "build_agent_runtime_evidence_index_operation_risk",
+        "scripts/build_agent_runtime_evidence_index.py",
+    )
+    write_json(
+        tmp_path / "03_orchestration_summary.json",
+        {
+            "multi_workload_sustained_summary": {
+                "scenario_mode": "device_local",
+                "observed_runtime_signals": {
+                    "device_local_producer_count": 9,
+                    "producer_source_count": 9,
+                },
+            },
+            "operation_risk_summary": {
+                "schema_version": "inferedge-entrypoint-operation-risk-summary-v1",
+                "queue_pressure_reason": "queue_backlog_threshold_exceeded",
+                "max_pressure_task": "vision_agent",
+                "device_local_event_count": 9,
+                "producer_event_count": 9,
+                "not_a_deployment_decision": True,
+            },
+        },
+    )
+
+    index = index_module.build_summary(tmp_path, requested_frames="9")
+    run_summary = index["run_summary"]
+
+    assert run_summary["queue_pressure_reason"] == "queue_backlog_threshold_exceeded"
+    assert run_summary["max_pressure_task"] == "vision_agent"
+    assert run_summary["device_local_event_count"] == 9
+    assert run_summary["producer_event_count"] == 9
 
 
 def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -> None:
