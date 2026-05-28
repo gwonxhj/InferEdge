@@ -516,16 +516,19 @@ Latest 5-minute-class Jetson sustained smoke:
 | Max queue depth | 6 |
 | Dropped / fallback count | 3597 / 3597 |
 | Deadline missed count | 1802 |
-| Parsed `tegrastats` samples | 282 |
-| Max temperature / RAM | 43.125 C / 1028 MB |
-| Vision mean / p95 latency | 153.231 ms / 157.2 ms |
+| Parsed `tegrastats` samples | 294 |
+| Max temperature / RAM | 49.843 C / 1155 MB |
+| Vision mean / p95 latency | 160.021 ms / 158.415 ms |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
-This longer replay strengthens the runtime-operation evidence path by carrying
-5-minute-class queue pressure, drop/fallback, deadline miss, and live Jetson
-telemetry through Orchestrator, AIGuard, and Lab. It remains device-local smoke
-evidence, not decoded YOLO accuracy validation, live camera operation,
+The latest repeat run was captured after the Runtime Intelligence CI artifact
+gate hardening and passed the entrypoint schema-marker validation. It carries
+5-minute-class queue pressure, drop/fallback, deadline miss, live Jetson
+telemetry, derived `operation_risk_summary`, AIGuard
+`queue_pressure_context` / `worker_operation_risk_summary`, and Lab-owned
+deployment decision evidence through the same bundle. It remains device-local
+smoke evidence, not decoded YOLO accuracy validation, live camera operation,
 Whisper/FastAPI service execution, production remote execution, or sustained
 thermal endurance validation. See
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md)

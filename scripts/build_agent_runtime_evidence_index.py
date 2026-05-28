@@ -404,6 +404,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             orchestration,
             [
                 ("queue_state_summary", "queue_pressure_reason"),
+                ("operation_risk_summary", "queue_pressure_reason"),
             ],
             first_value(
                 lab,
@@ -422,6 +423,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             orchestration,
             [
                 ("queue_state_summary", "max_pressure_task"),
+                ("operation_risk_summary", "max_pressure_task"),
             ],
             first_value(
                 lab,
@@ -440,6 +442,12 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             orchestration,
             [
                 ("runtime_event_summary", "device_local_event_count"),
+                ("operation_risk_summary", "device_local_event_count"),
+                (
+                    "multi_workload_sustained_summary",
+                    "observed_runtime_signals",
+                    "device_local_producer_count",
+                ),
             ],
             first_value(
                 lab,
@@ -458,6 +466,12 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             orchestration,
             [
                 ("runtime_event_summary", "producer_event_count"),
+                ("operation_risk_summary", "producer_event_count"),
+                (
+                    "multi_workload_sustained_summary",
+                    "observed_runtime_signals",
+                    "producer_source_count",
+                ),
             ],
             first_value(
                 lab,

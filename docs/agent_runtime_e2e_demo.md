@@ -523,14 +523,19 @@ and a 420-second guard timeout.
 | Dropped count | 3597 |
 | Fallback count | 3597 |
 | Deadline missed count | 1802 |
-| Parsed `tegrastats` samples | 282 |
-| Max temperature | `43.125 C` |
-| Max RAM used | `1028 MB` |
-| Vision mean / p95 latency | `153.231 ms / 157.2 ms` |
+| Parsed `tegrastats` samples | 294 |
+| Max temperature | `49.843 C` |
+| Max RAM used | `1155 MB` |
+| Vision mean / p95 latency | `160.021 ms / 158.415 ms` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 
-This replay is captured as
+The latest repeat run was captured under
+`/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_risk_summary_v2`
+and passed the final schema-marker validation. The bundle preserves derived
+`operation_risk_summary` markers, AIGuard `queue_pressure_context`,
+AIGuard `worker_operation_risk_summary`, and the Lab-owned blocked deployment
+decision. The submission-facing snapshot is captured as
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](evidence/jetson_device_local_5min_sustained_report.md)
 and
 [`HTML report`](evidence/jetson_device_local_5min_sustained_report.html).

@@ -11,7 +11,7 @@ Scope:
 - Model: user-provided `yolov8n.onnx`
 - Vision backend: ONNX Runtime `CPUExecutionProvider`
 - Telemetry: live `tegrastats` capture during the Orchestrator run
-- Output bundle: `/tmp/inferedge_agent_runtime_jetson_sustained_5min_3600`
+- Output bundle: `/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_risk_summary_v2`
 
 This is 5-minute-class device-local runtime reliability smoke evidence. It is
 not decoded YOLO accuracy validation, live camera operation, Whisper/FastAPI
@@ -26,7 +26,7 @@ PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH \
 INFEREDGE_FORGE_REPO=/tmp/inferedge_clean_repos/InferEdgeForge \
 timeout 420 bash scripts/demo_agent_runtime_e2e.sh \
   --device-local \
-  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_3600 \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_risk_summary_v2 \
   --frames 3600 \
   --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
   --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx \
@@ -34,11 +34,11 @@ timeout 420 bash scripts/demo_agent_runtime_e2e.sh \
   --capture-tegrastats
 ```
 
-Observed wall-clock window:
+Latest confirmed run:
 
-- Start: `2026-05-20 17:24:31 UTC`
-- End: `2026-05-20 17:29:28 UTC`
-- Duration: about 297 seconds
+- Captured after Runtime Intelligence CI artifact gate hardening
+- Entrypoint schema-marker validation: `passed`
+- AIGuard operation context markers: `queue_pressure_context`, `worker_operation_risk_summary`
 
 ## Runtime Reliability Metrics
 
@@ -53,18 +53,20 @@ Observed wall-clock window:
 | Policy decision count | 3597 |
 | Max queue depth | 6 |
 | Queue pressure state | overloaded |
+| Queue pressure reason | queue_backlog_threshold_exceeded |
+| Max pressure task | vision_agent |
 | Queue depth samples | 7206 |
-| Parsed `tegrastats` samples | 282 |
-| Max temperature | 43.125 C |
-| Max RAM used | 1028 MB |
+| Parsed `tegrastats` samples | 294 |
+| Max temperature | 49.843 C |
+| Max RAM used | 1155 MB |
 
 ## Workload Summary
 
 | Agent | Type | Executed | Dropped | Deadline Missed | Fallback | Mean Latency ms | P95 Latency ms |
 |---|---|---:|---:|---:|---:|---:|---:|
-| safety_monitor_agent | safety | 1800 | 0 | 0 | 0 | 3.117 | 3.282 |
-| vision_agent | vision | 1802 | 1798 | 1802 | 1798 | 153.231 | 157.2 |
-| voice_command_agent | voice | 1 | 1799 | 0 | 1799 | 39.0 | 39.0 |
+| safety_monitor_agent | safety | 1800 | 0 | 0 | 0 | 3.097 | 3.247 |
+| vision_agent | vision | 1802 | 1798 | 1802 | 1798 | 160.021 | 158.415 |
+| voice_command_agent | voice | 1 | 1799 | 0 | 1799 | 39.023 | 39.023 |
 
 ## Runtime Operation Evidence
 
@@ -90,7 +92,11 @@ Observed wall-clock window:
 | runtime_latency_budget_overrun | latency_budget_exceeded | failed | medium |
 | runtime_error_classification | runtime_error_severity | failed | medium |
 | profiled_workload_pressure | profiled_workload_risk_count | failed | high |
-| thermal_resource_pressure | max_temperature_c=43.125 | passed | low |
+| thermal_resource_pressure | max_temperature_c=49.843 | passed | low |
+| worker_health_degradation | degraded_or_constrained_worker_count | warning | medium |
+| queue_pressure_context | queue_pressure_reason_count | warning | medium |
+| worker_operation_risk_summary | worker_operation_risk_count | warning | medium |
+| device_local_operation_context | device_local_event_count | passed | low |
 
 AIGuard verdict:
 
@@ -135,4 +141,3 @@ Lab-owned deployment decision.
 
 InferEdgeLab remains the final deployment decision owner. Orchestrator and
 AIGuard provide evidence; they do not overwrite Lab policy.
-

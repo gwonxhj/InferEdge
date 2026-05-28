@@ -773,6 +773,86 @@ summary_path.write_text(
 )
 PY
 
+run_step "Derive Orchestrator operation risk summary markers" \
+  "$ORCH_PYTHON" - "$ORCHESTRATION_OUT" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+path = Path(sys.argv[1])
+data = json.loads(path.read_text(encoding="utf-8"))
+multi = data.get("multi_workload_sustained_summary") or {}
+observed = multi.get("observed_runtime_signals") or {}
+queue = data.setdefault("queue_state_summary", {})
+runtime_events = data.setdefault("runtime_event_summary", {})
+workers = (data.get("worker_health_snapshot") or {}).get("workers") or {}
+
+policy_reasons = observed.get("policy_decision_reasons") or []
+if isinstance(policy_reasons, str):
+    policy_reasons = [policy_reasons]
+queue_pressure_reason = (
+    policy_reasons[0]
+    if policy_reasons
+    else queue.get("queue_pressure_reason")
+    or queue.get("queue_pressure_state")
+    or "unknown"
+)
+
+max_by_task = queue.get("max_queue_depth_by_task") or {}
+max_pressure_task = queue.get("max_pressure_task") or "unknown"
+if isinstance(max_by_task, dict) and max_by_task:
+    max_pressure_task = max(max_by_task.items(), key=lambda item: item[1])[0]
+
+degraded_workers = []
+if isinstance(workers, dict):
+    for worker_id, worker in workers.items():
+        if isinstance(worker, dict) and worker.get("health_state") != "healthy":
+            degraded_workers.append(str(worker_id))
+primary_health_reason = (
+    "worker_health_degraded"
+    if degraded_workers
+    else str(queue.get("queue_pressure_state") or "healthy")
+)
+
+device_local_event_count = (
+    observed.get("device_local_producer_count")
+    or runtime_events.get("device_local_event_count")
+    or runtime_events.get("event_count")
+    or "unknown"
+)
+producer_event_count = (
+    observed.get("producer_source_count")
+    or runtime_events.get("producer_event_count")
+    or "unknown"
+)
+
+queue["queue_pressure_reason"] = queue_pressure_reason
+queue["max_pressure_task"] = max_pressure_task
+data.setdefault("worker_health_snapshot", {})[
+    "primary_health_reason"
+] = primary_health_reason
+runtime_events["device_local_event_count"] = device_local_event_count
+runtime_events["producer_event_count"] = producer_event_count
+data["operation_risk_summary"] = {
+    "schema_version": "inferedge-entrypoint-operation-risk-summary-v1",
+    "evidence_role": "derived_navigation_context",
+    "decision_owner": "lab",
+    "scheduler_owner": "orchestrator",
+    "queue_pressure_reason": queue_pressure_reason,
+    "max_pressure_task": max_pressure_task,
+    "primary_health_reason": primary_health_reason,
+    "degraded_worker_ids": degraded_workers,
+    "device_local_event_count": device_local_event_count,
+    "producer_event_count": producer_event_count,
+    "not_a_deployment_decision": True,
+}
+
+path.write_text(
+    json.dumps(data, ensure_ascii=False, indent=2) + "\n",
+    encoding="utf-8",
+)
+PY
+
 run_step "Generate AIGuard runtime reliability guard_analysis" \
   bash -lc "cd '$AIGUARD_REPO' && PYTHONDONTWRITEBYTECODE=1 '$AIGUARD_PYTHON' -m inferedge_aiguard.cli reason-orchestration --input '$ORCHESTRATION_OUT' --save-json '$AIGUARD_JSON_OUT' --save-md '$AIGUARD_MD_OUT'"
 
