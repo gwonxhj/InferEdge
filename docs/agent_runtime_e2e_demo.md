@@ -51,7 +51,7 @@ different parts of the ecosystem.
 | Gate | Command | What it proves | What it does not prove |
 |---|---|---|---|
 | Agent runtime operation smoke | `bash scripts/demo_agent_runtime_e2e.sh` | File-based agent manifest, Runtime `result.agent`, Orchestrator operation evidence, AIGuard runtime warning evidence, Lab agent-runtime report, optional remote-dispatch starter markers, and optional EdgeEnv run preservation are connected in one generated bundle | Runtime regression comparability, telemetry-history replay, or CI artifact bundle completeness |
-| Runtime Intelligence artifact smoke | `bash scripts/smoke_all.sh` or Lab's `bash scripts/smoke_runtime_intelligence_chain.sh --output-dir <dir>` | The committed Orchestrator -> EdgeEnv -> AIGuard -> Lab Runtime Intelligence bundle keeps manifest alignment, telemetry-history coverage, Runtime Intelligence Risk Summary rows, remote-dispatch boundary rows, report gates, and optional CI artifact outputs | Production observability, GitLab as a control plane, live remote execution, or a production scheduler |
+| Runtime Intelligence artifact smoke | `bash scripts/smoke_all.sh` or Lab's `bash scripts/smoke_runtime_intelligence_chain.sh --output-dir <dir>` | The committed Orchestrator -> EdgeEnv -> AIGuard -> Lab Runtime Intelligence bundle keeps manifest alignment, telemetry-history coverage, Runtime Intelligence Risk Summary rows, EdgeEnv-preserved `operation_risk_summary` navigation context, remote-dispatch boundary rows, report gates, and optional CI artifact outputs | Production observability, GitLab as a control plane, live remote execution, or a production scheduler |
 
 Keep both gates local-first. The agent runtime smoke is the operational
 scenario replay; the Runtime Intelligence smoke is the regression/anomaly
@@ -65,7 +65,7 @@ configured output directory:
 |---|---|
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
 | `edgeenv_runtime_regression.md` / `.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
-| `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, and remote-dispatch boundary rows |
+| `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, preserved `operation_risk_summary` markers, and remote-dispatch boundary rows |
 | `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows and Lab ownership wording |
 | `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape without making CI a production control plane |
 | `aiguard_edgeenv_handoff_alignment.json` / `.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
