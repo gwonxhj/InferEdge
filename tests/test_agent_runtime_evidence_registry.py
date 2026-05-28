@@ -34,6 +34,27 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "remote-dispatch boundary rows" in readme
 
 
+def test_jetson_readiness_preflight_is_not_evidence() -> None:
+    script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "ssh" in script
+    assert "ConnectTimeout" in script
+    assert "tegrastats=available" in script
+    assert "clean_forge_repo=available" in script
+    assert "vision_onnx_model=available" in script
+    assert "This preflight does not create evidence" in script
+    for text in (readme, demo_doc):
+        assert "check_jetson_sustained_readiness.sh" in text
+        assert "does not" in text
+        assert "new evidence" in text
+
+
 def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
