@@ -63,7 +63,7 @@ production capability.
 | AIGuard diagnosis cases | Implemented | Deterministic evidence for bbox collapse, score saturation, temporal instability, and baseline deviation |
 | Runtime operation e2e chain | Implemented | Entrypoint smoke connects agent manifest, Runtime result, Orchestrator summary, AIGuard analysis, and Lab report |
 | Orchestrator operation evidence in Lab report | Implemented | Lab surfaces AIGuard `worker_health_degradation` and `scheduler_delay_pattern` context from Orchestrator telemetry |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke includes Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including Lab-owned expected report marker context |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke includes Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including Lab-owned expected report marker context and EdgeEnv-preserved `operation_risk_summary` report rows |
 | Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
 | Remote dispatch/fallback | Smoke/Starter | Orchestrator worker-selection/fallback evidence preserved through EdgeEnv context, AIGuard warning evidence, and Lab-owned report context; not production remote execution |
@@ -110,6 +110,10 @@ Latest Runtime Intelligence gate hardening:
 - The same gate requires `aiguard_validates_expected_report_markers=false`, so
   AIGuard stays a deterministic external evidence provider while Lab remains
   the report marker and deployment decision owner.
+- EdgeEnv now preserves Orchestrator `operation_risk_summary` as supplemental
+  runtime operation navigation context, and Lab surfaces that marker in the
+  Runtime Intelligence Risk Summary without turning it into a comparability
+  field, regression delta, or deployment decision override.
 - This is artifact contract hardening before deeper Jetson evidence capture;
   it is not a production observability or GitLab control-plane claim.
 

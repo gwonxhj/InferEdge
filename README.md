@@ -75,7 +75,7 @@ submission boundary.
 | YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation | Full COCO benchmark or automatic evaluation for every model |
 | AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
 | Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence | Production observability platform or GitLab control plane |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary` markers surfaced in the Lab report | Production observability platform or GitLab control plane |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
 | Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
 | Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
@@ -149,9 +149,12 @@ The cross-repo smoke also runs Lab's local-first Runtime Intelligence artifact
 chain gate. That gate verifies the committed Orchestrator -> EdgeEnv ->
 AIGuard -> Lab report bundle, including the Runtime Intelligence Risk Summary
 and remote-dispatch boundary rows, without treating GitLab, telemetry
-artifacts, or remote dispatch as a production control plane. For the generated
-artifact list and the split between operation-smoke and Runtime Intelligence
-smoke gates, see
+artifacts, or remote dispatch as a production control plane. The current chain
+also keeps the compact Orchestrator `operation_risk_summary` marker as
+EdgeEnv-preserved navigation context and surfaces it as a Lab-owned report row;
+it is not an EdgeEnv regression delta, comparability field, or deployment
+decision override. For the generated artifact list and the split between
+operation-smoke and Runtime Intelligence smoke gates, see
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split).
 The current Lab gate also checks the copied AIGuard/EdgeEnv handoff alignment
 artifact for Lab-owned expected report marker context. In practice,
