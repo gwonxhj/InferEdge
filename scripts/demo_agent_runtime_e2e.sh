@@ -279,8 +279,10 @@ run_lab_agent_runtime_report() {
   elif command -v inferedgelab >/dev/null 2>&1; then
     inferedgelab "${report_args[@]}"
   else
-    echo "missing Lab CLI: install poetry or ensure inferedgelab is on PATH" >&2
-    exit 1
+    local lab_python
+    lab_python="$(choose_python "$LAB_REPO")"
+    PYTHONDONTWRITEBYTECODE=1 PYTHONPATH="$LAB_REPO${PYTHONPATH:+:$PYTHONPATH}" \
+      "$lab_python" -m inferedgelab.cli "${report_args[@]}"
   fi
 }
 

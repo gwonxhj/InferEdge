@@ -510,6 +510,29 @@ Runtime worktrees, see
 For a submission-facing snapshot of the generated Lab evidence, see
 [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md).
 
+Latest Jetson EdgeEnv preservation smoke:
+
+| Evidence | Value |
+|---|---:|
+| Device | Jetson Orin Nano |
+| Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
+| Frames | 32 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 29 / 29 |
+| Deadline missed count | 18 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature / RAM | 42.843 C / 999 MB |
+| Vision mean / p95 latency | 166.941 ms / 423.192 ms |
+| EdgeEnv run evidence | `run-20260529-034704-fbf753f0` with `runtime_operation_summary` stored |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` from runtime reliability review rules |
+
+This run confirms that the entrypoint can carry device-local runtime operation
+evidence into EdgeEnv's local run registry and still finish the Orchestrator ->
+AIGuard -> Lab evidence chain. It remains device-local starter smoke, not
+decoded YOLO accuracy validation, live camera operation, production remote
+execution, or thermal endurance validation.
+
 Latest 5-minute-class Jetson sustained smoke:
 
 | Evidence | Value |
@@ -545,6 +568,9 @@ Reproduce the same class of Jetson smoke with the convenience runner:
 
 ```bash
 bash scripts/demo_jetson_5min_sustained.sh
+
+# Optional: also preserve Runtime operation summary through EdgeEnv.
+bash scripts/demo_jetson_5min_sustained.sh --edgeenv-run-evidence
 ```
 
 Before starting a repeat Jetson run from a development machine, use the
@@ -553,6 +579,9 @@ model-path issues without creating new evidence:
 
 ```bash
 bash scripts/check_jetson_sustained_readiness.sh
+
+# Optional: include the EdgeEnv repo/CLI preflight for registry preservation.
+bash scripts/check_jetson_sustained_readiness.sh --edgeenv-run-evidence
 ```
 
 If the target is offline or SSH is blocked, keep the existing committed Jetson
