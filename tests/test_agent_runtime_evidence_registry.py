@@ -30,6 +30,10 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Lab Runtime Intelligence artifact smoke" in smoke_script
     assert "scripts/smoke_runtime_intelligence_chain.sh --output-dir" in smoke_script
     assert "INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT" in smoke_script
+    assert "Lab Runtime Intelligence remote fallback report marker gate" in smoke_script
+    assert "runtime_anomaly_summary.md" in smoke_script
+    assert "runtime_anomaly_summary.html" in smoke_script
+    assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
     assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
     assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script
     assert "Lab's local-first Runtime Intelligence artifact" in readme
@@ -121,6 +125,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "lab_preservation=present" in text
         assert "Remote fallback starter evidence" in text
         assert "lab=Remote fallback starter evidence" in text
+        assert "directly gated remote fallback Lab context row" in text
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio

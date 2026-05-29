@@ -58,6 +58,30 @@ run_step() {
   "$@"
 }
 
+require_marker() {
+  local file="$1"
+  local marker="$2"
+  if [[ ! -f "$file" ]]; then
+    echo "missing required artifact: $file" >&2
+    exit 1
+  fi
+  if ! grep -qF "$marker" "$file"; then
+    echo "missing required marker in $file: $marker" >&2
+    exit 1
+  fi
+}
+
+require_runtime_intelligence_remote_fallback_markers() {
+  local summary_md="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.md"
+  local summary_html="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.html"
+
+  require_marker "$summary_md" "Remote fallback starter evidence"
+  require_marker "$summary_md" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
+  require_marker "$summary_md" "remote_execution_recovered_by_fallback"
+  require_marker "$summary_html" "Remote fallback starter evidence"
+  require_marker "$summary_html" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
+}
+
 FORGE="$(require_repo InferEdgeForge)"
 RUNTIME="$(require_repo InferEdge-Runtime)"
 LAB="$(require_repo InferEdgeLab)"
@@ -77,6 +101,7 @@ run_step "Lab install" bash -lc "cd '$LAB' && poetry install --no-interaction"
 run_step "Lab portfolio demo check" bash -lc "cd '$LAB' && poetry run inferedgelab portfolio-demo-check"
 run_step "Lab Core 4 conformance check" bash -lc "cd '$LAB' && poetry run inferedgelab core4-conformance-check"
 run_step "Lab Runtime Intelligence artifact smoke" bash -lc "cd '$LAB' && bash scripts/smoke_runtime_intelligence_chain.sh --output-dir '$RUNTIME_INTELLIGENCE_SMOKE_OUT'"
+run_step "Lab Runtime Intelligence remote fallback report marker gate" require_runtime_intelligence_remote_fallback_markers
 if [[ "$FULL" -eq 1 ]]; then
   run_step "Lab full pytest" bash -lc "cd '$LAB' && poetry run python3 -m pytest -q"
 fi
