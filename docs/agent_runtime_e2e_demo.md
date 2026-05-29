@@ -639,6 +639,10 @@ a compact navigation layer over the bundle. They summarize scenario label,
 scenario category, scenario mode, queue pressure, deadline/drop/fallback counts,
 AIGuard verdict, Lab decision, and optional remote-dispatch status without
 replacing the source JSON contracts.
+When `--edgeenv-run-evidence` is used, the same index also records whether the
+Lab Markdown report rendered `Runtime Intelligence EdgeEnv Preservation`, so
+the EdgeEnv run ID can be traced from the navigation index into Lab-owned
+deployment context.
 
 The EdgeEnv preservation path was replayed on Jetson with the same entrypoint
 branch and an existing `~/InferEdgeEnv` clone. The 32-frame smoke used the
@@ -712,6 +716,10 @@ and `producer_stages`. In the override path these fields should show
 `image_file`, `fastapi_request_fixture`, `resource_snapshot_fixture`, and
 `device_local_cli_override`, which confirms that the entrypoint passed local
 inputs through Orchestrator before the AIGuard and Lab reports were generated.
+When EdgeEnv evidence is present, the registry EdgeEnv cell also marks
+`lab_preservation=present` after Lab renders the preservation section, keeping
+the reviewer path aligned with the Lab report without changing source
+contracts.
 
 Expected evidence markers:
 
@@ -832,6 +840,9 @@ Expected sustained evidence markers:
 - `Runtime Intelligence EdgeEnv Preservation` in the Lab Markdown report when
   `--edgeenv-run-evidence` is used, so the EdgeEnv run ID and Runtime operation
   summary remain visible in Lab-owned deployment context
+- `lab_report_preservation_section_present` in `00_evidence_index.*` and
+  `lab_preservation=present` in the run registry when Lab preserves the same
+  EdgeEnv context
 
 ## Scope Boundary
 

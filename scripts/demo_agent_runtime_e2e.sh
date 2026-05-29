@@ -976,7 +976,11 @@ if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
   grep -q "Runtime Intelligence EdgeEnv Preservation" "$LAB_MD_OUT"
   grep -q "edgeenv_run_id" "$LAB_MD_OUT"
   grep -q "edgeenv_summary" "$EVIDENCE_INDEX_JSON_OUT"
+  grep -q "lab_report_preservation_section_present" "$EVIDENCE_INDEX_JSON_OUT"
+  grep -q "Runtime Intelligence EdgeEnv Preservation" "$EVIDENCE_INDEX_JSON_OUT"
   grep -q "EdgeEnv Runtime Operation Evidence" "$EVIDENCE_INDEX_MD_OUT"
+  grep -q "lab_report_preservation_section_present" "$EVIDENCE_INDEX_MD_OUT"
+  grep -q "Runtime Intelligence EdgeEnv Preservation" "$EVIDENCE_INDEX_MD_OUT"
 fi
 if [[ "$SUSTAINED_MODE" == "device-local" ]]; then
   grep -q "device_local_operation_context" "$AIGUARD_JSON_OUT"

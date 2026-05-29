@@ -249,6 +249,9 @@ operation proof.
 When present, EdgeEnv evidence status is also recorded so reviewers can see
 that Runtime operation summary was preserved in the local registry/artifact
 flow without making it a deployment decision or comparability gate.
+The same index/registry path also records whether Lab rendered the
+`Runtime Intelligence EdgeEnv Preservation` section, so a reviewer can identify
+the Lab-owned preservation context without opening every report first.
 For device-local override runs, the index and registry also surface
 `producer_sources`, `device_local_producer_count`, and `producer_stages` so a
 reviewer can tell whether the bundle used committed starter fixtures or runtime
