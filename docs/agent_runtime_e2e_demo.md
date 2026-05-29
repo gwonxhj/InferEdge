@@ -699,6 +699,11 @@ execution proof. It also preserves `production_remote_execution` and
 visible in the navigation layer. The entrypoint smoke now fails if the
 downstream AIGuard, Lab, or evidence-index artifacts drop the compact remote
 runtime event role or starter-only boundary marker.
+For a local-only gate that does not start the fallback HTTP worker, run
+`bash scripts/smoke_remote_fallback_registry_marker.sh`. It creates a synthetic
+remote fallback bundle, rebuilds the evidence index and registry, and requires
+`aiguard=remote_execution_recovered_by_fallback` plus
+`lab=Remote fallback starter evidence` in the registry Markdown.
 
 For a focused runtime-operation comparison, generate one device-local
 probe/process bundle and one remote fallback bundle, then build a registry from

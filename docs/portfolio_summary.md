@@ -207,6 +207,12 @@ monitoring system.
 When EdgeEnv preservation evidence is present, the navigation path also records
 Lab's `Runtime Intelligence EdgeEnv Preservation` section marker so reviewers
 can trace the EdgeEnv run ID into the Lab-owned report context directly.
+The fixture-only `scripts/smoke_remote_fallback_registry_marker.sh` gate keeps
+this remote fallback registry marker path reproducible without a live HTTP
+worker. It builds local synthetic artifacts, regenerates `00_evidence_index.*`
+and the run registry, then requires
+`remote_execution_recovered_by_fallback` and
+`lab=Remote fallback starter evidence` to stay visible.
 
 The current Lab report also has a dedicated `AIGuard Orchestrator Operation
 Evidence` section. It preserves `worker_health_degradation` and

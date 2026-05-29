@@ -272,6 +272,17 @@ python3 scripts/build_agent_runtime_run_registry.py \
   --output-md /tmp/inferedge_agent_runtime_registry.md
 ```
 
+Use the fixture-only remote fallback registry smoke when you want to verify the
+entrypoint registry markers without starting the local HTTP fallback worker:
+
+```bash
+bash scripts/smoke_remote_fallback_registry_marker.sh
+```
+
+This smoke confirms that the generated evidence index and registry preserve
+`remote_execution_recovered_by_fallback` and
+`lab=Remote fallback starter evidence` from local files only.
+
 The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
 context, including queue state, worker health, runtime event summary, and
 timeline samples in JSON/Markdown reports.

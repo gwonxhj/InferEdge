@@ -30,8 +30,34 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Lab Runtime Intelligence artifact smoke" in smoke_script
     assert "scripts/smoke_runtime_intelligence_chain.sh --output-dir" in smoke_script
     assert "INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT" in smoke_script
+    assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
+    assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script
     assert "Lab's local-first Runtime Intelligence artifact" in readme
     assert "remote-dispatch boundary rows" in readme
+
+
+def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
+    script = (ROOT / "scripts" / "smoke_remote_fallback_registry_marker.sh").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
+        encoding="utf-8"
+    )
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "fixture-only remote fallback evidence bundle" in script
+    assert "build_agent_runtime_evidence_index.py" in script
+    assert "build_agent_runtime_run_registry.py" in script
+    assert "remote_execution_recovered_by_fallback" in script
+    assert "lab=Remote fallback starter evidence" in script
+    assert "production_remote_execution=False" in script
+    assert "local HTTP fallback worker" in readme
+    for text in (portfolio, demo_doc):
+        assert "smoke_remote_fallback_registry_marker.sh" in text
+        assert "lab=Remote fallback starter evidence" in text
 
 
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
