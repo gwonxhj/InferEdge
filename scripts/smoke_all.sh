@@ -25,6 +25,8 @@ Environment:
   INFEREDGE_REPOS_DIR  Override repository directory root.
   INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT
                        Override Runtime Intelligence smoke output directory.
+  INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT
+                       Override fixture-only remote fallback registry smoke output directory.
 USAGE
 }
 
@@ -61,6 +63,9 @@ RUNTIME="$(require_repo InferEdge-Runtime)"
 LAB="$(require_repo InferEdgeLab)"
 AIGUARD="$(require_repo InferEdgeAIGuard)"
 RUNTIME_INTELLIGENCE_SMOKE_OUT="${INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT:-/tmp/inferedge_runtime_intelligence_chain_smoke}"
+REMOTE_FALLBACK_REGISTRY_SMOKE_OUT="${INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT:-/tmp/inferedge_remote_fallback_registry_marker_smoke}"
+
+run_step "Remote fallback registry marker smoke" bash "$ROOT_DIR/scripts/smoke_remote_fallback_registry_marker.sh" --output-dir "$REMOTE_FALLBACK_REGISTRY_SMOKE_OUT"
 
 run_step "Forge tests" bash -lc "cd '$FORGE' && poetry run pytest -q"
 run_step "Forge manifest validation" bash -lc "cd '$FORGE' && poetry run python -m inferedgeforge.cli validate-manifest --manifest tests/fixtures/runtime_handoff_manifest.json"
