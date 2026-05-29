@@ -72,9 +72,11 @@ require_marker() {
 }
 
 require_runtime_intelligence_remote_fallback_markers() {
+  local bundle_summary="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_intelligence_bundle_manifest_gate_summary.md"
   local summary_md="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.md"
   local summary_html="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.html"
 
+  require_marker "$bundle_summary" "expected_report_markers: remote fallback Lab context row declared"
   require_marker "$summary_md" "Remote fallback starter evidence"
   require_marker "$summary_md" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
   require_marker "$summary_md" "remote_execution_recovered_by_fallback"
