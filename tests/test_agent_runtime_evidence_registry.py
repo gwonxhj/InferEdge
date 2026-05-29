@@ -93,6 +93,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "Lab EdgeEnv preservation context" in text
         assert "lab_report_preservation_context_present=True" in text
         assert "lab_preservation=present" in text
+        assert "Remote fallback starter evidence" in text
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio
@@ -564,6 +565,71 @@ def test_evidence_index_markdown_surfaces_remote_dispatch_boundary(
     assert "production_remote_execution" in markdown
 
 
+def test_evidence_index_derives_remote_dispatch_lab_context_from_outputs(
+    tmp_path: Path,
+) -> None:
+    index_module = load_script_module(
+        "build_agent_runtime_evidence_index_remote_lab_context",
+        "scripts/build_agent_runtime_evidence_index.py",
+    )
+    write_json(
+        tmp_path / "06_remote_dispatch_result.json",
+        {
+            "dispatch_summary": {
+                "dispatch_status": "accepted",
+                "selected_worker_id": "primary-http-worker",
+            },
+            "remote_execution_result": {
+                "execution_requested": True,
+                "execution_performed": True,
+                "production_remote_execution": False,
+                "status": "failed",
+                "error_category": "connection_error",
+            },
+            "fallback_execution_result": {
+                "final_status": "succeeded",
+                "production_remote_execution": False,
+            },
+            "remote_runtime_event_summary": {
+                "event_count": 4,
+                "runtime_event_count": 4,
+                "production_remote_execution": False,
+                "evidence_role": "remote_dispatch_runtime_event_compact_summary",
+                "operation_boundary": "remote dispatch starter evidence only",
+            },
+        },
+    )
+    write_json(
+        tmp_path / "07_remote_dispatch_guard_analysis.json",
+        {
+            "evidence": [
+                {"type": "remote_execution_failed"},
+                {"type": "remote_execution_recovered_by_fallback"},
+            ],
+        },
+    )
+    (tmp_path / "05_lab_agent_runtime_report.md").write_text(
+        "Remote fallback starter evidence:\n",
+        encoding="utf-8",
+    )
+
+    index = index_module.build_summary(tmp_path)
+    remote = index["remote_summary"]
+
+    assert remote["downstream_aiguard_evidence_type"] == (
+        "remote_execution_recovered_by_fallback"
+    )
+    assert remote["downstream_lab_report_context"] == (
+        "Remote fallback starter evidence"
+    )
+
+    md_path = tmp_path / "00_evidence_index.md"
+    index_module.write_markdown(index, md_path)
+    markdown = md_path.read_text(encoding="utf-8")
+    assert "remote_execution_recovered_by_fallback" in markdown
+    assert "Remote fallback starter evidence" in markdown
+
+
 def test_run_registry_surfaces_remote_dispatch_boundary(tmp_path: Path) -> None:
     registry_module = load_script_module(
         "build_agent_runtime_run_registry_remote_boundary",
@@ -636,3 +702,8 @@ def test_run_registry_surfaces_remote_dispatch_boundary(tmp_path: Path) -> None:
     assert run["remote_downstream_lab_report_context"] == (
         "Remote fallback starter evidence"
     )
+
+    md_path = tmp_path / "agent_runtime_registry.md"
+    registry_module.write_markdown(registry, md_path)
+    markdown = md_path.read_text(encoding="utf-8")
+    assert "lab=Remote fallback starter evidence" in markdown

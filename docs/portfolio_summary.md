@@ -196,7 +196,10 @@ Orchestrator, AIGuard, Lab, and remote dispatch artifacts instead of replacing
 those contracts or InferEdgeEnv's run evidence registry / comparability checker.
 The registry includes `operation_path`, selected remote worker, remote execution
 status, fallback final status, `production_remote_execution`, and
-`operation_boundary` when those starter artifacts exist.
+`operation_boundary` when those starter artifacts exist. It also surfaces the
+Lab-facing remote report context such as `Remote fallback starter evidence`
+beside the AIGuard marker so remote/fallback starter evidence can be traced
+from the entrypoint registry back to the Lab-owned report.
 For device-local input override evidence, the same index/registry path now also
 shows `producer_sources`, `device_local_producer_count`, and `producer_stages`
 so the override path can be reviewed without turning the registry into a new
