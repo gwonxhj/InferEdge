@@ -90,6 +90,9 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "Runtime Intelligence artifact gate" in text
         assert "Cross-repo smoke" in text
         assert "Orchestrator -> EdgeEnv -> AIGuard -> Lab" in text
+        assert "Lab EdgeEnv preservation context" in text
+        assert "lab_report_preservation_context_present=True" in text
+        assert "lab_preservation=present" in text
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio
