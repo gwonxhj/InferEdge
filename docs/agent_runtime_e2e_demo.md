@@ -381,7 +381,9 @@ Orchestrator synthetic detector ONNX generator. The generated model stayed under
 the temporary output directory and was used only as local probe evidence. The
 Lab report step uses `poetry run inferedgelab` when Poetry is available, and
 falls back to an installed `inferedgelab` CLI when running on a device image
-without Poetry.
+without Poetry. If neither command is available, the entrypoint invokes the
+local Lab repo as `python -m inferedgelab.cli` so Jetson smoke runs can use the
+checked-out Lab source without installing a global console script.
 
 | Field | Observed value |
 |---|---:|
@@ -598,6 +600,13 @@ git clone --depth 1 https://github.com/gwonxhj/InferEdgeForge.git \
 test -f /tmp/inferedge_clean_repos/InferEdgeForge/tests/fixtures/agent_manifest_vision.json
 ```
 
+For the optional EdgeEnv registry preservation path, make sure the existing
+InferEdgeEnv repo is cloned next to the entrypoint repo:
+
+```bash
+test -d ~/InferEdgeEnv/.git
+```
+
 Replay the 96-frame Jetson device-local path from the entrypoint repo:
 
 ```bash
@@ -611,7 +620,8 @@ bash scripts/demo_agent_runtime_e2e.sh \
   --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
   --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx \
   --capture-process-resource-snapshot \
-  --capture-tegrastats
+  --capture-tegrastats \
+  --edgeenv-run-evidence
 ```
 
 Expected output files:
@@ -622,12 +632,37 @@ Expected output files:
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/04_aiguard_guard_analysis.json`
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.json`
 - `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/05_lab_agent_runtime_report.md`
+- `/tmp/inferedge_agent_runtime_jetson_sustained_96_main/08_edgeenv_run_show.json`
 
 The `00_evidence_index.*` files are generated after the Lab report and provide
 a compact navigation layer over the bundle. They summarize scenario label,
 scenario category, scenario mode, queue pressure, deadline/drop/fallback counts,
 AIGuard verdict, Lab decision, and optional remote-dispatch status without
 replacing the source JSON contracts.
+
+The EdgeEnv preservation path was replayed on Jetson with the same entrypoint
+branch and an existing `~/InferEdgeEnv` clone. The 32-frame smoke used the
+user-provided `yolov8n.onnx`, live `tegrastats`, process resource snapshot
+capture, and `--edgeenv-run-evidence`.
+
+| Field | Jetson observed value |
+|---|---:|
+| Operation path | `device_local_starter` |
+| Frames | 32 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 29 / 29 |
+| Deadline missed count | 18 |
+| Parsed `tegrastats` samples | 4 |
+| Max temperature / RAM | 42.843 C / 999 MB |
+| Vision mean / p95 latency | 166.941 ms / 423.192 ms |
+| EdgeEnv run ID | `run-20260529-034704-fbf753f0` |
+| EdgeEnv summary | `runtime_operation_summary` stored |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This validates the local registry preservation bridge. EdgeEnv stores
+supplemental Runtime operation evidence; it does not become the Lab deployment
+decision owner or a production telemetry database.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:

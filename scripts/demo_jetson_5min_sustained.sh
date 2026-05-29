@@ -8,6 +8,8 @@ TIMEOUT_SEC=420
 VISION_INPUT="../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm"
 VISION_ONNX_MODEL="$HOME/InferEdge_device_local_inputs/models/yolov8n.onnx"
 FORGE_REPO="${INFEREDGE_FORGE_REPO:-/tmp/inferedge_clean_repos/InferEdgeForge}"
+EDGEENV_REPO="${INFEREDGE_ENV_REPO:-$HOME/InferEdgeEnv}"
+RUN_EDGEENV_EVIDENCE=0
 
 usage() {
   cat <<'USAGE'
@@ -39,10 +41,16 @@ Options:
                          Default: ~/InferEdge_device_local_inputs/models/yolov8n.onnx
   --forge-repo PATH     Clean Forge repo for agent manifest fixture input.
                          Default: /tmp/inferedge_clean_repos/InferEdgeForge
+  --edgeenv-run-evidence
+                         Also preserve Runtime operation summary through
+                         InferEdgeEnv's local run registry contract.
+  --edgeenv-repo PATH   InferEdgeEnv repo for --edgeenv-run-evidence.
+                         Default: ~/InferEdgeEnv or $INFEREDGE_ENV_REPO
   -h, --help            Show this help.
 
 Environment:
   INFEREDGE_FORGE_REPO  Overrides the default clean Forge repo path.
+  INFEREDGE_ENV_REPO    Overrides the default InferEdgeEnv repo path.
 USAGE
 }
 
@@ -70,6 +78,14 @@ while [[ $# -gt 0 ]]; do
       ;;
     --forge-repo)
       FORGE_REPO="${2:?missing value for --forge-repo}"
+      shift 2
+      ;;
+    --edgeenv-run-evidence)
+      RUN_EDGEENV_EVIDENCE=1
+      shift
+      ;;
+    --edgeenv-repo)
+      EDGEENV_REPO="${2:?missing value for --edgeenv-repo}"
       shift 2
       ;;
     -h|--help)
@@ -108,11 +124,24 @@ if ! command -v tegrastats >/dev/null 2>&1; then
   exit 1
 fi
 
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 && ! -d "$EDGEENV_REPO/.git" ]]; then
+  echo "missing EdgeEnv repo for --edgeenv-run-evidence: $EDGEENV_REPO" >&2
+  exit 1
+fi
+
+EXTRA_ARGS=()
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  EXTRA_ARGS+=(--edgeenv-run-evidence)
+fi
+
 echo "InferEdge Jetson 5-minute-class sustained smoke"
 echo "  output_dir: $OUTPUT_DIR"
 echo "  frames: $FRAMES"
 echo "  timeout_sec: $TIMEOUT_SEC"
 echo "  forge_repo: $FORGE_REPO"
+if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
+  echo "  edgeenv_repo: $EDGEENV_REPO"
+fi
 echo "  vision_input: $VISION_INPUT"
 echo "  vision_onnx_model: $VISION_ONNX_MODEL"
 echo
@@ -120,6 +149,7 @@ echo
 cd "$ROOT_DIR"
 PATH="$HOME/miniconda3/envs/yolo_env/bin:$PATH" \
 INFEREDGE_FORGE_REPO="$FORGE_REPO" \
+INFEREDGE_ENV_REPO="$EDGEENV_REPO" \
 timeout "$TIMEOUT_SEC" bash scripts/demo_agent_runtime_e2e.sh \
   --device-local \
   --output-dir "$OUTPUT_DIR" \
@@ -127,7 +157,8 @@ timeout "$TIMEOUT_SEC" bash scripts/demo_agent_runtime_e2e.sh \
   --vision-input "$VISION_INPUT" \
   --vision-onnx-model "$VISION_ONNX_MODEL" \
   --capture-process-resource-snapshot \
-  --capture-tegrastats
+  --capture-tegrastats \
+  "${EXTRA_ARGS[@]}"
 
 cat <<EOF
 

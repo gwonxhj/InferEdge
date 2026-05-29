@@ -38,6 +38,9 @@ def test_jetson_readiness_preflight_is_not_evidence() -> None:
     script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
         encoding="utf-8"
     )
+    runner = (ROOT / "scripts" / "demo_jetson_5min_sustained.sh").read_text(
+        encoding="utf-8"
+    )
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
         encoding="utf-8"
@@ -48,11 +51,31 @@ def test_jetson_readiness_preflight_is_not_evidence() -> None:
     assert "tegrastats=available" in script
     assert "clean_forge_repo=available" in script
     assert "vision_onnx_model=available" in script
+    assert "edgeenv_repo=available" in script
+    assert "edgeenv_cli=available" in script
+    assert "miniconda3/envs/yolo_env/bin/python" in script
+    assert "--edgeenv-run-evidence" in script
     assert "This preflight does not create evidence" in script
+    assert "INFEREDGE_ENV_REPO" in runner
+    assert "--edgeenv-run-evidence" in runner
     for text in (readme, demo_doc):
         assert "check_jetson_sustained_readiness.sh" in text
         assert "does not" in text
         assert "new evidence" in text
+        assert "--edgeenv-run-evidence" in text
+
+
+def test_entrypoint_lab_report_can_use_local_lab_module() -> None:
+    script = (ROOT / "scripts" / "demo_agent_runtime_e2e.sh").read_text(
+        encoding="utf-8"
+    )
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "PYTHONPATH=\"$LAB_REPO${PYTHONPATH:+:$PYTHONPATH}\"" in script
+    assert "-m inferedgelab.cli" in script
+    assert "python -m inferedgelab.cli" in demo_doc
 
 
 def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
