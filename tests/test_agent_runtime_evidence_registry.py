@@ -75,6 +75,8 @@ def test_entrypoint_lab_report_can_use_local_lab_module() -> None:
 
     assert "PYTHONPATH=\"$LAB_REPO${PYTHONPATH:+:$PYTHONPATH}\"" in script
     assert "-m inferedgelab.cli" in script
+    assert "--edgeenv-run-show" in script
+    assert "Runtime Intelligence EdgeEnv Preservation" in script
     assert "python -m inferedgelab.cli" in demo_doc
 
 
