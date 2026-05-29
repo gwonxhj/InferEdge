@@ -249,7 +249,9 @@ when present, remote dispatch starter status, selected worker, remote execution
 status, fallback final status, `production_remote_execution`, and
 `operation_boundary` so device-local and remote/fallback runs can be compared
 in one registry table without turning starter evidence into production remote
-operation proof.
+operation proof. The registry also preserves the Lab-facing remote report
+context, such as `Remote fallback starter evidence`, beside the AIGuard marker
+so the entrypoint registry and Lab report stay easy to cross-check.
 When present, EdgeEnv evidence status is also recorded so reviewers can see
 that Runtime operation summary was preserved in the local registry/artifact
 flow without making it a deployment decision or comparability gate.

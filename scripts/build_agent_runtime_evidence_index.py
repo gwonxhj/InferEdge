@@ -75,6 +75,14 @@ KNOWN_OUTPUTS = [
 ]
 
 LAB_EDGEENV_PRESERVATION_MARKER = "Runtime Intelligence EdgeEnv Preservation"
+REMOTE_AIGUARD_EVIDENCE_PRIORITY = [
+    "remote_execution_recovered_by_fallback",
+    "remote_execution_failed",
+    "remote_fallback_execution_failed",
+    "remote_execution_starter_success",
+    "remote_execution_plan_only",
+    "remote_dispatch_health",
+]
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -127,6 +135,14 @@ def evidence_types(data: dict[str, Any]) -> list[str]:
     return types
 
 
+def preferred_remote_aiguard_evidence_type(remote_aiguard: dict[str, Any]) -> str:
+    types = evidence_types(remote_aiguard)
+    for evidence_type in REMOTE_AIGUARD_EVIDENCE_PRIORITY:
+        if evidence_type in types:
+            return evidence_type
+    return types[0] if types else "unknown"
+
+
 def unique_list(values: Any) -> list[str]:
     if not isinstance(values, list):
         return []
@@ -143,6 +159,51 @@ def unique_list(values: Any) -> list[str]:
 def first_dict(data: dict[str, Any], paths: list[tuple[str, ...]]) -> dict[str, Any]:
     value = first_value(data, paths, {})
     return value if isinstance(value, dict) else {}
+
+
+def remote_lab_report_context(
+    lab: dict[str, Any],
+    lab_markdown: str,
+    remote: dict[str, Any],
+) -> str:
+    if "Remote fallback starter evidence" in lab_markdown:
+        return "Remote fallback starter evidence"
+    if "Remote execution starter evidence" in lab_markdown:
+        return "Remote execution starter evidence"
+
+    fallback_status = first_value(
+        remote,
+        [
+            ("fallback_execution_result", "final_status"),
+            ("fallback_execution_result", "status"),
+            ("remote_operation_summary", "fallback_final_status"),
+        ],
+    )
+    if fallback_status not in (None, "", "unknown"):
+        return "Remote fallback starter evidence"
+
+    remote_execution_status = first_value(
+        remote,
+        [
+            ("remote_execution_result", "status"),
+            ("remote_execution_result", "final_status"),
+            ("remote_operation_summary", "remote_execution_status"),
+        ],
+    )
+    if remote_execution_status not in (None, "", "unknown"):
+        return "Remote execution starter evidence"
+
+    remote_context = first_dict(
+        lab,
+        [
+            ("agent_runtime_summary", "remote_dispatch_context"),
+            ("remote_dispatch_context",),
+        ],
+    )
+    if remote_context:
+        return "Remote execution starter evidence"
+
+    return "unknown"
 
 
 def producer_stages(orchestration: dict[str, Any]) -> list[str]:
@@ -189,6 +250,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     lab = load_json(output_dir / "05_lab_agent_runtime_report.json")
     lab_markdown = load_text(output_dir / "05_lab_agent_runtime_report.md")
     remote = load_json(output_dir / "06_remote_dispatch_result.json")
+    remote_aiguard = load_json(output_dir / "07_remote_dispatch_guard_analysis.json")
     edgeenv = load_json(output_dir / "08_edgeenv_run_show.json")
 
     files = []
@@ -764,12 +826,12 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             "downstream_aiguard_evidence_type": first_value(
                 remote,
                 [("downstream_expectation", "aiguard_evidence_type")],
-                "unknown",
+                preferred_remote_aiguard_evidence_type(remote_aiguard),
             ),
             "downstream_lab_report_context": first_value(
                 remote,
                 [("downstream_expectation", "lab_report_context")],
-                "unknown",
+                remote_lab_report_context(lab, lab_markdown, remote),
             ),
         }
 

@@ -330,6 +330,7 @@ def _remote_boundary_cell(run: dict[str, Any]) -> str:
     production_remote_execution = run.get("remote_production_remote_execution")
     role = run.get("remote_event_summary_role")
     aiguard_signal = run.get("remote_downstream_aiguard_evidence_type")
+    lab_context = run.get("remote_downstream_lab_report_context")
     if all(
         value in (None, "", "unknown")
         for value in (
@@ -337,6 +338,7 @@ def _remote_boundary_cell(run: dict[str, Any]) -> str:
             production_remote_execution,
             role,
             aiguard_signal,
+            lab_context,
         )
     ):
         return "-"
@@ -351,6 +353,7 @@ def _remote_boundary_cell(run: dict[str, Any]) -> str:
         f"aiguard={aiguard_signal}"
         if aiguard_signal not in (None, "", "unknown")
         else None,
+        f"lab={lab_context}" if lab_context not in (None, "", "unknown") else None,
     ]
     return ", ".join(part for part in parts if part)
 
