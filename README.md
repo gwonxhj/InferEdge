@@ -75,7 +75,7 @@ submission boundary.
 | YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation | Full COCO benchmark or automatic evaluation for every model |
 | AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
 | Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary` markers surfaced in the Lab report | Production observability platform or GitLab control plane |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary` and Lab EdgeEnv preservation context markers surfaced in the Lab report | Production observability platform or GitLab control plane |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
 | Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
 | Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
@@ -167,6 +167,10 @@ markers, `report_marker_context_role` must stay
 `aiguard_validates_expected_report_markers=false` must be preserved. This is a
 CI artifact contract check for reviewer evidence; it does not make AIGuard or
 CI the report owner.
+The latest gate also aligns the entrypoint evidence-index vocabulary with the
+Lab Runtime Intelligence report by requiring `Lab EdgeEnv preservation context`
+and `lab_report_preservation_context_present=True` / `lab_preservation=present`
+markers in the Lab-owned artifact chain.
 
 Run the Reliable Edge Agent Runtime extension smoke when the supporting
 Orchestrator repo is available in the same workspace:
