@@ -272,6 +272,9 @@ run_lab_agent_runtime_report() {
   if [[ "$RUN_REMOTE_DISPATCH" -eq 1 && -f "$REMOTE_DISPATCH_OUT" ]]; then
     report_args+=(--remote-dispatch "$REMOTE_DISPATCH_OUT")
   fi
+  if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 && -f "$EDGEENV_RUN_SHOW_OUT" ]]; then
+    report_args+=(--edgeenv-run-show "$EDGEENV_RUN_SHOW_OUT")
+  fi
 
   cd "$LAB_REPO"
   if command -v poetry >/dev/null 2>&1; then
@@ -969,6 +972,9 @@ grep -q "runtime_operation_risk_labels" "$EVIDENCE_INDEX_MD_OUT"
 if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
   grep -q "runtime_operation_summary" "$EDGEENV_RUN_SHOW_OUT"
   grep -q "inferedge-runtime-operation-summary-v1" "$EDGEENV_RUN_SHOW_OUT"
+  grep -q "edgeenv_preservation_context" "$LAB_JSON_OUT"
+  grep -q "Runtime Intelligence EdgeEnv Preservation" "$LAB_MD_OUT"
+  grep -q "edgeenv_run_id" "$LAB_MD_OUT"
   grep -q "edgeenv_summary" "$EVIDENCE_INDEX_JSON_OUT"
   grep -q "EdgeEnv Runtime Operation Evidence" "$EVIDENCE_INDEX_MD_OUT"
 fi

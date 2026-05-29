@@ -829,6 +829,9 @@ Expected sustained evidence markers:
 - `runtime_operation_summary` in `08_edgeenv_run_show.json` and
   `edgeenv_summary` in `00_evidence_index.json` when
   `--edgeenv-run-evidence` is used
+- `Runtime Intelligence EdgeEnv Preservation` in the Lab Markdown report when
+  `--edgeenv-run-evidence` is used, so the EdgeEnv run ID and Runtime operation
+  summary remain visible in Lab-owned deployment context
 
 ## Scope Boundary
 
