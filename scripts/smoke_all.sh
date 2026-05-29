@@ -71,15 +71,21 @@ require_marker() {
   fi
 }
 
-require_runtime_intelligence_remote_fallback_markers() {
+require_runtime_intelligence_report_markers() {
   local bundle_summary="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_intelligence_bundle_manifest_gate_summary.md"
   local summary_md="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.md"
   local summary_html="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.html"
 
   require_marker "$bundle_summary" "expected_report_markers: remote fallback Lab context row declared"
+  require_marker "$summary_md" "Jetson/device-local EdgeEnv preservation run"
+  require_marker "$summary_md" "identity=jetson_device_local_preservation"
+  require_marker "$summary_md" "path=device_local_starter"
   require_marker "$summary_md" "Remote fallback starter evidence"
   require_marker "$summary_md" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
   require_marker "$summary_md" "remote_execution_recovered_by_fallback"
+  require_marker "$summary_html" "Jetson/device-local EdgeEnv preservation run"
+  require_marker "$summary_html" "identity=jetson_device_local_preservation"
+  require_marker "$summary_html" "path=device_local_starter"
   require_marker "$summary_html" "Remote fallback starter evidence"
   require_marker "$summary_html" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
 }
@@ -103,7 +109,7 @@ run_step "Lab install" bash -lc "cd '$LAB' && poetry install --no-interaction"
 run_step "Lab portfolio demo check" bash -lc "cd '$LAB' && poetry run inferedgelab portfolio-demo-check"
 run_step "Lab Core 4 conformance check" bash -lc "cd '$LAB' && poetry run inferedgelab core4-conformance-check"
 run_step "Lab Runtime Intelligence artifact smoke" bash -lc "cd '$LAB' && bash scripts/smoke_runtime_intelligence_chain.sh --output-dir '$RUNTIME_INTELLIGENCE_SMOKE_OUT'"
-run_step "Lab Runtime Intelligence remote fallback report marker gate" require_runtime_intelligence_remote_fallback_markers
+run_step "Lab Runtime Intelligence report marker gate" require_runtime_intelligence_report_markers
 if [[ "$FULL" -eq 1 ]]; then
   run_step "Lab full pytest" bash -lc "cd '$LAB' && poetry run python3 -m pytest -q"
 fi

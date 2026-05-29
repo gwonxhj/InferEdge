@@ -75,11 +75,18 @@ submission boundary.
 | YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation | Full COCO benchmark or automatic evaluation for every model |
 | AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
 | Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary`, Lab EdgeEnv preservation context markers, and directly gated remote fallback Lab context row/summary markers | Production observability platform or GitLab control plane |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary`, Lab EdgeEnv preservation context markers, and directly gated Jetson preservation and remote fallback Lab markers | Production observability platform or GitLab control plane |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
 | Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
 | Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
 | Cloudflare / dashboard / production worker services | Future Work | Documented direction only | Completed remote operation platform |
+
+The Runtime Intelligence artifact gate directly checks Lab report markers for
+Jetson/device-local preservation and remote fallback context. The gated
+Jetson/device-local labels include `identity=jetson_device_local_preservation`
+and `path=device_local_starter`, keeping the reviewer-facing report row aligned
+with fixture-based cross-repo smoke evidence without requiring a live Jetson for
+this gate.
 
 ## Runtime Operation Starter Evidence Chain
 
