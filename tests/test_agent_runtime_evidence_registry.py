@@ -120,6 +120,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "lab_report_preservation_context_present=True" in text
         assert "lab_preservation=present" in text
         assert "Remote fallback starter evidence" in text
+        assert "lab=Remote fallback starter evidence" in text
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio
