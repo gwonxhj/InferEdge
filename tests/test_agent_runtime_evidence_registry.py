@@ -188,11 +188,32 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     write_json(
         tmp_path / "05_lab_agent_runtime_report.json",
         {
+            "edgeenv_preservation_context": {
+                "run_id": "run-edgeenv-runtime-operation",
+                "decision_owner": "lab",
+                "comparability_role": "supplemental_evidence_not_gate",
+            },
             "agent_deployment_decision": {
                 "decision": "blocked",
                 "triggered_rules": ["sustained_overload_review"],
             }
         },
+    )
+    (tmp_path / "05_lab_agent_runtime_report.md").write_text(
+        "\n".join(
+            [
+                "# Agent Runtime Reliability Report",
+                "",
+                "## Runtime Intelligence EdgeEnv Preservation",
+                "",
+                "| Field | Value |",
+                "|---|---|",
+                "| edgeenv_run_id | run-edgeenv-runtime-operation |",
+                "| comparability_role | supplemental_evidence_not_gate |",
+                "",
+            ]
+        ),
+        encoding="utf-8",
     )
     write_json(
         tmp_path / "08_edgeenv_run_show.json",
@@ -250,6 +271,23 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "inferedge-runtime-operation-summary-v1"
     )
     assert edgeenv_summary["comparability_role"] == "supplemental_evidence_not_gate"
+    assert edgeenv_summary["lab_report_marker"] == (
+        "Runtime Intelligence EdgeEnv Preservation"
+    )
+    assert edgeenv_summary["lab_report_preservation_section_present"] is True
+    assert edgeenv_summary["lab_report_preservation_context_present"] is True
+    assert edgeenv_summary["lab_report_preservation_run_id"] == (
+        "run-edgeenv-runtime-operation"
+    )
+    assert edgeenv_summary["lab_report_decision_owner"] == "lab"
+
+    md_path = tmp_path / "00_evidence_index.md"
+    index_module.write_markdown(index, md_path)
+    markdown = md_path.read_text(encoding="utf-8")
+    assert "lab_report_marker" in markdown
+    assert "Runtime Intelligence EdgeEnv Preservation" in markdown
+    assert "lab_report_preservation_section_present" in markdown
+    assert "lab_report_preservation_run_id" in markdown
 
 
 def test_evidence_index_uses_derived_operation_risk_summary(tmp_path: Path) -> None:
@@ -341,6 +379,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "run_id": "run-edgeenv-runtime-operation",
                 "has_runtime_operation_summary": True,
                 "runtime_operation_health_reason": "timeout_threshold_exceeded",
+                "lab_report_marker": "Runtime Intelligence EdgeEnv Preservation",
+                "lab_report_preservation_section_present": True,
+                "lab_report_preservation_context_present": True,
             },
         },
     )
@@ -378,6 +419,17 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["edgeenv_runtime_operation_health_reason"] == (
         "timeout_threshold_exceeded"
     )
+    assert run["edgeenv_lab_report_marker"] == (
+        "Runtime Intelligence EdgeEnv Preservation"
+    )
+    assert run["edgeenv_lab_preservation_section_present"] is True
+    assert run["edgeenv_lab_preservation_context_present"] is True
+
+    md_path = tmp_path / "agent_runtime_registry.md"
+    registry_module.write_markdown(registry, md_path)
+    markdown = md_path.read_text(encoding="utf-8")
+    assert "lab_preservation=present" in markdown
+    assert "lab_context=present" in markdown
 
 
 def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:

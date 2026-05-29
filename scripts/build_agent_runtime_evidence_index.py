@@ -74,6 +74,8 @@ KNOWN_OUTPUTS = [
     ),
 ]
 
+LAB_EDGEENV_PRESERVATION_MARKER = "Runtime Intelligence EdgeEnv Preservation"
+
 
 def load_json(path: Path) -> dict[str, Any]:
     if not path.exists():
@@ -83,6 +85,15 @@ def load_json(path: Path) -> dict[str, Any]:
     except json.JSONDecodeError:
         return {}
     return data if isinstance(data, dict) else {}
+
+
+def load_text(path: Path) -> str:
+    if not path.exists():
+        return ""
+    try:
+        return path.read_text(encoding="utf-8")
+    except OSError:
+        return ""
 
 
 def first_value(data: dict[str, Any], paths: list[tuple[str, ...]], default: Any = None) -> Any:
@@ -171,6 +182,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     orchestration = load_json(output_dir / "03_orchestration_summary.json")
     aiguard = load_json(output_dir / "04_aiguard_guard_analysis.json")
     lab = load_json(output_dir / "05_lab_agent_runtime_report.json")
+    lab_markdown = load_text(output_dir / "05_lab_agent_runtime_report.md")
     remote = load_json(output_dir / "06_remote_dispatch_result.json")
     edgeenv = load_json(output_dir / "08_edgeenv_run_show.json")
 
@@ -761,6 +773,11 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         if isinstance(edgeenv.get("runtime_operation_summary"), dict)
         else {}
     )
+    lab_edgeenv_context = (
+        lab.get("edgeenv_preservation_context")
+        if isinstance(lab.get("edgeenv_preservation_context"), dict)
+        else {}
+    )
     edgeenv_result = load_json(Path(str(edgeenv.get("result_path", "")))) if edgeenv else {}
     edgeenv_summary: dict[str, Any] = {}
     if edgeenv:
@@ -789,6 +806,21 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 edgeenv_runtime_operation.get("risk_labels", [])
             ),
             "comparability_role": "supplemental_evidence_not_gate",
+            "lab_report_marker": LAB_EDGEENV_PRESERVATION_MARKER,
+            "lab_report_preservation_section_present": (
+                LAB_EDGEENV_PRESERVATION_MARKER in lab_markdown
+            ),
+            "lab_report_preservation_context_present": bool(lab_edgeenv_context),
+            "lab_report_preservation_run_id": first_value(
+                lab,
+                [("edgeenv_preservation_context", "run_id")],
+                "unknown",
+            ),
+            "lab_report_decision_owner": first_value(
+                lab,
+                [("edgeenv_preservation_context", "decision_owner")],
+                "lab",
+            ),
         }
 
     return {
@@ -938,6 +970,11 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| runtime_operation_recommended_action | {md_value(edgeenv['runtime_operation_recommended_action'])} |",
                 f"| runtime_operation_risk_labels | {md_value(edgeenv['runtime_operation_risk_labels'])} |",
                 f"| comparability_role | {md_value(edgeenv['comparability_role'])} |",
+                f"| lab_report_marker | {md_value(edgeenv['lab_report_marker'])} |",
+                f"| lab_report_preservation_section_present | {md_value(edgeenv['lab_report_preservation_section_present'])} |",
+                f"| lab_report_preservation_context_present | {md_value(edgeenv['lab_report_preservation_context_present'])} |",
+                f"| lab_report_preservation_run_id | {md_value(edgeenv['lab_report_preservation_run_id'])} |",
+                f"| lab_report_decision_owner | {md_value(edgeenv['lab_report_decision_owner'])} |",
             ]
         )
 

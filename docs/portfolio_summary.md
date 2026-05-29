@@ -196,6 +196,9 @@ For device-local input override evidence, the same index/registry path now also
 shows `producer_sources`, `device_local_producer_count`, and `producer_stages`
 so the override path can be reviewed without turning the registry into a new
 monitoring system.
+When EdgeEnv preservation evidence is present, the navigation path also records
+Lab's `Runtime Intelligence EdgeEnv Preservation` section marker so reviewers
+can trace the EdgeEnv run ID into the Lab-owned report context directly.
 
 The current Lab report also has a dedicated `AIGuard Orchestrator Operation
 Evidence` section. It preserves `worker_health_degradation` and

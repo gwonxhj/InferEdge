@@ -206,6 +206,19 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 )
                 if edgeenv_summary
                 else None,
+                "edgeenv_lab_report_marker": edgeenv_summary.get("lab_report_marker")
+                if edgeenv_summary
+                else None,
+                "edgeenv_lab_preservation_section_present": edgeenv_summary.get(
+                    "lab_report_preservation_section_present"
+                )
+                if edgeenv_summary
+                else None,
+                "edgeenv_lab_preservation_context_present": edgeenv_summary.get(
+                    "lab_report_preservation_context_present"
+                )
+                if edgeenv_summary
+                else None,
             }
         )
 
@@ -349,7 +362,12 @@ def _edgeenv_cell(run: dict[str, Any]) -> str:
     has_summary = run.get("edgeenv_has_runtime_operation_summary")
     health_reason = run.get("edgeenv_runtime_operation_health_reason") or "unknown"
     status = "runtime_summary" if has_summary else "no_runtime_summary"
-    return f"{run_id}/{status}/{health_reason}"
+    parts = [str(run_id), status, str(health_reason)]
+    if run.get("edgeenv_lab_preservation_section_present"):
+        parts.append("lab_preservation=present")
+    if run.get("edgeenv_lab_preservation_context_present"):
+        parts.append("lab_context=present")
+    return "/".join(parts)
 
 
 def main() -> int:
