@@ -140,6 +140,11 @@ def unique_list(values: Any) -> list[str]:
     return result
 
 
+def first_dict(data: dict[str, Any], paths: list[tuple[str, ...]]) -> dict[str, Any]:
+    value = first_value(data, paths, {})
+    return value if isinstance(value, dict) else {}
+
+
 def producer_stages(orchestration: dict[str, Any]) -> list[str]:
     stages: list[str] = []
     profiles = first_value(
@@ -773,10 +778,12 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         if isinstance(edgeenv.get("runtime_operation_summary"), dict)
         else {}
     )
-    lab_edgeenv_context = (
-        lab.get("edgeenv_preservation_context")
-        if isinstance(lab.get("edgeenv_preservation_context"), dict)
-        else {}
+    lab_edgeenv_context = first_dict(
+        lab,
+        [
+            ("edgeenv_preservation_context",),
+            ("agent_runtime_summary", "edgeenv_preservation_context"),
+        ],
     )
     edgeenv_result = load_json(Path(str(edgeenv.get("result_path", "")))) if edgeenv else {}
     edgeenv_summary: dict[str, Any] = {}
@@ -813,12 +820,22 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             "lab_report_preservation_context_present": bool(lab_edgeenv_context),
             "lab_report_preservation_run_id": first_value(
                 lab,
-                [("edgeenv_preservation_context", "run_id")],
+                [
+                    ("edgeenv_preservation_context", "run_id"),
+                    ("agent_runtime_summary", "edgeenv_preservation_context", "run_id"),
+                ],
                 "unknown",
             ),
             "lab_report_decision_owner": first_value(
                 lab,
-                [("edgeenv_preservation_context", "decision_owner")],
+                [
+                    ("edgeenv_preservation_context", "decision_owner"),
+                    (
+                        "agent_runtime_summary",
+                        "edgeenv_preservation_context",
+                        "runtime_operation_decision_owner",
+                    ),
+                ],
                 "lab",
             ),
         }

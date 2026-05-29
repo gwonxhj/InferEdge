@@ -644,23 +644,28 @@ Lab Markdown report rendered `Runtime Intelligence EdgeEnv Preservation`, so
 the EdgeEnv run ID can be traced from the navigation index into Lab-owned
 deployment context.
 
-The EdgeEnv preservation path was replayed on Jetson with the same entrypoint
-branch and an existing `~/InferEdgeEnv` clone. The 32-frame smoke used the
-user-provided `yolov8n.onnx`, live `tegrastats`, process resource snapshot
-capture, and `--edgeenv-run-evidence`.
+The EdgeEnv preservation marker path was replayed on Jetson with the latest
+entrypoint/Lab main branches and an existing `~/InferEdgeEnv` clone. The
+32-frame smoke used the user-provided `yolov8n.onnx`, live `tegrastats`,
+process resource snapshot capture, and `--edgeenv-run-evidence`.
 
 | Field | Jetson observed value |
 |---|---:|
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_marker_20260529T102625Z` |
 | Operation path | `device_local_starter` |
 | Frames | 32 |
 | Max queue depth | 6 |
 | Dropped / fallback count | 29 / 29 |
 | Deadline missed count | 18 |
 | Parsed `tegrastats` samples | 4 |
-| Max temperature / RAM | 42.843 C / 999 MB |
-| Vision mean / p95 latency | 166.941 ms / 423.192 ms |
-| EdgeEnv run ID | `run-20260529-034704-fbf753f0` |
+| Device-local / producer events | 35 / 35 |
+| Max temperature / RAM | 40.906 C / 1051 MB |
+| Vision mean / p95 latency | 165.525 ms / 395.646 ms |
+| EdgeEnv run ID | `run-20260529-102632-7260caab` |
 | EdgeEnv summary | `runtime_operation_summary` stored |
+| Lab preservation section | present |
+| Evidence index Lab context | `lab_report_preservation_context_present=true` |
+| Run registry EdgeEnv cell | `lab_preservation=present`, `lab_context=present` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 

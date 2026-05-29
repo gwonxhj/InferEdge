@@ -188,10 +188,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     write_json(
         tmp_path / "05_lab_agent_runtime_report.json",
         {
-            "edgeenv_preservation_context": {
-                "run_id": "run-edgeenv-runtime-operation",
-                "decision_owner": "lab",
-                "comparability_role": "supplemental_evidence_not_gate",
+            "agent_runtime_summary": {
+                "edgeenv_preservation_context": {
+                    "run_id": "run-edgeenv-runtime-operation",
+                    "runtime_operation_decision_owner": "lab",
+                    "comparability_role": "supplemental_evidence_not_gate",
+                }
             },
             "agent_deployment_decision": {
                 "decision": "blocked",
