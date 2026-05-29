@@ -63,7 +63,7 @@ production capability.
 | AIGuard diagnosis cases | Implemented | Deterministic evidence for bbox collapse, score saturation, temporal instability, and baseline deviation |
 | Runtime operation e2e chain | Implemented | Entrypoint smoke connects agent manifest, Runtime result, Orchestrator summary, AIGuard analysis, and Lab report |
 | Orchestrator operation evidence in Lab report | Implemented | Lab surfaces AIGuard `worker_health_degradation` and `scheduler_delay_pattern` context from Orchestrator telemetry |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke includes Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including Lab-owned expected report marker context, EdgeEnv-preserved `operation_risk_summary` rows, and Lab EdgeEnv preservation context markers |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke includes Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including Lab-owned expected report marker context, EdgeEnv-preserved `operation_risk_summary` rows, Lab EdgeEnv preservation context markers, and the remote fallback Lab context row |
 | Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
 | Remote dispatch/fallback | Smoke/Starter | Orchestrator worker-selection/fallback evidence preserved through EdgeEnv context, AIGuard warning evidence, and Lab-owned report context; not production remote execution |
@@ -115,6 +115,10 @@ Latest Runtime Intelligence gate hardening:
   `Lab EdgeEnv preservation context`,
   `lab_report_preservation_context_present=True`, and
   `lab_preservation=present`.
+- Lab's Runtime Intelligence report now surfaces the remote fallback starter
+  label with the same entrypoint registry vocabulary:
+  `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`,
+  and `remote_execution_recovered_by_fallback`.
 - EdgeEnv now preserves Orchestrator `operation_risk_summary` as supplemental
   runtime operation navigation context, and Lab surfaces that marker in the
   Runtime Intelligence Risk Summary without turning it into a comparability
@@ -368,3 +372,4 @@ Recent local validation record:
 | 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_aiguard_operation_risk_summary_20260529 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke still passes after AIGuard added `edgeenv_orchestrator_operation_risk_summary` and Lab surfaced it as a Lab-owned Runtime Intelligence row. |
 | 2026-05-29 | Jetson `bash scripts/demo_agent_runtime_e2e.sh --device-local --frames 32 --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx --capture-process-resource-snapshot --capture-tegrastats --edgeenv-run-evidence` | pass | Confirms the device-local EdgeEnv preservation marker path produces `Runtime Intelligence EdgeEnv Preservation` in Lab Markdown and `lab_preservation=present` / `lab_context=present` in the local evidence registry replay. |
 | 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_preservation_context_marker_20260529 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke passes after Lab aligned the Runtime Intelligence artifact gate with the entrypoint preservation marker vocabulary: `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, and `lab_preservation=present`. |
+| 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_remote_fallback_marker_20260529 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_marker_smoke_lab_20260529 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke passes after Lab aligned the Runtime Intelligence report row with the entrypoint remote fallback marker vocabulary: `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`, and `remote_execution_recovered_by_fallback`. |
