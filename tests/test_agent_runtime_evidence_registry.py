@@ -36,8 +36,10 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "runtime_anomaly_summary.md" in smoke_script
     assert "runtime_anomaly_summary.html" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation run" in smoke_script
+    assert "Jetson/device-local EdgeEnv preservation details" in smoke_script
     assert "identity=jetson_device_local_preservation" in smoke_script
     assert "path=device_local_starter" in smoke_script
+    assert "sources=device_local_cli_override" in smoke_script
     assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
     assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
     assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script

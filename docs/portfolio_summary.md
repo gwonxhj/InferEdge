@@ -128,9 +128,11 @@ Latest Runtime Intelligence gate hardening:
   remote fallback row contract.
 - The same entrypoint smoke now directly gates the Lab report's Jetson/device-local
   preservation labels: `identity=jetson_device_local_preservation` and
-  `path=device_local_starter`. This keeps the reviewer-facing preservation row
-  aligned with the device-local evidence path without requiring a live Jetson
-  for fixture smoke validation.
+  `path=device_local_starter` in the short identity row, plus the companion
+  `Jetson/device-local EdgeEnv preservation details` row with
+  `sources=device_local_cli_override`. This keeps the reviewer-facing
+  preservation rows aligned with the device-local evidence path without
+  requiring a live Jetson for fixture smoke validation.
 - EdgeEnv now preserves Orchestrator `operation_risk_summary` as supplemental
   runtime operation navigation context, and Lab surfaces that marker in the
   Runtime Intelligence Risk Summary without turning it into a comparability
@@ -388,3 +390,4 @@ Recent local validation record:
 | 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_remote_fallback_marker_gate_20260529 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_marker_gate_20260529 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab Markdown/HTML Runtime Intelligence reports for the remote fallback row markers: `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`, and `remote_execution_recovered_by_fallback`. |
 | 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_summary_marker_20260529 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_summary_marker_20260529 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab's bundle manifest summary marker `expected_report_markers: remote fallback Lab context row declared` alongside the generated Lab Markdown/HTML remote fallback row. |
 | 2026-05-30 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_jetson_preservation_label_gate_20260530 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_jetson_preservation_label_gate_20260530 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab's Jetson/device-local preservation labels `identity=jetson_device_local_preservation` and `path=device_local_starter` alongside the existing remote fallback report markers. |
+| 2026-05-30 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_jetson_preservation_details_gate_20260530 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_jetson_preservation_details_gate_20260530 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab's split Jetson/device-local preservation rows: the short identity row and the companion `Jetson/device-local EdgeEnv preservation details` row with `sources=device_local_cli_override`. |

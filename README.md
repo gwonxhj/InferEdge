@@ -84,9 +84,11 @@ submission boundary.
 The Runtime Intelligence artifact gate directly checks Lab report markers for
 Jetson/device-local preservation and remote fallback context. The gated
 Jetson/device-local labels include `identity=jetson_device_local_preservation`
-and `path=device_local_starter`, keeping the reviewer-facing report row aligned
-with fixture-based cross-repo smoke evidence without requiring a live Jetson for
-this gate.
+and `path=device_local_starter` in the short identity row, plus
+`Jetson/device-local EdgeEnv preservation details` with
+`sources=device_local_cli_override` in the companion details row. This keeps the
+reviewer-facing report aligned with fixture-based cross-repo smoke evidence
+without requiring a live Jetson for this gate.
 
 ## Runtime Operation Starter Evidence Chain
 
