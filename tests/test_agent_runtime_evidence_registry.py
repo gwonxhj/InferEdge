@@ -327,12 +327,26 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "run-edgeenv-runtime-operation"
     )
     assert edgeenv_summary["lab_report_decision_owner"] == "lab"
+    assert edgeenv_summary["preservation_identity_label"] == (
+        "identity=jetson_device_local_preservation, "
+        "path=device_local_starter, run=run-edgeenv-runtime-operation"
+    )
+    assert edgeenv_summary["preservation_details_label"] == (
+        "sources=resource_snapshot_fixture+image_file+fastapi_request_fixture, "
+        "stages=device_local_cli_override, device_local_events=7, "
+        "resource=resource_snapshot_fixture+tegrastats_timeline, "
+        "queue=max_total_queue_depth_exceeded_overload_threshold"
+    )
 
     md_path = tmp_path / "00_evidence_index.md"
     index_module.write_markdown(index, md_path)
     markdown = md_path.read_text(encoding="utf-8")
     assert "lab_report_marker" in markdown
     assert "Runtime Intelligence EdgeEnv Preservation" in markdown
+    assert "preservation_identity" in markdown
+    assert "identity=jetson_device_local_preservation" in markdown
+    assert "preservation_details" in markdown
+    assert "sources=resource_snapshot_fixture+image_file+fastapi_request_fixture" in markdown
     assert "lab_report_preservation_section_present" in markdown
     assert "lab_report_preservation_run_id" in markdown
 
@@ -427,6 +441,16 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "has_runtime_operation_summary": True,
                 "runtime_operation_health_reason": "timeout_threshold_exceeded",
                 "lab_report_marker": "Runtime Intelligence EdgeEnv Preservation",
+                "preservation_identity_label": (
+                    "identity=jetson_device_local_preservation, "
+                    "path=device_local_starter, run=run-edgeenv-runtime-operation"
+                ),
+                "preservation_details_label": (
+                    "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture, "
+                    "stages=device_local_cli_override, device_local_events=7, "
+                    "resource=resource_snapshot_fixture+tegrastats_timeline, "
+                    "queue=max_total_queue_depth_exceeded_overload_threshold"
+                ),
                 "lab_report_preservation_section_present": True,
                 "lab_report_preservation_context_present": True,
             },
@@ -469,6 +493,13 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["edgeenv_lab_report_marker"] == (
         "Runtime Intelligence EdgeEnv Preservation"
     )
+    assert run["edgeenv_preservation_identity_label"] == (
+        "identity=jetson_device_local_preservation, "
+        "path=device_local_starter, run=run-edgeenv-runtime-operation"
+    )
+    assert run["edgeenv_preservation_details_label"].startswith(
+        "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture"
+    )
     assert run["edgeenv_lab_preservation_section_present"] is True
     assert run["edgeenv_lab_preservation_context_present"] is True
 
@@ -477,6 +508,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     markdown = md_path.read_text(encoding="utf-8")
     assert "lab_preservation=present" in markdown
     assert "lab_context=present" in markdown
+    assert "identity=jetson_device_local_preservation" in markdown
+    assert "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture" in markdown
 
 
 def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:

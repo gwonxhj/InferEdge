@@ -267,6 +267,9 @@ flow without making it a deployment decision or comparability gate.
 The same index/registry path also records whether Lab rendered the
 `Runtime Intelligence EdgeEnv Preservation` section, so a reviewer can identify
 the Lab-owned preservation context without opening every report first.
+It now also carries the same preservation identity/details labels as the Lab
+Agent Runtime report, keeping the run/path identity separate from producer,
+resource, and queue navigation markers.
 For device-local override runs, the index and registry also surface
 `producer_sources`, `device_local_producer_count`, and `producer_stages` so a
 reviewer can tell whether the bundle used committed starter fixtures or runtime

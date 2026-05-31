@@ -835,6 +835,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             ),
         }
 
+    operation = operation_path(run_summary, remote_summary)
     edgeenv_runtime_operation = (
         edgeenv.get("runtime_operation_summary")
         if isinstance(edgeenv.get("runtime_operation_summary"), dict)
@@ -876,6 +877,34 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             ),
             "comparability_role": "supplemental_evidence_not_gate",
             "lab_report_marker": LAB_EDGEENV_PRESERVATION_MARKER,
+            "preservation_identity_label": first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "edgeenv_preservation_context",
+                        "preservation_identity_label",
+                    ),
+                    ("edgeenv_preservation_context", "preservation_identity_label"),
+                ],
+                edgeenv_preservation_identity_label(
+                    run_summary,
+                    operation,
+                    edgeenv.get("run_id", "unknown"),
+                ),
+            ),
+            "preservation_details_label": first_value(
+                lab,
+                [
+                    (
+                        "agent_runtime_summary",
+                        "edgeenv_preservation_context",
+                        "preservation_details_label",
+                    ),
+                    ("edgeenv_preservation_context", "preservation_details_label"),
+                ],
+                edgeenv_preservation_details_label(run_summary),
+            ),
             "lab_report_preservation_section_present": (
                 LAB_EDGEENV_PRESERVATION_MARKER in lab_markdown
             ),
@@ -908,7 +937,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         "output_dir": str(output_dir),
         "files": files,
         "run_summary": run_summary,
-        "operation_path": operation_path(run_summary, remote_summary),
+        "operation_path": operation,
         "guard_summary": guard_summary,
         "decision_summary": decision_summary,
         "remote_summary": remote_summary,
@@ -927,6 +956,51 @@ def md_value(value: Any) -> str:
     if isinstance(value, list):
         return ", ".join(str(v) for v in value) if value else "none"
     return str(value)
+
+
+def edgeenv_preservation_identity_label(
+    run_summary: dict[str, Any],
+    operation: str,
+    run_id: Any,
+) -> str:
+    identity = (
+        "jetson_device_local_preservation"
+        if operation == "device_local_starter"
+        else "edgeenv_runtime_operation_preservation"
+    )
+    parts = [f"identity={identity}"]
+    if operation not in (None, "", "unknown"):
+        parts.append(f"path={operation}")
+    if run_id not in (None, "", "unknown"):
+        parts.append(f"run={run_id}")
+    return ", ".join(parts)
+
+
+def edgeenv_preservation_details_label(run_summary: dict[str, Any]) -> str:
+    sources = unique_list(run_summary.get("producer_sources") or [])
+    stages = unique_list(run_summary.get("producer_stages") or [])
+    resources: list[str] = []
+    for source in sources:
+        if source in {"process_resource_snapshot", "resource_snapshot_fixture"}:
+            resources.append(source)
+        if "tegrastats" in source:
+            resources.append(source)
+    tegrastats_count = run_summary.get("tegrastats_sample_count")
+    if tegrastats_count not in (None, "", "unknown", 0, "0"):
+        resources.append("tegrastats_timeline")
+    return ", ".join(
+        [
+            f"sources={label_list(sources)}",
+            f"stages={label_list(stages)}",
+            f"device_local_events={md_value(run_summary.get('device_local_event_count'))}",
+            f"resource={label_list(unique_list(resources))}",
+            f"queue={md_value(run_summary.get('queue_pressure_reason'))}",
+        ]
+    )
+
+
+def label_list(values: list[str]) -> str:
+    return "+".join(values) if values else "none"
 
 
 def write_markdown(index: dict[str, Any], path: Path) -> None:
@@ -1050,6 +1124,8 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| runtime_operation_risk_labels | {md_value(edgeenv['runtime_operation_risk_labels'])} |",
                 f"| comparability_role | {md_value(edgeenv['comparability_role'])} |",
                 f"| lab_report_marker | {md_value(edgeenv['lab_report_marker'])} |",
+                f"| preservation_identity | {md_value(edgeenv['preservation_identity_label'])} |",
+                f"| preservation_details | {md_value(edgeenv['preservation_details_label'])} |",
                 f"| lab_report_preservation_section_present | {md_value(edgeenv['lab_report_preservation_section_present'])} |",
                 f"| lab_report_preservation_context_present | {md_value(edgeenv['lab_report_preservation_context_present'])} |",
                 f"| lab_report_preservation_run_id | {md_value(edgeenv['lab_report_preservation_run_id'])} |",
