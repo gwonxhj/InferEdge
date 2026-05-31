@@ -652,26 +652,29 @@ The EdgeEnv preservation marker path was replayed on Jetson with the latest
 entrypoint/Lab main branches and an existing `~/InferEdgeEnv` clone. The
 latest 96-frame smoke used the user-provided `yolov8n.onnx`, live
 `tegrastats`, process resource snapshot capture, and `--edgeenv-run-evidence`
-after the split Jetson preservation report-row gate landed.
+after the split Jetson preservation report-row and reviewer duration label
+gates landed.
 
 | Field | Jetson observed value |
 |---|---:|
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z` |
-| Entrypoint commit | `0b05af8` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z` |
+| Entrypoint commit | `c212ea6` |
 | Operation path | `device_local_starter` |
+| Reviewer duration label | `short 96-frame-class replay (96 frames)` |
 | Frames | 96 |
 | Max queue depth | 6 |
 | Dropped / fallback count | 93 / 93 |
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
 | Device-local / producer events | 99 / 99 |
-| Max temperature / RAM | 44.437 C / 991 MB |
-| Vision mean / p95 latency | 155.947 ms / 155.625 ms |
-| EdgeEnv run ID | `run-20260531-090621-22900f06` |
+| Max temperature / RAM | 45.5 C / 1000 MB |
+| Vision mean / p95 latency | 155.86 ms / 156.877 ms |
+| EdgeEnv run ID | `run-20260531-102243-4afc19d6` |
 | EdgeEnv summary | `runtime_operation_summary` stored |
 | Lab preservation section | present |
 | Evidence index Lab context | `lab_report_preservation_context_present=true` |
 | Preservation labels | `preservation_identity` and `preservation_details` present |
+| Reviewer duration row | `Reviewer Duration Label` present in `00_evidence_index.md` |
 | Run registry EdgeEnv cell | `lab_preservation=present`, `lab_context=present` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
@@ -680,7 +683,7 @@ This validates the local registry preservation bridge. EdgeEnv stores
 supplemental Runtime operation evidence; it does not become the Lab deployment
 decision owner or a production telemetry database. The latest replay also
 confirms the real-device path still renders the preservation identity/details
-labels now gated by `scripts/smoke_all.sh`.
+and reviewer duration label rows now gated by `scripts/smoke_all.sh`.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:
