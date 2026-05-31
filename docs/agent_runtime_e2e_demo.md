@@ -66,7 +66,7 @@ configured output directory:
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
 | `edgeenv_runtime_regression.md` / `.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, preserved `operation_risk_summary` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |
-| `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows and Lab ownership wording |
+| `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows, Lab ownership wording, and the `Validated Duration Traceability` summary with `duration_handoff_alignment` reviewer context |
 | `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape without making CI a production control plane |
 | `aiguard_edgeenv_handoff_alignment.json` / `.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
 

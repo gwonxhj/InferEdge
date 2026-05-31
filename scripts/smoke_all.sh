@@ -76,10 +76,16 @@ require_marker() {
 
 require_runtime_intelligence_report_markers() {
   local bundle_summary="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_intelligence_bundle_manifest_gate_summary.md"
+  local gate_summary="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_gate_summary.md"
   local summary_md="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.md"
   local summary_html="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.html"
 
   require_marker "$bundle_summary" "expected_report_markers: remote fallback Lab context row declared"
+  require_marker "$gate_summary" "Validated Duration Traceability"
+  require_marker "$gate_summary" "duration_handoff_alignment: EdgeEnv/AIGuard report context preserved"
+  require_marker "$gate_summary" "duration_source: source=entrypoint_requested_frames"
+  require_marker "$gate_summary" "duration_scope_label: scope_label=source=entrypoint_requested_frames"
+  require_marker "$gate_summary" "duration_label: short 96-frame-class replay (96 frames)"
   require_marker "$summary_md" "Jetson/device-local EdgeEnv preservation run"
   require_marker "$summary_md" "Jetson/device-local EdgeEnv preservation details"
   require_marker "$summary_md" "identity=jetson_device_local_preservation"
