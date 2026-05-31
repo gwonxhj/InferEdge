@@ -110,8 +110,16 @@ require_agent_runtime_edgeenv_markers() {
   require_marker "$index_json" "preservation_identity_label"
   require_marker "$index_json" "preservation_details_label"
   require_marker "$index_json" "identity=jetson_device_local_preservation"
+  require_marker "$index_json" "duration_class"
+  require_marker "$index_json" "quick_starter_smoke"
+  require_marker "$index_json" "duration_label"
+  require_marker "$index_json" "quick starter smoke (8 frames)"
   require_marker "$index_md" "preservation_identity"
   require_marker "$index_md" "preservation_details"
+  require_marker "$index_md" "duration_class"
+  require_marker "$index_md" "quick_starter_smoke"
+  require_marker "$index_md" "duration_label"
+  require_marker "$index_md" "quick starter smoke (8 frames)"
 }
 
 FORGE="$(require_repo InferEdgeForge)"
