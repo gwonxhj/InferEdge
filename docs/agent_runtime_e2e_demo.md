@@ -646,22 +646,24 @@ deployment context.
 
 The EdgeEnv preservation marker path was replayed on Jetson with the latest
 entrypoint/Lab main branches and an existing `~/InferEdgeEnv` clone. The
-32-frame smoke used the user-provided `yolov8n.onnx`, live `tegrastats`,
-process resource snapshot capture, and `--edgeenv-run-evidence`.
+latest 96-frame smoke used the user-provided `yolov8n.onnx`, live
+`tegrastats`, process resource snapshot capture, and `--edgeenv-run-evidence`
+after the split Jetson preservation report-row gate landed.
 
 | Field | Jetson observed value |
 |---|---:|
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_marker_20260529T102625Z` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_details_20260531T080118Z` |
+| Entrypoint commit | `d85be12` |
 | Operation path | `device_local_starter` |
-| Frames | 32 |
+| Frames | 96 |
 | Max queue depth | 6 |
-| Dropped / fallback count | 29 / 29 |
-| Deadline missed count | 18 |
-| Parsed `tegrastats` samples | 4 |
-| Device-local / producer events | 35 / 35 |
-| Max temperature / RAM | 40.906 C / 1051 MB |
-| Vision mean / p95 latency | 165.525 ms / 395.646 ms |
-| EdgeEnv run ID | `run-20260529-102632-7260caab` |
+| Dropped / fallback count | 93 / 93 |
+| Deadline missed count | 50 |
+| Parsed `tegrastats` samples | 9 |
+| Device-local / producer events | 99 / 99 |
+| Max temperature / RAM | 40.062 C / 965 MB |
+| Vision mean / p95 latency | 158.535 ms / 155.19 ms |
+| EdgeEnv run ID | `run-20260531-080130-4b480974` |
 | EdgeEnv summary | `runtime_operation_summary` stored |
 | Lab preservation section | present |
 | Evidence index Lab context | `lab_report_preservation_context_present=true` |

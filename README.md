@@ -543,24 +543,30 @@ Latest Jetson EdgeEnv preservation smoke:
 
 | Evidence | Value |
 |---|---:|
-| Device | Jetson Orin Nano |
+| Device | Jetson Orin Nano 25W |
 | Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
-| Frames | 32 |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_details_20260531T080118Z` |
+| Entrypoint commit | `d85be12` |
+| Operation path | `device_local_starter` |
+| Frames | 96 |
 | Max queue depth | 6 |
-| Dropped / fallback count | 29 / 29 |
-| Deadline missed count | 18 |
-| Parsed `tegrastats` samples | 4 |
-| Max temperature / RAM | 42.843 C / 999 MB |
-| Vision mean / p95 latency | 166.941 ms / 423.192 ms |
-| EdgeEnv run evidence | `run-20260529-034704-fbf753f0` with `runtime_operation_summary` stored |
+| Dropped / fallback count | 93 / 93 |
+| Deadline missed count | 50 |
+| Parsed `tegrastats` samples | 9 |
+| Device-local / producer events | 99 / 99 |
+| Max temperature / RAM | 40.062 C / 965 MB |
+| Vision mean / p95 latency | 158.535 ms / 155.19 ms |
+| EdgeEnv run evidence | `run-20260531-080130-4b480974` with `runtime_operation_summary` stored |
+| Lab preservation context | `lab_report_preservation_context_present=true` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
-This run confirms that the entrypoint can carry device-local runtime operation
-evidence into EdgeEnv's local run registry and still finish the Orchestrator ->
-AIGuard -> Lab evidence chain. It remains device-local starter smoke, not
-decoded YOLO accuracy validation, live camera operation, production remote
-execution, or thermal endurance validation.
+This latest replay confirms that the updated entrypoint can still carry
+device-local runtime operation evidence into EdgeEnv's local run registry and
+Lab-owned preservation context after the split Jetson preservation report-row
+gate was added. It remains device-local starter smoke, not decoded YOLO
+accuracy validation, live camera operation, production remote execution, or
+thermal endurance validation.
 
 Latest 5-minute-class Jetson sustained smoke:
 
