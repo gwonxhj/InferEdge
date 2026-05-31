@@ -652,8 +652,8 @@ after the split Jetson preservation report-row gate landed.
 
 | Field | Jetson observed value |
 |---|---:|
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_details_20260531T080118Z` |
-| Entrypoint commit | `d85be12` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z` |
+| Entrypoint commit | `0b05af8` |
 | Operation path | `device_local_starter` |
 | Frames | 96 |
 | Max queue depth | 6 |
@@ -661,19 +661,22 @@ after the split Jetson preservation report-row gate landed.
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
 | Device-local / producer events | 99 / 99 |
-| Max temperature / RAM | 40.062 C / 965 MB |
-| Vision mean / p95 latency | 158.535 ms / 155.19 ms |
-| EdgeEnv run ID | `run-20260531-080130-4b480974` |
+| Max temperature / RAM | 44.437 C / 991 MB |
+| Vision mean / p95 latency | 155.947 ms / 155.625 ms |
+| EdgeEnv run ID | `run-20260531-090621-22900f06` |
 | EdgeEnv summary | `runtime_operation_summary` stored |
 | Lab preservation section | present |
 | Evidence index Lab context | `lab_report_preservation_context_present=true` |
+| Preservation labels | `preservation_identity` and `preservation_details` present |
 | Run registry EdgeEnv cell | `lab_preservation=present`, `lab_context=present` |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` |
 
 This validates the local registry preservation bridge. EdgeEnv stores
 supplemental Runtime operation evidence; it does not become the Lab deployment
-decision owner or a production telemetry database.
+decision owner or a production telemetry database. The latest replay also
+confirms the real-device path still renders the preservation identity/details
+labels now gated by `scripts/smoke_all.sh`.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:

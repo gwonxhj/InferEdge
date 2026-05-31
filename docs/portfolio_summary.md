@@ -299,18 +299,18 @@ The submission-facing Lab evidence snapshot is stored in
 The clean Jetson replay runbook uses a temporary Forge clone under `/tmp` so
 dirty local Jetson Forge/Runtime worktrees do not need to be deleted or reset
 for reproduction.
-After the split Jetson preservation report-row gate landed, the same
-device-local EdgeEnv preservation path was replayed again on Jetson Orin Nano
-25W from entrypoint commit `d85be12`. The output bundle
-`/tmp/inferedge_agent_runtime_jetson_edgeenv_details_20260531T080118Z`
+After the cross-repo smoke started gating the split Jetson preservation labels,
+the same device-local EdgeEnv preservation path was replayed again on Jetson
+Orin Nano 25W from entrypoint commit `0b05af8`. The output bundle
+`/tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z`
 ran 96 frames, reached max queue depth 6, recorded 93 dropped / 93 fallback
 events and 50 deadline misses, parsed 9 `tegrastats` samples, preserved 99
 device-local producer events, and stored EdgeEnv run
-`run-20260531-080130-4b480974` with `runtime_operation_summary`. The Lab
-preservation context remained present
-(`lab_report_preservation_context_present=true`) and the final Lab decision was
-`blocked`, which is expected runtime reliability evidence rather than a
-production deployment claim.
+`run-20260531-090621-22900f06` with `runtime_operation_summary`. The Lab
+preservation context remained present, and the generated Lab report/evidence
+index preserved both `preservation_identity` and `preservation_details`. The
+final Lab decision was `blocked`, which is expected runtime reliability
+evidence rather than a production deployment claim.
 
 For a minimal live local resource signal, replace `--resource-snapshot` with
 `--capture-process-resource-snapshot`. This records process-level resource
@@ -409,5 +409,5 @@ Recent local validation record:
 | 2026-05-29 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_lab_summary_marker_20260529 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_summary_marker_20260529 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab's bundle manifest summary marker `expected_report_markers: remote fallback Lab context row declared` alongside the generated Lab Markdown/HTML remote fallback row. |
 | 2026-05-30 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_jetson_preservation_label_gate_20260530 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_jetson_preservation_label_gate_20260530 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab's Jetson/device-local preservation labels `identity=jetson_device_local_preservation` and `path=device_local_starter` alongside the existing remote fallback report markers. |
 | 2026-05-30 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_jetson_preservation_details_gate_20260530 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_jetson_preservation_details_gate_20260530 bash scripts/smoke_all.sh` | pass | Confirms the InferEdge entrypoint smoke now directly gates Lab's split Jetson/device-local preservation rows: the short identity row and the companion `Jetson/device-local EdgeEnv preservation details` row with `sources=device_local_cli_override`. |
-| 2026-05-31 | Jetson `bash scripts/demo_agent_runtime_e2e.sh --device-local --frames 96 --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx --capture-process-resource-snapshot --capture-tegrastats --edgeenv-run-evidence` | pass | Confirms latest main `d85be12` still carries the device-local ONNX + live `tegrastats` + EdgeEnv preservation path through Orchestrator -> AIGuard -> Lab after the split Jetson preservation report-row gate; Lab preservation context remained present and EdgeEnv stored `run-20260531-080130-4b480974`. |
+| 2026-05-31 | Jetson `bash scripts/demo_agent_runtime_e2e.sh --device-local --frames 96 --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx --capture-process-resource-snapshot --capture-tegrastats --edgeenv-run-evidence` | pass | Confirms latest main `0b05af8` still carries the device-local ONNX + live `tegrastats` + EdgeEnv preservation path through Orchestrator -> AIGuard -> Lab after the cross-repo smoke started gating `preservation_identity` / `preservation_details`; Lab preservation context remained present and EdgeEnv stored `run-20260531-090621-22900f06`. |
 | 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_edgeenv_smoke_all_gate_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_agent_runtime_edgeenv_gate_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_agent_runtime_edgeenv_gate_20260531 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke now directly runs the lightweight Agent Runtime EdgeEnv preservation path and gates `preservation_identity` / `preservation_details` in the Lab report and entrypoint evidence index. |
