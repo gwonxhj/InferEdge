@@ -316,6 +316,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "- Keep run bundles local or in explicit evidence docs; do not commit large generated output directories by default.",
             "- Use this registry to compare repeat smoke runs such as 96-frame, 5-minute, and remote fallback evidence.",
+            "- The `Duration Label` column is reviewer-facing navigation metadata; it helps separate short 96-frame replay, 5-minute-class sustained replay, and quick starter smoke without changing source evidence contracts.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
             "",
         ]

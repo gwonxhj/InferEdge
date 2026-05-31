@@ -590,6 +590,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture" in markdown
     assert "quick_starter_smoke" in markdown
     assert "quick starter smoke (4 frames)" in markdown
+    assert "Duration Label" in markdown
+    assert "reviewer-facing navigation metadata" in markdown
 
 
 def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:
