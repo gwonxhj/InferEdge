@@ -266,7 +266,11 @@ smoke runs can be grouped by intent and quickly distinguished as short
 96-frame-class replay, 5-minute-class sustained replay, or quick starter smoke
 without changing the source contracts. The Markdown index promotes the same
 values into a `Reviewer Duration Label` row near the top of the report so
-reviewers do not need to scan the full run-summary table first. It also records
+reviewers do not need to scan the full run-summary table first. The same row
+also keeps `duration_source` and `duration_scope_label`, such as
+`source=entrypoint_requested_frames`, so reviewers can see whether replay
+duration came from the entrypoint request or Orchestrator artifact metadata.
+It also records
 an `operation_path` and,
 when present, remote dispatch starter status, selected worker, remote execution
 status, fallback final status, `production_remote_execution`, and
@@ -323,6 +327,9 @@ duration-label logic. The resulting registry should show
 The generated Markdown also places a `Duration Comparison Summary` before the
 wide run table so reviewers can separate 96-frame, 5-minute-class, and quick
 starter bundles before reading the full registry row.
+That summary includes `Duration Sources`, preserving whether the run duration
+came from `entrypoint_requested_frames` or Orchestrator metadata without
+changing source evidence contracts.
 Use that column as navigation metadata only; it distinguishes review windows
 without turning either run into a thermal endurance or production readiness
 claim.

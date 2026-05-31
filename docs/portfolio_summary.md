@@ -402,6 +402,10 @@ The Runtime Intelligence artifact gate also checks the Lab report
 `short 96-frame-class replay (96 frames)` label in generated Markdown/HTML
 reports, keeping replay-duration context visible without changing EdgeEnv
 comparability or Lab deployment policy.
+The entrypoint evidence index and run registry now keep `duration_source` and
+`duration_scope_label`, including `source=entrypoint_requested_frames`, so
+reviewers can trace whether replay duration came from the entrypoint request or
+Orchestrator artifact metadata before comparing bundles.
 
 Recent local validation record:
 
@@ -429,3 +433,4 @@ Recent local validation record:
 | 2026-05-31 | `python -m pytest -q tests/test_agent_runtime_evidence_registry.py -p no:cacheprovider` | pass | Confirms the run registry Markdown now renders `Duration Comparison Summary` before the detailed run table while keeping duration labels as reviewer-facing navigation metadata. |
 | 2026-05-31 | `bash scripts/smoke_remote_fallback_registry_marker.sh` | pass | Confirms the fixture-only registry marker smoke still preserves remote fallback markers and now renders the duration comparison summary ahead of the wide registry table. |
 | 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_scope_top_gate_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_scope_top_gate_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_scope_top_gate_20260531 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates Lab Markdown/HTML Runtime Intelligence reports for `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, and `class=short_96_frame_class, frames=96` replay-duration context. |
+| 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_source_traceability_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_source_traceability_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_source_traceability_all_20260531 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now gates entrypoint evidence-index duration traceability markers: `duration_source`, `duration_scope_label`, `source=entrypoint_requested_frames`, and registry `Duration Sources`. |

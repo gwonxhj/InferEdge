@@ -41,8 +41,14 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Reviewer Duration Label" in smoke_script
     assert "Duration label" in smoke_script
     assert "Duration class" in smoke_script
+    assert "Duration source" in smoke_script
+    assert "Duration scope label" in smoke_script
     assert "quick_starter_smoke" in smoke_script
     assert "quick starter smoke (8 frames)" in smoke_script
+    assert "duration_source" in smoke_script
+    assert "entrypoint_requested_frames" in smoke_script
+    assert "duration_scope_label" in smoke_script
+    assert "source=entrypoint_requested_frames" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
@@ -63,6 +69,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "remote-dispatch boundary rows" in readme
     assert "Runtime replay duration scope" in readme
     assert "Duration Comparison Summary" in readme
+    assert "duration_source" in readme
+    assert "duration_scope_label" in readme
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
@@ -88,6 +96,8 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
         assert "smoke_remote_fallback_registry_marker.sh" in text
         assert "lab=Remote fallback starter evidence" in text
     assert "Duration Comparison Summary" in demo_doc
+    assert "source=entrypoint_requested_frames" in script
+    assert "Duration Sources" in script
 
 
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
@@ -153,6 +163,8 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "path=device_local_starter" in text
         assert "Runtime replay duration scope" in text
         assert "short 96-frame-class replay (96 frames)" in text
+        assert "duration_source" in text
+        assert "duration_scope_label" in text
         assert "Remote fallback starter evidence" in text
         assert "lab=Remote fallback starter evidence" in text
         assert "directly gated Jetson preservation and remote fallback Lab markers" in text
@@ -313,6 +325,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     ]
     assert run_summary["duration_class"] == "quick_starter_smoke"
     assert run_summary["duration_label"] == "quick starter smoke (4 frames)"
+    assert run_summary["duration_source"] == "entrypoint_requested_frames"
+    assert run_summary["duration_scope_label"] == (
+        "source=entrypoint_requested_frames, "
+        "label=quick starter smoke (4 frames), "
+        "class=quick_starter_smoke, frames=4"
+    )
     assert run_summary["producer_source_count"] == 7
     assert run_summary["device_local_producer_count"] == 7
     assert run_summary["producer_stages"] == ["device_local_cli_override"]
@@ -372,6 +390,9 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "sources=resource_snapshot_fixture+image_file+fastapi_request_fixture" in markdown
     assert "duration_class" in markdown
     assert "quick_starter_smoke" in markdown
+    assert "duration_source" in markdown
+    assert "entrypoint_requested_frames" in markdown
+    assert "duration_scope_label" in markdown
     assert "lab_report_preservation_section_present" in markdown
     assert "lab_report_preservation_run_id" in markdown
 
@@ -397,12 +418,26 @@ def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:
     assert quick_index["run_summary"]["duration_label"] == (
         "quick starter smoke (8 frames)"
     )
+    assert quick_index["run_summary"]["duration_source"] == (
+        "entrypoint_requested_frames"
+    )
+    assert quick_index["run_summary"]["duration_scope_label"] == (
+        "source=entrypoint_requested_frames, "
+        "label=quick starter smoke (8 frames), "
+        "class=quick_starter_smoke, frames=8"
+    )
     quick_md_path = tmp_path / "quick_duration_index.md"
     index_module.write_markdown(quick_index, quick_md_path)
     quick_markdown = quick_md_path.read_text(encoding="utf-8")
     assert "## Reviewer Duration Label" in quick_markdown
     assert "| Duration label | quick starter smoke (8 frames) |" in quick_markdown
     assert "| Duration class | quick_starter_smoke |" in quick_markdown
+    assert "| Duration source | entrypoint_requested_frames |" in quick_markdown
+    assert (
+        "| Duration scope label | source=entrypoint_requested_frames, "
+        "label=quick starter smoke (8 frames), class=quick_starter_smoke, frames=8 |"
+        in quick_markdown
+    )
 
     short_index = index_module.build_summary(tmp_path, requested_frames="96")
     assert short_index["run_summary"]["duration_class"] == "short_96_frame_class"
@@ -414,6 +449,7 @@ def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:
     short_markdown = short_md_path.read_text(encoding="utf-8")
     assert "| Duration label | short 96-frame-class replay (96 frames) |" in short_markdown
     assert "| Duration class | short_96_frame_class |" in short_markdown
+    assert "| Duration source | entrypoint_requested_frames |" in short_markdown
 
     five_min_index = index_module.build_summary(tmp_path, requested_frames="3600")
     assert five_min_index["run_summary"]["duration_class"] == (
@@ -430,6 +466,40 @@ def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:
         in five_min_markdown
     )
     assert "| Duration class | 5_minute_class_sustained |" in five_min_markdown
+    assert "| Duration source | entrypoint_requested_frames |" in five_min_markdown
+
+
+def test_evidence_index_preserves_orchestrator_duration_source(tmp_path: Path) -> None:
+    index_module = load_script_module(
+        "build_agent_runtime_evidence_index_duration_source",
+        "scripts/build_agent_runtime_evidence_index.py",
+    )
+
+    write_json(
+        tmp_path / "03_orchestration_summary.json",
+        {
+            "multi_workload_sustained_summary": {
+                "scenario_mode": "device_local",
+                "frames": 96,
+            }
+        },
+    )
+
+    index = index_module.build_summary(tmp_path)
+    run_summary = index["run_summary"]
+    assert run_summary["frames"] == 96
+    assert run_summary["duration_class"] == "short_96_frame_class"
+    assert run_summary["duration_label"] == (
+        "short 96-frame-class replay (96 frames)"
+    )
+    assert run_summary["duration_source"] == (
+        "orchestrator.multi_workload_sustained_summary.frames"
+    )
+    assert run_summary["duration_scope_label"] == (
+        "source=orchestrator.multi_workload_sustained_summary.frames, "
+        "label=short 96-frame-class replay (96 frames), "
+        "class=short_96_frame_class, frames=96"
+    )
 
 
 def test_evidence_index_uses_derived_operation_risk_summary(tmp_path: Path) -> None:
@@ -487,6 +557,12 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "frames": "4",
                 "duration_class": "quick_starter_smoke",
                 "duration_label": "quick starter smoke (4 frames)",
+                "duration_source": "entrypoint_requested_frames",
+                "duration_scope_label": (
+                    "source=entrypoint_requested_frames, "
+                    "label=quick starter smoke (4 frames), "
+                    "class=quick_starter_smoke, frames=4"
+                ),
                 "max_total_queue_depth": 5,
                 "dropped_count": 1,
                 "fallback_count": 1,
@@ -554,6 +630,12 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     ]
     assert run["duration_class"] == "quick_starter_smoke"
     assert run["duration_label"] == "quick starter smoke (4 frames)"
+    assert run["duration_source"] == "entrypoint_requested_frames"
+    assert run["duration_scope_label"] == (
+        "source=entrypoint_requested_frames, "
+        "label=quick starter smoke (4 frames), "
+        "class=quick_starter_smoke, frames=4"
+    )
     assert run["producer_source_count"] == 7
     assert run["device_local_producer_count"] == 7
     assert run["producer_stages"] == ["device_local_cli_override"]
@@ -598,8 +680,11 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture" in markdown
     assert "quick_starter_smoke" in markdown
     assert "quick starter smoke (4 frames)" in markdown
+    assert "entrypoint_requested_frames" in markdown
+    assert "source=entrypoint_requested_frames" in markdown
     assert "## Duration Comparison Summary" in markdown
     assert "Duration Label" in markdown
+    assert "Duration Sources" in markdown
     assert "reviewer-facing navigation metadata" in markdown
 
 
@@ -620,6 +705,12 @@ def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path)
                 "frames": "96",
                 "duration_class": "short_96_frame_class",
                 "duration_label": "short 96-frame-class replay (96 frames)",
+                "duration_source": "entrypoint_requested_frames",
+                "duration_scope_label": (
+                    "source=entrypoint_requested_frames, "
+                    "label=short 96-frame-class replay (96 frames), "
+                    "class=short_96_frame_class, frames=96"
+                ),
                 "scenario_label": "device_local_sustained_starter",
                 "scenario_category": "device_local",
                 "scenario_mode": "device_local",
@@ -636,6 +727,14 @@ def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path)
                 "frames": "3600",
                 "duration_class": "5_minute_class_sustained",
                 "duration_label": "5-minute-class sustained replay (3600 frames)",
+                "duration_source": (
+                    "orchestrator.multi_workload_sustained_summary.frames"
+                ),
+                "duration_scope_label": (
+                    "source=orchestrator.multi_workload_sustained_summary.frames, "
+                    "label=5-minute-class sustained replay (3600 frames), "
+                    "class=5_minute_class_sustained, frames=3600"
+                ),
                 "scenario_label": "device_local_sustained_starter",
                 "scenario_category": "device_local",
                 "scenario_mode": "device_local",
@@ -659,13 +758,16 @@ def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path)
     assert markdown.index("## Duration Comparison Summary") < markdown.index("## Runs")
     assert (
         "| short 96-frame-class replay (96 frames) | short_96_frame_class | 1 | "
-        "96 | device_local_starter | review | pass/low |"
+        "96 | entrypoint_requested_frames | device_local_starter | review | pass/low |"
     ) in markdown
     assert (
         "| 5-minute-class sustained replay (3600 frames) | "
-        "5_minute_class_sustained | 1 | 3600 | device_local_starter | "
+        "5_minute_class_sustained | 1 | 3600 | "
+        "orchestrator.multi_workload_sustained_summary.frames | device_local_starter | "
         "blocked | blocked/high |"
     ) in markdown
+    assert "source=entrypoint_requested_frames" in markdown
+    assert "source=orchestrator.multi_workload_sustained_summary.frames" in markdown
 
 
 def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:

@@ -111,6 +111,10 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "frames": run_summary.get("frames", "unknown"),
                 "duration_class": run_summary.get("duration_class", "unknown_duration"),
                 "duration_label": run_summary.get("duration_label", "unknown duration"),
+                "duration_source": run_summary.get("duration_source", "unknown"),
+                "duration_scope_label": run_summary.get(
+                    "duration_scope_label", "unknown duration scope"
+                ),
                 "max_total_queue_depth": run_summary.get("max_total_queue_depth", "unknown"),
                 "dropped_count": run_summary.get("dropped_count", "unknown"),
                 "fallback_count": run_summary.get("fallback_count", "unknown"),
@@ -276,6 +280,7 @@ def duration_summary_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "duration_class": key[1],
                 "run_count": 0,
                 "frames": set(),
+                "duration_sources": set(),
                 "operation_paths": set(),
                 "lab_decisions": set(),
                 "guard_states": set(),
@@ -285,6 +290,7 @@ def duration_summary_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
         frames = run.get("frames", "unknown")
         group["run_count"] += 1
         group["frames"].add(md_value(frames))
+        group["duration_sources"].add(md_value(run.get("duration_source")))
         group["operation_paths"].add(md_value(run.get("operation_path")))
         group["lab_decisions"].add(md_value(run.get("lab_decision")))
         group["guard_states"].add(
@@ -300,6 +306,7 @@ def duration_summary_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "duration_class": group["duration_class"],
                 "run_count": group["run_count"],
                 "frames": sorted(group["frames"], key=frame_sort_value),
+                "duration_sources": sorted(group["duration_sources"]),
                 "operation_paths": sorted(group["operation_paths"]),
                 "lab_decisions": sorted(group["lab_decisions"]),
                 "guard_states": sorted(group["guard_states"]),
@@ -326,8 +333,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "This section groups runs by reviewer-facing duration metadata before the detailed run table. It is navigation metadata only and does not change source evidence contracts.",
         "",
-        "| Duration Label | Duration Class | Runs | Frames | Operation Paths | Lab Decisions | Guard Status |",
-        "|---|---|---:|---|---|---|---|",
+        "| Duration Label | Duration Class | Runs | Frames | Duration Sources | Operation Paths | Lab Decisions | Guard Status |",
+        "|---|---|---:|---|---|---|---|---|",
     ]
     for row in duration_summary_rows(registry["runs"]):
         lines.append(
@@ -338,6 +345,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(row["duration_class"]),
                     md_value(row["run_count"]),
                     md_value(row["frames"]),
+                    md_value(row["duration_sources"]),
                     md_value(row["operation_paths"]),
                     md_value(row["lab_decisions"]),
                     md_value(row["guard_states"]),
@@ -351,8 +359,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "## Runs",
             "",
-            "| Run | Operation Path | Duration Class | Duration Label | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
-            "|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
+            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
+            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
         ]
     )
     for run in registry["runs"]:
@@ -366,6 +374,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["operation_path"]),
                     md_value(run["duration_class"]),
                     md_value(run["duration_label"]),
+                    md_value(run["duration_source"]),
+                    md_value(run["duration_scope_label"]),
                     md_value(run["scenario_label"]),
                     md_value(run["scenario_category"]),
                     md_value(run["scenario_mode"]),
@@ -402,6 +412,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "- Keep run bundles local or in explicit evidence docs; do not commit large generated output directories by default.",
             "- Use this registry to compare repeat smoke runs such as 96-frame, 5-minute, and remote fallback evidence.",
             "- The `Duration Label` column is reviewer-facing navigation metadata; it helps separate short 96-frame replay, 5-minute-class sustained replay, and quick starter smoke without changing source evidence contracts.",
+            "- The `Duration Source` and `Duration Scope` columns preserve whether replay duration came from the entrypoint request or Orchestrator artifact metadata.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
             "",
         ]
