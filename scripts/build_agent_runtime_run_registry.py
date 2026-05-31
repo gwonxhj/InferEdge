@@ -109,6 +109,8 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "scenario_description": run_summary.get("scenario_description", "unknown"),
                 "scenario_mode": run_summary.get("scenario_mode", "unknown"),
                 "frames": run_summary.get("frames", "unknown"),
+                "duration_class": run_summary.get("duration_class", "unknown_duration"),
+                "duration_label": run_summary.get("duration_label", "unknown duration"),
                 "max_total_queue_depth": run_summary.get("max_total_queue_depth", "unknown"),
                 "dropped_count": run_summary.get("dropped_count", "unknown"),
                 "fallback_count": run_summary.get("fallback_count", "unknown"),
@@ -265,8 +267,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         "## Runs",
         "",
-        "| Run | Operation Path | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
-        "|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
+        "| Run | Operation Path | Duration Class | Duration Label | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
+        "|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
     ]
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
@@ -277,6 +279,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                 [
                     run_label,
                     md_value(run["operation_path"]),
+                    md_value(run["duration_class"]),
+                    md_value(run["duration_label"]),
                     md_value(run["scenario_label"]),
                     md_value(run["scenario_category"]),
                     md_value(run["scenario_mode"]),

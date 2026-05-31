@@ -255,7 +255,9 @@ Each run also writes `00_evidence_index.md` and `00_evidence_index.json` in the
 output bundle so the generated Orchestrator, AIGuard, Lab, telemetry, and
 optional remote-dispatch artifacts are easy to navigate without changing the
 source evidence contracts. The index preserves Orchestrator scenario label,
-category, and mode fields so repeated smoke runs can be grouped by intent
+category, mode, and an additive `duration_class` / `duration_label` so repeated
+smoke runs can be grouped by intent and quickly distinguished as short
+96-frame-class replay, 5-minute-class sustained replay, or quick starter smoke
 without changing the source contracts. It also records an `operation_path` and,
 when present, remote dispatch starter status, selected worker, remote execution
 status, fallback final status, `production_remote_execution`, and
@@ -277,6 +279,9 @@ For device-local override runs, the index and registry also surface
 `producer_sources`, `device_local_producer_count`, and `producer_stages` so a
 reviewer can tell whether the bundle used committed starter fixtures or runtime
 input overrides without opening the full Orchestrator JSON first.
+For repeat Jetson bundles, the same table makes the short 96-frame replay and
+5-minute-class sustained replay visible without treating either as thermal
+endurance validation.
 When comparing repeated entrypoint smoke runs, build a local navigation
 registry from the generated indexes:
 
