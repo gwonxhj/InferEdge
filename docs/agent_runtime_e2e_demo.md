@@ -707,7 +707,10 @@ with older bundles. Each index also records an additive `duration_class` /
 smoke without opening every Orchestrator JSON first. The Markdown index mirrors
 those values in a dedicated `Reviewer Duration Label` table before the detailed
 run summary, so short replay and sustained replay bundles are easier to
-separate during review. Each index also records an
+separate during review. The same table now preserves `duration_source` and
+`duration_scope_label`, including `source=entrypoint_requested_frames` when the
+entrypoint CLI supplied the frame count, so replay-duration metadata remains
+traceable without changing source contracts. Each index also records an
 `operation_path` such as
 `device_local_starter`, `producer_backed_starter`, `remote_dispatch_starter`,
 or `remote_dispatch_with_fallback`. When remote dispatch evidence is present,
@@ -767,6 +770,8 @@ thermal endurance validation.
 The Markdown registry now also renders a `Duration Comparison Summary` before
 the detailed run table, grouping those duration labels so reviewers can choose
 the right bundle before scanning the wider operation/EdgeEnv columns.
+The summary includes `Duration Sources`, preserving whether duration scope came
+from `entrypoint_requested_frames` or Orchestrator artifact metadata.
 For device-local input override runs, the generated `00_evidence_index.json`
 and run registry now include `producer_sources`, `device_local_producer_count`,
 and `producer_stages`. In the override path these fields should show

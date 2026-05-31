@@ -134,6 +134,11 @@ PY
 
 grep -q "remote_execution_recovered_by_fallback" "$OUTPUT_DIR/00_evidence_index.md"
 grep -q "Remote fallback starter evidence" "$OUTPUT_DIR/00_evidence_index.md"
+grep -q "Duration source" "$OUTPUT_DIR/00_evidence_index.md"
+grep -q "Duration scope label" "$OUTPUT_DIR/00_evidence_index.md"
+grep -q "source=entrypoint_requested_frames" "$OUTPUT_DIR/00_evidence_index.md"
+grep -q "Duration Sources" "$OUTPUT_DIR/agent_runtime_registry.md"
+grep -q "entrypoint_requested_frames" "$OUTPUT_DIR/agent_runtime_registry.md"
 grep -q "aiguard=remote_execution_recovered_by_fallback" "$OUTPUT_DIR/agent_runtime_registry.md"
 grep -q "lab=Remote fallback starter evidence" "$OUTPUT_DIR/agent_runtime_registry.md"
 grep -q "boundary=remote dispatch starter evidence only" "$OUTPUT_DIR/agent_runtime_registry.md"

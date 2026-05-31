@@ -271,6 +271,33 @@ def duration_class_from_frames(frames: Any) -> str:
     return "custom_sustained_smoke"
 
 
+def duration_frames(
+    orchestration: dict[str, Any],
+    requested_frames: str | None,
+) -> tuple[Any, str]:
+    if requested_frames not in (None, ""):
+        return requested_frames, "entrypoint_requested_frames"
+
+    candidates = [
+        (("frames",), "orchestrator.frames"),
+        (("frame_count",), "orchestrator.frame_count"),
+        (("run", "frames"), "orchestrator.run.frames"),
+        (
+            ("multi_workload_sustained_summary", "frames"),
+            "orchestrator.multi_workload_sustained_summary.frames",
+        ),
+        (
+            ("multi_workload_sustained_summary", "frame_count"),
+            "orchestrator.multi_workload_sustained_summary.frame_count",
+        ),
+    ]
+    for path, source in candidates:
+        value = first_value(orchestration, [path], None)
+        if value not in (None, ""):
+            return value, source
+    return "unknown", "unknown"
+
+
 def duration_label_from_class(duration_class: str, frames: Any) -> str:
     frame_count = int_value(frames)
     frame_text = f"{frame_count} frames" if frame_count is not None else "unknown frames"
@@ -293,6 +320,7 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     remote = load_json(output_dir / "06_remote_dispatch_result.json")
     remote_aiguard = load_json(output_dir / "07_remote_dispatch_guard_analysis.json")
     edgeenv = load_json(output_dir / "08_edgeenv_run_show.json")
+    frames, duration_source = duration_frames(orchestration, requested_frames)
 
     files = []
     for key, filename, description in KNOWN_OUTPUTS:
@@ -348,18 +376,8 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             ],
             "unknown",
         ),
-        "frames": requested_frames
-        or first_value(
-            orchestration,
-            [
-                ("frames",),
-                ("frame_count",),
-                ("run", "frames"),
-                ("multi_workload_sustained_summary", "frames"),
-                ("multi_workload_sustained_summary", "frame_count"),
-            ],
-            "unknown",
-        ),
+        "frames": frames,
+        "duration_source": duration_source,
         "executed_count": first_value(
             orchestration,
             [
@@ -688,6 +706,12 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
     run_summary["duration_label"] = duration_label_from_class(
         run_summary["duration_class"],
         run_summary.get("frames"),
+    )
+    run_summary["duration_scope_label"] = (
+        f"source={run_summary['duration_source']}, "
+        f"label={run_summary['duration_label']}, "
+        f"class={run_summary['duration_class']}, "
+        f"frames={run_summary['frames']}"
     )
 
     guard_summary = {
@@ -1085,6 +1109,8 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| Duration label | {md_value(run['duration_label'])} |",
             f"| Duration class | {md_value(run['duration_class'])} |",
             f"| Frames | {md_value(run['frames'])} |",
+            f"| Duration source | {md_value(run['duration_source'])} |",
+            f"| Duration scope label | {md_value(run['duration_scope_label'])} |",
             f"| Operation path | {md_value(operation)} |",
             "",
             "## Run Summary",
@@ -1099,6 +1125,8 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| frames | {md_value(run['frames'])} |",
             f"| duration_class | {md_value(run['duration_class'])} |",
             f"| duration_label | {md_value(run['duration_label'])} |",
+            f"| duration_source | {md_value(run['duration_source'])} |",
+            f"| duration_scope_label | {md_value(run['duration_scope_label'])} |",
             f"| executed_count | {md_value(run['executed_count'])} |",
             f"| dropped_count | {md_value(run['dropped_count'])} |",
             f"| fallback_count | {md_value(run['fallback_count'])} |",
