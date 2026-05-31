@@ -38,6 +38,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "preservation_details_label" in smoke_script
     assert "duration_class" in smoke_script
     assert "duration_label" in smoke_script
+    assert "Reviewer Duration Label" in smoke_script
+    assert "Duration label" in smoke_script
+    assert "Duration class" in smoke_script
     assert "quick_starter_smoke" in smoke_script
     assert "quick starter smoke (8 frames)" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script

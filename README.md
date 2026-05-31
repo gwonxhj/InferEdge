@@ -159,8 +159,9 @@ identity/details smoke and Lab's local-first Runtime Intelligence artifact
 chain gate. The Agent Runtime smoke checks that `preservation_identity` /
 `preservation_details` remain visible in the Lab report and entrypoint evidence
 index and that the generated index keeps the additive `duration_class` /
-`duration_label` navigation fields. The Runtime Intelligence gate verifies the
-committed Orchestrator -> EdgeEnv -> AIGuard -> Lab report bundle, including
+`duration_label` navigation fields, including the reviewer-facing
+`Reviewer Duration Label` Markdown row. The Runtime Intelligence gate verifies
+the committed Orchestrator -> EdgeEnv -> AIGuard -> Lab report bundle, including
 the Runtime Intelligence Risk Summary and remote-dispatch boundary rows,
 without treating GitLab,
 telemetry artifacts, or remote dispatch as a production control plane. The
