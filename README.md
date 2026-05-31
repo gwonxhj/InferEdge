@@ -154,15 +154,18 @@ Run the portfolio smoke checks:
 bash scripts/smoke_all.sh
 ```
 
-The cross-repo smoke also runs Lab's local-first Runtime Intelligence artifact
-chain gate. That gate verifies the committed Orchestrator -> EdgeEnv ->
-AIGuard -> Lab report bundle, including the Runtime Intelligence Risk Summary
-and remote-dispatch boundary rows, without treating GitLab, telemetry
-artifacts, or remote dispatch as a production control plane. The current chain
-also keeps the compact Orchestrator `operation_risk_summary` marker as
-EdgeEnv-preserved navigation context and surfaces it as a Lab-owned report row;
-it is not an EdgeEnv regression delta, comparability field, or deployment
-decision override. AIGuard now also emits
+The cross-repo smoke also runs a lightweight Agent Runtime EdgeEnv preservation
+identity/details smoke and Lab's local-first Runtime Intelligence artifact
+chain gate. The Agent Runtime smoke checks that `preservation_identity` /
+`preservation_details` remain visible in the Lab report and entrypoint evidence
+index. The Runtime Intelligence gate verifies the committed Orchestrator ->
+EdgeEnv -> AIGuard -> Lab report bundle, including the Runtime Intelligence
+Risk Summary and remote-dispatch boundary rows, without treating GitLab,
+telemetry artifacts, or remote dispatch as a production control plane. The
+current chain also keeps the compact Orchestrator `operation_risk_summary`
+marker as EdgeEnv-preserved navigation context and surfaces it as a Lab-owned
+report row; it is not an EdgeEnv regression delta, comparability field, or
+deployment decision override. AIGuard now also emits
 `edgeenv_orchestrator_operation_risk_summary` as deterministic warning evidence,
 and Lab renders that evidence as a separate Runtime Intelligence row while
 keeping Lab as the final deployment decision owner. For the generated artifact list and the split between
