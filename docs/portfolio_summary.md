@@ -397,6 +397,11 @@ report and entrypoint evidence index, plus the additive `duration_class` /
 generated Markdown index now surfaces those fields in a dedicated
 `Reviewer Duration Label` table before the detailed run summary, and the
 cross-repo smoke gates that reviewer-facing row directly.
+The Runtime Intelligence artifact gate also checks the Lab report
+`Runtime replay duration scope` row and the
+`short 96-frame-class replay (96 frames)` label in generated Markdown/HTML
+reports, keeping replay-duration context visible without changing EdgeEnv
+comparability or Lab deployment policy.
 
 Recent local validation record:
 
@@ -423,3 +428,4 @@ Recent local validation record:
 | 2026-05-31 | Jetson `python3 scripts/build_agent_runtime_evidence_index.py --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z --requested-frames 3600` then `python3 scripts/build_agent_runtime_run_registry.py --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z --output-json /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.json --output-md /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.md` | pass | Confirms the registry comparison path separates the latest Jetson 96-frame and refreshed 5-minute-class bundles by `Duration Label` while keeping both as Smoke/Starter evidence. |
 | 2026-05-31 | `python -m pytest -q tests/test_agent_runtime_evidence_registry.py -p no:cacheprovider` | pass | Confirms the run registry Markdown now renders `Duration Comparison Summary` before the detailed run table while keeping duration labels as reviewer-facing navigation metadata. |
 | 2026-05-31 | `bash scripts/smoke_remote_fallback_registry_marker.sh` | pass | Confirms the fixture-only registry marker smoke still preserves remote fallback markers and now renders the duration comparison summary ahead of the wide registry table. |
+| 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_scope_top_gate_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_scope_top_gate_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_scope_top_gate_20260531 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates Lab Markdown/HTML Runtime Intelligence reports for `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, and `class=short_96_frame_class, frames=96` replay-duration context. |

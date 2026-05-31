@@ -85,6 +85,9 @@ require_runtime_intelligence_report_markers() {
   require_marker "$summary_md" "identity=jetson_device_local_preservation"
   require_marker "$summary_md" "path=device_local_starter"
   require_marker "$summary_md" "sources=device_local_cli_override"
+  require_marker "$summary_md" "Runtime replay duration scope"
+  require_marker "$summary_md" "short 96-frame-class replay (96 frames)"
+  require_marker "$summary_md" "class=short_96_frame_class, frames=96"
   require_marker "$summary_md" "Remote fallback starter evidence"
   require_marker "$summary_md" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
   require_marker "$summary_md" "remote_execution_recovered_by_fallback"
@@ -93,6 +96,8 @@ require_runtime_intelligence_report_markers() {
   require_marker "$summary_html" "identity=jetson_device_local_preservation"
   require_marker "$summary_html" "path=device_local_starter"
   require_marker "$summary_html" "sources=device_local_cli_override"
+  require_marker "$summary_html" "Runtime replay duration scope"
+  require_marker "$summary_html" "short 96-frame-class replay (96 frames)"
   require_marker "$summary_html" "Remote fallback starter evidence"
   require_marker "$summary_html" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
 }

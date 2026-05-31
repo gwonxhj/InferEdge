@@ -53,11 +53,15 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "identity=jetson_device_local_preservation" in smoke_script
     assert "path=device_local_starter" in smoke_script
     assert "sources=device_local_cli_override" in smoke_script
+    assert "Runtime replay duration scope" in smoke_script
+    assert "short 96-frame-class replay (96 frames)" in smoke_script
+    assert "class=short_96_frame_class, frames=96" in smoke_script
     assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
     assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
     assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script
     assert "Lab's local-first Runtime Intelligence artifact" in readme
     assert "remote-dispatch boundary rows" in readme
+    assert "Runtime replay duration scope" in readme
     assert "Duration Comparison Summary" in readme
 
 
@@ -147,6 +151,8 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "lab_preservation=present" in text
         assert "identity=jetson_device_local_preservation" in text
         assert "path=device_local_starter" in text
+        assert "Runtime replay duration scope" in text
+        assert "short 96-frame-class replay (96 frames)" in text
         assert "Remote fallback starter evidence" in text
         assert "lab=Remote fallback starter evidence" in text
         assert "directly gated Jetson preservation and remote fallback Lab markers" in text
