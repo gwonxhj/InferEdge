@@ -764,6 +764,9 @@ navigation table while the `Duration Label` column separates
 `5-minute-class sustained replay (3600 frames)`. This comparison is for review
 navigation and evidence traceability; it does not upgrade either bundle to
 thermal endurance validation.
+The Markdown registry now also renders a `Duration Comparison Summary` before
+the detailed run table, grouping those duration labels so reviewers can choose
+the right bundle before scanning the wider operation/EdgeEnv columns.
 For device-local input override runs, the generated `00_evidence_index.json`
 and run registry now include `producer_sources`, `device_local_producer_count`,
 and `producer_stages`. In the override path these fields should show
