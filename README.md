@@ -551,8 +551,8 @@ Latest Jetson EdgeEnv preservation smoke:
 |---|---:|
 | Device | Jetson Orin Nano 25W |
 | Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_details_20260531T080118Z` |
-| Entrypoint commit | `d85be12` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z` |
+| Entrypoint commit | `0b05af8` |
 | Operation path | `device_local_starter` |
 | Frames | 96 |
 | Max queue depth | 6 |
@@ -560,17 +560,18 @@ Latest Jetson EdgeEnv preservation smoke:
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
 | Device-local / producer events | 99 / 99 |
-| Max temperature / RAM | 40.062 C / 965 MB |
-| Vision mean / p95 latency | 158.535 ms / 155.19 ms |
-| EdgeEnv run evidence | `run-20260531-080130-4b480974` with `runtime_operation_summary` stored |
-| Lab preservation context | `lab_report_preservation_context_present=true` |
+| Max temperature / RAM | 44.437 C / 991 MB |
+| Vision mean / p95 latency | 155.947 ms / 155.625 ms |
+| EdgeEnv run evidence | `run-20260531-090621-22900f06` with `runtime_operation_summary` stored |
+| Lab preservation context | `lab_report_preservation_context_present=true`; `preservation_identity` / `preservation_details` present |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
 This latest replay confirms that the updated entrypoint can still carry
 device-local runtime operation evidence into EdgeEnv's local run registry and
-Lab-owned preservation context after the split Jetson preservation report-row
-gate was added. It remains device-local starter smoke, not decoded YOLO
+Lab-owned preservation context after the cross-repo smoke started gating the
+split `preservation_identity` / `preservation_details` labels. It remains
+device-local starter smoke, not decoded YOLO
 accuracy validation, live camera operation, production remote execution, or
 thermal endurance validation.
 
