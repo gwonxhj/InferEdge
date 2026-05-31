@@ -143,23 +143,17 @@
     <div class="card"><span class="metric-label">Max queue depth</span><span class="metric-value">6</span></div>
     <div class="card"><span class="metric-label">Dropped / fallback</span><span class="metric-value">3597 / 3597</span></div>
     <div class="card"><span class="metric-label">Deadline missed</span><span class="metric-value">1802</span></div>
-    <div class="card"><span class="metric-label">Tegrastats samples</span><span class="metric-value">294</span></div>
-    <div class="card"><span class="metric-label">Max temp / RAM</span><span class="metric-value">49.843 C / 1155 MB</span></div>
+    <div class="card"><span class="metric-label">Tegrastats samples</span><span class="metric-value">281</span></div>
+    <div class="card"><span class="metric-label">Max temp / RAM</span><span class="metric-value">50.375 C / 1038 MB</span></div>
+    <div class="card"><span class="metric-label">EdgeEnv run</span><span class="metric-value">run-20260531-092158-c3323ba9</span></div>
     <div class="card decision"><span class="metric-label">Lab decision</span><span class="metric-value">blocked</span></div>
   </section>
 
   <h2>Replay Command</h2>
   <pre><code>cd ~/InferEdge
-PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH \
-INFEREDGE_FORGE_REPO=/tmp/inferedge_clean_repos/InferEdgeForge \
-timeout 420 bash scripts/demo_agent_runtime_e2e.sh \
-  --device-local \
-  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_risk_summary_v2 \
-  --frames 3600 \
-  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
-  --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx \
-  --capture-process-resource-snapshot \
-  --capture-tegrastats</code></pre>
+bash scripts/demo_jetson_5min_sustained.sh \
+  --edgeenv-run-evidence \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z</code></pre>
 
   <h2>Workload Summary</h2>
   <table>
@@ -167,9 +161,9 @@ timeout 420 bash scripts/demo_agent_runtime_e2e.sh \
       <tr><th>Agent</th><th>Type</th><th>Executed</th><th>Dropped</th><th>Deadline Missed</th><th>Fallback</th><th>Mean ms</th><th>P95 ms</th></tr>
     </thead>
     <tbody>
-      <tr><td>safety_monitor_agent</td><td>safety</td><td>1800</td><td>0</td><td>0</td><td>0</td><td>3.097</td><td>3.247</td></tr>
-      <tr><td>vision_agent</td><td>vision</td><td>1802</td><td>1798</td><td>1802</td><td>1798</td><td>160.021</td><td>158.415</td></tr>
-      <tr><td>voice_command_agent</td><td>voice</td><td>1</td><td>1799</td><td>0</td><td>1799</td><td>39.023</td><td>39.023</td></tr>
+      <tr><td>safety_monitor_agent</td><td>safety</td><td>1800</td><td>0</td><td>0</td><td>0</td><td>3.087</td><td>3.237</td></tr>
+      <tr><td>vision_agent</td><td>vision</td><td>1802</td><td>1798</td><td>1802</td><td>1798</td><td>152.77</td><td>156.948</td></tr>
+      <tr><td>voice_command_agent</td><td>voice</td><td>1</td><td>1799</td><td>0</td><td>1799</td><td>39.891</td><td>39.891</td></tr>
     </tbody>
   </table>
 
@@ -181,6 +175,7 @@ timeout 420 bash scripts/demo_agent_runtime_e2e.sh \
       <tr><th>Lab policy</th><td>inferedge-lab-agent-runtime-policy-v1</td></tr>
       <tr><th>Lab decision</th><td>blocked</td></tr>
       <tr><th>Operation markers</th><td>operation_risk_summary, queue_pressure_context, worker_operation_risk_summary</td></tr>
+      <tr><th>EdgeEnv preservation</th><td>runtime_operation_summary stored; preservation_identity and preservation_details present in Lab report and evidence index</td></tr>
       <tr><th>Triggered rules</th><td>guard_blocked_runtime_block, deadline_miss_block, drop_rate_review, fallback_rate_review, queue_backlog_review, sustained_overload_review, runtime_timeout_observed_review, runtime_retryable_error_review, runtime_operation_summary_review, runtime_operation_guard_block</td></tr>
     </tbody>
   </table>
