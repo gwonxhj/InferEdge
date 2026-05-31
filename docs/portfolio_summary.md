@@ -147,6 +147,12 @@ Latest Runtime Intelligence gate hardening:
   `deadline_missed_count`, and the Lab Markdown `Queue pressure reasons` row.
   These markers help reviewers identify operation evidence without implying a
   production scheduler, control plane, or automatic deployment decision.
+- The same top-level smoke also gates Lab's Runtime Intelligence
+  `Orchestrator queue/deadline/fallback markers` row in generated Markdown and
+  HTML reports, including
+  `queue_pressure_reason=queue_backlog_threshold_exceeded`. This keeps the
+  reviewer-facing Lab-owned operation row visible across the cross-repo smoke
+  without changing deployment ownership.
 - This is artifact contract hardening before deeper Jetson evidence capture;
   it is not a production observability or GitLab control-plane claim.
 
@@ -436,6 +442,10 @@ queue/deadline/fallback operation markers in the generated evidence index and
 Lab Markdown report: `queue_pressure_reason`, `max_total_queue_depth`,
 `fallback_count`, `deadline_missed_count`, and `Queue pressure reasons`.
 These are local-first review markers, not production operation-control claims.
+The Lab Runtime Intelligence report branch now gates the generated
+`Orchestrator queue/deadline/fallback markers` row and
+`queue_pressure_reason=queue_backlog_threshold_exceeded` in Markdown and HTML,
+so the Lab-owned report UX marker remains protected by the entrypoint smoke.
 
 Recent local validation record:
 
@@ -469,3 +479,4 @@ Recent local validation record:
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_gate_summary_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_gate_summary_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_gate_summary_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates Lab's `Validated Duration Traceability` summary markers: `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, and `short 96-frame-class replay (96 frames)`. |
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_ci_duration_summary_gate_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_ci_duration_summary_gate_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_ci_duration_summary_gate_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates Lab's final `runtime_intelligence_ci_artifact_gate_summary.md` for the same `Validated Duration Traceability` markers, keeping optional CI artifact automation aligned with the Lab report gate. |
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_operation_summary_gate_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_operation_summary_gate_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_operation_summary_gate_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates compact Agent Runtime operation markers in the evidence index and Lab Markdown report: `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`, `deadline_missed_count`, and `Queue pressure reasons`. |
+| 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_lab_operation_marker_row_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_lab_operation_marker_row_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_lab_operation_marker_row_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now gates Lab's Runtime Intelligence `Orchestrator queue/deadline/fallback markers` row in generated Markdown/HTML reports, including `queue_pressure_reason=queue_backlog_threshold_exceeded`, `deadline_missed_count=2`, and `fallback_count=1`. |
