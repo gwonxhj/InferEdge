@@ -36,6 +36,14 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Agent Runtime EdgeEnv preservation marker gate" in smoke_script
     assert "preservation_identity_label" in smoke_script
     assert "preservation_details_label" in smoke_script
+    assert "Runtime operation summary" in smoke_script
+    assert "Queue pressure reasons:" in smoke_script
+    assert "fallback_count" in smoke_script
+    assert "deadline_missed_count" in smoke_script
+    assert "max_total_queue_depth" in smoke_script
+    assert "queue_pressure_reason" in smoke_script
+    assert "queue=queue_backlog_threshold_exceeded" in smoke_script
+    assert "queue_backlog_threshold_exceeded" in smoke_script
     assert "duration_class" in smoke_script
     assert "duration_label" in smoke_script
     assert "Reviewer Duration Label" in smoke_script
@@ -83,6 +91,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Duration Comparison Summary" in readme
     assert "duration_source" in readme
     assert "duration_scope_label" in readme
+    assert "compact queue/deadline/fallback operation markers" in readme
+    assert "Queue pressure reasons" in readme
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
@@ -181,6 +191,12 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "duration_handoff_alignment" in text
         assert "duration_source" in text
         assert "duration_scope_label" in text
+        assert "compact queue/deadline/fallback operation markers" in text
+        assert "queue_pressure_reason" in text
+        assert "max_total_queue_depth" in text
+        assert "fallback_count" in text
+        assert "deadline_missed_count" in text
+        assert "Queue pressure reasons" in text
         assert "Remote fallback starter evidence" in text
         assert "lab=Remote fallback starter evidence" in text
         assert "directly gated Jetson preservation and remote fallback Lab markers" in text

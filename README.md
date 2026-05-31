@@ -75,7 +75,7 @@ submission boundary.
 | YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation | Full COCO benchmark or automatic evaluation for every model |
 | AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
 | Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary`, Lab EdgeEnv preservation context markers, and directly gated Jetson preservation and remote fallback Lab markers | Production observability platform or GitLab control plane |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary`, Lab EdgeEnv preservation context markers, directly gated Jetson preservation and remote fallback Lab markers, and compact queue/deadline/fallback operation markers | Production observability platform or GitLab control plane |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
 | Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
 | Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
@@ -98,6 +98,12 @@ opening the full Markdown/HTML report.
 It also gates the final `runtime_intelligence_ci_artifact_gate_summary.md` for
 the same markers, keeping optional CI artifact automation aligned with the
 local-first report gate without turning CI into a runtime control plane.
+The Agent Runtime branch of the same smoke now directly checks compact
+queue/deadline/fallback operation markers in the evidence index and Lab report:
+`queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`,
+`deadline_missed_count`, and the Lab Markdown `Queue pressure reasons` row.
+These are reviewer navigation markers for local-first operation evidence, not
+production scheduler or control-plane behavior.
 
 ## Runtime Operation Starter Evidence Chain
 
@@ -177,7 +183,10 @@ telemetry artifacts, or remote dispatch as a production control plane. The
 same gate now requires the Lab report `Runtime replay duration scope` row and
 the `short 96-frame-class replay (96 frames)` duration label plus
 `scope_label=source=entrypoint_requested_frames`, so reviewer-facing duration
-context stays visible in the generated Markdown/HTML artifacts. The
+context stays visible in the generated Markdown/HTML artifacts. It also gates
+compact queue/deadline/fallback operation markers such as
+`queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`,
+`deadline_missed_count`, and the Lab Markdown `Queue pressure reasons` row. The
 current chain also keeps the compact Orchestrator `operation_risk_summary`
 marker as EdgeEnv-preserved navigation context and surfaces it as a Lab-owned
 report row; it is not an EdgeEnv regression delta, comparability field, or
