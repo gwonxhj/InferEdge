@@ -701,7 +701,10 @@ Orchestrator emits them, while keeping scenario mode for backward compatibility
 with older bundles. Each index also records an additive `duration_class` /
 `duration_label`, so reviewers can distinguish short 96-frame-class replay,
 5-minute-class sustained replay, quick starter smoke, and custom sustained
-smoke without opening every Orchestrator JSON first. Each index also records an
+smoke without opening every Orchestrator JSON first. The Markdown index mirrors
+those values in a dedicated `Reviewer Duration Label` table before the detailed
+run summary, so short replay and sustained replay bundles are easier to
+separate during review. Each index also records an
 `operation_path` such as
 `device_local_starter`, `producer_backed_starter`, `remote_dispatch_starter`,
 or `remote_dispatch_with_fallback`. When remote dispatch evidence is present,

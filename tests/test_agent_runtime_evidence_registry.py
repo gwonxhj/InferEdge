@@ -381,11 +381,28 @@ def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:
         },
     )
 
+    quick_index = index_module.build_summary(tmp_path, requested_frames="8")
+    assert quick_index["run_summary"]["duration_class"] == "quick_starter_smoke"
+    assert quick_index["run_summary"]["duration_label"] == (
+        "quick starter smoke (8 frames)"
+    )
+    quick_md_path = tmp_path / "quick_duration_index.md"
+    index_module.write_markdown(quick_index, quick_md_path)
+    quick_markdown = quick_md_path.read_text(encoding="utf-8")
+    assert "## Reviewer Duration Label" in quick_markdown
+    assert "| Duration label | quick starter smoke (8 frames) |" in quick_markdown
+    assert "| Duration class | quick_starter_smoke |" in quick_markdown
+
     short_index = index_module.build_summary(tmp_path, requested_frames="96")
     assert short_index["run_summary"]["duration_class"] == "short_96_frame_class"
     assert short_index["run_summary"]["duration_label"] == (
         "short 96-frame-class replay (96 frames)"
     )
+    short_md_path = tmp_path / "short_duration_index.md"
+    index_module.write_markdown(short_index, short_md_path)
+    short_markdown = short_md_path.read_text(encoding="utf-8")
+    assert "| Duration label | short 96-frame-class replay (96 frames) |" in short_markdown
+    assert "| Duration class | short_96_frame_class |" in short_markdown
 
     five_min_index = index_module.build_summary(tmp_path, requested_frames="3600")
     assert five_min_index["run_summary"]["duration_class"] == (
@@ -394,6 +411,14 @@ def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:
     assert five_min_index["run_summary"]["duration_label"] == (
         "5-minute-class sustained replay (3600 frames)"
     )
+    five_min_md_path = tmp_path / "five_min_duration_index.md"
+    index_module.write_markdown(five_min_index, five_min_md_path)
+    five_min_markdown = five_min_md_path.read_text(encoding="utf-8")
+    assert (
+        "| Duration label | 5-minute-class sustained replay (3600 frames) |"
+        in five_min_markdown
+    )
+    assert "| Duration class | 5_minute_class_sustained |" in five_min_markdown
 
 
 def test_evidence_index_uses_derived_operation_risk_summary(tmp_path: Path) -> None:

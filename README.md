@@ -260,7 +260,10 @@ source evidence contracts. The index preserves Orchestrator scenario label,
 category, mode, and an additive `duration_class` / `duration_label` so repeated
 smoke runs can be grouped by intent and quickly distinguished as short
 96-frame-class replay, 5-minute-class sustained replay, or quick starter smoke
-without changing the source contracts. It also records an `operation_path` and,
+without changing the source contracts. The Markdown index promotes the same
+values into a `Reviewer Duration Label` row near the top of the report so
+reviewers do not need to scan the full run-summary table first. It also records
+an `operation_path` and,
 when present, remote dispatch starter status, selected worker, remote execution
 status, fallback final status, `production_remote_execution`, and
 `operation_boundary` so device-local and remote/fallback runs can be compared
