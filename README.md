@@ -95,6 +95,9 @@ The same cross-repo gate now checks Lab's
 `duration_scope_label`, and the `short 96-frame-class replay (96 frames)`
 label, so reviewers can spot EdgeEnv/AIGuard duration handoff alignment before
 opening the full Markdown/HTML report.
+It also gates the final `runtime_intelligence_ci_artifact_gate_summary.md` for
+the same markers, keeping optional CI artifact automation aligned with the
+local-first report gate without turning CI into a runtime control plane.
 
 ## Runtime Operation Starter Evidence Chain
 

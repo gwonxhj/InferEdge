@@ -53,6 +53,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
     assert "runtime_anomaly_gate_summary.md" in smoke_script
+    assert "runtime_intelligence_ci_artifact_gate_summary.md" in smoke_script
     assert "Validated Duration Traceability" in smoke_script
     assert "duration_handoff_alignment: EdgeEnv/AIGuard report context preserved" in smoke_script
     assert "duration_source: source=entrypoint_requested_frames" in smoke_script
@@ -77,6 +78,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Runtime replay duration scope" in readme
     assert "scope_label=source=entrypoint_requested_frames" in readme
     assert "Validated Duration Traceability" in readme
+    assert "runtime_intelligence_ci_artifact_gate_summary.md" in readme
     assert "duration_handoff_alignment" in readme
     assert "Duration Comparison Summary" in readme
     assert "duration_source" in readme
@@ -175,6 +177,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "short 96-frame-class replay (96 frames)" in text
         assert "scope_label=source=entrypoint_requested_frames" in text
         assert "Validated Duration Traceability" in text
+        assert "runtime_intelligence_ci_artifact_gate_summary.md" in text
         assert "duration_handoff_alignment" in text
         assert "duration_source" in text
         assert "duration_scope_label" in text
