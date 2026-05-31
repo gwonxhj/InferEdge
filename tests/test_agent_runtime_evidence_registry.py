@@ -178,6 +178,9 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "lab_expected_report_markers" in text
         assert "lab_report_contract_context" in text
         assert "aiguard_validates_expected_report_markers=false" in text
+    assert "EdgeEnv/AIGuard duration handoff alignment" in portfolio
+    assert "duration_handoff_alignment_20260601" in portfolio
+    assert "EdgeEnv `de64d50` and AIGuard `7289899`" in portfolio
 
 
 def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path) -> None:
