@@ -11,9 +11,10 @@ Scope:
 - Model: user-provided `yolov8n.onnx`
 - Vision backend: ONNX Runtime `CPUExecutionProvider`
 - Telemetry: live `tegrastats` capture during the Orchestrator run
-- Output bundle: `/tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z`
-- Entrypoint commit: `0b05af8`
-- EdgeEnv preservation: `run-20260531-090621-22900f06`
+- Output bundle: `/tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z`
+- Entrypoint commit: `c212ea6`
+- Evidence index duration label: `short 96-frame-class replay (96 frames)`
+- EdgeEnv preservation: `run-20260531-102243-4afc19d6`
 
 This is device-local runtime reliability smoke evidence. It is not decoded YOLO
 accuracy validation, live camera operation, Whisper/FastAPI service execution,
@@ -27,7 +28,7 @@ PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH \
 INFEREDGE_FORGE_REPO=/tmp/inferedge_clean_repos/InferEdgeForge \
 bash scripts/demo_agent_runtime_e2e.sh \
   --device-local \
-  --output-dir /tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z \
   --frames 96 \
   --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
   --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx \
@@ -41,6 +42,8 @@ bash scripts/demo_agent_runtime_e2e.sh \
 | Metric | Value |
 |---|---:|
 | Frames | 96 |
+| Evidence index duration label | `short 96-frame-class replay (96 frames)` |
+| Reviewer duration row | `Reviewer Duration Label` present in `00_evidence_index.md` |
 | Executed count | 99 |
 | Dropped count | 93 |
 | Fallback count | 93 |
@@ -50,9 +53,9 @@ bash scripts/demo_agent_runtime_e2e.sh \
 | Policy decision reason | queue_backlog_threshold_exceeded |
 | Parsed `tegrastats` samples | 9 |
 | Device-local / producer events | 99 / 99 |
-| Max temperature | 44.437 C |
-| Max RAM used | 991 MB |
-| EdgeEnv run ID | `run-20260531-090621-22900f06` |
+| Max temperature | 45.5 C |
+| Max RAM used | 1000 MB |
+| EdgeEnv run ID | `run-20260531-102243-4afc19d6` |
 | Lab preservation context | `lab_report_preservation_context_present=true` |
 | Preservation labels | `preservation_identity` and `preservation_details` present |
 
@@ -60,9 +63,9 @@ bash scripts/demo_agent_runtime_e2e.sh \
 
 | Agent | Type | Executed | Dropped | Deadline Missed | Fallback | Mean Latency ms | P95 Latency ms |
 |---|---|---:|---:|---:|---:|---:|---:|
-| safety_monitor_agent | safety | 48 | 0 | 0 | 0 | 3.215 | 3.312 |
-| vision_agent | vision | 50 | 46 | 50 | 46 | 155.947 | 155.625 |
-| voice_command_agent | voice | 1 | 47 | 0 | 47 | 39.751 | 39.751 |
+| safety_monitor_agent | safety | 48 | 0 | 0 | 0 | 3.197 | 3.282 |
+| vision_agent | vision | 50 | 46 | 50 | 46 | 155.86 | 156.877 |
+| voice_command_agent | voice | 1 | 47 | 0 | 47 | 39.36 | 39.36 |
 
 ## Runtime Operation Evidence
 
@@ -84,11 +87,12 @@ bash scripts/demo_agent_runtime_e2e.sh \
 | result_schema_version | `edgeenv.result.v1` |
 | runtime_operation_schema_version | `inferedge-runtime-operation-summary-v1` |
 | comparability_role | `supplemental_evidence_not_gate` |
-| run_id | `run-20260531-090621-22900f06` |
+| run_id | `run-20260531-102243-4afc19d6` |
 | runtime_operation_summary | stored |
 | Lab preservation section | present |
 | Lab preservation context | `lab_report_preservation_context_present=true` |
 | Preservation identity/details | present in Lab report and evidence index |
+| Reviewer duration label | `short 96-frame-class replay (96 frames)` |
 
 ## AIGuard Evidence
 
@@ -102,7 +106,7 @@ bash scripts/demo_agent_runtime_e2e.sh \
 | runtime_latency_budget_overrun | latency_budget_exceeded=1 | failed | medium |
 | runtime_error_classification | runtime_error_severity=medium | failed | medium |
 | profiled_workload_pressure | profiled_workload_risk_count=3 | failed | high |
-| thermal_resource_pressure | max_temperature_c=44.437 | passed | low |
+| thermal_resource_pressure | max_temperature_c=45.5 | passed | low |
 
 AIGuard verdict:
 

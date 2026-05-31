@@ -525,13 +525,14 @@ Latest Jetson device-local replay:
 | Device | Jetson Orin Nano 25W |
 | Model | user-provided `yolov8n.onnx` |
 | Scenario | `device_local` starter with real ONNX model + live `tegrastats` |
+| Reviewer duration label | `short 96-frame-class replay (96 frames)` |
 | Frames | 96 |
 | Max queue depth | 6 |
 | Dropped / fallback count | 93 / 93 |
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
-| Max temperature / RAM | 39.0 C / 979 MB |
-| Vision mean / p95 latency | 156.43 ms / 159.629 ms |
+| Max temperature / RAM | 45.5 C / 1000 MB |
+| Vision mean / p95 latency | 155.86 ms / 156.877 ms |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
@@ -562,18 +563,19 @@ Latest Jetson EdgeEnv preservation smoke:
 |---|---:|
 | Device | Jetson Orin Nano 25W |
 | Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_edgeenv_label_gate_20260531T090600Z` |
-| Entrypoint commit | `0b05af8` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z` |
+| Entrypoint commit | `c212ea6` |
 | Operation path | `device_local_starter` |
+| Reviewer duration label | `short 96-frame-class replay (96 frames)` |
 | Frames | 96 |
 | Max queue depth | 6 |
 | Dropped / fallback count | 93 / 93 |
 | Deadline missed count | 50 |
 | Parsed `tegrastats` samples | 9 |
 | Device-local / producer events | 99 / 99 |
-| Max temperature / RAM | 44.437 C / 991 MB |
-| Vision mean / p95 latency | 155.947 ms / 155.625 ms |
-| EdgeEnv run evidence | `run-20260531-090621-22900f06` with `runtime_operation_summary` stored |
+| Max temperature / RAM | 45.5 C / 1000 MB |
+| Vision mean / p95 latency | 155.86 ms / 156.877 ms |
+| EdgeEnv run evidence | `run-20260531-102243-4afc19d6` with `runtime_operation_summary` stored |
 | Lab preservation context | `lab_report_preservation_context_present=true`; `preservation_identity` / `preservation_details` present |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
@@ -581,8 +583,10 @@ Latest Jetson EdgeEnv preservation smoke:
 This latest replay confirms that the updated entrypoint can still carry
 device-local runtime operation evidence into EdgeEnv's local run registry and
 Lab-owned preservation context after the cross-repo smoke started gating the
-split `preservation_identity` / `preservation_details` labels. It remains
-device-local starter smoke, not decoded YOLO
+split `preservation_identity` / `preservation_details` labels. It also confirms
+the generated evidence index renders the reviewer-facing
+`Reviewer Duration Label` row for the 96-frame class on the real Jetson path.
+It remains device-local starter smoke, not decoded YOLO
 accuracy validation, live camera operation, production remote execution, or
 thermal endurance validation.
 
