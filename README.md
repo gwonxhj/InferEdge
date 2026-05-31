@@ -298,6 +298,29 @@ python3 scripts/build_agent_runtime_run_registry.py \
   --output-md /tmp/inferedge_agent_runtime_registry.md
 ```
 
+For the latest Jetson evidence pair, build the comparison registry on the
+Jetson so the two `/tmp` bundles are available in place:
+
+```bash
+python3 scripts/build_agent_runtime_evidence_index.py \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
+  --requested-frames 3600
+
+python3 scripts/build_agent_runtime_run_registry.py \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
+  --output-json /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.json \
+  --output-md /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.md
+```
+
+The first command refreshes the older 5-minute bundle index with the current
+duration-label logic. The resulting registry should show
+`short 96-frame-class replay (96 frames)` and
+`5-minute-class sustained replay (3600 frames)` in the `Duration Label` column.
+Use that column as navigation metadata only; it distinguishes review windows
+without turning either run into a thermal endurance or production readiness
+claim.
+
 Use the fixture-only remote fallback registry smoke when you want to verify the
 entrypoint registry markers without starting the local HTTP fallback worker:
 

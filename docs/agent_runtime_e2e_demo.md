@@ -742,6 +742,28 @@ Orchestrator, AIGuard, Lab, and remote-dispatch source artifacts.
 When multiple Jetson device-local bundles are indexed together, the duration
 columns keep the 96-frame replay and 5-minute-class sustained replay visibly
 separate while preserving both as Smoke/Starter evidence.
+For the latest Jetson pair, run the registry builder on the Jetson because the
+generated bundles are stored under that device's `/tmp`:
+
+```bash
+python3 scripts/build_agent_runtime_evidence_index.py \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
+  --requested-frames 3600
+
+python3 scripts/build_agent_runtime_run_registry.py \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
+  --output-json /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.json \
+  --output-md /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.md
+```
+
+The first command refreshes the older 5-minute bundle index with the current
+duration-label logic. The generated registry keeps both rows under the same
+navigation table while the `Duration Label` column separates
+`short 96-frame-class replay (96 frames)` from
+`5-minute-class sustained replay (3600 frames)`. This comparison is for review
+navigation and evidence traceability; it does not upgrade either bundle to
+thermal endurance validation.
 For device-local input override runs, the generated `00_evidence_index.json`
 and run registry now include `producer_sources`, `device_local_producer_count`,
 and `producer_stages`. In the override path these fields should show
