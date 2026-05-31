@@ -392,7 +392,8 @@ artifacts without treating CI, telemetry artifacts, or remote dispatch as a
 production control plane.
 It also runs a lightweight Agent Runtime EdgeEnv preservation smoke and gates
 the `preservation_identity` / `preservation_details` labels in both the Lab
-report and entrypoint evidence index.
+report and entrypoint evidence index, plus the additive `duration_class` /
+`duration_label` navigation fields in the generated evidence index.
 
 Recent local validation record:
 
@@ -412,3 +413,4 @@ Recent local validation record:
 | 2026-05-31 | Jetson `bash scripts/demo_agent_runtime_e2e.sh --device-local --frames 96 --vision-onnx-model ~/InferEdge_device_local_inputs/models/yolov8n.onnx --capture-process-resource-snapshot --capture-tegrastats --edgeenv-run-evidence` | pass | Confirms latest main `0b05af8` still carries the device-local ONNX + live `tegrastats` + EdgeEnv preservation path through Orchestrator -> AIGuard -> Lab after the cross-repo smoke started gating `preservation_identity` / `preservation_details`; Lab preservation context remained present and EdgeEnv stored `run-20260531-090621-22900f06`. |
 | 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_edgeenv_smoke_all_gate_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_smoke_all_agent_runtime_edgeenv_gate_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_registry_agent_runtime_edgeenv_gate_20260531 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke now directly runs the lightweight Agent Runtime EdgeEnv preservation path and gates `preservation_identity` / `preservation_details` in the Lab report and entrypoint evidence index. |
 | 2026-05-31 | Jetson `bash scripts/demo_jetson_5min_sustained.sh --edgeenv-run-evidence --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z` | pass | Confirms latest main `4417fbb` carries the 5-minute-class device-local ONNX + live `tegrastats` + EdgeEnv preservation path through Orchestrator -> AIGuard -> Lab; Lab/evidence index preserved `preservation_identity` / `preservation_details` and EdgeEnv stored `run-20260531-092158-c3323ba9`. |
+| 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_label_gate_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_label_gate_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_label_gate_20260531 bash scripts/smoke_all.sh` | pass | Confirms the cross-repo smoke now gates Agent Runtime EdgeEnv `duration_class` / `duration_label` (`quick_starter_smoke`, `quick starter smoke (8 frames)`) alongside preservation identity/details labels in the generated evidence index. |

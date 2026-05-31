@@ -36,6 +36,10 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Agent Runtime EdgeEnv preservation marker gate" in smoke_script
     assert "preservation_identity_label" in smoke_script
     assert "preservation_details_label" in smoke_script
+    assert "duration_class" in smoke_script
+    assert "duration_label" in smoke_script
+    assert "quick_starter_smoke" in smoke_script
+    assert "quick starter smoke (8 frames)" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
