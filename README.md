@@ -581,27 +581,31 @@ Latest 5-minute-class Jetson sustained smoke:
 |---|---:|
 | Device | Jetson Orin Nano 25W |
 | Model | user-provided `yolov8n.onnx` |
-| Scenario | `device_local` starter with real ONNX model + live `tegrastats` |
-| Runtime window | about 297 seconds |
+| Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z` |
+| Entrypoint commit | `4417fbb` |
+| Runtime window | 5-minute-class |
 | Frames | 3600 |
 | Max queue depth | 6 |
 | Dropped / fallback count | 3597 / 3597 |
 | Deadline missed count | 1802 |
-| Parsed `tegrastats` samples | 294 |
-| Max temperature / RAM | 49.843 C / 1155 MB |
-| Vision mean / p95 latency | 160.021 ms / 158.415 ms |
+| Parsed `tegrastats` samples | 281 |
+| Max temperature / RAM | 50.375 C / 1038 MB |
+| Vision mean / p95 latency | 152.77 ms / 156.948 ms |
+| EdgeEnv run evidence | `run-20260531-092158-c3323ba9` with `runtime_operation_summary` stored |
+| Preservation labels | `preservation_identity` / `preservation_details` present |
 | AIGuard verdict | `blocked` / `high` |
 | Lab decision | `blocked` from runtime reliability review rules |
 
-The latest repeat run was captured after the Runtime Intelligence CI artifact
-gate hardening and passed the entrypoint schema-marker validation. It carries
+The latest repeat run was captured after the Agent Runtime EdgeEnv label gate
+landed and passed the entrypoint schema-marker validation. It carries
 5-minute-class queue pressure, drop/fallback, deadline miss, live Jetson
-telemetry, derived `operation_risk_summary`, AIGuard
-`queue_pressure_context` / `worker_operation_risk_summary`, and Lab-owned
-deployment decision evidence through the same bundle. It remains device-local
-smoke evidence, not decoded YOLO accuracy validation, live camera operation,
-Whisper/FastAPI service execution, production remote execution, or sustained
-thermal endurance validation. See
+telemetry, derived `operation_risk_summary`, EdgeEnv registry preservation,
+AIGuard `queue_pressure_context` / `worker_operation_risk_summary`, and
+Lab-owned deployment decision evidence through the same bundle. It remains
+device-local smoke evidence, not decoded YOLO accuracy validation, live camera
+operation, Whisper/FastAPI service execution, production remote execution, or
+sustained thermal endurance validation. See
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md)
 and its
 [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html).
