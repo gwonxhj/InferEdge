@@ -698,7 +698,11 @@ navigation layer. It does not replace the Orchestrator, AIGuard, Lab, remote
 dispatch source contracts, or InferEdgeEnv's SQLite run evidence registry and
 comparability checker. Registry tables preserve scenario label and category when
 Orchestrator emits them, while keeping scenario mode for backward compatibility
-with older bundles. Each index also records an `operation_path` such as
+with older bundles. Each index also records an additive `duration_class` /
+`duration_label`, so reviewers can distinguish short 96-frame-class replay,
+5-minute-class sustained replay, quick starter smoke, and custom sustained
+smoke without opening every Orchestrator JSON first. Each index also records an
+`operation_path` such as
 `device_local_starter`, `producer_backed_starter`, `remote_dispatch_starter`,
 or `remote_dispatch_with_fallback`. When remote dispatch evidence is present,
 the registry table preserves selected worker, remote execution status, and
@@ -729,6 +733,9 @@ python3 scripts/build_agent_runtime_run_registry.py \
 This lets reviewers compare the device-local input/probe path and the bounded
 remote fallback path in one table while still drilling back into each run's
 Orchestrator, AIGuard, Lab, and remote-dispatch source artifacts.
+When multiple Jetson device-local bundles are indexed together, the duration
+columns keep the 96-frame replay and 5-minute-class sustained replay visibly
+separate while preserving both as Smoke/Starter evidence.
 For device-local input override runs, the generated `00_evidence_index.json`
 and run registry now include `producer_sources`, `device_local_producer_count`,
 and `producer_stages`. In the override path these fields should show

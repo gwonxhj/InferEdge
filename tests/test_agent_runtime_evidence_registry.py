@@ -296,6 +296,8 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "image_file",
         "fastapi_request_fixture",
     ]
+    assert run_summary["duration_class"] == "quick_starter_smoke"
+    assert run_summary["duration_label"] == "quick starter smoke (4 frames)"
     assert run_summary["producer_source_count"] == 7
     assert run_summary["device_local_producer_count"] == 7
     assert run_summary["producer_stages"] == ["device_local_cli_override"]
@@ -353,8 +355,41 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "identity=jetson_device_local_preservation" in markdown
     assert "preservation_details" in markdown
     assert "sources=resource_snapshot_fixture+image_file+fastapi_request_fixture" in markdown
+    assert "duration_class" in markdown
+    assert "quick_starter_smoke" in markdown
     assert "lab_report_preservation_section_present" in markdown
     assert "lab_report_preservation_run_id" in markdown
+
+
+def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:
+    index_module = load_script_module(
+        "build_agent_runtime_evidence_index_duration",
+        "scripts/build_agent_runtime_evidence_index.py",
+    )
+
+    write_json(
+        tmp_path / "03_orchestration_summary.json",
+        {
+            "multi_workload_sustained_summary": {
+                "scenario_mode": "device_local",
+                "observed_runtime_signals": {},
+            }
+        },
+    )
+
+    short_index = index_module.build_summary(tmp_path, requested_frames="96")
+    assert short_index["run_summary"]["duration_class"] == "short_96_frame_class"
+    assert short_index["run_summary"]["duration_label"] == (
+        "short 96-frame-class replay (96 frames)"
+    )
+
+    five_min_index = index_module.build_summary(tmp_path, requested_frames="3600")
+    assert five_min_index["run_summary"]["duration_class"] == (
+        "5_minute_class_sustained"
+    )
+    assert five_min_index["run_summary"]["duration_label"] == (
+        "5-minute-class sustained replay (3600 frames)"
+    )
 
 
 def test_evidence_index_uses_derived_operation_risk_summary(tmp_path: Path) -> None:
@@ -387,6 +422,7 @@ def test_evidence_index_uses_derived_operation_risk_summary(tmp_path: Path) -> N
     run_summary = index["run_summary"]
 
     assert run_summary["queue_pressure_reason"] == "queue_backlog_threshold_exceeded"
+    assert run_summary["duration_class"] == "quick_starter_smoke"
     assert run_summary["max_pressure_task"] == "vision_agent"
     assert run_summary["device_local_event_count"] == 9
     assert run_summary["producer_event_count"] == 9
@@ -409,6 +445,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "scenario_description": "Device-local starter",
                 "scenario_mode": "device_local",
                 "frames": "4",
+                "duration_class": "quick_starter_smoke",
+                "duration_label": "quick starter smoke (4 frames)",
                 "max_total_queue_depth": 5,
                 "dropped_count": 1,
                 "fallback_count": 1,
@@ -474,6 +512,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         "fastapi_request_fixture",
         "resource_snapshot_fixture",
     ]
+    assert run["duration_class"] == "quick_starter_smoke"
+    assert run["duration_label"] == "quick starter smoke (4 frames)"
     assert run["producer_source_count"] == 7
     assert run["device_local_producer_count"] == 7
     assert run["producer_stages"] == ["device_local_cli_override"]
@@ -516,6 +556,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "lab_context=present" in markdown
     assert "identity=jetson_device_local_preservation" in markdown
     assert "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture" in markdown
+    assert "quick_starter_smoke" in markdown
+    assert "quick starter smoke (4 frames)" in markdown
 
 
 def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:

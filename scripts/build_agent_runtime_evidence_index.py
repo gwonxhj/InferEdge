@@ -243,6 +243,47 @@ def operation_path(run_summary: dict[str, Any], remote_summary: dict[str, Any]) 
     return "producer_backed_starter"
 
 
+def int_value(value: Any) -> int | None:
+    if isinstance(value, bool):
+        return None
+    if isinstance(value, int):
+        return value
+    if isinstance(value, float):
+        return int(value)
+    if isinstance(value, str):
+        try:
+            return int(float(value.strip()))
+        except ValueError:
+            return None
+    return None
+
+
+def duration_class_from_frames(frames: Any) -> str:
+    frame_count = int_value(frames)
+    if frame_count is None:
+        return "unknown_duration"
+    if frame_count >= 3000:
+        return "5_minute_class_sustained"
+    if 64 <= frame_count <= 256:
+        return "short_96_frame_class"
+    if frame_count < 64:
+        return "quick_starter_smoke"
+    return "custom_sustained_smoke"
+
+
+def duration_label_from_class(duration_class: str, frames: Any) -> str:
+    frame_count = int_value(frames)
+    frame_text = f"{frame_count} frames" if frame_count is not None else "unknown frames"
+    labels = {
+        "5_minute_class_sustained": "5-minute-class sustained replay",
+        "short_96_frame_class": "short 96-frame-class replay",
+        "quick_starter_smoke": "quick starter smoke",
+        "custom_sustained_smoke": "custom sustained replay",
+        "unknown_duration": "unknown duration",
+    }
+    return f"{labels.get(duration_class, duration_class)} ({frame_text})"
+
+
 def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict[str, Any]:
     runtime = load_json(output_dir / "02_runtime_result_agent.json")
     orchestration = load_json(output_dir / "03_orchestration_summary.json")
@@ -643,6 +684,11 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             )
         ),
     }
+    run_summary["duration_class"] = duration_class_from_frames(run_summary.get("frames"))
+    run_summary["duration_label"] = duration_label_from_class(
+        run_summary["duration_class"],
+        run_summary.get("frames"),
+    )
 
     guard_summary = {
         "guard_verdict": first_value(aiguard, [("guard_verdict",), ("verdict",)], "unknown"),
@@ -1042,6 +1088,8 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| scenario_description | {md_value(run['scenario_description'])} |",
             f"| scenario_mode | {md_value(run['scenario_mode'])} |",
             f"| frames | {md_value(run['frames'])} |",
+            f"| duration_class | {md_value(run['duration_class'])} |",
+            f"| duration_label | {md_value(run['duration_label'])} |",
             f"| executed_count | {md_value(run['executed_count'])} |",
             f"| dropped_count | {md_value(run['dropped_count'])} |",
             f"| fallback_count | {md_value(run['fallback_count'])} |",
