@@ -1078,6 +1078,15 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
     lines.extend(
         [
             "",
+            "## Reviewer Duration Label",
+            "",
+            "| Row | Value |",
+            "|---|---|",
+            f"| Duration label | {md_value(run['duration_label'])} |",
+            f"| Duration class | {md_value(run['duration_class'])} |",
+            f"| Frames | {md_value(run['frames'])} |",
+            f"| Operation path | {md_value(operation)} |",
+            "",
             "## Run Summary",
             "",
             "| Metric | Value |",
