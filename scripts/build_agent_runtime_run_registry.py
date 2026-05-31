@@ -255,6 +255,63 @@ def md_value(value: Any) -> str:
     return str(value)
 
 
+def frame_sort_value(value: Any) -> int:
+    try:
+        return int(str(value))
+    except (TypeError, ValueError):
+        return 10**12
+
+
+def duration_summary_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    groups: dict[tuple[str, str], dict[str, Any]] = {}
+    for run in runs:
+        key = (
+            str(run.get("duration_label") or "unknown duration"),
+            str(run.get("duration_class") or "unknown_duration"),
+        )
+        group = groups.setdefault(
+            key,
+            {
+                "duration_label": key[0],
+                "duration_class": key[1],
+                "run_count": 0,
+                "frames": set(),
+                "operation_paths": set(),
+                "lab_decisions": set(),
+                "guard_states": set(),
+                "min_frame": 10**12,
+            },
+        )
+        frames = run.get("frames", "unknown")
+        group["run_count"] += 1
+        group["frames"].add(md_value(frames))
+        group["operation_paths"].add(md_value(run.get("operation_path")))
+        group["lab_decisions"].add(md_value(run.get("lab_decision")))
+        group["guard_states"].add(
+            f"{md_value(run.get('guard_verdict'))}/{md_value(run.get('severity'))}"
+        )
+        group["min_frame"] = min(group["min_frame"], frame_sort_value(frames))
+
+    rows = []
+    for group in groups.values():
+        rows.append(
+            {
+                "duration_label": group["duration_label"],
+                "duration_class": group["duration_class"],
+                "run_count": group["run_count"],
+                "frames": sorted(group["frames"], key=frame_sort_value),
+                "operation_paths": sorted(group["operation_paths"]),
+                "lab_decisions": sorted(group["lab_decisions"]),
+                "guard_states": sorted(group["guard_states"]),
+                "min_frame": group["min_frame"],
+            }
+        )
+    return sorted(
+        rows,
+        key=lambda row: (row["min_frame"], row["duration_label"], row["duration_class"]),
+    )
+
+
 def write_markdown(registry: dict[str, Any], path: Path) -> None:
     lines = [
         "# Agent Runtime Run Registry",
@@ -265,11 +322,39 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         f"- Run count: {registry['run_count']}",
         f"- Created at: {registry['created_at']}",
         "",
-        "## Runs",
+        "## Duration Comparison Summary",
         "",
-        "| Run | Operation Path | Duration Class | Duration Label | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
-        "|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
+        "This section groups runs by reviewer-facing duration metadata before the detailed run table. It is navigation metadata only and does not change source evidence contracts.",
+        "",
+        "| Duration Label | Duration Class | Runs | Frames | Operation Paths | Lab Decisions | Guard Status |",
+        "|---|---|---:|---|---|---|---|",
     ]
+    for row in duration_summary_rows(registry["runs"]):
+        lines.append(
+            "| "
+            + " | ".join(
+                [
+                    md_value(row["duration_label"]),
+                    md_value(row["duration_class"]),
+                    md_value(row["run_count"]),
+                    md_value(row["frames"]),
+                    md_value(row["operation_paths"]),
+                    md_value(row["lab_decisions"]),
+                    md_value(row["guard_states"]),
+                ]
+            )
+            + " |"
+        )
+
+    lines.extend(
+        [
+            "",
+            "## Runs",
+            "",
+            "| Run | Operation Path | Duration Class | Duration Label | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
+            "|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
+        ]
+    )
     for run in registry["runs"]:
         index_md = run.get("index_markdown")
         run_label = f"[{run['run_id']}]({index_md})" if index_md else run["run_id"]

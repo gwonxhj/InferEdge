@@ -58,6 +58,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script
     assert "Lab's local-first Runtime Intelligence artifact" in readme
     assert "remote-dispatch boundary rows" in readme
+    assert "Duration Comparison Summary" in readme
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
@@ -82,6 +83,7 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     for text in (portfolio, demo_doc):
         assert "smoke_remote_fallback_registry_marker.sh" in text
         assert "lab=Remote fallback starter evidence" in text
+    assert "Duration Comparison Summary" in demo_doc
 
 
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
@@ -590,8 +592,74 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture" in markdown
     assert "quick_starter_smoke" in markdown
     assert "quick starter smoke (4 frames)" in markdown
+    assert "## Duration Comparison Summary" in markdown
     assert "Duration Label" in markdown
     assert "reviewer-facing navigation metadata" in markdown
+
+
+def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path) -> None:
+    registry_module = load_script_module(
+        "build_agent_runtime_run_registry_duration_summary",
+        "scripts/build_agent_runtime_run_registry.py",
+    )
+    short_dir = tmp_path / "jetson_96"
+    sustained_dir = tmp_path / "jetson_5min"
+    short_dir.mkdir()
+    sustained_dir.mkdir()
+    write_json(
+        short_dir / "00_evidence_index.json",
+        {
+            "operation_path": "device_local_starter",
+            "run_summary": {
+                "frames": "96",
+                "duration_class": "short_96_frame_class",
+                "duration_label": "short 96-frame-class replay (96 frames)",
+                "scenario_label": "device_local_sustained_starter",
+                "scenario_category": "device_local",
+                "scenario_mode": "device_local",
+            },
+            "guard_summary": {"guard_verdict": "pass", "severity": "low"},
+            "decision_summary": {"decision": "review"},
+        },
+    )
+    write_json(
+        sustained_dir / "00_evidence_index.json",
+        {
+            "operation_path": "device_local_starter",
+            "run_summary": {
+                "frames": "3600",
+                "duration_class": "5_minute_class_sustained",
+                "duration_label": "5-minute-class sustained replay (3600 frames)",
+                "scenario_label": "device_local_sustained_starter",
+                "scenario_category": "device_local",
+                "scenario_mode": "device_local",
+            },
+            "guard_summary": {"guard_verdict": "blocked", "severity": "high"},
+            "decision_summary": {"decision": "blocked"},
+        },
+    )
+
+    registry = registry_module.build_registry(
+        [
+            short_dir / "00_evidence_index.json",
+            sustained_dir / "00_evidence_index.json",
+        ],
+        output_base=tmp_path,
+    )
+    md_path = tmp_path / "agent_runtime_registry.md"
+    registry_module.write_markdown(registry, md_path)
+    markdown = md_path.read_text(encoding="utf-8")
+
+    assert markdown.index("## Duration Comparison Summary") < markdown.index("## Runs")
+    assert (
+        "| short 96-frame-class replay (96 frames) | short_96_frame_class | 1 | "
+        "96 | device_local_starter | review | pass/low |"
+    ) in markdown
+    assert (
+        "| 5-minute-class sustained replay (3600 frames) | "
+        "5_minute_class_sustained | 1 | 3600 | device_local_starter | "
+        "blocked | blocked/high |"
+    ) in markdown
 
 
 def test_evidence_index_preserves_remote_dispatch_boundary(tmp_path: Path) -> None:

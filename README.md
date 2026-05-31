@@ -317,6 +317,9 @@ The first command refreshes the older 5-minute bundle index with the current
 duration-label logic. The resulting registry should show
 `short 96-frame-class replay (96 frames)` and
 `5-minute-class sustained replay (3600 frames)` in the `Duration Label` column.
+The generated Markdown also places a `Duration Comparison Summary` before the
+wide run table so reviewers can separate 96-frame, 5-minute-class, and quick
+starter bundles before reading the full registry row.
 Use that column as navigation metadata only; it distinguishes review windows
 without turning either run into a thermal endurance or production readiness
 claim.
