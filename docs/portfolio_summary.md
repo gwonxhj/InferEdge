@@ -225,6 +225,9 @@ monitoring system.
 When EdgeEnv preservation evidence is present, the navigation path also records
 Lab's `Runtime Intelligence EdgeEnv Preservation` section marker so reviewers
 can trace the EdgeEnv run ID into the Lab-owned report context directly.
+The entrypoint index and registry also preserve Lab's preservation
+identity/details labels, keeping `identity=...` and `path=...` separate from
+source, stage, resource, and queue markers.
 The fixture-only `scripts/smoke_remote_fallback_registry_marker.sh` gate keeps
 this remote fallback registry marker path reproducible without a live HTTP
 worker. It builds local synthetic artifacts, regenerates `00_evidence_index.*`

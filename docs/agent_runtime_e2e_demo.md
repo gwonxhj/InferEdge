@@ -852,6 +852,9 @@ Expected sustained evidence markers:
 - `Runtime Intelligence EdgeEnv Preservation` in the Lab Markdown report when
   `--edgeenv-run-evidence` is used, so the EdgeEnv run ID and Runtime operation
   summary remain visible in Lab-owned deployment context
+- `preservation_identity` / `preservation_details` in `00_evidence_index.*`
+  when `--edgeenv-run-evidence` is used, matching the Lab Agent Runtime report
+  split between short identity and detailed navigation markers
 - `lab_report_preservation_section_present` in `00_evidence_index.*` and
   `lab_preservation=present` in the run registry when Lab preserves the same
   EdgeEnv context

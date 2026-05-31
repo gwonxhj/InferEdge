@@ -976,9 +976,13 @@ if [[ "$RUN_EDGEENV_EVIDENCE" -eq 1 ]]; then
   grep -q "Runtime Intelligence EdgeEnv Preservation" "$LAB_MD_OUT"
   grep -q "edgeenv_run_id" "$LAB_MD_OUT"
   grep -q "edgeenv_summary" "$EVIDENCE_INDEX_JSON_OUT"
+  grep -q "preservation_identity_label" "$EVIDENCE_INDEX_JSON_OUT"
+  grep -q "preservation_details_label" "$EVIDENCE_INDEX_JSON_OUT"
   grep -q "lab_report_preservation_section_present" "$EVIDENCE_INDEX_JSON_OUT"
   grep -q "Runtime Intelligence EdgeEnv Preservation" "$EVIDENCE_INDEX_JSON_OUT"
   grep -q "EdgeEnv Runtime Operation Evidence" "$EVIDENCE_INDEX_MD_OUT"
+  grep -q "preservation_identity" "$EVIDENCE_INDEX_MD_OUT"
+  grep -q "preservation_details" "$EVIDENCE_INDEX_MD_OUT"
   grep -q "lab_report_preservation_section_present" "$EVIDENCE_INDEX_MD_OUT"
   grep -q "Runtime Intelligence EdgeEnv Preservation" "$EVIDENCE_INDEX_MD_OUT"
 fi
