@@ -165,6 +165,9 @@ the committed Orchestrator -> EdgeEnv -> AIGuard -> Lab report bundle, including
 the Runtime Intelligence Risk Summary and remote-dispatch boundary rows,
 without treating GitLab,
 telemetry artifacts, or remote dispatch as a production control plane. The
+same gate now requires the Lab report `Runtime replay duration scope` row and
+the `short 96-frame-class replay (96 frames)` duration label, so reviewer-facing
+duration context stays visible in the generated Markdown/HTML artifacts. The
 current chain also keeps the compact Orchestrator `operation_risk_summary`
 marker as EdgeEnv-preserved navigation context and surfaces it as a Lab-owned
 report row; it is not an EdgeEnv regression delta, comparability field, or
