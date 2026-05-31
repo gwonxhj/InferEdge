@@ -30,6 +30,12 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Lab Runtime Intelligence artifact smoke" in smoke_script
     assert "scripts/smoke_runtime_intelligence_chain.sh --output-dir" in smoke_script
     assert "INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT" in smoke_script
+    assert "Agent Runtime EdgeEnv preservation identity/details smoke" in smoke_script
+    assert "INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT" in smoke_script
+    assert "demo_agent_runtime_e2e.sh\" --device-local --edgeenv-run-evidence" in smoke_script
+    assert "Agent Runtime EdgeEnv preservation marker gate" in smoke_script
+    assert "preservation_identity_label" in smoke_script
+    assert "preservation_details_label" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script

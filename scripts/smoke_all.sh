@@ -15,6 +15,7 @@ Default checks:
   - Forge pytest + manifest validation
   - Runtime smoke + manifest identity test
   - Lab portfolio demo check + Core 4 conformance check
+  - Agent Runtime EdgeEnv preservation identity/details smoke
   - Lab Runtime Intelligence artifact smoke
   - AIGuard pytest + portfolio demo
 
@@ -27,6 +28,8 @@ Environment:
                        Override Runtime Intelligence smoke output directory.
   INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT
                        Override fixture-only remote fallback registry smoke output directory.
+  INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT
+                       Override Agent Runtime EdgeEnv preservation smoke output directory.
 USAGE
 }
 
@@ -94,12 +97,32 @@ require_runtime_intelligence_report_markers() {
   require_marker "$summary_html" "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
 }
 
+require_agent_runtime_edgeenv_markers() {
+  local lab_md="$AGENT_RUNTIME_EDGEENV_SMOKE_OUT/05_lab_agent_runtime_report.md"
+  local index_json="$AGENT_RUNTIME_EDGEENV_SMOKE_OUT/00_evidence_index.json"
+  local index_md="$AGENT_RUNTIME_EDGEENV_SMOKE_OUT/00_evidence_index.md"
+
+  require_marker "$lab_md" "Runtime Intelligence EdgeEnv Preservation"
+  require_marker "$lab_md" "preservation_identity"
+  require_marker "$lab_md" "preservation_details"
+  require_marker "$lab_md" "identity=jetson_device_local_preservation"
+  require_marker "$lab_md" "path=device_local_starter"
+  require_marker "$index_json" "preservation_identity_label"
+  require_marker "$index_json" "preservation_details_label"
+  require_marker "$index_json" "identity=jetson_device_local_preservation"
+  require_marker "$index_md" "preservation_identity"
+  require_marker "$index_md" "preservation_details"
+}
+
 FORGE="$(require_repo InferEdgeForge)"
 RUNTIME="$(require_repo InferEdge-Runtime)"
 LAB="$(require_repo InferEdgeLab)"
 AIGUARD="$(require_repo InferEdgeAIGuard)"
+ORCHESTRATOR="$(require_repo InferEdgeOrchestrator)"
+ENV_REPO="$(require_repo InferEdgeEnv)"
 RUNTIME_INTELLIGENCE_SMOKE_OUT="${INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT:-/tmp/inferedge_runtime_intelligence_chain_smoke}"
 REMOTE_FALLBACK_REGISTRY_SMOKE_OUT="${INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT:-/tmp/inferedge_remote_fallback_registry_marker_smoke}"
+AGENT_RUNTIME_EDGEENV_SMOKE_OUT="${INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT:-/tmp/inferedge_agent_runtime_edgeenv_preservation_smoke}"
 
 run_step "Remote fallback registry marker smoke" bash "$ROOT_DIR/scripts/smoke_remote_fallback_registry_marker.sh" --output-dir "$REMOTE_FALLBACK_REGISTRY_SMOKE_OUT"
 
@@ -112,6 +135,8 @@ run_step "Runtime manifest identity" bash -lc "cd '$RUNTIME' && python3 tests/te
 run_step "Lab install" bash -lc "cd '$LAB' && poetry install --no-interaction"
 run_step "Lab portfolio demo check" bash -lc "cd '$LAB' && poetry run inferedgelab portfolio-demo-check"
 run_step "Lab Core 4 conformance check" bash -lc "cd '$LAB' && poetry run inferedgelab core4-conformance-check"
+run_step "Agent Runtime EdgeEnv preservation identity/details smoke" bash "$ROOT_DIR/scripts/demo_agent_runtime_e2e.sh" --device-local --edgeenv-run-evidence --output-dir "$AGENT_RUNTIME_EDGEENV_SMOKE_OUT"
+run_step "Agent Runtime EdgeEnv preservation marker gate" require_agent_runtime_edgeenv_markers
 run_step "Lab Runtime Intelligence artifact smoke" bash -lc "cd '$LAB' && bash scripts/smoke_runtime_intelligence_chain.sh --output-dir '$RUNTIME_INTELLIGENCE_SMOKE_OUT'"
 run_step "Lab Runtime Intelligence report marker gate" require_runtime_intelligence_report_markers
 if [[ "$FULL" -eq 1 ]]; then
