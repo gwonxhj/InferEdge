@@ -415,6 +415,12 @@ the EdgeEnv handoff alignment summary as Lab report contract context. AIGuard
 does not own or validate the Lab report markers; it keeps
 `aiguard_validates_expected_report_markers=false` while Lab remains the final
 deployment decision owner.
+The top-level smoke now also gates Lab's `Validated Duration Traceability`
+gate-summary section, including `duration_handoff_alignment`,
+`duration_source`, `duration_scope_label`, and the
+`short 96-frame-class replay (96 frames)` label, so reviewers can verify the
+EdgeEnv/AIGuard duration handoff alignment from the compact gate summary before
+opening the full Markdown/HTML report.
 
 Recent local validation record:
 
@@ -445,3 +451,4 @@ Recent local validation record:
 | 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_source_traceability_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_source_traceability_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_source_traceability_all_20260531 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now gates entrypoint evidence-index duration traceability markers: `duration_source`, `duration_scope_label`, `source=entrypoint_requested_frames`, and registry `Duration Sources`. |
 | 2026-05-31 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_lab_duration_source_scope_gate_20260531 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_lab_duration_source_scope_gate_20260531 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_lab_duration_source_scope_gate_20260531 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now gates Lab Markdown/HTML Runtime Intelligence reports for `scope_label=source=entrypoint_requested_frames` alongside the replay duration scope/source markers. |
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_handoff_alignment_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_handoff_alignment_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_handoff_alignment_20260601 bash scripts/smoke_all.sh` | pass | Confirms latest EdgeEnv `de64d50` and AIGuard `7289899` preserve duration traceability through EdgeEnv producer-side handoff and AIGuard alignment context while the top-level Lab Runtime Intelligence report gate still passes. |
+| 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_duration_gate_summary_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_duration_gate_summary_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_duration_gate_summary_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates Lab's `Validated Duration Traceability` summary markers: `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, and `short 96-frame-class replay (96 frames)`. |

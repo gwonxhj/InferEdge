@@ -89,6 +89,12 @@ and `path=device_local_starter` in the short identity row, plus
 `sources=device_local_cli_override` in the companion details row. This keeps the
 reviewer-facing report aligned with fixture-based cross-repo smoke evidence
 without requiring a live Jetson for this gate.
+The same cross-repo gate now checks Lab's
+`Validated Duration Traceability` gate-summary section, including
+`duration_handoff_alignment`, `duration_source`,
+`duration_scope_label`, and the `short 96-frame-class replay (96 frames)`
+label, so reviewers can spot EdgeEnv/AIGuard duration handoff alignment before
+opening the full Markdown/HTML report.
 
 ## Runtime Operation Starter Evidence Chain
 
