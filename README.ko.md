@@ -44,6 +44,22 @@ InferEdgeOrchestrator operation context
 | [InferEdgeEnv](https://github.com/gwonxhj/InferEdgeEnv) | local run evidence registry, comparability checker, runtime regression evidence |
 | [InferEdgeOrchestrator](https://github.com/gwonxhj/InferEdgeOrchestrator) | queue/deadline/fallback/worker health operation context provider |
 
+## Cross-Repo 역할 경계
+
+아래 표는 reviewer가 각 레포의 ownership을 빠르게 확인하기 위한 기준입니다.
+개별 레포 README의 role-boundary 표와 같은 방향을 유지하며, InferEdge가
+production SaaS, cloud control plane, generic monitoring stack처럼 보이지 않게
+합니다.
+
+| Project | Canonical owner role | 소유하는 evidence | 소유하지 않는 것 |
+|---|---|---|---|
+| InferEdgeForge | build provenance / handoff owner | `metadata.json`, `manifest.json`, source/artifact identity, build summary | Runtime executor, scheduler, deployment decision owner |
+| InferEdge-Runtime | execution / result evidence owner | Lab-compatible `result.json`, latency/FPS/backend/device context, runtime health and telemetry seed | artifact builder, registry, anomaly detector, scheduler, deployment decision owner |
+| InferEdgeLab | validation report / deployment decision owner | compare/evaluate output, Markdown/HTML report, Local Studio, `deployment_decision` | build system, registry, deterministic diagnosis owner, scheduler, production dashboard |
+| InferEdgeAIGuard | optional deterministic diagnosis evidence provider | `guard_analysis`, warning/review evidence, raw-context traceability | final deployment decision owner, LLM root-cause engine, production monitor |
+| InferEdgeEnv | local evidence registry / comparability / runtime regression owner | run registry, replay bundle, comparability judgement, regression report | production DB, cloud telemetry store, deployment decision owner, general monitoring SaaS |
+| InferEdgeOrchestrator | runtime operation context provider | queue/deadline/fallback evidence, worker health, remote-dispatch starter evidence | Kubernetes replacement, cloud orchestration platform, deployability decision owner, completed production scheduler |
+
 ## 현재 말할 수 있는 것
 
 - Core Forge -> Runtime -> Lab -> optional AIGuard validation pipeline은 구현되어 있습니다.

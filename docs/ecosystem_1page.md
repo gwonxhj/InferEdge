@@ -63,6 +63,20 @@ flowchart LR
 | Comparability | InferEdgeEnv | Can this benchmark evidence be trusted and compared? | local artifacts, SQLite registry, export/import bundle, comparability report |
 | Operation | InferEdgeOrchestrator | Can deployed workloads stay stable under load? | scheduler telemetry, overload comparison, drop/backlog/latency evidence |
 
+## Canonical Ownership Matrix
+
+This is the compact source-of-truth wording used across the entrypoint README
+and the individual repository READMEs.
+
+| Project | Owns | Does not own |
+|---|---|---|
+| InferEdgeForge | Build provenance / handoff evidence | Runtime execution, scheduling, deployment decision |
+| InferEdge-Runtime | Execution, Lab-compatible result, runtime health and telemetry seed evidence | Build provenance, registry, anomaly detection, scheduling, deployment decision |
+| InferEdgeLab | Validation report and Lab-owned deployment decision | Build execution, registry/comparability ownership, deterministic diagnosis ownership, scheduler behavior |
+| InferEdgeAIGuard | Optional deterministic diagnosis and warning evidence | Final deployment decision, LLM root-cause inference, production monitoring |
+| InferEdgeEnv | Local evidence registry, comparability judgement, runtime regression report | Production database, cloud telemetry store, deployment decision, general monitoring SaaS |
+| InferEdgeOrchestrator | Runtime operation context, queue/deadline/fallback evidence, worker health evidence | Kubernetes replacement, cloud orchestration platform, deployability decision, completed production scheduler |
+
 ## Runtime Operation Starter Chain
 
 The remote-dispatch path is currently a starter evidence chain:
