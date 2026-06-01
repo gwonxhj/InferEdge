@@ -226,6 +226,21 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
     assert "EdgeEnv `de64d50` and AIGuard `7289899`" in portfolio
 
 
+def test_readme_language_selector_links_to_korean_readme() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+
+    assert readme.startswith("# InferEdge\n\nLanguage: English | [한국어](README.ko.md)")
+    assert korean_readme.startswith("# InferEdge\n\n언어: [English](README.md) | 한국어")
+    assert "대표 README와 가장 최신 상세 설명" in korean_readme
+    assert "[English README](README.md)" in korean_readme
+    assert "Lab-owned deployment decision" in korean_readme
+    assert "production SaaS dashboard" in korean_readme
+    assert "production observability platform" in korean_readme
+    assert "Kubernetes-style orchestration" in korean_readme
+    assert "AIGuard 또는 Orchestrator의 최종 deployment decision ownership" in korean_readme
+
+
 def test_internal_docs_provide_matching_korean_link_labels() -> None:
     link_pairs = [
         (

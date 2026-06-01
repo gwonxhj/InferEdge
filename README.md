@@ -1,5 +1,7 @@
 # InferEdge
 
+Language: English | [한국어](README.ko.md)
+
 Multi-repository entrypoint for the InferEdge local-first Edge AI inference validation pipeline.
 
 InferEdge is not a benchmark-only script and not a production SaaS dashboard.
