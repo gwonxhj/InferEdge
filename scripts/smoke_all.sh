@@ -82,6 +82,7 @@ require_runtime_intelligence_report_markers() {
   local summary_html="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.html"
 
   require_marker "$bundle_summary" "expected_report_markers: remote fallback Lab context row declared"
+  require_marker "$bundle_summary" "aiguard_raw_context: max_total_queue_depth traceability preserved"
   require_marker "$gate_summary" "Validated Duration Traceability"
   require_marker "$gate_summary" "duration_handoff_alignment: EdgeEnv/AIGuard report context preserved"
   require_marker "$gate_summary" "duration_source: source=entrypoint_requested_frames"
