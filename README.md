@@ -48,6 +48,22 @@ message without replacing Forge, Runtime, Lab, or AIGuard.
 | InferEdgeEnv | v0.1.5 v1-complete comparability layer: local run evidence registry and benchmark evidence trust/comparison judgement | https://github.com/gwonxhj/InferEdgeEnv |
 | InferEdgeOrchestrator | Operation layer after deployment validation: scheduling, overload control, and runtime telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
 
+## Cross-Repo Role Boundary Matrix
+
+Use this matrix as the reviewer-facing ownership map. It mirrors the role
+boundary tables in the individual repository READMEs and keeps the portfolio
+from reading like a production SaaS, cloud control plane, or generic monitoring
+stack.
+
+| Project | Canonical owner role | Evidence it owns | Must not be treated as |
+|---|---|---|---|
+| InferEdgeForge | Build provenance / handoff owner | `metadata.json`, `manifest.json`, source/artifact identity, build summary | Runtime executor, scheduler, deployment decision owner |
+| InferEdge-Runtime | Execution / result evidence owner | Lab-compatible `result.json`, latency/FPS/backend/device context, runtime health and telemetry seeds | Artifact builder, registry, anomaly detector, scheduler, deployment decision owner |
+| InferEdgeLab | Validation report / deployment decision owner | compare/evaluate output, Markdown/HTML reports, Local Studio, `deployment_decision` | Build system, registry, deterministic diagnosis owner, scheduler, production dashboard |
+| InferEdgeAIGuard | Optional deterministic diagnosis evidence provider | `guard_analysis`, warning/review evidence, raw-context traceability | Final deployment decision owner, LLM root-cause engine, production monitor |
+| InferEdgeEnv | Local evidence registry / comparability / runtime regression owner | run registry, replay bundle, comparability judgement, regression report | Production DB, cloud telemetry store, deployment decision owner, general monitoring SaaS |
+| InferEdgeOrchestrator | Runtime operation context provider | queue/deadline/fallback evidence, worker health, remote-dispatch starter evidence | Kubernetes replacement, cloud orchestration platform, deployability decision owner, completed production scheduler |
+
 `repos.lock` intentionally remains scoped to the Core 4 validation pipeline
 that `clone_all.sh` and `update_all.sh` manage. For runtime-operation starter
 evidence, `repos.yaml` records the supporting Orchestrator reference currently

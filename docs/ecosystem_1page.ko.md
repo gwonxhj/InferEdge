@@ -24,6 +24,20 @@ InferEdge는 Edge AI inference 프로젝트에서 자주 섞이는 세 질문을
 | Comparability | InferEdgeEnv | local run evidence registry와 comparability judgement |
 | Operation | InferEdgeOrchestrator | queue, overload, fallback, runtime telemetry 기반 operation context |
 
+## Canonical Ownership Matrix
+
+이 표는 entrypoint README와 개별 레포 README에서 같은 ownership 용어를 쓰기
+위한 compact 기준입니다.
+
+| Project | 소유하는 것 | 소유하지 않는 것 |
+|---|---|---|
+| InferEdgeForge | build provenance / handoff evidence | Runtime execution, scheduling, deployment decision |
+| InferEdge-Runtime | execution, Lab-compatible result, runtime health and telemetry seed evidence | build provenance, registry, anomaly detection, scheduling, deployment decision |
+| InferEdgeLab | validation report와 Lab-owned deployment decision | build execution, registry/comparability ownership, deterministic diagnosis ownership, scheduler behavior |
+| InferEdgeAIGuard | optional deterministic diagnosis and warning evidence | final deployment decision, LLM root-cause inference, production monitoring |
+| InferEdgeEnv | local evidence registry, comparability judgement, runtime regression report | production database, cloud telemetry store, deployment decision, general monitoring SaaS |
+| InferEdgeOrchestrator | runtime operation context, queue/deadline/fallback evidence, worker health evidence | Kubernetes replacement, cloud orchestration platform, deployability decision, completed production scheduler |
+
 ## 핵심 흐름
 
 ```text

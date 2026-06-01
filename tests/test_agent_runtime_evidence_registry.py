@@ -245,6 +245,54 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
 
 
+def test_cross_repo_role_boundary_matrix_preserves_canonical_ownership() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+    ecosystem = (ROOT / "docs" / "ecosystem_1page.md").read_text(
+        encoding="utf-8"
+    )
+    ecosystem_ko = (ROOT / "docs" / "ecosystem_1page.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (readme, korean_readme):
+        lower_text = text.lower()
+        assert "Cross-Repo" in text
+        assert "production saas" in lower_text
+        assert "cloud control plane" in text
+        assert "generic monitoring" in text
+        assert "InferEdgeForge" in text
+        assert "build provenance / handoff owner" in lower_text
+        assert "InferEdge-Runtime" in text
+        assert "execution / result evidence owner" in lower_text
+        assert "Lab-compatible `result.json`" in text
+        assert "InferEdgeLab" in text
+        assert "deployment decision owner" in text
+        assert "InferEdgeAIGuard" in text
+        assert "optional deterministic diagnosis evidence provider" in lower_text
+        assert "`guard_analysis`" in text
+        assert "InferEdgeEnv" in text
+        assert "runtime regression owner" in text
+        assert "general monitoring SaaS" in text
+        assert "InferEdgeOrchestrator" in text
+        assert "runtime operation context provider" in lower_text
+        assert "Kubernetes replacement" in text
+        assert "completed production scheduler" in text
+
+    for text in (ecosystem, ecosystem_ko):
+        lower_text = text.lower()
+        assert "Canonical Ownership Matrix" in text
+        assert "build provenance / handoff evidence" in lower_text
+        assert "runtime health and telemetry seed evidence" in text
+        assert "Lab-owned deployment decision" in text
+        assert "optional deterministic diagnosis" in lower_text
+        assert "runtime regression report" in text
+        assert "runtime operation context" in lower_text
+        assert "general monitoring SaaS" in text
+        assert "cloud orchestration platform" in text
+        assert "completed production scheduler" in text
+
+
 def test_core_docs_language_selectors_link_to_korean_guides() -> None:
     doc_pairs = [
         ("docs/ecosystem_1page.md", "docs/ecosystem_1page.ko.md"),
