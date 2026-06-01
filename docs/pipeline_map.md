@@ -1,5 +1,7 @@
 # InferEdge Pipeline Map
 
+Language: English | [한국어](pipeline_map.ko.md)
+
 InferEdge is a multi-repository, local-first Edge AI inference validation
 pipeline. This entrypoint repository exists to make the split repository
 structure easy to clone, inspect, and smoke test.

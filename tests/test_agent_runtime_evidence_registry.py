@@ -239,6 +239,45 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "production observability platform" in korean_readme
     assert "Kubernetes-style orchestration" in korean_readme
     assert "AIGuard 또는 Orchestrator의 최종 deployment decision ownership" in korean_readme
+    assert "[InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.ko.md)" in korean_readme
+    assert "[포트폴리오 요약](docs/portfolio_summary.ko.md)" in korean_readme
+    assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
+
+
+def test_core_docs_language_selectors_link_to_korean_guides() -> None:
+    doc_pairs = [
+        ("docs/ecosystem_1page.md", "docs/ecosystem_1page.ko.md"),
+        ("docs/portfolio_summary.md", "docs/portfolio_summary.ko.md"),
+        ("docs/pipeline_map.md", "docs/pipeline_map.ko.md"),
+    ]
+
+    for english_path, korean_path in doc_pairs:
+        english = (ROOT / english_path).read_text(encoding="utf-8")
+        korean = (ROOT / korean_path).read_text(encoding="utf-8")
+        english_name = Path(english_path).name
+        korean_name = Path(korean_path).name
+
+        assert f"Language: English | [한국어]({korean_name})" in english
+        assert f"언어: [English]({english_name}) | 한국어" in korean
+        assert "대표/canonical 문서" in korean
+        assert "Lab-owned deployment decision" in korean
+        assert "production" in korean
+
+    ecosystem_ko = (ROOT / "docs" / "ecosystem_1page.ko.md").read_text(
+        encoding="utf-8"
+    )
+    portfolio_ko = (ROOT / "docs" / "portfolio_summary.ko.md").read_text(
+        encoding="utf-8"
+    )
+    pipeline_ko = (ROOT / "docs" / "pipeline_map.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "[포트폴리오 요약](portfolio_summary.ko.md)" in ecosystem_ko
+    assert "[파이프라인 맵](pipeline_map.ko.md)" in ecosystem_ko
+    assert "Runtime Intelligence artifact gate" in portfolio_ko
+    assert "Core 4 validation contract" in pipeline_ko
+    assert "AIGuard `guard_analysis`" in pipeline_ko
 
 
 def test_internal_docs_provide_matching_korean_link_labels() -> None:

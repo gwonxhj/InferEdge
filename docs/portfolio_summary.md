@@ -1,5 +1,7 @@
 # InferEdge Portfolio Summary
 
+Language: English | [한국어](portfolio_summary.ko.md)
+
 InferEdge is a local-first Edge AI inference validation pipeline that turns an ONNX model into traceable build artifacts, real runtime evidence, structured evaluation, optional diagnosis, and a Lab-owned deployment decision.
 
 ## 30-Second Structure
