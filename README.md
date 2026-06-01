@@ -105,6 +105,10 @@ The Lab Runtime Intelligence report branch of the gate now also checks the
 Lab's reviewer-facing operation row visible without
 turning Orchestrator evidence into a production scheduler or deployment
 decision owner.
+The same top-level gate now also checks the Lab bundle manifest summary marker
+`aiguard_raw_context: max_total_queue_depth traceability preserved`, so the
+rendered `max_total_queue_depth` row remains traceable back through AIGuard
+deterministic raw context to Orchestrator producer-side operation evidence.
 The Agent Runtime branch of the same smoke now directly checks compact
 queue/deadline/fallback operation markers in the evidence index and Lab report:
 `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`,
@@ -196,7 +200,11 @@ compact queue/deadline/fallback operation markers such as
 `deadline_missed_count`, the Lab Markdown `Queue pressure reasons` row, and the
 Lab Runtime Intelligence `Orchestrator queue/deadline/fallback markers` row
 with `queue_pressure_reason=queue_backlog_threshold_exceeded` and
-`max_total_queue_depth=7`. The
+`max_total_queue_depth=7`. The same top-level smoke also gates
+`aiguard_raw_context: max_total_queue_depth traceability preserved` in the Lab
+bundle manifest summary, keeping the visible queue-depth marker tied to
+AIGuard's deterministic raw context and Orchestrator producer-side operation
+evidence. The
 current chain also keeps the compact Orchestrator `operation_risk_summary`
 marker as EdgeEnv-preserved navigation context and surfaces it as a Lab-owned
 report row; it is not an EdgeEnv regression delta, comparability field, or

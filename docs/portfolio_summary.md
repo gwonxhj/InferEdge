@@ -154,6 +154,10 @@ Latest Runtime Intelligence gate hardening:
   `max_total_queue_depth=7`. This keeps the
   reviewer-facing Lab-owned operation row visible across the cross-repo smoke
   without changing deployment ownership.
+- The same top-level smoke now gates Lab's bundle manifest summary marker
+  `aiguard_raw_context: max_total_queue_depth traceability preserved`, keeping
+  the rendered queue-depth marker traceable through AIGuard deterministic raw
+  context back to Orchestrator producer-side operation evidence.
 - This is artifact contract hardening before deeper Jetson evidence capture;
   it is not a production observability or GitLab control-plane claim.
 
@@ -448,6 +452,10 @@ The Lab Runtime Intelligence report branch now gates the generated
 `queue_pressure_reason=queue_backlog_threshold_exceeded` /
 `max_total_queue_depth=7` in Markdown and HTML, so the Lab-owned report UX
 marker remains protected by the entrypoint smoke.
+The same top-level smoke now also checks Lab's bundle manifest summary for
+`aiguard_raw_context: max_total_queue_depth traceability preserved`, tying the
+visible `max_total_queue_depth` row to AIGuard raw context and Orchestrator
+producer-side operation evidence.
 
 Recent local validation record:
 
@@ -483,3 +491,4 @@ Recent local validation record:
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_operation_summary_gate_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_operation_summary_gate_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_operation_summary_gate_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates compact Agent Runtime operation markers in the evidence index and Lab Markdown report: `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`, `deadline_missed_count`, and `Queue pressure reasons`. |
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_lab_operation_marker_row_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_lab_operation_marker_row_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_lab_operation_marker_row_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now gates Lab's Runtime Intelligence `Orchestrator queue/deadline/fallback markers` row in generated Markdown/HTML reports, including `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7`, `deadline_missed_count=2`, and `fallback_count=1`. |
 | 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_lab_max_queue_depth_marker_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_lab_max_queue_depth_marker_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_lab_max_queue_depth_marker_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke directly gates the Lab Runtime Intelligence row for `max_total_queue_depth=7` after the Lab report switched the row from generic `queue_depth` wording to the explicit Orchestrator max-queue marker. |
+| 2026-06-01 | `INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT=/private/tmp/inferedge_agent_runtime_aiguard_max_queue_raw_context_gate_20260601 INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT=/private/tmp/inferedge_runtime_intelligence_aiguard_max_queue_raw_context_gate_20260601 INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT=/private/tmp/inferedge_remote_fallback_aiguard_max_queue_raw_context_gate_20260601 bash scripts/smoke_all.sh` | pass | Confirms the top-level cross-repo smoke now directly gates Lab's bundle manifest summary marker `aiguard_raw_context: max_total_queue_depth traceability preserved`, keeping the visible `max_total_queue_depth=7` report row traceable through AIGuard raw context back to Orchestrator producer-side operation evidence. |
