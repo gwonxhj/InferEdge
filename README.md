@@ -81,40 +81,24 @@ submission boundary.
 | Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
 | Cloudflare / dashboard / production worker services | Future Work | Documented direction only | Completed remote operation platform |
 
-The Runtime Intelligence artifact gate directly checks Lab report markers for
-Jetson/device-local preservation and remote fallback context. The gated
-Jetson/device-local labels include `identity=jetson_device_local_preservation`
-and `path=device_local_starter` in the short identity row, plus
-`Jetson/device-local EdgeEnv preservation details` with
-`sources=device_local_cli_override` in the companion details row. This keeps the
-reviewer-facing report aligned with fixture-based cross-repo smoke evidence
-without requiring a live Jetson for this gate.
-The same cross-repo gate now checks Lab's
-`Validated Duration Traceability` gate-summary section, including
-`duration_handoff_alignment`, `duration_source`,
-`duration_scope_label`, and the `short 96-frame-class replay (96 frames)`
-label, so reviewers can spot EdgeEnv/AIGuard duration handoff alignment before
-opening the full Markdown/HTML report.
-It also gates the final `runtime_intelligence_ci_artifact_gate_summary.md` for
-the same markers, keeping optional CI artifact automation aligned with the
-local-first report gate without turning CI into a runtime control plane.
-The Lab Runtime Intelligence report branch of the gate now also checks the
-`Orchestrator queue/deadline/fallback markers` row and its compact
-`queue_pressure_reason=queue_backlog_threshold_exceeded` and
-`max_total_queue_depth=7` markers in Markdown and HTML reports. This keeps
-Lab's reviewer-facing operation row visible without
-turning Orchestrator evidence into a production scheduler or deployment
-decision owner.
-The same top-level gate now also checks the Lab bundle manifest summary marker
-`aiguard_raw_context: max_total_queue_depth traceability preserved`, so the
-rendered `max_total_queue_depth` row remains traceable back through AIGuard
-deterministic raw context to Orchestrator producer-side operation evidence.
-The Agent Runtime branch of the same smoke now directly checks compact
-queue/deadline/fallback operation markers in the evidence index and Lab report:
-`queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`,
-`deadline_missed_count`, and the Lab Markdown `Queue pressure reasons` row.
-These are reviewer navigation markers for local-first operation evidence, not
-production scheduler or control-plane behavior.
+### Runtime Intelligence Gate At A Glance
+
+Cross-repo smoke keeps the
+`Orchestrator -> EdgeEnv -> AIGuard -> Lab` artifact chain readable and
+reproducible. The Runtime Intelligence artifact gate checks reviewer-facing
+Lab markers, not production observability or GitLab control-plane behavior.
+
+| Gate area | Required visible markers | Why it matters |
+|---|---|---|
+| Jetson/device-local preservation | `identity=jetson_device_local_preservation`, `path=device_local_starter`, `Jetson/device-local EdgeEnv preservation details`, `sources=device_local_cli_override` | Confirms fixture/device-local evidence stays visible without requiring a live Jetson for this gate |
+| Duration traceability | `Validated Duration Traceability`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, `short 96-frame-class replay (96 frames)`, `runtime_intelligence_ci_artifact_gate_summary.md` | Lets reviewers spot EdgeEnv/AIGuard duration handoff alignment before opening full reports |
+| Lab operation row | `Orchestrator queue/deadline/fallback markers`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` | Keeps queue/deadline/fallback pressure visible in Markdown and HTML reports |
+| AIGuard raw-context link | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `max_total_queue_depth` | Ties the rendered queue-depth row back to deterministic AIGuard raw context and Orchestrator producer-side operation evidence |
+| Agent Runtime evidence index | `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`, `deadline_missed_count`, `Queue pressure reasons` | Provides reviewer navigation markers for local-first operation evidence |
+
+These markers are navigation and traceability evidence. They do not make
+Orchestrator a production scheduler, AIGuard a deployment decision owner, or CI
+a runtime control plane.
 
 ## Runtime Operation Starter Evidence Chain
 
@@ -180,52 +164,29 @@ Run the portfolio smoke checks:
 bash scripts/smoke_all.sh
 ```
 
-The cross-repo smoke also runs a lightweight Agent Runtime EdgeEnv preservation
-identity/details smoke and Lab's local-first Runtime Intelligence artifact
-chain gate. The Agent Runtime smoke checks that `preservation_identity` /
-`preservation_details` remain visible in the Lab report and entrypoint evidence
-index and that the generated index keeps the additive `duration_class` /
-`duration_label` navigation fields, including the reviewer-facing
-`Reviewer Duration Label` Markdown row. The Runtime Intelligence gate verifies
-the committed Orchestrator -> EdgeEnv -> AIGuard -> Lab report bundle, including
-the Runtime Intelligence Risk Summary and remote-dispatch boundary rows,
-without treating GitLab,
-telemetry artifacts, or remote dispatch as a production control plane. The
-same gate now requires the Lab report `Runtime replay duration scope` row and
-the `short 96-frame-class replay (96 frames)` duration label plus
-`scope_label=source=entrypoint_requested_frames`, so reviewer-facing duration
-context stays visible in the generated Markdown/HTML artifacts. It also gates
-compact queue/deadline/fallback operation markers such as
-`queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`,
-`deadline_missed_count`, the Lab Markdown `Queue pressure reasons` row, and the
-Lab Runtime Intelligence `Orchestrator queue/deadline/fallback markers` row
-with `queue_pressure_reason=queue_backlog_threshold_exceeded` and
-`max_total_queue_depth=7`. The same top-level smoke also gates
-`aiguard_raw_context: max_total_queue_depth traceability preserved` in the Lab
-bundle manifest summary, keeping the visible queue-depth marker tied to
-AIGuard's deterministic raw context and Orchestrator producer-side operation
-evidence. The
-current chain also keeps the compact Orchestrator `operation_risk_summary`
-marker as EdgeEnv-preserved navigation context and surfaces it as a Lab-owned
-report row; it is not an EdgeEnv regression delta, comparability field, or
-deployment decision override. AIGuard now also emits
-`edgeenv_orchestrator_operation_risk_summary` as deterministic warning evidence,
-and Lab renders that evidence as a separate Runtime Intelligence row while
-keeping Lab as the final deployment decision owner. For the generated artifact list and the split between
-operation-smoke and Runtime Intelligence smoke gates, see
-[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split).
-The current Lab gate also checks the copied AIGuard/EdgeEnv handoff alignment
-artifact for Lab-owned expected report marker context. In practice,
-`lab_expected_report_markers` must match the Runtime Intelligence report
-markers, `report_marker_context_role` must stay
-`lab_report_contract_context`, and
-`aiguard_validates_expected_report_markers=false` must be preserved. This is a
-CI artifact contract check for reviewer evidence; it does not make AIGuard or
-CI the report owner.
-The latest gate also aligns the entrypoint evidence-index vocabulary with the
-Lab Runtime Intelligence report by requiring `Lab EdgeEnv preservation context`
-and `lab_report_preservation_context_present=True` / `lab_preservation=present`
-markers in the Lab-owned artifact chain.
+What `scripts/smoke_all.sh` checks:
+
+| Smoke branch | Main markers | Reviewer value |
+|---|---|---|
+| Agent Runtime EdgeEnv preservation | `preservation_identity`, `preservation_details`, `duration_class`, `duration_label`, `Reviewer Duration Label` | Confirms the evidence index and Lab report keep preservation and duration navigation rows |
+| Lab's local-first Runtime Intelligence artifact chain | Runtime Intelligence Risk Summary, remote-dispatch boundary rows, `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames` | Confirms the committed `Orchestrator -> EdgeEnv -> AIGuard -> Lab` report bundle stays readable in Markdown/HTML |
+| Queue/deadline/fallback markers | `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`, `deadline_missed_count`, `Queue pressure reasons`, `Orchestrator queue/deadline/fallback markers`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` | Keeps compact operation pressure visible without opening every JSON artifact |
+| AIGuard raw-context traceability | `aiguard_raw_context: max_total_queue_depth traceability preserved` | Keeps the visible queue-depth marker tied to deterministic AIGuard raw context and Orchestrator producer-side operation evidence |
+| EdgeEnv/Lab preservation vocabulary | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present` | Aligns entrypoint evidence-index wording with the Lab-owned Runtime Intelligence report |
+| AIGuard/EdgeEnv handoff alignment | `lab_expected_report_markers`, `report_marker_context_role=lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` | Verifies report marker expectations remain Lab-owned reviewer evidence |
+
+Important boundaries:
+
+- `operation_risk_summary` is EdgeEnv-preserved navigation context, not an
+  EdgeEnv regression delta, comparability field, or deployment decision
+  override.
+- `edgeenv_orchestrator_operation_risk_summary` is deterministic AIGuard
+  warning evidence; Lab still owns the final deployment decision.
+- GitLab, telemetry artifacts, remote dispatch, and CI artifact checks are not
+  production control-plane behavior.
+- For the generated artifact list and the split between operation-smoke and
+  Runtime Intelligence smoke gates, see
+  [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split).
 
 Run the Reliable Edge Agent Runtime extension smoke when the supporting
 Orchestrator repo is available in the same workspace:
@@ -291,44 +252,29 @@ bash scripts/demo_agent_runtime_e2e.sh \
   --remote-task-request examples/remote_fallback/remote_task_request_fallback.json
 ```
 
-This reproduces the file-based chain from `agent_manifest` to Runtime
-`result.agent`, Orchestrator scheduling evidence, AIGuard runtime reliability
-analysis, and the Lab-owned Agent Runtime Reliability report.
-Each run also writes `00_evidence_index.md` and `00_evidence_index.json` in the
-output bundle so the generated Orchestrator, AIGuard, Lab, telemetry, and
-optional remote-dispatch artifacts are easy to navigate without changing the
-source evidence contracts. The index preserves Orchestrator scenario label,
-category, mode, and an additive `duration_class` / `duration_label` so repeated
-smoke runs can be grouped by intent and quickly distinguished as short
-96-frame-class replay, 5-minute-class sustained replay, or quick starter smoke
-without changing the source contracts. The Markdown index promotes the same
-values into a `Reviewer Duration Label` row near the top of the report so
-reviewers do not need to scan the full run-summary table first. The same row
-also keeps `duration_source` and `duration_scope_label`, such as
-`source=entrypoint_requested_frames`, so reviewers can see whether replay
-duration came from the entrypoint request or Orchestrator artifact metadata.
-It also records
-an `operation_path` and,
-when present, remote dispatch starter status, selected worker, remote execution
-status, fallback final status, `production_remote_execution`, and
-`operation_boundary` so device-local and remote/fallback runs can be compared
-in one registry table without turning starter evidence into production remote
-operation proof. The registry also preserves the Lab-facing remote report
-context, such as `Remote fallback starter evidence`, beside the AIGuard marker
-so the entrypoint registry and Lab report stay easy to cross-check.
-When present, EdgeEnv evidence status is also recorded so reviewers can see
-that Runtime operation summary was preserved in the local registry/artifact
-flow without making it a deployment decision or comparability gate.
-The same index/registry path also records whether Lab rendered the
-`Runtime Intelligence EdgeEnv Preservation` section, so a reviewer can identify
-the Lab-owned preservation context without opening every report first.
-It now also carries the same preservation identity/details labels as the Lab
-Agent Runtime report, keeping the run/path identity separate from producer,
-resource, and queue navigation markers.
-For device-local override runs, the index and registry also surface
-`producer_sources`, `device_local_producer_count`, and `producer_stages` so a
-reviewer can tell whether the bundle used committed starter fixtures or runtime
-input overrides without opening the full Orchestrator JSON first.
+This reproduces the file-based chain:
+
+```text
+agent_manifest
+-> Runtime result.agent
+-> Orchestrator scheduling evidence
+-> AIGuard runtime reliability analysis
+-> Lab-owned Agent Runtime Reliability report
+```
+
+Each run writes `00_evidence_index.md` and `00_evidence_index.json`. Use them
+as the first navigation surface for generated Orchestrator, AIGuard, Lab,
+telemetry, and optional remote-dispatch artifacts.
+
+| Index / registry row | Key fields | What reviewers can see quickly |
+|---|---|---|
+| Duration navigation | `duration_class`, `duration_label`, `Reviewer Duration Label`, `duration_source`, `duration_scope_label`, `source=entrypoint_requested_frames` | Whether a run is short 96-frame-class replay, 5-minute-class sustained replay, or quick starter smoke |
+| Operation path | `operation_path` | Whether the bundle is device-local, remote/fallback, or another starter path |
+| Remote dispatch starter | selected worker, remote execution status, fallback final status, `production_remote_execution`, `operation_boundary`, `Remote fallback starter evidence` | Remote/fallback evidence can be compared without claiming production remote operation |
+| EdgeEnv preservation | EdgeEnv evidence status, `Runtime Intelligence EdgeEnv Preservation` | Runtime operation summary was preserved locally without becoming a deployment decision or comparability gate |
+| Preservation identity/details | preservation identity/details labels from the Lab Agent Runtime report | Run/path identity stays separate from producer, resource, and queue navigation markers |
+| Device-local override context | `producer_sources`, `device_local_producer_count`, `producer_stages` | Whether the bundle used committed starter fixtures or runtime input overrides |
+
 For repeat Jetson bundles, the same table makes the short 96-frame replay and
 5-minute-class sustained replay visible without treating either as thermal
 endurance validation.
@@ -382,67 +328,52 @@ This smoke confirms that the generated evidence index and registry preserve
 `remote_execution_recovered_by_fallback` and
 `lab=Remote fallback starter evidence` from local files only.
 
-The entrypoint smoke now also verifies that Lab preserves Orchestrator operation
-context, including queue state, worker health, runtime event summary, and
-timeline samples in JSON/Markdown reports.
-It also verifies the current AIGuard -> Lab operation-evidence handoff:
-AIGuard can emit `worker_health_degradation`, `scheduler_delay_pattern`,
-`queue_pressure_context`, `worker_operation_risk_summary`,
-`runtime_operation_health`, and, for device-local runs,
-`device_local_operation_context` from Orchestrator and Runtime telemetry.
-Lab surfaces those signals in operation context sections with queue pressure
-reasons, worker risk summaries, Runtime operation summary actions, producer
-context, and policy/drop reason counts.
-Lab remains the final deployment decision owner.
-With `--remote-dispatch`, the same script also writes Orchestrator's
-file-based remote worker selection result and runs AIGuard remote-dispatch
-diagnosis on that artifact. Add `--remote-execute-plan` to explicitly request
-the Orchestrator HTTP/SSH starter execution path when the selected worker
-registry entry supports it. File-contract workers remain selection-only and are
-recorded as skipped starter evidence. This is remote dispatch starter evidence,
-not production SSH/HTTP remote execution. The smoke validation also checks that
-the remote dispatch runtime event summary role and starter boundary are
-preserved through AIGuard, Lab JSON/Markdown, and the generated evidence index.
-With `--edgeenv-run-evidence`, the script writes `08_edgeenv_run_show.json` and
-`08_edgeenv/.edgeenv/runs.db`. This is EdgeEnv local evidence preservation for
-the Runtime operation summary, not cloud monitoring or Lab deployment decision
-ownership.
-The `examples/remote_fallback` fixtures intentionally point the primary worker
-at an unavailable HTTP endpoint and the fallback worker at a local starter
-server. When the fallback worker is running, the same entrypoint smoke records
-`remote_execution_failed`, `fallback_execution_result.final_status=succeeded`,
-AIGuard `remote_execution_recovered_by_fallback`, and Lab's `Remote fallback
-starter evidence` section. This proves bounded recovery evidence propagation,
-not production-grade retry control.
-The Orchestrator source-side sample for this path is tracked as supporting
-reference `654e0ab27b383317ec816d054b293bfa3061cf32`
+The entrypoint smoke also validates operation context handoff:
+
+| Path | What is checked | Boundary |
+|---|---|---|
+| Orchestrator -> Lab context | Queue state, worker health, runtime event summary, timeline samples, queue pressure reasons, worker risk summaries, Runtime operation summary actions, producer context, policy/drop reason counts | Lab remains the final deployment decision owner |
+| AIGuard -> Lab operation evidence | `worker_health_degradation`, `scheduler_delay_pattern`, `queue_pressure_context`, `worker_operation_risk_summary`, `runtime_operation_health`, `device_local_operation_context` | Deterministic warning evidence only |
+| `--remote-dispatch` | Orchestrator file-based remote worker selection plus AIGuard remote-dispatch diagnosis | Remote dispatch starter evidence, not production SSH/HTTP remote execution |
+| `--remote-execute-plan` | Requests the HTTP/SSH starter execution path only when the selected worker registry entry supports it | File-contract workers remain selection-only skipped starter evidence |
+| `--edgeenv-run-evidence` | Writes `08_edgeenv_run_show.json` and `08_edgeenv/.edgeenv/runs.db` | EdgeEnv local evidence preservation, not cloud monitoring or Lab deployment decision ownership |
+| `examples/remote_fallback` | Records `remote_execution_failed`, `fallback_execution_result.final_status=succeeded`, AIGuard `remote_execution_recovered_by_fallback`, and Lab's `Remote fallback starter evidence` section | Bounded recovery evidence propagation, not production-grade retry control |
+
+The Orchestrator source-side sample for the remote fallback path is tracked as
+supporting reference `654e0ab27b383317ec816d054b293bfa3061cf32`
 (`examples/telemetry/remote_fallback_recovery_sample.json`) rather than as a
 Core `repos.lock` entry.
 
-The current extension smoke uses the latest Orchestrator producer-backed
-sustained path: Vision reads a local image fixture, Voice-Command replays a
-FastAPI-style request burst fixture, and Safety-Monitor reads resource snapshot
-telemetry. It checks queue-depth, policy decision reason,
-`multi_workload_sustained_summary`, producer source markers, optional
-`tegrastats_timeline`, AIGuard `profiled_workload_pressure` /
-`thermal_resource_pressure`, and Lab `sustained_overload_review` evidence
-before live device-local sustained validation is added. Use `--device-local` to
-replay the committed local image, request, and resource snapshot producers in
-Orchestrator `scenario_mode=device_local`.
-For local device experiments, keep `--device-local` and pass
-`--vision-input`, optional `--vision-onnx-model`, `--voice-ingress-payload`, and
-either `--resource-snapshot` or `--capture-process-resource-snapshot` to reuse
-the same entrypoint script with runtime input overrides. The ONNX option records
-provider, input/output shapes, and probe latency as lightweight Vision producer
-evidence; `--tegrastats-log` can carry a captured Jetson/resource log through
-the Orchestrator `tegrastats_timeline`; `--capture-tegrastats` captures Jetson
-telemetry during the Orchestrator run when the `tegrastats` command is
-available. These options do not claim a full live YOLO/Whisper/FastAPI
-sustained service. See
+The current extension smoke starts with the Orchestrator producer-backed
+sustained path:
+
+| Producer | Input source | Evidence checked |
+|---|---|---|
+| Vision | Local image fixture | Queue-depth, policy decision reason, producer source markers |
+| Voice-Command | FastAPI-style request burst fixture | `multi_workload_sustained_summary` and workload pressure context |
+| Safety-Monitor | Resource snapshot telemetry | Optional `tegrastats_timeline`, AIGuard `profiled_workload_pressure` / `thermal_resource_pressure`, Lab `sustained_overload_review` |
+
+Use `--device-local` to replay the committed local image, request, and resource
+snapshot producers in Orchestrator `scenario_mode=device_local`.
+
+For local device or Jetson experiments, keep `--device-local` and add only the
+inputs you need:
+
+| Option | Purpose |
+|---|---|
+| `--vision-input` | Replace the committed Vision image fixture |
+| `--vision-onnx-model` | Record provider, input/output shapes, and probe latency as lightweight Vision producer evidence |
+| `--voice-ingress-payload` | Replace the committed Voice-Command request burst fixture |
+| `--resource-snapshot` | Replay a committed or captured resource snapshot |
+| `--capture-process-resource-snapshot` | Capture host process resource evidence during the run |
+| `--tegrastats-log` | Carry a captured Jetson/resource log through Orchestrator `tegrastats_timeline` |
+| `--capture-tegrastats` | Capture Jetson telemetry during the run when `tegrastats` is available |
+| `--generate-vision-detector-probe` | Generate a reproducible detector-like ONNX probe without committing a model artifact |
+
+These options are runtime input overrides for evidence capture. They do not
+claim a full live YOLO/Whisper/FastAPI sustained service. See
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
 minimum committed sample paths and a resource-snapshot variant.
-Use `--generate-vision-detector-probe` when you want a reproducible detector-like
-ONNX probe without committing a model artifact.
 
 Recent Jetson starter validation:
 
