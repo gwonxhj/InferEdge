@@ -61,7 +61,8 @@ YOLO, Whisper, FastAPI serving, telemetry logs, sustained multi-workload
 interaction evidence, and InferEdge-compatible handoff artifacts.
 
 For the submission-ready diagram and layer split, start with
-[InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md).
+[InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md)
+([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.md)).
 
 ## Implementation Status
 
@@ -186,7 +187,8 @@ Important boundaries:
   production control-plane behavior.
 - For the generated artifact list and the split between operation-smoke and
   Runtime Intelligence smoke gates, see
-  [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split).
+  [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split)
+  ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md#smoke-gate-split)).
 
 Run the Reliable Edge Agent Runtime extension smoke when the supporting
 Orchestrator repo is available in the same workspace:
@@ -372,8 +374,9 @@ inputs you need:
 
 These options are runtime input overrides for evidence capture. They do not
 claim a full live YOLO/Whisper/FastAPI sustained service. See
-[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) for the
-minimum committed sample paths and a resource-snapshot variant.
+[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md)
+([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md))
+for the minimum committed sample paths and a resource-snapshot variant.
 
 Recent Jetson starter validation:
 
@@ -557,9 +560,11 @@ worker health telemetry indicates degraded runtime loops. It is not a decoded
 YOLO accuracy validation or sustained thermal endurance claim.
 For the clean Jetson replay procedure that avoids touching dirty local Forge or
 Runtime worktrees, see
-[`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook).
+[`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)
+([한국어: 클린 Jetson 재현 런북](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)).
 For a submission-facing snapshot of the generated Lab evidence, see
-[`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md).
+[`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md)
+([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)).
 
 Latest Jetson EdgeEnv preservation smoke:
 
@@ -626,8 +631,10 @@ device-local smoke evidence, not decoded YOLO accuracy validation, live camera
 operation, Whisper/FastAPI service execution, production remote execution, or
 sustained thermal endurance validation. See
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md)
+([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md))
 and its
-[`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html).
+[`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html)
+([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)).
 
 Reproduce the same class of Jetson smoke with the convenience runner:
 
