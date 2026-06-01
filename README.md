@@ -100,8 +100,9 @@ the same markers, keeping optional CI artifact automation aligned with the
 local-first report gate without turning CI into a runtime control plane.
 The Lab Runtime Intelligence report branch of the gate now also checks the
 `Orchestrator queue/deadline/fallback markers` row and its compact
-`queue_pressure_reason=queue_backlog_threshold_exceeded` marker in Markdown and
-HTML reports. This keeps Lab's reviewer-facing operation row visible without
+`queue_pressure_reason=queue_backlog_threshold_exceeded` and
+`max_total_queue_depth=7` markers in Markdown and HTML reports. This keeps
+Lab's reviewer-facing operation row visible without
 turning Orchestrator evidence into a production scheduler or deployment
 decision owner.
 The Agent Runtime branch of the same smoke now directly checks compact
@@ -194,7 +195,8 @@ compact queue/deadline/fallback operation markers such as
 `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`,
 `deadline_missed_count`, the Lab Markdown `Queue pressure reasons` row, and the
 Lab Runtime Intelligence `Orchestrator queue/deadline/fallback markers` row
-with `queue_pressure_reason=queue_backlog_threshold_exceeded`. The
+with `queue_pressure_reason=queue_backlog_threshold_exceeded` and
+`max_total_queue_depth=7`. The
 current chain also keeps the compact Orchestrator `operation_risk_summary`
 marker as EdgeEnv-preserved navigation context and surfaces it as a Lab-owned
 report row; it is not an EdgeEnv regression delta, comparability field, or

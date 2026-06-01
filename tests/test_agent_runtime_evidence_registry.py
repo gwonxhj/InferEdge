@@ -80,6 +80,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "scope_label=source=entrypoint_requested_frames" in smoke_script
     assert "Orchestrator queue/deadline/fallback markers" in smoke_script
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in smoke_script
+    assert "max_total_queue_depth=7" in smoke_script
     assert "deadline_missed_count=2" in smoke_script
     assert "fallback_count=1" in smoke_script
     assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
@@ -98,6 +99,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "compact queue/deadline/fallback operation markers" in readme
     assert "Orchestrator queue/deadline/fallback markers" in readme
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in readme
+    assert "max_total_queue_depth=7" in readme
     assert "Queue pressure reasons" in readme
 
 
@@ -200,6 +202,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "compact queue/deadline/fallback operation markers" in text
         assert "Orchestrator queue/deadline/fallback markers" in text
         assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in text
+        assert "max_total_queue_depth=7" in text
         assert "queue_pressure_reason" in text
         assert "max_total_queue_depth" in text
         assert "fallback_count" in text
