@@ -1,5 +1,7 @@
 # InferEdge Ecosystem 1-Page Summary
 
+Language: English | [한국어](ecosystem_1page.ko.md)
+
 InferEdge is a local-first Edge AI lifecycle portfolio. It separates three
 questions that are often mixed together in inference projects:
 
