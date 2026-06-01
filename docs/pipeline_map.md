@@ -117,7 +117,9 @@ worker selection contract. It should not be described as production SSH/HTTP
 execution, long-lived worker operation, secure tunnel operation, production
 retry/failover, or cloud orchestration.
 
-The submission-ready diagram is in [Ecosystem 1-Page Summary](ecosystem_1page.md).
+The submission-ready diagram is in
+[Ecosystem 1-Page Summary](ecosystem_1page.md)
+([한국어: 생태계 1페이지 요약](ecosystem_1page.md)).
 
 ## Contract Boundaries
 

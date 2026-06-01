@@ -101,8 +101,11 @@ post-deployment operation control.
 ## Reviewer Path
 
 1. Start here for the ecosystem diagram and role split.
-2. Read [Portfolio Summary](portfolio_summary.md) for the 30-second narrative.
-3. Read [Pipeline Map](pipeline_map.md) for repository responsibilities.
+2. Read [Portfolio Summary](portfolio_summary.md)
+   ([한국어: 포트폴리오 요약](portfolio_summary.md)) for the 30-second
+   narrative.
+3. Read [Pipeline Map](pipeline_map.md)
+   ([한국어: 파이프라인 맵](pipeline_map.md)) for repository responsibilities.
 4. Run the local submission smoke:
 
 ```bash

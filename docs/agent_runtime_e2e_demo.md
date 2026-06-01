@@ -508,7 +508,8 @@ preserves Runtime operation guard evidence (`runtime_latency_budget_overrun`,
 It remains a device-local smoke record, not decoded YOLO accuracy, live camera,
 Whisper/FastAPI, or sustained thermal endurance validation.
 A submission-facing snapshot of the generated Lab evidence is captured in
-[`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md).
+[`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md)
+([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](evidence/jetson_device_local_agent_runtime_report.md)).
 
 The longer 5-minute-class Jetson replay used the same path with `--frames 3600`
 and a 420-second guard timeout.
@@ -543,8 +544,10 @@ the Lab-owned blocked deployment decision. The Lab report and evidence index
 also preserve `preservation_identity` / `preservation_details`. The
 submission-facing snapshot is captured as
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](evidence/jetson_device_local_5min_sustained_report.md)
+([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](evidence/jetson_device_local_5min_sustained_report.md))
 and
-[`HTML report`](evidence/jetson_device_local_5min_sustained_report.html).
+[`HTML report`](evidence/jetson_device_local_5min_sustained_report.html)
+([한국어: HTML 보고서](evidence/jetson_device_local_5min_sustained_report.html)).
 It is still runtime-operation smoke evidence, not decoded YOLO accuracy
 validation, live camera operation, Whisper/FastAPI service execution, production
 remote execution, or sustained thermal endurance validation.

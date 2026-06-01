@@ -16,7 +16,8 @@ Can deployed workloads stay stable under load?
 ```
 
 For a diagram-first version of this same structure, see
-[InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md).
+[InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)
+([한국어: InferEdge 생태계 1페이지 요약](ecosystem_1page.md)).
 
 Reusable first-slide / README visual:
 
@@ -312,7 +313,8 @@ This is current-main device-local ONNX probe and telemetry handoff evidence
 from a longer 96-frame starter replay, not decoded YOLO accuracy, live camera,
 or thermal endurance validation.
 The submission-facing Lab evidence snapshot is stored in
-[`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md).
+[`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md)
+([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](evidence/jetson_device_local_agent_runtime_report.md)).
 The clean Jetson replay runbook uses a temporary Forge clone under `/tmp` so
 dirty local Jetson Forge/Runtime worktrees do not need to be deleted or reset
 for reproduction.
