@@ -242,6 +242,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.ko.md)" in korean_readme
     assert "[포트폴리오 요약](docs/portfolio_summary.ko.md)" in korean_readme
     assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
+    assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
 
 
 def test_core_docs_language_selectors_link_to_korean_guides() -> None:
@@ -249,6 +250,7 @@ def test_core_docs_language_selectors_link_to_korean_guides() -> None:
         ("docs/ecosystem_1page.md", "docs/ecosystem_1page.ko.md"),
         ("docs/portfolio_summary.md", "docs/portfolio_summary.ko.md"),
         ("docs/pipeline_map.md", "docs/pipeline_map.ko.md"),
+        ("docs/agent_runtime_e2e_demo.md", "docs/agent_runtime_e2e_demo.ko.md"),
     ]
 
     for english_path, korean_path in doc_pairs:
@@ -278,6 +280,36 @@ def test_core_docs_language_selectors_link_to_korean_guides() -> None:
     assert "Runtime Intelligence artifact gate" in portfolio_ko
     assert "Core 4 validation contract" in pipeline_ko
     assert "AIGuard `guard_analysis`" in pipeline_ko
+
+
+def test_agent_runtime_korean_guide_preserves_execution_boundaries() -> None:
+    korean_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "Jetson 필요 여부" in korean_doc
+    assert "필요 없음" in korean_doc
+    assert "필요함" in korean_doc
+    for command in [
+        "bash scripts/demo_agent_runtime_e2e.sh",
+        "--device-local",
+        "--remote-dispatch",
+        "--edgeenv-run-evidence",
+        "--capture-tegrastats",
+        "bash scripts/demo_jetson_5min_sustained.sh",
+        "bash scripts/check_jetson_sustained_readiness.sh",
+    ]:
+        assert command in korean_doc
+
+    for marker in [
+        "Lab-owned deployment decision",
+        "production observability",
+        "GitLab control plane",
+        "production remote execution",
+        "sustained thermal endurance validation",
+        "universal AI OS claims",
+    ]:
+        assert marker in korean_doc
 
 
 def test_internal_docs_provide_matching_korean_link_labels() -> None:

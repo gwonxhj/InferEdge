@@ -1,5 +1,7 @@
 # Reliable Edge Agent Runtime E2E Demo
 
+Language: English | [한국어](agent_runtime_e2e_demo.ko.md)
+
 This document describes the local extension smoke that connects the Reliable
 Edge Agent Runtime contracts across the InferEdge ecosystem.
 
