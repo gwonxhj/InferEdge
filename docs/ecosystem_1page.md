@@ -152,3 +152,21 @@ Then inspect the individual repository evidence:
 - InferEdgeAIGuard deterministic diagnosis evidence
 - InferEdgeEnv comparability evidence
 - InferEdgeOrchestrator operation-control telemetry
+
+## Cross-Repo Quick Guide Path
+
+For Korean review, follow these repository quick guides while preserving the
+Validation -> Evidence -> Operation Control boundary:
+
+| Step | Owner boundary | Quick guide |
+|---|---|---|
+| 1 | Forge build provenance / handoff | [Forge agent manifest contract](https://github.com/gwonxhj/InferEdgeForge/blob/main/docs/agent_manifest_contract.ko.md) |
+| 2 | Runtime execution / result evidence | [Runtime agent result contract](https://github.com/gwonxhj/InferEdge-Runtime/blob/main/docs/agent_runtime_result_contract.ko.md) |
+| 3 | Lab-owned deployment decision | [Lab Korean README](https://github.com/gwonxhj/InferEdgeLab/blob/main/README.ko.md) |
+| 4 | AIGuard deterministic diagnosis evidence | [AIGuard detector validation matrix](https://github.com/gwonxhj/InferEdgeAIGuard/blob/main/docs/detector_validation_matrix.ko.md) |
+| 5 | EdgeEnv comparability / runtime regression evidence | [EdgeEnv runtime regression monitor](https://github.com/gwonxhj/InferEdgeEnv/blob/main/docs/ko/runtime-regression-monitor.md) |
+| 6 | Orchestrator runtime operation context | [Orchestrator operation control guide](https://github.com/gwonxhj/InferEdgeOrchestrator/blob/main/docs/operation_control.ko.md) |
+
+The path is a reviewer navigation aid, not a new product layer. It does not
+turn InferEdge into production SaaS, production observability, general
+monitoring, Kubernetes-style orchestration, or a cloud control plane.

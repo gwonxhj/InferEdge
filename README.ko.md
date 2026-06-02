@@ -153,5 +153,23 @@ registry / comparability / regression evidence owner입니다.
 | [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md) | Runtime Operation / Agent Runtime smoke 흐름 |
 | [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
 
+## Cross-Repo Quick Guide Path
+
+한국어로 ecosystem을 검토할 때는 아래 순서로 보면 Validation -> Evidence ->
+Operation Control 경계가 흐려지지 않습니다.
+
+| 단계 | lifecycle 질문 | quick guide |
+|---|---|---|
+| 1 | artifact가 어떻게 만들어졌는가? | [Forge agent manifest contract](https://github.com/gwonxhj/InferEdgeForge/blob/main/docs/agent_manifest_contract.ko.md) |
+| 2 | Runtime은 execution evidence를 어떻게 기록하는가? | [Runtime agent result contract](https://github.com/gwonxhj/InferEdge-Runtime/blob/main/docs/agent_runtime_result_contract.ko.md) |
+| 3 | deployment decision은 누가 소유하는가? | [Lab Korean README](https://github.com/gwonxhj/InferEdgeLab/blob/main/README.ko.md) |
+| 4 | deterministic diagnosis evidence는 무엇인가? | [AIGuard detector validation matrix](https://github.com/gwonxhj/InferEdgeAIGuard/blob/main/docs/detector_validation_matrix.ko.md) |
+| 5 | benchmark evidence를 믿고 비교할 수 있는가? | [EdgeEnv runtime regression monitor](https://github.com/gwonxhj/InferEdgeEnv/blob/main/docs/ko/runtime-regression-monitor.md) |
+| 6 | 배포된 workload가 부하 상황에서도 안정적인가? | [Orchestrator operation control guide](https://github.com/gwonxhj/InferEdgeOrchestrator/blob/main/docs/operation_control.ko.md) |
+
+이 경로는 ownership을 바꾸지 않습니다. 최종 deployment decision owner는 Lab입니다.
+EdgeEnv는 comparability/regression evidence, AIGuard는 deterministic diagnosis
+evidence, Orchestrator는 runtime operation context를 소유합니다.
+
 영어 README가 대표 문서이므로, 전체 명령어와 최신 세부 evidence는
 [README.md](README.md)에서 확인하세요.
