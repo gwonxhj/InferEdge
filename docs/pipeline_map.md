@@ -88,7 +88,7 @@ orchestration, or a production observability platform.
 
 The submission-ready diagram is in
 [Ecosystem 1-Page Summary](ecosystem_1page.md)
-([한국어: 생태계 1페이지 요약](ecosystem_1page.md)).
+([한국어: 생태계 1페이지 요약](ecosystem_1page.ko.md)).
 
 ## Contract Boundaries
 

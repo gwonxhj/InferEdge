@@ -367,29 +367,34 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "InferEdge Ecosystem 1-Page Summary",
             "InferEdge 생태계 1페이지 요약",
             "docs/ecosystem_1page.md",
+            "docs/ecosystem_1page.ko.md",
         ),
         (
             "README.md",
             "`docs/agent_runtime_e2e_demo.md`",
             "에이전트 런타임 e2e 데모 문서",
             "docs/agent_runtime_e2e_demo.md#smoke-gate-split",
+            "docs/agent_runtime_e2e_demo.ko.md",
         ),
         (
             "README.md",
             "`docs/agent_runtime_e2e_demo.md`",
             "에이전트 런타임 e2e 데모 문서",
             "docs/agent_runtime_e2e_demo.md",
+            "docs/agent_runtime_e2e_demo.ko.md",
         ),
         (
             "README.md",
             "`Clean Jetson Replay Runbook`",
             "클린 Jetson 재현 런북",
             "docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook",
+            "docs/agent_runtime_e2e_demo.ko.md",
         ),
         (
             "README.md",
             "`Jetson Device-Local Agent Runtime Evidence Report`",
             "Jetson 디바이스 로컬 에이전트 런타임 증거 보고서",
+            "docs/evidence/jetson_device_local_agent_runtime_report.md",
             "docs/evidence/jetson_device_local_agent_runtime_report.md",
         ),
         (
@@ -397,11 +402,13 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "`Jetson Device-Local 5-Minute Sustained Smoke Report`",
             "Jetson 디바이스 로컬 5분급 지속 스모크 보고서",
             "docs/evidence/jetson_device_local_5min_sustained_report.md",
+            "docs/evidence/jetson_device_local_5min_sustained_report.md",
         ),
         (
             "README.md",
             "`HTML report`",
             "HTML 보고서",
+            "docs/evidence/jetson_device_local_5min_sustained_report.html",
             "docs/evidence/jetson_device_local_5min_sustained_report.html",
         ),
         (
@@ -409,11 +416,13 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "InferEdge Ecosystem 1-Page Summary",
             "InferEdge 생태계 1페이지 요약",
             "ecosystem_1page.md",
+            "ecosystem_1page.ko.md",
         ),
         (
             "docs/portfolio_summary.md",
             "`Jetson Device-Local Agent Runtime Evidence Report`",
             "Jetson 디바이스 로컬 에이전트 런타임 증거 보고서",
+            "evidence/jetson_device_local_agent_runtime_report.md",
             "evidence/jetson_device_local_agent_runtime_report.md",
         ),
         (
@@ -421,23 +430,27 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "Ecosystem 1-Page Summary",
             "생태계 1페이지 요약",
             "ecosystem_1page.md",
+            "ecosystem_1page.ko.md",
         ),
         (
             "docs/ecosystem_1page.md",
             "Portfolio Summary",
             "포트폴리오 요약",
             "portfolio_summary.md",
+            "portfolio_summary.ko.md",
         ),
         (
             "docs/ecosystem_1page.md",
             "Pipeline Map",
             "파이프라인 맵",
             "pipeline_map.md",
+            "pipeline_map.ko.md",
         ),
         (
             "docs/agent_runtime_e2e_demo.md",
             "`Jetson Device-Local Agent Runtime Evidence Report`",
             "Jetson 디바이스 로컬 에이전트 런타임 증거 보고서",
+            "evidence/jetson_device_local_agent_runtime_report.md",
             "evidence/jetson_device_local_agent_runtime_report.md",
         ),
         (
@@ -445,19 +458,27 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "`Jetson Device-Local 5-Minute Sustained Smoke Report`",
             "Jetson 디바이스 로컬 5분급 지속 스모크 보고서",
             "evidence/jetson_device_local_5min_sustained_report.md",
+            "evidence/jetson_device_local_5min_sustained_report.md",
         ),
         (
             "docs/agent_runtime_e2e_demo.md",
             "`HTML report`",
             "HTML 보고서",
             "evidence/jetson_device_local_5min_sustained_report.html",
+            "evidence/jetson_device_local_5min_sustained_report.html",
         ),
     ]
 
-    for relative_path, english_label, korean_label, target in link_pairs:
+    for (
+        relative_path,
+        english_label,
+        korean_label,
+        english_target,
+        korean_target,
+    ) in link_pairs:
         text = (ROOT / relative_path).read_text(encoding="utf-8")
-        assert f"[{english_label}]({target})" in text
-        assert f"[한국어: {korean_label}]({target})" in text
+        assert f"[{english_label}]({english_target})" in text
+        assert f"[한국어: {korean_label}]({korean_target})" in text
 
 
 def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path) -> None:
