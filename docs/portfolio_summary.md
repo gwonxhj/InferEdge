@@ -143,7 +143,7 @@ For an external reviewer, use this order:
 2. This summary
 3. `README.md`
 4. `docs/pipeline_map.md`
-5. `docs/interview_narrative.md`
+5. `docs/interview_narrative.md` ([한국어: 인터뷰 내러티브](interview_narrative.ko.md))
 6. InferEdgeLab Local Studio / report evidence
 7. InferEdge-Runtime Jetson/runtime reports
 8. InferEdgeAIGuard detector validation matrix
