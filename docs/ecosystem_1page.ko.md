@@ -13,6 +13,18 @@ InferEdge는 Edge AI inference 프로젝트에서 자주 섞이는 세 질문을
 배포된 workload가 부하 상황에서도 안정적인가?
 ```
 
+## Evidence 스냅샷
+
+| 항목 | 현재 evidence |
+|---|---|
+| Core validation path | Forge -> Runtime -> Lab (+ optional AIGuard) |
+| Comparability layer | InferEdgeEnv local registry / comparability / runtime regression evidence |
+| Operation layer | InferEdgeOrchestrator queue/deadline/fallback, worker-health evidence |
+| TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
+| ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
+
 ## Layer 역할
 
 | Layer | Project | 책임 |
@@ -56,7 +68,7 @@ Runtime Operation / Runtime Intelligence 확장은 기존 Core validation을
 ```text
 InferEdgeOrchestrator
 -> InferEdgeEnv
--> InferEdgeAIGuard
+-> optional InferEdgeAIGuard
 -> InferEdgeLab
 ```
 
@@ -75,11 +87,14 @@ InferEdgeOrchestrator
 - cloud control plane
 - secure multi-device orchestration
 - production SaaS dashboard
+- production observability platform
+- general monitoring SaaS
 - AIGuard 또는 Orchestrator의 final deployment decision ownership
 
 ## Reviewer Path
 
 1. [포트폴리오 요약](portfolio_summary.ko.md)을 읽고 30초 narrative를 확인합니다.
 2. [파이프라인 맵](pipeline_map.ko.md)에서 repo별 책임과 contract boundary를 확인합니다.
-3. 필요하면 영어 canonical 문서인
+3. [인터뷰 내러티브](interview_narrative.ko.md)에서 면접/리뷰어 설명 흐름을 확인합니다.
+4. 필요하면 영어 canonical 문서인
    [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)를 기준으로 세부 내용을 확인합니다.

@@ -2,9 +2,32 @@
 
 Language: English | [한국어](pipeline_map.ko.md)
 
-InferEdge is a multi-repository, local-first Edge AI inference validation
-pipeline. This entrypoint repository exists to make the split repository
-structure easy to clone, inspect, and smoke test.
+InferEdge is a multi-repository, local-first Edge AI inference validation and
+runtime-evidence pipeline. This entrypoint repository exists to make the split
+repository structure easy to clone, inspect, and smoke test.
+
+## Three Questions
+
+```text
+Can we deploy this model?
+-> Forge -> Runtime -> Lab (+ optional AIGuard)
+
+Can this benchmark evidence be trusted and compared?
+-> InferEdgeEnv
+
+Can deployed workloads stay stable under load?
+-> InferEdgeOrchestrator
+```
+
+## Evidence Snapshot
+
+| Signal | Evidence |
+|---|---|
+| Core validation path | Forge -> Runtime -> Lab (+ optional AIGuard) |
+| TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
+| ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
 
 ## Pipeline
 
@@ -20,82 +43,25 @@ ONNX Model
 
 ## Repository Responsibilities
 
-### InferEdgeForge
-
-Build/provenance/handoff layer.
-
-- creates TensorRT/RKNN-style build artifacts
-- writes `metadata.json`
-- writes `manifest.json`
-- records source model hash and artifact hash
-- preserves source/artifact identity for Runtime/Lab handoff
-
-Forge does not own Runtime execution or Lab deployment decisions.
-
-### InferEdge-Runtime
-
-C++ execution/result export layer.
-
-- executes ONNX Runtime CPU and TensorRT/Jetson style runtime paths
-- writes Lab-compatible Runtime result JSON
-- records latency mean/p50/p95/p99 and FPS
-- records run configuration, backend, device, and Jetson evidence
-- generates Jetson evidence Markdown reports
-
-Runtime does not own deployment decisions. It exports evidence for Lab.
-
-### InferEdgeLab
-
-Validation/evaluation/report/deployment decision owner.
-
-- imports Runtime result JSON
-- compares backend/device evidence
-- evaluates YOLOv8 COCO subset and model contract evidence
-- generates Markdown/HTML reports
-- owns `deployment_decision`
-- serves Local Studio at `/studio`
-- provides `core4-conformance-check` and `portfolio-demo-check`
-
-Lab remains the final decision owner even when AIGuard evidence is present.
-
-### InferEdgeAIGuard
-
-Optional deterministic diagnosis evidence provider.
-
-- produces `guard_analysis`
-- explains bbox validity, score distribution, detection count drift, baseline
-  deviation, temporal consistency, and provenance mismatch evidence
-- emits `guard_verdict` and evidence items
-
-AIGuard does not make final deployment decisions and does not use LLM guessing.
-
-## Ecosystem Extension Layers
-
-The pinned Core 4 validation smoke stays focused on Forge, Runtime, Lab, and
-AIGuard. The full ecosystem portfolio adds two separate lifecycle layers.
-
-- **InferEdgeEnv:** `v0.1.5` v1-complete experiment hygiene /
-  comparability layer for local benchmark evidence trust and comparison
-  judgement.
-- **InferEdgeOrchestrator:** post-deployment runtime operation control,
-  scheduling, overload control, and telemetry.
-
-Role boundary:
-
-- InferEdge Core: deployment validation before release.
-- InferEdgeEnv: benchmark run evidence registry and comparability layer.
-- InferEdgeOrchestrator: runtime operation control after deployment validation.
+| Repository | Owns | Does not own |
+|---|---|---|
+| InferEdgeForge | build/provenance/handoff, `metadata.json`, `manifest.json`, source/artifact identity | Runtime execution, scheduling, deployment decision |
+| InferEdge-Runtime | inference execution, Lab-compatible `result.json`, latency/FPS/backend/device evidence, runtime health snapshot | build provenance, registry, anomaly detection, scheduling, deployment decision |
+| InferEdgeLab | compare/evaluate/report/API/Local Studio, Lab-owned deployment decision | build artifact creation, deterministic diagnosis ownership, scheduler behavior |
+| InferEdgeAIGuard | optional `guard_analysis`, deterministic warning/diagnosis evidence items | final deployment decision, LLM root-cause inference, production monitoring |
+| InferEdgeEnv | registry, replay, comparability judgement, runtime regression evidence | production DB/cloud registry, Lab decision, general monitoring SaaS |
+| InferEdgeOrchestrator | worker selection, queue/deadline/fallback, runtime operation context, worker health evidence | Kubernetes replacement, cloud orchestration platform, deployability decision, completed production scheduler |
 
 ## Runtime Operation Starter Evidence Chain
 
 Runtime Operation Platform v2 adds operation evidence without changing the Core
-4 validation contracts. The current remote-dispatch starter follows this
-bounded path:
+4 validation contracts. The current remote-dispatch and device-local starter
+paths follow this bounded chain:
 
 ```text
-Orchestrator remote dispatch starter
+Orchestrator remote dispatch / device-local starter
 -> EdgeEnv local evidence preservation
--> AIGuard deterministic warning/review evidence
+-> optional AIGuard deterministic warning/review evidence
 -> Lab operation-risk report
 -> Lab-owned deployment decision
 ```
@@ -103,21 +69,22 @@ Orchestrator remote dispatch starter
 Responsibility split:
 
 - **Orchestrator** owns worker selection evidence, starter execution status,
-  fallback status, queue / runtime event summaries, and the
-  `operation_boundary=remote dispatch starter evidence only` marker.
+  fallback status, queue/deadline/fallback markers, worker health evidence, and
+  runtime event summaries.
 - **InferEdgeEnv** owns registry, replay, comparability, and handoff context
   preservation. It does not verify production remote execution and does not
   control workers.
 - **InferEdgeAIGuard** owns optional deterministic warning evidence such as
-  remote dispatch failure or fallback recovery. It does not make the final
-  deployment decision.
+  remote dispatch failure, fallback recovery, queue pressure, or runtime
+  reliability warnings. It does not make the final deployment decision.
 - **InferEdgeLab** owns the operation-risk report and final deployment decision
   context.
 
-This chain should be described as remote dispatch starter evidence or a remote
-worker selection contract. It should not be described as production SSH/HTTP
-execution, long-lived worker operation, secure tunnel operation, production
-retry/failover, or cloud orchestration.
+This chain should be described as remote dispatch starter evidence,
+device-local operation evidence, or a remote worker selection contract. It
+should not be described as production SSH/HTTP execution, long-lived worker
+operation, secure tunnel operation, production retry/failover, cloud
+orchestration, or a production observability platform.
 
 The submission-ready diagram is in
 [Ecosystem 1-Page Summary](ecosystem_1page.md)
@@ -154,6 +121,8 @@ INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub bash scripts/smoke_all.
 
 ## Scope Boundary
 
-InferEdge is not presented as a production SaaS platform. DB/queue/auth/billing,
-file upload, cloud dashboard deployment, and production worker daemons are
-future work.
+InferEdge is not presented as a production SaaS platform, production
+observability platform, Kubernetes-style orchestration system, general
+monitoring SaaS, or cloud control plane. DB/queue/auth/billing, file upload,
+cloud dashboard deployment, production remote execution, and production worker
+daemons are outside the completed scope.
