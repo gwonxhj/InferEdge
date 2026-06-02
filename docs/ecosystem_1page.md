@@ -11,6 +11,18 @@ Can this benchmark evidence be trusted and compared?
 Can deployed workloads stay stable under load?
 ```
 
+## Evidence Snapshot
+
+| Signal | Evidence |
+|---|---|
+| Core validation path | Forge -> Runtime -> Lab (+ optional AIGuard) |
+| Comparability layer | InferEdgeEnv local registry / comparability / runtime regression evidence |
+| Operation layer | InferEdgeOrchestrator queue/deadline/fallback and worker-health evidence |
+| TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
+| ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
+
 ## Ecosystem Diagram
 
 Use this SVG as the submission-ready first visual for README, portfolio pages,
@@ -38,18 +50,19 @@ flowchart LR
     end
 
     subgraph Comparability["Experiment Hygiene / Comparability Layer"]
-        Env["InferEdgeEnv v0.1.5\nrun evidence registry\ncomparability judgement"]
+        Env["InferEdgeEnv\nrun evidence registry\ncomparability judgement"]
     end
 
     subgraph Operation["Operation Layer: post-deployment stability"]
-        Orch["InferEdgeOrchestrator\npriority scheduling\nload shedding\nruntime telemetry"]
+        Orch["InferEdgeOrchestrator\nqueue / deadline / fallback\nruntime operation context"]
     end
 
     Model --> Forge --> Runtime --> Lab
     Lab -. optional evidence .-> Guard
     Guard -. guard_analysis .-> Lab
     Runtime -. benchmark evidence .-> Env
-    Lab -->|"deployable result.json"| Orch
+    Orch -. operation context .-> Env
+    Env -. preserved context .-> Lab
 ```
 
 ## Layer Roles
@@ -58,7 +71,7 @@ flowchart LR
 |---|---|---|---|
 | Validation | InferEdgeForge | How was this artifact built? | metadata, manifest, provenance |
 | Validation | InferEdge-Runtime | How did it run on a real/device runtime boundary? | Lab-compatible `result.json`, latency/FPS/backend metadata |
-| Validation | InferEdgeLab | Can we deploy this model? | compare output, evaluation report, deployment decision |
+| Validation | InferEdgeLab | Can we deploy this model? | compare output, evaluation report, Lab-owned deployment decision |
 | Validation | InferEdgeAIGuard | Is there deterministic risk evidence? | `guard_analysis`, risk/diagnosis report |
 | Comparability | InferEdgeEnv | Can this benchmark evidence be trusted and compared? | local artifacts, SQLite registry, export/import bundle, comparability report |
 | Operation | InferEdgeOrchestrator | Can deployed workloads stay stable under load? | scheduler telemetry, overload comparison, drop/backlog/latency evidence |
@@ -79,40 +92,42 @@ and the individual repository READMEs.
 
 ## Runtime Operation Starter Chain
 
-The remote-dispatch path is currently a starter evidence chain:
+The remote-dispatch and device-local paths are currently starter evidence
+chains. They add operation context without replacing the Core validation
+pipeline:
 
 ```text
 InferEdgeOrchestrator
 -> InferEdgeEnv
--> InferEdgeAIGuard
+-> optional InferEdgeAIGuard
 -> InferEdgeLab
 ```
 
 - Orchestrator produces file-based worker-selection, starter execution status,
-  bounded fallback, and runtime event summary evidence.
-- EdgeEnv preserves local registry / replay / handoff context when that
-  operation evidence is attached to a run.
+  bounded fallback, queue/deadline/fallback markers, and runtime event summary
+  evidence.
+- EdgeEnv preserves local registry / replay / handoff context when operation
+  evidence is attached to a run.
 - AIGuard turns the same observations into deterministic warning or review
-  evidence, including `edgeenv_orchestrator_operation_risk_summary` when
-  EdgeEnv preserves Orchestrator operation-risk markers.
+  evidence.
 - Lab owns the Runtime Intelligence / operation-risk report and final
   deployment decision.
 
-This is not production remote execution, a cloud control plane, or secure
-multi-device orchestration.
+This is not production remote execution, a cloud control plane, secure
+multi-device orchestration, or a production observability platform.
 
 ## Submission Message
 
 ```text
 InferEdge validates deployability.
 InferEdgeEnv preserves benchmark evidence and judges comparability.
-InferEdgeOrchestrator controls deployed workloads under overload.
+InferEdgeOrchestrator records operation context under overload.
 ```
 
 The portfolio is not a benchmark leaderboard and not a production SaaS
 dashboard. Its value is the separation of lifecycle responsibilities:
 provenance, execution evidence, validation decision, comparability, and
-post-deployment operation control.
+post-deployment operation context.
 
 ## Reviewer Path
 
@@ -122,7 +137,8 @@ post-deployment operation control.
    narrative.
 3. Read [Pipeline Map](pipeline_map.md)
    ([한국어: 파이프라인 맵](pipeline_map.md)) for repository responsibilities.
-4. Run the local submission smoke:
+4. Read [Interview Narrative](interview_narrative.md) for speaking notes.
+5. Run the local submission smoke:
 
 ```bash
 bash scripts/clone_all.sh --locked

@@ -8,6 +8,24 @@
 InferEdge entrypoint repo는 split repository 구조를 clone, inspect, smoke test할
 수 있게 만드는 local-first coordination layer입니다.
 
+## 세 가지 질문
+
+| 질문 | 담당 흐름 |
+|---|---|
+| 이 모델을 배포해도 되는가? | Forge -> Runtime -> Lab (+ optional AIGuard) |
+| 이 benchmark evidence를 믿고 비교할 수 있는가? | InferEdgeEnv |
+| 배포된 workload가 부하 상황에서도 안정적인가? | InferEdgeOrchestrator |
+
+## Evidence 스냅샷
+
+| 항목 | 현재 evidence |
+|---|---|
+| Core 4 validation contract | Forge -> Runtime -> Lab (+ optional AIGuard) |
+| TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
+| ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
+
 ## Pipeline
 
 ```text
@@ -25,23 +43,35 @@ ONNX Model
 | Repository | 책임 | 소유하지 않는 것 |
 |---|---|---|
 | InferEdgeForge | build/provenance/handoff, `metadata.json`, `manifest.json` | Runtime execution, Lab deployment decision |
-| InferEdge-Runtime | inference execution, latency/FPS/backend/device evidence, Lab-compatible result JSON | deployment decision |
-| InferEdgeLab | compare/evaluate/report/API/Local Studio/deployment decision | build artifact 생성 |
-| InferEdgeAIGuard | optional `guard_analysis`, deterministic evidence items | final deployment decision, LLM guessing |
-| InferEdgeEnv | registry, replay, comparability, regression evidence | production DB/cloud registry, Lab decision |
+| InferEdge-Runtime | inference execution, latency/FPS/backend/device evidence, Lab-compatible `result.json` | deployment decision, scheduler, registry |
+| InferEdgeLab | compare/evaluate/report/API/Local Studio, Lab-owned deployment decision | build artifact 생성, scheduler behavior |
+| InferEdgeAIGuard | optional AIGuard `guard_analysis`, deterministic evidence items | final deployment decision, LLM guessing |
+| InferEdgeEnv | registry, replay, comparability, runtime regression evidence | production DB/cloud registry, Lab decision |
 | InferEdgeOrchestrator | worker selection, queue/deadline/fallback, runtime operation context | production cloud orchestration, deployability decision |
 
 ## Runtime Operation Starter Evidence Chain
 
 ```text
-Orchestrator remote dispatch starter
+Orchestrator remote dispatch / device-local starter
 -> EdgeEnv local evidence preservation
--> AIGuard deterministic warning/review evidence
+-> optional AIGuard deterministic warning/review evidence
 -> Lab operation-risk report
 -> Lab-owned deployment decision
 ```
 
 이 chain은 Core 4 validation contract를 바꾸지 않고 operation evidence를 추가합니다.
+
+책임 분리:
+
+- Orchestrator는 worker selection, fallback, queue/deadline/runtime event context를 제공합니다.
+- EdgeEnv는 registry, replay, comparability, handoff context를 보존합니다.
+- AIGuard는 deterministic warning/review evidence를 제공합니다.
+- Lab은 Runtime Intelligence / operation-risk report와 최종 deployment decision을 소유합니다.
+
+이 경로는 remote dispatch starter evidence 또는 device-local operation evidence로
+설명해야 합니다. production SSH/HTTP execution, long-lived worker operation,
+secure tunnel operation, cloud orchestration, production observability platform으로
+설명하지 않습니다.
 
 ## Contract Boundaries
 
@@ -66,6 +96,7 @@ bash scripts/smoke_all.sh
 
 ## Scope Boundary
 
-InferEdge는 production SaaS platform으로 제시하지 않습니다. DB/queue/auth/billing,
-file upload, cloud dashboard deployment, production worker daemon은 현재 완료 범위가
-아닙니다.
+InferEdge는 production SaaS platform, production observability platform,
+Kubernetes-style orchestration, general monitoring SaaS, cloud control plane으로
+제시하지 않습니다. DB/queue/auth/billing, file upload, cloud dashboard deployment,
+production remote execution, production worker daemon은 현재 완료 범위가 아닙니다.
