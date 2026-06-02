@@ -2,14 +2,48 @@
 
 Language: English | [한국어](README.ko.md)
 
-Multi-repository entrypoint for the InferEdge local-first Edge AI inference validation pipeline.
+InferEdge is a local-first Edge AI inference validation portfolio. It connects
+build provenance, real runtime evidence, validation reports, optional
+deterministic diagnosis, and Lab-owned deployment decisions across separate
+repositories without turning the project into a production SaaS dashboard,
+cloud control plane, or generic monitoring stack.
 
-InferEdge is not a benchmark-only script and not a production SaaS dashboard.
-It is a contract/preset based validation workflow that connects build
-provenance, real Runtime execution, validation evidence, optional deterministic
-diagnosis evidence, and Lab-owned deployment decisions.
+The short version:
 
-The ecosystem is organized by lifecycle questions:
+| Signal | Evidence |
+|---|---|
+| Deployability pipeline | Forge -> Runtime -> Lab -> optional AIGuard |
+| Comparability layer | EdgeEnv local registry / comparability / runtime regression evidence |
+| Operation layer | Orchestrator queue/deadline/fallback and worker-health evidence |
+| Jetson TensorRT result | YOLOv8n TensorRT FP16: 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
+| CPU baseline | ONNX Runtime CPU: 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
+| Real device replay | Jetson Orin Nano ONNX replay: 155.86 ms mean, 45.5 C, 1000 MB RAM |
+| Sustained operation smoke | 5-minute-class Jetson replay: 3600 frames, 50.375 C, 1038 MB RAM |
+
+## Quick Start
+
+Clone the entrypoint and pinned Core 4 repositories:
+
+```bash
+git clone https://github.com/gwonxhj/InferEdge.git
+cd InferEdge
+bash scripts/clone_all.sh --locked
+```
+
+Run the local portfolio smoke:
+
+```bash
+bash scripts/smoke_all.sh
+```
+
+That smoke checks Forge, Runtime, Lab, AIGuard, and the local-first Runtime
+Intelligence artifact chain. It validates reviewer-facing report markers and
+contract boundaries. Boundary marker: Production observability platform or GitLab control plane is out of scope.
+
+## Architecture
+
+InferEdge separates three questions that are often mixed together in inference
+projects:
 
 ```text
 Can we deploy this model?                         -> InferEdge validation layer
@@ -29,184 +63,83 @@ ONNX Model
 -> Local Studio
 ```
 
+Runtime Operation / Intelligence evidence extends the pipeline without
+replacing it:
+
+```text
+InferEdgeOrchestrator operation context
+-> InferEdgeEnv registry / comparability / regression evidence
+-> optional InferEdgeAIGuard deterministic evidence
+-> InferEdgeLab Runtime Intelligence Risk Summary
+-> Lab-owned deployment decision
+```
+
 ## Repositories
 
 | Repository | Role | URL |
 |---|---|---|
 | InferEdgeForge | Build provenance, metadata, manifest, artifact handoff | https://github.com/gwonxhj/InferEdgeForge |
-| InferEdge-Runtime | C++ execution, Lab-compatible result JSON, Jetson evidence reports | https://github.com/gwonxhj/InferEdge-Runtime |
+| InferEdge-Runtime | C++ execution, Lab-compatible `result.json`, Jetson/runtime result evidence | https://github.com/gwonxhj/InferEdge-Runtime |
 | InferEdgeLab | Compare/evaluate/report/API/Local Studio/deployment decision owner | https://github.com/gwonxhj/InferEdgeLab |
 | InferEdgeAIGuard | Optional deterministic diagnosis evidence provider | https://github.com/gwonxhj/InferEdgeAIGuard |
+| InferEdgeEnv | Local evidence registry, comparability checker, runtime regression owner | https://github.com/gwonxhj/InferEdgeEnv |
+| InferEdgeOrchestrator | Runtime operation context provider for queue/deadline/fallback evidence | https://github.com/gwonxhj/InferEdgeOrchestrator |
 
-## Ecosystem Extension Layers
+## Evidence Snapshot
 
-These repositories extend the lifecycle beyond the pinned Core 4 validation
-message without replacing Forge, Runtime, Lab, or AIGuard.
-
-| Repository | Role | URL |
+| Evidence | Current record | Where to inspect |
 |---|---|---|
-| InferEdgeEnv | v0.1.5 v1-complete comparability layer: local run evidence registry and benchmark evidence trust/comparison judgement | https://github.com/gwonxhj/InferEdgeEnv |
-| InferEdgeOrchestrator | Operation layer after deployment validation: scheduling, overload control, and runtime telemetry | https://github.com/gwonxhj/InferEdgeOrchestrator |
+| TensorRT Jetson FP16 | mean 10.066401 ms, p99 15.548438 ms, 99.340373 FPS | Local Studio demo evidence |
+| ONNX Runtime CPU baseline | mean 45.4299 ms, p99 49.2128 ms, 22.0119 FPS | Local Studio demo evidence |
+| TensorRT speedup | about 4.51x FPS over ONNX Runtime CPU | Local Studio demo evidence |
+| YOLOv8 subset validation | 10 images, 89 boxes, simplified mAP@50 0.1410, precision 0.2941, recall 0.1685 | Lab evaluation evidence |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)) |
+| Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 
-## Cross-Repo Role Boundary Matrix
+The Jetson records prove local evidence preservation and runtime-operation
+handoff. They do not claim decoded YOLO accuracy, live camera service,
+Whisper/FastAPI service execution, production remote execution, or thermal
+endurance validation.
 
-Use this matrix as the reviewer-facing ownership map. It mirrors the role
-boundary tables in the individual repository READMEs and keeps the portfolio
-from reading like a production SaaS, cloud control plane, or generic monitoring
-stack.
+## Implementation Snapshot
 
-| Project | Canonical owner role | Evidence it owns | Must not be treated as |
-|---|---|---|---|
-| InferEdgeForge | Build provenance / handoff owner | `metadata.json`, `manifest.json`, source/artifact identity, build summary | Runtime executor, scheduler, deployment decision owner |
-| InferEdge-Runtime | Execution / result evidence owner | Lab-compatible `result.json`, latency/FPS/backend/device context, runtime health and telemetry seeds | Artifact builder, registry, anomaly detector, scheduler, deployment decision owner |
-| InferEdgeLab | Validation report / deployment decision owner | compare/evaluate output, Markdown/HTML reports, Local Studio, `deployment_decision` | Build system, registry, deterministic diagnosis owner, scheduler, production dashboard |
-| InferEdgeAIGuard | Optional deterministic diagnosis evidence provider | `guard_analysis`, warning/review evidence, raw-context traceability | Final deployment decision owner, LLM root-cause engine, production monitor |
-| InferEdgeEnv | Local evidence registry / comparability / runtime regression owner | run registry, replay bundle, comparability judgement, regression report | Production DB, cloud telemetry store, deployment decision owner, general monitoring SaaS |
-| InferEdgeOrchestrator | Runtime operation context provider | queue/deadline/fallback evidence, worker health, remote-dispatch starter evidence | Kubernetes replacement, cloud orchestration platform, deployability decision owner, completed production scheduler |
+| Area | Status | Reviewer signal |
+|---|---|---|
+| Core Forge -> Runtime -> Lab -> optional AIGuard validation pipeline | Implemented | Build provenance, Runtime result evidence, Lab compare/report/decision, optional deterministic AIGuard evidence |
+| Local Studio demo evidence replay | Implemented | Local browser workflow for demo evidence, compare, deployment decision, and AIGuard cases |
+| YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation |
+| AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, temporal, and runtime-reliability warning evidence |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle, including directly gated Jetson preservation and remote fallback Lab markers |
+| Orchestrator producer-backed / device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context, and EdgeEnv preservation evidence |
+| Remote dispatch / fallback starter | Smoke/Starter | File-based worker selection, local HTTP fallback worker evidence, bounded fallback recovery, Lab-owned report context |
+| Cloudflare / dashboard / production worker services | Future Work | Documented direction only |
 
-`repos.lock` intentionally remains scoped to the Core 4 validation pipeline
-that `clone_all.sh` and `update_all.sh` manage. For runtime-operation starter
-evidence, `repos.yaml` records the supporting Orchestrator reference currently
-used for the bounded remote fallback recovery sample:
-`654e0ab27b383317ec816d054b293bfa3061cf32` with
-`examples/telemetry/remote_fallback_recovery_sample.json`.
+## Runtime Intelligence Smoke
 
-## Real-Device Evidence
-
-[Jetson Orin Nano Internal Lab](https://github.com/gwonxhj/jetson-orin-nano-internal-lab)
-provides hardware-level runtime evidence, including TensorRT, ONNX Runtime,
-YOLO, Whisper, FastAPI serving, telemetry logs, sustained multi-workload
-interaction evidence, and InferEdge-compatible handoff artifacts.
-
-For the submission-ready diagram and layer split, start with
-[InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md)
-([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.md)).
-
-## Implementation Status
-
-Not every roadmap item is at the same maturity level. Use this table as the
-submission boundary.
-
-| Area | Status | What is implemented | Do not claim |
-|---|---|---|---|
-| Core Forge -> Runtime -> Lab -> optional AIGuard validation pipeline | Implemented | Build provenance, Runtime result evidence, Lab compare/report/decision, and optional deterministic AIGuard evidence | Production SaaS readiness |
-| Local Studio demo evidence replay | Implemented | Local browser workflow for demo evidence, compare, decision, and AIGuard cases | Cloud dashboard or multi-user workspace |
-| YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation | Full COCO benchmark or automatic evaluation for every model |
-| AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, and temporal evidence | LLM root-cause inference |
-| Orchestrator producer-backed and device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context | Production scheduler or long-running worker daemon |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke runs Lab's local-first bundle manifest/report/CI artifact gates for Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence, including EdgeEnv-preserved `operation_risk_summary`, Lab EdgeEnv preservation context markers, directly gated Jetson preservation and remote fallback Lab markers, and compact queue/deadline/fallback operation markers | Production observability platform or GitLab control plane |
-| Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local ONNX probe and live telemetry handoff through Orchestrator, AIGuard, and Lab | Decoded YOLO accuracy, live camera, Whisper/FastAPI service execution, or thermal endurance validation |
-| Runtime retryable failure-handling evidence | Smoke/Starter | Runtime `retryable` / `retry_hint` context is preserved by AIGuard and surfaced in the Lab runtime operation report | Production request cancellation, automatic retry control, or worker daemon behavior |
-| Remote dispatch / fallback starter | Smoke/Starter | Orchestrator file-based worker selection, bounded fallback evidence, EdgeEnv preservation context, AIGuard deterministic warning evidence, and Lab-owned report context | Production remote execution, secure multi-device orchestration, or cloud control plane |
-| Cloudflare / dashboard / production worker services | Future Work | Documented direction only | Completed remote operation platform |
-
-### Runtime Intelligence Gate At A Glance
-
-Cross-repo smoke keeps the
+The Runtime Intelligence artifact gate is a Cross-repo smoke that keeps the
 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` artifact chain readable and
-reproducible. The Runtime Intelligence artifact gate checks reviewer-facing
-Lab markers, not production observability or GitLab control-plane behavior.
+reproducible. The Lab's local-first Runtime Intelligence artifact preserves
+remote-dispatch boundary rows, Runtime replay duration scope, and compact
+queue/deadline/fallback operation markers without making CI a runtime control
+plane.
 
-| Gate area | Required visible markers | Why it matters |
-|---|---|---|
-| Jetson/device-local preservation | `identity=jetson_device_local_preservation`, `path=device_local_starter`, `Jetson/device-local EdgeEnv preservation details`, `sources=device_local_cli_override` | Confirms fixture/device-local evidence stays visible without requiring a live Jetson for this gate |
-| Duration traceability | `Validated Duration Traceability`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, `short 96-frame-class replay (96 frames)`, `runtime_intelligence_ci_artifact_gate_summary.md` | Lets reviewers spot EdgeEnv/AIGuard duration handoff alignment before opening full reports |
-| Lab operation row | `Orchestrator queue/deadline/fallback markers`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` | Keeps queue/deadline/fallback pressure visible in Markdown and HTML reports |
-| AIGuard raw-context link | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `max_total_queue_depth` | Ties the rendered queue-depth row back to deterministic AIGuard raw context and Orchestrator producer-side operation evidence |
-| Agent Runtime evidence index | `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`, `deadline_missed_count`, `Queue pressure reasons` | Provides reviewer navigation markers for local-first operation evidence |
+The smoke checks:
 
-These markers are navigation and traceability evidence. They do not make
-Orchestrator a production scheduler, AIGuard a deployment decision owner, or CI
-a runtime control plane.
+| Gate area | Reviewer-facing marker |
+|---|---|
+| Duration traceability | `Validated Duration Traceability`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, `runtime_intelligence_ci_artifact_gate_summary.md` |
+| Replay scope | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Duration Comparison Summary` |
+| Jetson/device-local preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
+| Operation pressure | `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth`, `max_total_queue_depth=7`, `fallback_count`, `deadline_missed_count` |
+| AIGuard traceability | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
+| Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`, `remote_execution_recovered_by_fallback` |
 
-## Runtime Operation Starter Evidence Chain
+For the generated artifact list and the split between operation-smoke and
+Runtime Intelligence smoke gates, see
+[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split)
+([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md#smoke-gate-split)).
 
-The current remote-dispatch path is intentionally a starter evidence chain, not
-production remote execution.
-
-```text
-Orchestrator remote dispatch starter
--> EdgeEnv local evidence preservation context
--> AIGuard deterministic remote-dispatch warning evidence
--> Lab Runtime Intelligence / operation-risk report context
--> Lab-owned deployment decision
-```
-
-Repository boundaries stay fixed:
-
-- Orchestrator records worker selection, skipped/failed starter execution,
-  fallback status, compact runtime event summaries, and
-  `operation_boundary=remote dispatch starter evidence only`.
-- EdgeEnv may preserve the operation context in local registry / replay /
-  handoff evidence, but it does not confirm remote execution or own operation
-  control.
-- AIGuard may emit deterministic evidence such as
-  `remote_execution_recovered_by_fallback`, but it does not decide deployment.
-- Lab remains the final report and deployment decision owner.
-- The entrypoint smoke gate verifies that downstream AIGuard, Lab, and
-  `00_evidence_index.*` artifacts preserve the
-  `remote_dispatch_runtime_event_compact_summary` role,
-  `operation_boundary`, and `production_remote_execution=false` boundary.
-
-Do not describe this path as production SSH/HTTP execution, long-lived worker
-operation, secure tunnel operation, retry/failover infrastructure, or cloud
-orchestration.
-
-## Quick Start
-
-Clone this entrypoint repo first:
-
-```bash
-git clone https://github.com/gwonxhj/InferEdge.git
-cd InferEdge
-```
-
-Clone all pipeline repositories:
-
-```bash
-bash scripts/clone_all.sh --locked
-```
-
-This creates:
-
-```text
-repos/
-├─ InferEdgeForge
-├─ InferEdge-Runtime
-├─ InferEdgeLab
-└─ InferEdgeAIGuard
-```
-
-Run the portfolio smoke checks:
-
-```bash
-bash scripts/smoke_all.sh
-```
-
-What `scripts/smoke_all.sh` checks:
-
-| Smoke branch | Main markers | Reviewer value |
-|---|---|---|
-| Agent Runtime EdgeEnv preservation | `preservation_identity`, `preservation_details`, `duration_class`, `duration_label`, `Reviewer Duration Label` | Confirms the evidence index and Lab report keep preservation and duration navigation rows |
-| Lab's local-first Runtime Intelligence artifact chain | Runtime Intelligence Risk Summary, remote-dispatch boundary rows, `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames` | Confirms the committed `Orchestrator -> EdgeEnv -> AIGuard -> Lab` report bundle stays readable in Markdown/HTML |
-| Queue/deadline/fallback markers | `queue_pressure_reason`, `max_total_queue_depth`, `fallback_count`, `deadline_missed_count`, `Queue pressure reasons`, `Orchestrator queue/deadline/fallback markers`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` | Keeps compact operation pressure visible without opening every JSON artifact |
-| AIGuard raw-context traceability | `aiguard_raw_context: max_total_queue_depth traceability preserved` | Keeps the visible queue-depth marker tied to deterministic AIGuard raw context and Orchestrator producer-side operation evidence |
-| EdgeEnv/Lab preservation vocabulary | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present` | Aligns entrypoint evidence-index wording with the Lab-owned Runtime Intelligence report |
-| AIGuard/EdgeEnv handoff alignment | `lab_expected_report_markers`, `report_marker_context_role=lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` | Verifies report marker expectations remain Lab-owned reviewer evidence |
-
-Important boundaries:
-
-- `operation_risk_summary` is EdgeEnv-preserved navigation context, not an
-  EdgeEnv regression delta, comparability field, or deployment decision
-  override.
-- `edgeenv_orchestrator_operation_risk_summary` is deterministic AIGuard
-  warning evidence; Lab still owns the final deployment decision.
-- GitLab, telemetry artifacts, remote dispatch, and CI artifact checks are not
-  production control-plane behavior.
-- For the generated artifact list and the split between operation-smoke and
-  Runtime Intelligence smoke gates, see
-  [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split)
-  ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md#smoke-gate-split)).
+## Agent Runtime / Jetson Commands
 
 Run the Reliable Edge Agent Runtime extension smoke when the supporting
 Orchestrator repo is available in the same workspace:
@@ -214,578 +147,80 @@ Orchestrator repo is available in the same workspace:
 ```bash
 bash scripts/demo_agent_runtime_e2e.sh
 
-# Optional: run the explicit device_local starter path.
+# Device-local starter path.
 bash scripts/demo_agent_runtime_e2e.sh --device-local
 
-# Optional: replace the device-local starter fixtures with local inputs.
-bash scripts/demo_agent_runtime_e2e.sh --device-local \
-  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
-  --voice-ingress-payload ../InferEdgeOrchestrator/examples/inputs/voice_ingress_requests.json \
-  --capture-process-resource-snapshot
-
-# Optional: add a lightweight ONNX Runtime probe to the Vision producer.
-bash scripts/demo_agent_runtime_e2e.sh --device-local \
-  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
-  --vision-onnx-model /path/to/vision_model.onnx
-
-# Optional: generate a tiny detector-like ONNX probe model locally.
-bash scripts/demo_agent_runtime_e2e.sh --device-local \
-  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
-  --generate-vision-detector-probe
-
-# Optional: route a captured Jetson tegrastats log through the same timeline.
-bash scripts/demo_agent_runtime_e2e.sh --device-local \
-  --tegrastats-log /path/to/tegrastats.log
-
-# Optional: capture Jetson tegrastats during the Orchestrator sustained run.
-bash scripts/demo_agent_runtime_e2e.sh --device-local \
-  --vision-input ../InferEdgeOrchestrator/examples/inputs/vision_frame.ppm \
-  --vision-onnx-model /path/to/vision_model.onnx \
-  --capture-tegrastats
-
-# Optional: also replay the file-based remote worker selection starter.
-bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
-
-# Optional: explicitly request HTTP/SSH starter execution when the selected
-# worker registry entry supports it. File-contract workers are recorded as
-# skipped starter evidence.
-bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch --remote-execute-plan
-
-# Optional: preserve Runtime operation summary through EdgeEnv's local registry.
+# Preserve EdgeEnv local run evidence in the same bundle.
 bash scripts/demo_agent_runtime_e2e.sh --device-local --edgeenv-run-evidence
 
-# Optional: reproduce primary failure followed by bounded fallback recovery.
-# Terminal A:
-python3 ../InferEdgeOrchestrator/scripts/remote_http_worker.py \
-  --host 127.0.0.1 \
-  --port 8765 \
-  --worker-id fallback-http-worker
-
-# Terminal B:
-bash scripts/demo_agent_runtime_e2e.sh \
-  --output-dir /tmp/inferedge_agent_runtime_fallback_e2e \
-  --frames 8 \
-  --remote-dispatch \
-  --remote-execute-plan \
-  --remote-timeout-sec 1 \
-  --remote-worker-registry examples/remote_fallback/remote_worker_registry_fallback.json \
-  --remote-task-request examples/remote_fallback/remote_task_request_fallback.json
+# Remote dispatch starter evidence with bounded fallback.
+bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
 ```
 
-This reproduces the file-based chain:
-
-```text
-agent_manifest
--> Runtime result.agent
--> Orchestrator scheduling evidence
--> AIGuard runtime reliability analysis
--> Lab-owned Agent Runtime Reliability report
-```
-
-Each run writes `00_evidence_index.md` and `00_evidence_index.json`. Use them
-as the first navigation surface for generated Orchestrator, AIGuard, Lab,
-telemetry, and optional remote-dispatch artifacts.
-
-| Index / registry row | Key fields | What reviewers can see quickly |
-|---|---|---|
-| Duration navigation | `duration_class`, `duration_label`, `Reviewer Duration Label`, `duration_source`, `duration_scope_label`, `source=entrypoint_requested_frames` | Whether a run is short 96-frame-class replay, 5-minute-class sustained replay, or quick starter smoke |
-| Operation path | `operation_path` | Whether the bundle is device-local, remote/fallback, or another starter path |
-| Remote dispatch starter | selected worker, remote execution status, fallback final status, `production_remote_execution`, `operation_boundary`, `Remote fallback starter evidence` | Remote/fallback evidence can be compared without claiming production remote operation |
-| EdgeEnv preservation | EdgeEnv evidence status, `Runtime Intelligence EdgeEnv Preservation` | Runtime operation summary was preserved locally without becoming a deployment decision or comparability gate |
-| Preservation identity/details | preservation identity/details labels from the Lab Agent Runtime report | Run/path identity stays separate from producer, resource, and queue navigation markers |
-| Device-local override context | `producer_sources`, `device_local_producer_count`, `producer_stages` | Whether the bundle used committed starter fixtures or runtime input overrides |
-
-For repeat Jetson bundles, the same table makes the short 96-frame replay and
-5-minute-class sustained replay visible without treating either as thermal
-endurance validation.
-When comparing repeated entrypoint smoke runs, build a local navigation
-registry from the generated indexes:
-
-```bash
-python3 scripts/build_agent_runtime_run_registry.py \
-  --scan-root /tmp \
-  --output-json /tmp/inferedge_agent_runtime_registry.json \
-  --output-md /tmp/inferedge_agent_runtime_registry.md
-```
-
-For the latest Jetson evidence pair, build the comparison registry on the
-Jetson so the two `/tmp` bundles are available in place:
-
-```bash
-python3 scripts/build_agent_runtime_evidence_index.py \
-  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
-  --requested-frames 3600
-
-python3 scripts/build_agent_runtime_run_registry.py \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
-  --output-json /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.json \
-  --output-md /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.md
-```
-
-The first command refreshes the older 5-minute bundle index with the current
-duration-label logic. The resulting registry should show
-`short 96-frame-class replay (96 frames)` and
-`5-minute-class sustained replay (3600 frames)` in the `Duration Label` column.
-The generated Markdown also places a `Duration Comparison Summary` before the
-wide run table so reviewers can separate 96-frame, 5-minute-class, and quick
-starter bundles before reading the full registry row.
-That summary includes `Duration Sources`, preserving whether the run duration
-came from `entrypoint_requested_frames` or Orchestrator metadata without
-changing source evidence contracts.
-Use that column as navigation metadata only; it distinguishes review windows
-without turning either run into a thermal endurance or production readiness
-claim.
-
-Use the fixture-only remote fallback registry smoke when you want to verify the
-entrypoint registry markers without starting the local HTTP fallback worker:
-
-```bash
-bash scripts/smoke_remote_fallback_registry_marker.sh
-```
-
-This smoke confirms that the generated evidence index and registry preserve
-`remote_execution_recovered_by_fallback` and
-`lab=Remote fallback starter evidence` from local files only.
-
-The entrypoint smoke also validates operation context handoff:
-
-| Path | What is checked | Boundary |
-|---|---|---|
-| Orchestrator -> Lab context | Queue state, worker health, runtime event summary, timeline samples, queue pressure reasons, worker risk summaries, Runtime operation summary actions, producer context, policy/drop reason counts | Lab remains the final deployment decision owner |
-| AIGuard -> Lab operation evidence | `worker_health_degradation`, `scheduler_delay_pattern`, `queue_pressure_context`, `worker_operation_risk_summary`, `runtime_operation_health`, `device_local_operation_context` | Deterministic warning evidence only |
-| `--remote-dispatch` | Orchestrator file-based remote worker selection plus AIGuard remote-dispatch diagnosis | Remote dispatch starter evidence, not production SSH/HTTP remote execution |
-| `--remote-execute-plan` | Requests the HTTP/SSH starter execution path only when the selected worker registry entry supports it | File-contract workers remain selection-only skipped starter evidence |
-| `--edgeenv-run-evidence` | Writes `08_edgeenv_run_show.json` and `08_edgeenv/.edgeenv/runs.db` | EdgeEnv local evidence preservation, not cloud monitoring or Lab deployment decision ownership |
-| `examples/remote_fallback` | Records `remote_execution_failed`, `fallback_execution_result.final_status=succeeded`, AIGuard `remote_execution_recovered_by_fallback`, and Lab's `Remote fallback starter evidence` section | Bounded recovery evidence propagation, not production-grade retry control |
-
-The Orchestrator source-side sample for the remote fallback path is tracked as
-supporting reference `654e0ab27b383317ec816d054b293bfa3061cf32`
-(`examples/telemetry/remote_fallback_recovery_sample.json`) rather than as a
-Core `repos.lock` entry.
-
-The current extension smoke starts with the Orchestrator producer-backed
-sustained path:
-
-| Producer | Input source | Evidence checked |
-|---|---|---|
-| Vision | Local image fixture | Queue-depth, policy decision reason, producer source markers |
-| Voice-Command | FastAPI-style request burst fixture | `multi_workload_sustained_summary` and workload pressure context |
-| Safety-Monitor | Resource snapshot telemetry | Optional `tegrastats_timeline`, AIGuard `profiled_workload_pressure` / `thermal_resource_pressure`, Lab `sustained_overload_review` |
-
-Use `--device-local` to replay the committed local image, request, and resource
-snapshot producers in Orchestrator `scenario_mode=device_local`.
-
-For local device or Jetson experiments, keep `--device-local` and add only the
-inputs you need:
-
-| Option | Purpose |
-|---|---|
-| `--vision-input` | Replace the committed Vision image fixture |
-| `--vision-onnx-model` | Record provider, input/output shapes, and probe latency as lightweight Vision producer evidence |
-| `--voice-ingress-payload` | Replace the committed Voice-Command request burst fixture |
-| `--resource-snapshot` | Replay a committed or captured resource snapshot |
-| `--capture-process-resource-snapshot` | Capture host process resource evidence during the run |
-| `--tegrastats-log` | Carry a captured Jetson/resource log through Orchestrator `tegrastats_timeline` |
-| `--capture-tegrastats` | Capture Jetson telemetry during the run when `tegrastats` is available |
-| `--generate-vision-detector-probe` | Generate a reproducible detector-like ONNX probe without committing a model artifact |
-
-These options are runtime input overrides for evidence capture. They do not
-claim a full live YOLO/Whisper/FastAPI sustained service. See
-[`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md)
-([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md))
-for the minimum committed sample paths and a resource-snapshot variant.
-
-Recent Jetson starter validation:
-
-| Evidence | Value |
-|---|---:|
-| Device mode | Jetson Orin Nano 25W |
-| Scenario | `device_local` starter with live `tegrastats` log |
-| Frames | 64 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 61 / 61 |
-| Deadline misses | 0 |
-| Parsed `tegrastats` samples | 4 |
-| Max temperature | 39.625 C |
-| Max RAM used | 1783 MB |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This record proves the starter path can carry live Jetson resource telemetry
-through Orchestrator, AIGuard, and Lab reports. It is still a device-local
-starter smoke, not a claim of full live YOLO/Whisper/FastAPI sustained
-validation.
-
-Recent Jetson ONNX probe validation:
-
-| Evidence | Value |
-|---|---:|
-| Device mode | Jetson Orin Nano 25W |
-| Scenario | `device_local` starter with Vision ONNX Runtime probe |
-| Frames | 16 |
-| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
-| Vision probe output shape | `[1, 2]` |
-| Vision probe latency | 1.255 ms |
-| Max queue depth | 6 |
-| Dropped / fallback count | 13 / 13 |
-| Deadline misses | 1 |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This second record validates that the entrypoint can pass a local ONNX model
-into the Jetson device-local Vision producer and preserve ONNX Runtime probe
-evidence through Orchestrator, AIGuard, and Lab reports. The probe used a tiny
-identity ONNX model, so it should be described as device-local ONNX probe
-evidence rather than full live YOLO validation.
-
-Recent captured tegrastats handoff validation:
-
-| Evidence | Value |
-|---|---:|
-| Device mode | Jetson Orin Nano 25W |
-| Scenario | `device_local` starter with `--tegrastats-log` |
-| Captured log duration | ~12 seconds |
-| Parsed `tegrastats` samples | 11 |
-| Frames | 16 |
-| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
-| Max queue depth | 6 |
-| Dropped / fallback count | 13 / 13 |
-| Deadline misses | 1 |
-| Max temperature | 41.5 C |
-| Max RAM used | 830 MB |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This record validates the new `--tegrastats-log` entrypoint option with a
-captured Jetson log. It is telemetry handoff evidence, not a full thermal
-endurance or live workload validation.
-
-Recent generated detector probe validation:
-
-| Evidence | Value |
-|---|---:|
-| Scenario | local `device_local` starter with generated detector-like ONNX probe |
-| Generated model | `generated_models/detector_tiny.onnx` |
-| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
-| Vision input shape | `[1, 3, 16, 16]` |
-| Vision output shape | `[1, 6]` |
-| Frames | 8 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 5 / 5 |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This record validates a reproducible detector-like ONNX probe generated at run
-time. It is closer to image-shaped perception work than the identity probe, but
-it is still not full live YOLO validation.
-
-Recent Jetson generated detector probe smoke:
-
-| Evidence | Value |
-|---|---:|
-| Device | Jetson Orin Nano |
-| Scenario | `device_local` starter with generated detector-like ONNX probe |
-| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
-| Vision input shape | `[1, 3, 16, 16]` |
-| Vision output shape | `[1, 6]` |
-| Frames | 16 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 13 / 13 |
-| Deadline missed count | 1 |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This record validates the same entrypoint chain on Jetson using a generated
-detector-like probe. It is device-local smoke evidence, not full live YOLO or
-thermal endurance validation.
-
-Recent Jetson YOLOv8n ONNX probe smoke:
-
-| Evidence | Value |
-|---|---:|
-| Device | Jetson Orin Nano |
-| Model | user-provided `yolov8n.onnx` |
-| Scenario | `device_local` starter with real ONNX model probe |
-| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
-| Vision input shape | `[1, 3, 640, 640]` |
-| Vision output shape | `[1, 84, 8400]` |
-| Frames | 16 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 13 / 13 |
-| Deadline missed count | 10 |
-| Vision probe elapsed range | `120.147-146.878 ms` |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This record validates the entrypoint chain with a real YOLOv8n ONNX model on
-Jetson. It is still an ONNX Runtime probe inside the device-local orchestration
-smoke, not a full live camera or decoded detection validation.
-
-Recent Jetson YOLOv8n ONNX probe with live tegrastats capture:
-
-| Evidence | Value |
-|---|---:|
-| Device | Jetson Orin Nano |
-| Model | user-provided `yolov8n.onnx` |
-| Scenario | `device_local` starter with `--capture-tegrastats` |
-| Vision probe backend | `onnxruntime` / `CPUExecutionProvider` |
-| Vision input/output shape | `[1, 3, 640, 640]` -> `[1, 84, 8400]` |
-| Frames | 32 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 29 / 29 |
-| Deadline missed count | 18 |
-| Parsed `tegrastats` samples | 4 |
-| Max temperature / RAM | 43.937 C / 966 MB |
-| Vision probe elapsed range | `119.912-137.729 ms` |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This record ties a real YOLOv8n ONNX probe and live Jetson telemetry capture
-into the same entrypoint evidence chain. It remains a device-local smoke, not
-thermal endurance or live camera validation.
-
-Latest Jetson device-local replay:
-
-| Evidence | Value |
-|---|---:|
-| Device | Jetson Orin Nano 25W |
-| Model | user-provided `yolov8n.onnx` |
-| Scenario | `device_local` starter with real ONNX model + live `tegrastats` |
-| Reviewer duration label | `short 96-frame-class replay (96 frames)` |
-| Frames | 96 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 93 / 93 |
-| Deadline missed count | 50 |
-| Parsed `tegrastats` samples | 9 |
-| Max temperature / RAM | 45.5 C / 1000 MB |
-| Vision mean / p95 latency | 155.86 ms / 156.877 ms |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This replay was run from the entrypoint script with `--device-local`,
-`--vision-onnx-model`, `--capture-process-resource-snapshot`, and
-`--capture-tegrastats`. It confirms the latest main branch still carries real
-Jetson ONNX probe and live telemetry evidence through Orchestrator, AIGuard,
-and Lab over a longer 96-frame starter replay. The Lab report also preserves
-Runtime operation guard evidence
-(`runtime_latency_budget_overrun`, `runtime_error_classification`) and
-retryable Runtime-side failure context (`runtime_error_retryable`,
-`runtime_error_retry_hint`, `runtime_retryable_error_review`) when Runtime
-reports a retryable timeout or skipped execution. AIGuard preserves the
-deterministic retry hint as evidence, while Lab remains the deployment decision
-owner. The same report preserves
-Orchestrator operation guard context such as `worker_health_degradation` when
-worker health telemetry indicates degraded runtime loops. It is not a decoded
-YOLO accuracy validation or sustained thermal endurance claim.
-For the clean Jetson replay procedure that avoids touching dirty local Forge or
-Runtime worktrees, see
-[`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)
-([한국어: 클린 Jetson 재현 런북](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)).
-For a submission-facing snapshot of the generated Lab evidence, see
-[`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md)
-([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)).
-
-Latest Jetson EdgeEnv preservation smoke:
-
-| Evidence | Value |
-|---|---:|
-| Device | Jetson Orin Nano 25W |
-| Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z` |
-| Entrypoint commit | `c212ea6` |
-| Operation path | `device_local_starter` |
-| Reviewer duration label | `short 96-frame-class replay (96 frames)` |
-| Frames | 96 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 93 / 93 |
-| Deadline missed count | 50 |
-| Parsed `tegrastats` samples | 9 |
-| Device-local / producer events | 99 / 99 |
-| Max temperature / RAM | 45.5 C / 1000 MB |
-| Vision mean / p95 latency | 155.86 ms / 156.877 ms |
-| EdgeEnv run evidence | `run-20260531-102243-4afc19d6` with `runtime_operation_summary` stored |
-| Lab preservation context | `lab_report_preservation_context_present=true`; `preservation_identity` / `preservation_details` present |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-This latest replay confirms that the updated entrypoint can still carry
-device-local runtime operation evidence into EdgeEnv's local run registry and
-Lab-owned preservation context after the cross-repo smoke started gating the
-split `preservation_identity` / `preservation_details` labels. It also confirms
-the generated evidence index renders the reviewer-facing
-`Reviewer Duration Label` row for the 96-frame class on the real Jetson path.
-It remains device-local starter smoke, not decoded YOLO
-accuracy validation, live camera operation, production remote execution, or
-thermal endurance validation.
-
-Latest 5-minute-class Jetson sustained smoke:
-
-| Evidence | Value |
-|---|---:|
-| Device | Jetson Orin Nano 25W |
-| Model | user-provided `yolov8n.onnx` |
-| Scenario | `device_local` starter with real ONNX model + live `tegrastats` + EdgeEnv registry preservation |
-| Output bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z` |
-| Entrypoint commit | `4417fbb` |
-| Runtime window | 5-minute-class |
-| Frames | 3600 |
-| Max queue depth | 6 |
-| Dropped / fallback count | 3597 / 3597 |
-| Deadline missed count | 1802 |
-| Parsed `tegrastats` samples | 281 |
-| Max temperature / RAM | 50.375 C / 1038 MB |
-| Vision mean / p95 latency | 152.77 ms / 156.948 ms |
-| EdgeEnv run evidence | `run-20260531-092158-c3323ba9` with `runtime_operation_summary` stored |
-| Preservation labels | `preservation_identity` / `preservation_details` present |
-| AIGuard verdict | `blocked` / `high` |
-| Lab decision | `blocked` from runtime reliability review rules |
-
-The latest repeat run was captured after the Agent Runtime EdgeEnv label gate
-landed and passed the entrypoint schema-marker validation. It carries
-5-minute-class queue pressure, drop/fallback, deadline miss, live Jetson
-telemetry, derived `operation_risk_summary`, EdgeEnv registry preservation,
-AIGuard `queue_pressure_context` / `worker_operation_risk_summary`, and
-Lab-owned deployment decision evidence through the same bundle. It remains
-device-local smoke evidence, not decoded YOLO accuracy validation, live camera
-operation, Whisper/FastAPI service execution, production remote execution, or
-sustained thermal endurance validation. See
-[`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md)
-([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md))
-and its
-[`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html)
-([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)).
-
-Reproduce the same class of Jetson smoke with the convenience runner:
-
-```bash
-bash scripts/demo_jetson_5min_sustained.sh
-
-# Optional: also preserve Runtime operation summary through EdgeEnv.
-bash scripts/demo_jetson_5min_sustained.sh --edgeenv-run-evidence
-```
-
-Before starting a repeat Jetson run from a development machine, use the
-readiness preflight to catch SSH, `tegrastats`, clean Forge fixture, input, and
-model-path issues without creating new evidence:
+For repeat Jetson sustained runs, start with the readiness preflight:
 
 ```bash
 bash scripts/check_jetson_sustained_readiness.sh
-
-# Optional: include the EdgeEnv repo/CLI preflight for registry preservation.
-bash scripts/check_jetson_sustained_readiness.sh --edgeenv-run-evidence
+bash scripts/demo_jetson_5min_sustained.sh --edgeenv-run-evidence
 ```
 
-If the target is offline or SSH is blocked, keep the existing committed Jetson
-evidence as the latest confirmed record and rerun the preflight before
-attempting another sustained smoke. Do not describe a failed preflight as new
-Jetson runtime evidence.
+`check_jetson_sustained_readiness.sh` only checks SSH, `tegrastats`, repo
+cleanliness, model availability, and EdgeEnv CLI availability. It does not
+create new evidence. If the target Jetson is offline, keep using the committed
+reports above instead of implying fresh Jetson runtime evidence.
 
-Open the Local Studio demo:
+For the clean replay procedure, see
+[`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)
+([한국어: 클린 Jetson 재현 런북](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)).
 
-```bash
-cd repos/InferEdgeLab
-poetry run inferedgelab serve --host 127.0.0.1 --port 8000
-```
+## Cross-Repo Role Boundary Snapshot
 
-Then open:
+Detailed ownership tables live in
+[InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md)
+([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.md))
+and [Pipeline Map](docs/pipeline_map.md)
+([한국어: 파이프라인 맵](docs/pipeline_map.md)). The compact README boundary is:
 
-```text
-http://127.0.0.1:8000/studio
-```
+| Project | Canonical owner role | Evidence it owns | Must not be treated as |
+|---|---|---|---|
+| InferEdgeForge | build provenance / handoff owner | `metadata.json`, `manifest.json`, source/artifact identity, build summary | Runtime executor, scheduler, deployment decision owner |
+| InferEdge-Runtime | execution / result evidence owner | Lab-compatible `result.json`, latency/FPS/backend/device context, runtime health and telemetry seeds | Artifact builder, registry, anomaly detector, scheduler, deployment decision owner |
+| InferEdgeLab | validation report / deployment decision owner | compare/evaluate output, Markdown/HTML reports, Local Studio, `deployment_decision` | Build system, registry, deterministic diagnosis owner, scheduler, production dashboard |
+| InferEdgeAIGuard | optional deterministic diagnosis evidence provider | `guard_analysis`, warning/review evidence, raw-context traceability | Final deployment decision owner, LLM root-cause engine, production monitor |
+| InferEdgeEnv | local evidence registry / comparability / runtime regression owner | run registry, replay bundle, comparability judgement, regression report | Production DB, cloud telemetry store, deployment decision owner, general monitoring SaaS |
+| InferEdgeOrchestrator | runtime operation context provider | queue/deadline/fallback evidence, worker health, remote-dispatch starter evidence | Kubernetes replacement, cloud orchestration platform, deployability decision owner, completed production scheduler |
 
-Click `Load Demo Evidence` to replay the bundled ONNX Runtime CPU vs TensorRT
-Jetson evidence, compare view, deployment decision context, and optional
-AIGuard diagnosis cases.
+## Docs & Review Path
 
-## Reproducible Clone Modes
-
-Use the verified lock file:
-
-```bash
-bash scripts/clone_all.sh --locked
-```
-
-Use the latest `main` branch from each repo:
-
-```bash
-bash scripts/clone_all.sh --latest
-```
-
-Update existing clones:
-
-```bash
-bash scripts/update_all.sh --latest
-```
-
-or return to the locked portfolio snapshot:
-
-```bash
-bash scripts/update_all.sh --locked
-```
+| Need | Document |
+|---|---|
+| Ecosystem diagram and layer split | [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md) ([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.md)) |
+| 30-second portfolio narrative | [Portfolio Summary](docs/portfolio_summary.md) ([한국어: 포트폴리오 요약](docs/portfolio_summary.ko.md)) |
+| Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
+| Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md)) |
+| Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) |
+| Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)) |
+| Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 
 ## Entrypoint Files
 
 | File | Purpose |
 |---|---|
-| `repos.yaml` | Human-readable repository map |
-| `repos.lock` | Verified commit snapshot used by `--locked` |
-| `scripts/clone_all.sh` | Clone all InferEdge Core repositories |
-| `scripts/update_all.sh` | Update existing clones to latest or locked state |
+| `repos.lock` | Pinned Core 4 clone snapshot for Forge, Runtime, Lab, and AIGuard |
+| `repos.yaml` | Supporting ecosystem references such as Orchestrator starter evidence |
+| `scripts/clone_all.sh` | Clone pinned repositories into `repos/` |
+| `scripts/update_all.sh` | Pull all cloned repositories |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
-| `scripts/demo_agent_runtime_e2e.sh` | Replay the Reliable Edge Agent Runtime extension smoke |
-| `docs/ecosystem_1page.md` | Submission-ready ecosystem diagram and three-question layer map |
-| `docs/assets/inferedge_ecosystem_diagram.svg` | Reusable ecosystem diagram asset for README, portfolio pages, and slides |
-| `docs/agent_runtime_e2e_demo.md` | Agent runtime contract-chain demo guide |
-| `docs/portfolio_summary.md` | 30-second portfolio summary and one-line repository role map |
-| `docs/interview_narrative.md` | Interview-ready narrative for explaining the ecosystem and Jetson evidence role |
-| `docs/final_submission_rehearsal.md` | Clean-clone submission gate rehearsal and results |
-| `docs/pipeline_map.md` | Pipeline map and repository responsibility guide |
-
-## Current Demo Evidence
-
-The canonical Local Studio demo evidence is maintained in InferEdgeLab and
-InferEdge-Runtime:
-
-| Evidence | Value |
-|---|---:|
-| TensorRT Jetson FP16 25W mean | 10.066401 ms |
-| TensorRT Jetson FP16 25W p99 | 15.548438 ms |
-| TensorRT Jetson FP16 25W FPS | 99.340373 |
-| ONNX Runtime CPU mean | 45.4299 ms |
-| ONNX Runtime CPU p99 | 49.2128 ms |
-| ONNX Runtime CPU FPS | 22.0119 |
-| Local Studio speedup | about 4.51x |
-| YOLOv8 subset | 10 images / 89 ground-truth boxes |
-| simplified mAP@50 | 0.1410 |
-| precision / recall | 0.2941 / 0.1685 |
+| `scripts/demo_agent_runtime_e2e.sh` | Generate local Agent Runtime evidence bundles |
+| `scripts/check_jetson_sustained_readiness.sh` | Check Jetson readiness before repeat sustained evidence collection |
+| `scripts/demo_jetson_5min_sustained.sh` | Convenience runner for repeat 5-minute-class Jetson sustained smoke |
 
 ## Scope Boundary
 
-Included:
-
-- local-first validation workflow
-- repository clone/update entrypoint
-- Core 4 contract smoke orchestration
-- Local Studio demo entrypoint
-- README and documentation map
-
-Not included:
-
-- production SaaS infrastructure
-- DB/Redis queue persistence
-- auth/billing/upload flow
-- cloud dashboard deployment
-- automatic evaluation for arbitrary model families
-
-## Primary Review Path
-
-For a reviewer or interviewer, start here:
-
-1. `docs/portfolio_summary.md`
-2. `docs/interview_narrative.md`
-3. `docs/final_submission_rehearsal.md`
-4. This README
-5. `docs/pipeline_map.md`
-6. `repos/InferEdgeLab/README.md`
-7. `repos/InferEdgeLab/docs/portfolio/inferedge_portfolio_submission.md`
-8. `repos/InferEdge-Runtime/docs/reports/jetson_evidence_summary.md`
-9. `repos/InferEdgeAIGuard/docs/detector_validation_matrix.md`
+InferEdge is a validation and runtime-operation evidence workflow, not a
+production SaaS dashboard, production observability platform, Kubernetes-style
+orchestration system, general monitoring SaaS, AI OS, or cloud control plane.
+The final deployment decision owner remains InferEdgeLab. AIGuard provides
+deterministic warning/diagnosis evidence, EdgeEnv owns local registry and
+comparability evidence, and Orchestrator owns bounded operation context rather
+than a completed production scheduler.
