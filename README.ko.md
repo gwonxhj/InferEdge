@@ -148,6 +148,7 @@ registry / comparability / regression evidence owner입니다.
 | [포트폴리오 요약](docs/portfolio_summary.ko.md) | 포트폴리오용 30초 요약 |
 | [파이프라인 맵](docs/pipeline_map.ko.md) | 레포별 책임과 contract boundary |
 | [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md) | Runtime Operation / Agent Runtime smoke 흐름 |
+| [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
 
 영어 README가 대표 문서이므로, 전체 명령어와 최신 세부 evidence는
 [README.md](README.md)에서 확인하세요.

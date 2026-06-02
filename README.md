@@ -198,7 +198,7 @@ and [Pipeline Map](docs/pipeline_map.md)
 | 30-second portfolio narrative | [Portfolio Summary](docs/portfolio_summary.md) ([한국어: 포트폴리오 요약](docs/portfolio_summary.ko.md)) |
 | Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
 | Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md)) |
-| Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) |
+| Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) ([한국어: 인터뷰 내러티브](docs/interview_narrative.ko.md)) |
 | Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)) |
 | Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 

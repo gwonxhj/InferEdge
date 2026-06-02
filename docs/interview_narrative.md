@@ -1,161 +1,180 @@
 # InferEdge Interview Narrative
 
-This document is a short speaking guide for explaining InferEdge and the
-Jetson Orin Nano Internal Lab without overclaiming production readiness.
+Language: English | [한국어](interview_narrative.ko.md)
 
-## One-Minute Answer
+Use this as a speaking guide. The goal is to explain InferEdge as a
+local-first Edge AI inference validation and runtime-evidence ecosystem without
+overclaiming production readiness.
 
-InferEdge is a local-first Edge AI inference validation workflow. It does not
-try to be a production SaaS platform or a benchmark leaderboard. Its job is to
-turn an ONNX model into traceable build provenance, real runtime evidence,
-structured comparison, optional deterministic diagnosis, and a Lab-owned
+## 45-Second Answer
+
+InferEdge is a local-first Edge AI inference validation portfolio. It turns an
+ONNX model into traceable build provenance, real runtime evidence, structured
+comparison/evaluation, optional deterministic diagnosis, and a Lab-owned
 deployment decision.
 
-The key design choice is separation of responsibilities:
+The ecosystem separates three questions:
 
-- Forge records how the artifact was built.
-- Runtime records how it actually executed.
-- Lab compares evidence and owns the deployment decision.
-- AIGuard adds deterministic diagnosis when evidence looks risky.
-- Env preserves benchmark evidence and judges comparability.
-- Orchestrator handles post-validation runtime operation under load.
+| Question | Owner path |
+|---|---|
+| Can we deploy this model? | Forge -> Runtime -> Lab (+ optional AIGuard) |
+| Can this benchmark evidence be trusted and compared? | InferEdgeEnv |
+| Can deployed workloads stay stable under load? | InferEdgeOrchestrator |
 
-The Jetson Orin Nano Internal Lab extends this story with real-device runtime
-evidence. It runs lightweight YOLO, Whisper, LLM, and FastAPI workloads on a
-constrained Jetson device, captures telemetry and latency behavior, and exports
-InferEdge-compatible handoff artifacts. That makes the portfolio stronger
-because the evidence chain reaches actual edge-device behavior, not just local
-desktop simulation.
+The strongest signal is not one benchmark number. The signal is that the
+portfolio preserves evidence from build identity to runtime behavior, report
+generation, deterministic warnings, and deployment decision ownership.
+
+## Evidence To Mention First
+
+| Evidence | Current record | How to phrase it |
+|---|---|---|
+| TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS | Real Jetson runtime evidence |
+| ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS | Baseline for the Local Studio demo |
+| Speedup | about 4.51x FPS over ONNX Runtime CPU | Backend comparison evidence, not a universal benchmark claim |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, 45.5 C, 1000 MB RAM | ONNX probe + telemetry handoff evidence |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
+
+## Architecture Explanation
+
+```text
+ONNX model
+-> InferEdgeForge
+-> InferEdge-Runtime
+-> InferEdgeLab
+-> optional InferEdgeAIGuard
+-> Deployment Decision Report / Local Studio
+
+Runtime operation extension:
+InferEdgeOrchestrator
+-> InferEdgeEnv
+-> optional InferEdgeAIGuard
+-> InferEdgeLab Runtime Intelligence Risk Summary
+```
+
+The split is intentional. Each repository owns one contract and avoids silently
+taking responsibility for another layer.
+
+| Repository | Interview phrasing | Boundary |
+|---|---|---|
+| InferEdgeForge | Records how an artifact was built. | Does not run inference or decide deployment. |
+| InferEdge-Runtime | Turns model artifacts into execution evidence. | Does not own comparison policy or scheduling. |
+| InferEdgeLab | Interprets evidence into reports and deployment decisions. | Final deployment decision owner. |
+| InferEdgeAIGuard | Adds deterministic warning/diagnosis evidence. | Does not use LLM guessing and does not own final decisions. |
+| InferEdgeEnv | Preserves run evidence and judges comparability. | Not a production DB or cloud telemetry store. |
+| InferEdgeOrchestrator | Records queue/deadline/fallback operation context. | Not Kubernetes, Triton, or a completed production scheduler. |
 
 ## Problem Framing
 
-The problem is not simply:
+Do not frame the project as:
 
 ```text
 Can this model run fast?
 ```
 
-The more useful edge deployment question is:
+Frame it as:
 
 ```text
-Can we trust the full evidence chain behind this runtime result?
+Can we trust the evidence behind this runtime result, and can reviewers see
+why a deployment decision was made?
 ```
 
 That means preserving:
 
-- artifact identity;
-- runtime/backend/provider condition;
-- latency and throughput evidence;
-- device/resource telemetry;
-- comparison context;
-- decision policy;
-- diagnosis evidence;
-- reproducible commands and reports.
+- artifact identity
+- runtime/backend/provider condition
+- latency, p95/p99, FPS, and resource evidence
+- benchmark comparability context
+- runtime operation context
+- deterministic warning evidence
+- Lab-owned deployment decision
+- reproducible commands and reports
 
-## Why The Multi-Repo Split Exists
+## Runtime Operation / Jetson Story
 
-The split is intentional. Each repository answers one lifecycle question and
-avoids silently taking ownership of another layer's contract.
+Jetson evidence makes the portfolio stronger because the workflow reaches a
+constrained real device instead of staying at desktop simulation. The current
+Jetson and device-local records should be described as runtime evidence and
+operation smoke, not as broad accuracy, service-readiness, or endurance claims.
 
-| Layer | Question | Why It Is Separate |
-|---|---|---|
-| Forge | How was this artifact produced? | Build provenance should not depend on runtime behavior. |
-| Runtime | What happened when it ran? | Execution evidence should not decide deployment by itself. |
-| Lab | Can we deploy this model? | Decision policy belongs in one owner, not inside every producer. |
-| AIGuard | Why does this evidence look risky? | Diagnosis should be deterministic and optional. |
-| Env | Can benchmark evidence be trusted and compared? | Comparability is separate from deployability. |
-| Orchestrator | Can workloads stay stable under load? | Runtime operation is after validation, not a validation shortcut. |
-| Jetson Lab | What happens on a constrained real device? | Hardware-level behavior should be reproducible evidence, not a vague claim. |
+Good phrasing:
 
-## What The Jetson Lab Adds
+- "This shows real-device runtime and telemetry handoff."
+- "This is a device-local ONNX probe inside the operation evidence chain."
+- "The Lab report preserves the risk context and remains the decision owner."
+- "The 5-minute-class replay is sustained Smoke/Starter evidence, not thermal
+  endurance validation."
 
-Jetson Orin Nano Internal Lab is the real-device evidence source for the
-ecosystem. Its value is not that one benchmark number is impressive. Its value
-is that constrained edge-device behavior is recorded as a chain:
+Avoid phrasing:
 
-```text
-environment condition
--> execution script
--> raw log / telemetry
--> JSON result
--> Markdown report
--> InferEdge-compatible metadata.json / result.json
-```
+- "This is production remote execution."
+- "This proves live camera / Whisper / FastAPI service readiness."
+- "This is a full YOLO accuracy benchmark."
+- "This is a production scheduler."
 
-The V1 evidence includes:
-
-- Jetson environment and resource baseline;
-- PyTorch, ONNX Runtime, and TensorRT runtime/provider comparison;
-- YOLOv8n detection smoke;
-- Whisper offline and FastAPI speech transcription smoke;
-- isolated tiny LLM text-generation smoke;
-- FastAPI serving, concurrency, soak/burst, and `/metrics` evidence;
-- 30-minute sustained YOLO + FastAPI ResNet18 + FastAPI Whisper run;
-- runtime timeline, burst-window, degradation, and serving observability reports;
-- InferEdge-compatible handoff artifacts and schema validation.
-
-## What To Emphasize
-
-Strong phrasing:
-
-- "This is a reproducible runtime evidence workflow."
-- "The decision layer consumes evidence; it does not invent it."
-- "Different backend, precision, provider, and power-mode conditions are
-  comparison context, not direct regression claims."
-- "The Jetson Lab turns hardware behavior into structured evidence for the
-  InferEdge ecosystem."
-- "The goal is reliability interpretation under constrained edge conditions,
-  not a production serving platform."
-
-## What Not To Claim
-
-Avoid these claims:
-
-- production-ready AI serving platform;
-- enterprise SaaS dashboard;
-- autonomous robotics framework;
-- real-time guarantee;
-- broad YOLO or Whisper accuracy validation from smoke inputs;
-- LLM quality benchmark from tiny-gpt2;
-- capacity planning or uptime guarantee;
-- direct regression across different backend, precision, provider, or power modes.
-
-## Good Deep-Dive Answers
+## Deep-Dive Answers
 
 ### Why not one repository?
 
-Because one repository would blur contracts. Build provenance, runtime
-execution, comparison policy, diagnosis, comparability, operation control, and
-real-device evidence each change for different reasons. Splitting them keeps the
-contracts inspectable and the smoke tests targeted.
+One repository would blur contracts. Build provenance, runtime execution,
+comparison policy, diagnosis evidence, comparability, and operation control
+change for different reasons. Splitting them makes ownership inspectable and
+keeps smoke tests targeted.
 
-### Why is Jetson evidence important?
+### Why is Lab the decision owner?
 
-Edge AI behavior depends on device condition, runtime provider, power mode,
-thermal/resource pressure, and concurrent workload interaction. The Jetson Lab
-captures those conditions as reproducible evidence so Runtime, Orchestrator,
-AIGuard, and Lab can reason from artifacts instead of anecdotes.
+Runtime and Orchestrator produce evidence. AIGuard produces deterministic
+warnings. EdgeEnv judges comparability. Lab is the layer that combines those
+signals into a report and deployment decision, so decision policy does not leak
+into every producer.
 
-### What does V1 prove?
+### Why is EdgeEnv separate?
 
-V1 proves that the project can preserve a reproducible evidence chain from
-model/build identity through runtime execution, comparison, diagnosis,
-real-device telemetry, and handoff artifacts.
+Regression analysis is dangerous when results are not comparable. EdgeEnv
+checks run identity, benchmark protocol, model/input conditions, and telemetry
+context before treating runtime deltas as regression evidence.
 
-V1 does not prove production readiness, broad model quality, or capacity limits.
+### Why is Orchestrator separate?
 
-### What would come next after V1?
+Validation asks whether a model can deploy. Operation asks whether workloads
+remain stable under queue pressure, deadlines, fallback, and constrained device
+resources. Keeping Orchestrator separate prevents runtime-operation evidence
+from becoming a hidden deployment shortcut.
 
-The next useful direction is not adding more models. It is strengthening runtime
-interaction evidence: longer repeated runs, clearer degradation signals,
-consumer-side handoff examples, and tighter links between Jetson telemetry and
-Orchestrator/AIGuard reliability interpretation.
+### What does the current portfolio prove?
 
-## Thirty-Second Closing
+It proves a reproducible local-first evidence chain:
+
+```text
+build provenance
+-> runtime result
+-> comparison/evaluation
+-> deterministic warning evidence
+-> local registry / comparability context
+-> operation-risk report context
+-> Lab-owned deployment decision
+```
+
+It does not prove production SaaS readiness, Kubernetes-style orchestration,
+general monitoring, production remote execution, or broad model quality.
+
+## What Not To Claim
+
+- production SaaS dashboard
+- production observability platform
+- GitLab or CI as a runtime control plane
+- Kubernetes-style orchestration
+- production SSH/HTTP remote execution
+- long-lived worker daemon readiness
+- public leaderboard
+- LLM root-cause diagnosis
+- full YOLO/Whisper accuracy validation from smoke inputs
+- thermal endurance validation from Smoke/Starter runs
+
+## Closing Answer
 
 InferEdge is valuable because it makes edge AI deployment evidence explicit. It
-separates who builds, who runs, who compares, who diagnoses, who operates, and
-where real-device evidence comes from. The Jetson Orin Nano Internal Lab gives
-that ecosystem a hardware-backed runtime evidence source, so the portfolio is
-not just "I ran a model", but "I preserved the evidence needed to reason about
-edge runtime reliability."
+separates who builds, who runs, who compares, who diagnoses, who preserves
+comparability, who records operation context, and who owns the deployment
+decision. That makes the portfolio more than "I ran a model"; it shows the
+evidence needed to reason about edge runtime reliability.
