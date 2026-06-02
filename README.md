@@ -202,6 +202,25 @@ and [Pipeline Map](docs/pipeline_map.md)
 | Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
 | Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 
+## Cross-Repo Quick Guide Path
+
+Use this path when reviewing the ecosystem in Korean without losing the
+Validation -> Evidence -> Operation Control boundary.
+
+| Step | Lifecycle question | Quick guide |
+|---|---|---|
+| 1 | How was the artifact built? | [Forge agent manifest contract](https://github.com/gwonxhj/InferEdgeForge/blob/main/docs/agent_manifest_contract.ko.md) |
+| 2 | How did Runtime record execution evidence? | [Runtime agent result contract](https://github.com/gwonxhj/InferEdge-Runtime/blob/main/docs/agent_runtime_result_contract.ko.md) |
+| 3 | Who owns the deployment decision? | [Lab Korean README](https://github.com/gwonxhj/InferEdgeLab/blob/main/README.ko.md) |
+| 4 | What deterministic diagnosis evidence exists? | [AIGuard detector validation matrix](https://github.com/gwonxhj/InferEdgeAIGuard/blob/main/docs/detector_validation_matrix.ko.md) |
+| 5 | Can benchmark evidence be trusted and compared? | [EdgeEnv runtime regression monitor](https://github.com/gwonxhj/InferEdgeEnv/blob/main/docs/ko/runtime-regression-monitor.md) |
+| 6 | Can deployed workloads stay stable under load? | [Orchestrator operation control guide](https://github.com/gwonxhj/InferEdgeOrchestrator/blob/main/docs/operation_control.ko.md) |
+
+This review path does not change ownership: Lab remains the final deployment
+decision owner, EdgeEnv owns comparability/regression evidence, AIGuard owns
+deterministic diagnosis evidence, and Orchestrator owns runtime operation
+context.
+
 ## Entrypoint Files
 
 | File | Purpose |

@@ -98,3 +98,22 @@ InferEdgeOrchestrator
 3. [인터뷰 내러티브](interview_narrative.ko.md)에서 면접/리뷰어 설명 흐름을 확인합니다.
 4. 필요하면 영어 canonical 문서인
    [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)를 기준으로 세부 내용을 확인합니다.
+
+## Cross-Repo Quick Guide Path
+
+한국어로 각 repo의 역할을 빠르게 확인할 때는 아래 순서로 봅니다. 이 경로는
+Validation -> Evidence -> Operation Control 경계를 유지하기 위한 reviewer
+navigation입니다.
+
+| 단계 | owner boundary | quick guide |
+|---|---|---|
+| 1 | Forge build provenance / handoff | [Forge agent manifest contract](https://github.com/gwonxhj/InferEdgeForge/blob/main/docs/agent_manifest_contract.ko.md) |
+| 2 | Runtime execution / result evidence | [Runtime agent result contract](https://github.com/gwonxhj/InferEdge-Runtime/blob/main/docs/agent_runtime_result_contract.ko.md) |
+| 3 | Lab-owned deployment decision | [Lab Korean README](https://github.com/gwonxhj/InferEdgeLab/blob/main/README.ko.md) |
+| 4 | AIGuard deterministic diagnosis evidence | [AIGuard detector validation matrix](https://github.com/gwonxhj/InferEdgeAIGuard/blob/main/docs/detector_validation_matrix.ko.md) |
+| 5 | EdgeEnv comparability / runtime regression evidence | [EdgeEnv runtime regression monitor](https://github.com/gwonxhj/InferEdgeEnv/blob/main/docs/ko/runtime-regression-monitor.md) |
+| 6 | Orchestrator runtime operation context | [Orchestrator operation control guide](https://github.com/gwonxhj/InferEdgeOrchestrator/blob/main/docs/operation_control.ko.md) |
+
+이 경로는 새 product layer가 아닙니다. InferEdge를 production SaaS, production
+observability, general monitoring, Kubernetes-style orchestration, cloud control
+plane으로 바꾸지 않습니다.

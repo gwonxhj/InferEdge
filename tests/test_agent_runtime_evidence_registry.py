@@ -348,6 +348,48 @@ def test_core_docs_language_selectors_link_to_korean_guides() -> None:
     assert "AIGuard `guard_analysis`" in pipeline_ko
 
 
+def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    readme_ko = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+    ecosystem = (ROOT / "docs" / "ecosystem_1page.md").read_text(
+        encoding="utf-8"
+    )
+    ecosystem_ko = (ROOT / "docs" / "ecosystem_1page.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (readme, readme_ko, ecosystem, ecosystem_ko):
+        normalized_text = " ".join(text.split())
+        assert "Cross-Repo Quick Guide Path" in text
+        assert "Validation -> Evidence -> Operation Control" in normalized_text
+        assert "agent_manifest_contract.ko.md" in text
+        assert "agent_runtime_result_contract.ko.md" in text
+        assert "InferEdgeLab/blob/main/README.ko.md" in text
+        assert "detector_validation_matrix.ko.md" in text
+        assert "runtime-regression-monitor.md" in text
+        assert "operation_control.ko.md" in text
+        assert "production SaaS" in text
+        assert "cloud control plane" in text
+
+    assert readme.index("agent_manifest_contract.ko.md") < readme.index(
+        "agent_runtime_result_contract.ko.md"
+    )
+    assert readme.index("agent_runtime_result_contract.ko.md") < readme.index(
+        "InferEdgeLab/blob/main/README.ko.md"
+    )
+    assert readme.index("detector_validation_matrix.ko.md") < readme.index(
+        "runtime-regression-monitor.md"
+    )
+    assert readme.index("runtime-regression-monitor.md") < readme.index(
+        "operation_control.ko.md"
+    )
+    assert (
+        "Lab remains the final deployment decision owner"
+        in " ".join(readme.split())
+    )
+    assert "최종 deployment decision owner는 Lab" in " ".join(readme_ko.split())
+
+
 def test_agent_runtime_korean_guide_preserves_execution_boundaries() -> None:
     korean_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.ko.md").read_text(
         encoding="utf-8"
