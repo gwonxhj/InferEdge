@@ -133,10 +133,10 @@ post-deployment operation context.
 
 1. Start here for the ecosystem diagram and role split.
 2. Read [Portfolio Summary](portfolio_summary.md)
-   ([한국어: 포트폴리오 요약](portfolio_summary.md)) for the 30-second
+   ([한국어: 포트폴리오 요약](portfolio_summary.ko.md)) for the 30-second
    narrative.
 3. Read [Pipeline Map](pipeline_map.md)
-   ([한국어: 파이프라인 맵](pipeline_map.md)) for repository responsibilities.
+   ([한국어: 파이프라인 맵](pipeline_map.ko.md)) for repository responsibilities.
 4. Read [Interview Narrative](interview_narrative.md) for speaking notes.
 5. Run the local submission smoke:
 

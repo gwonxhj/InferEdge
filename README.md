@@ -137,7 +137,7 @@ The smoke checks:
 For the generated artifact list and the split between operation-smoke and
 Runtime Intelligence smoke gates, see
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split)
-([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md#smoke-gate-split)).
+([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)).
 
 ## Agent Runtime / Jetson Commands
 
@@ -171,15 +171,15 @@ reports above instead of implying fresh Jetson runtime evidence.
 
 For the clean replay procedure, see
 [`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)
-([한국어: 클린 Jetson 재현 런북](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)).
+([한국어: 클린 Jetson 재현 런북](docs/agent_runtime_e2e_demo.ko.md)).
 
 ## Cross-Repo Role Boundary Snapshot
 
 Detailed ownership tables live in
 [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md)
-([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.md))
+([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.ko.md))
 and [Pipeline Map](docs/pipeline_map.md)
-([한국어: 파이프라인 맵](docs/pipeline_map.md)). The compact README boundary is:
+([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)). The compact README boundary is:
 
 | Project | Canonical owner role | Evidence it owns | Must not be treated as |
 |---|---|---|---|
@@ -194,10 +194,10 @@ and [Pipeline Map](docs/pipeline_map.md)
 
 | Need | Document |
 |---|---|
-| Ecosystem diagram and layer split | [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md) ([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.md)) |
+| Ecosystem diagram and layer split | [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md) ([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.ko.md)) |
 | 30-second portfolio narrative | [Portfolio Summary](docs/portfolio_summary.md) ([한국어: 포트폴리오 요약](docs/portfolio_summary.ko.md)) |
 | Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
-| Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.md)) |
+| Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)) |
 | Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) ([한국어: 인터뷰 내러티브](docs/interview_narrative.ko.md)) |
 | Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)) |
 | Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |

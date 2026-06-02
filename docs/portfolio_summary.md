@@ -21,7 +21,7 @@ decision.
 
 For the diagram-first version, see
 [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)
-([한국어: InferEdge 생태계 1페이지 요약](ecosystem_1page.md)).
+([한국어: InferEdge 생태계 1페이지 요약](ecosystem_1page.ko.md)).
 
 Reusable visual:
 
