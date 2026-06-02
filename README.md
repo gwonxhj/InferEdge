@@ -93,8 +93,8 @@ InferEdgeOrchestrator operation context
 | ONNX Runtime CPU baseline | mean 45.4299 ms, p99 49.2128 ms, 22.0119 FPS | Local Studio demo evidence |
 | TensorRT speedup | about 4.51x FPS over ONNX Runtime CPU | Local Studio demo evidence |
 | YOLOv8 subset validation | 10 images, 89 boxes, simplified mAP@50 0.1410, precision 0.2941, recall 0.1685 | Lab evaluation evidence |
-| Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)) |
-| Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
+| Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 
 The Jetson records prove local evidence preservation and runtime-operation
 handoff. They do not claim decoded YOLO accuracy, live camera service,
@@ -199,8 +199,8 @@ and [Pipeline Map](docs/pipeline_map.md)
 | Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
 | Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)) |
 | Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) ([한국어: 인터뷰 내러티브](docs/interview_narrative.ko.md)) |
-| Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.md)) |
-| Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
+| Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
+| Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 
 ## Entrypoint Files
 

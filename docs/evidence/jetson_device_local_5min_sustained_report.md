@@ -1,5 +1,7 @@
 # Jetson Device-Local 5-Minute Sustained Smoke Report
 
+Language: English | [한국어](jetson_device_local_5min_sustained_report.ko.md)
+
 This document captures a longer device-local sustained smoke replay of the
 InferEdge runtime-operation evidence chain.
 

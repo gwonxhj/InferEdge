@@ -1,5 +1,7 @@
 # Jetson Device-Local Agent Runtime Evidence Report
 
+Language: English | [한국어](jetson_device_local_agent_runtime_report.ko.md)
+
 This document captures the submission-facing summary of the Lab report generated
 by the clean Jetson replay runbook.
 

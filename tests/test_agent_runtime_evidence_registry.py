@@ -243,6 +243,16 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[포트폴리오 요약](docs/portfolio_summary.ko.md)" in korean_readme
     assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
+    assert (
+        "[Jetson 디바이스 로컬 evidence quick guide]"
+        "(docs/evidence/jetson_device_local_agent_runtime_report.ko.md)"
+        in korean_readme
+    )
+    assert (
+        "[Jetson 5분급 sustained evidence quick guide]"
+        "(docs/evidence/jetson_device_local_5min_sustained_report.ko.md)"
+        in korean_readme
+    )
 
 
 def test_cross_repo_role_boundary_matrix_preserves_canonical_ownership() -> None:
@@ -299,6 +309,14 @@ def test_core_docs_language_selectors_link_to_korean_guides() -> None:
         ("docs/portfolio_summary.md", "docs/portfolio_summary.ko.md"),
         ("docs/pipeline_map.md", "docs/pipeline_map.ko.md"),
         ("docs/agent_runtime_e2e_demo.md", "docs/agent_runtime_e2e_demo.ko.md"),
+        (
+            "docs/evidence/jetson_device_local_agent_runtime_report.md",
+            "docs/evidence/jetson_device_local_agent_runtime_report.ko.md",
+        ),
+        (
+            "docs/evidence/jetson_device_local_5min_sustained_report.md",
+            "docs/evidence/jetson_device_local_5min_sustained_report.ko.md",
+        ),
     ]
 
     for english_path, korean_path in doc_pairs:
@@ -395,14 +413,14 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "`Jetson Device-Local Agent Runtime Evidence Report`",
             "Jetson 디바이스 로컬 에이전트 런타임 증거 보고서",
             "docs/evidence/jetson_device_local_agent_runtime_report.md",
-            "docs/evidence/jetson_device_local_agent_runtime_report.md",
+            "docs/evidence/jetson_device_local_agent_runtime_report.ko.md",
         ),
         (
             "README.md",
             "`Jetson Device-Local 5-Minute Sustained Smoke Report`",
             "Jetson 디바이스 로컬 5분급 지속 스모크 보고서",
             "docs/evidence/jetson_device_local_5min_sustained_report.md",
-            "docs/evidence/jetson_device_local_5min_sustained_report.md",
+            "docs/evidence/jetson_device_local_5min_sustained_report.ko.md",
         ),
         (
             "README.md",
@@ -423,7 +441,14 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "`Jetson Device-Local Agent Runtime Evidence Report`",
             "Jetson 디바이스 로컬 에이전트 런타임 증거 보고서",
             "evidence/jetson_device_local_agent_runtime_report.md",
-            "evidence/jetson_device_local_agent_runtime_report.md",
+            "evidence/jetson_device_local_agent_runtime_report.ko.md",
+        ),
+        (
+            "docs/portfolio_summary.md",
+            "`Jetson Device-Local 5-Minute Sustained Smoke Report`",
+            "Jetson 디바이스 로컬 5분급 지속 스모크 보고서",
+            "evidence/jetson_device_local_5min_sustained_report.md",
+            "evidence/jetson_device_local_5min_sustained_report.ko.md",
         ),
         (
             "docs/pipeline_map.md",
@@ -451,14 +476,14 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
             "`Jetson Device-Local Agent Runtime Evidence Report`",
             "Jetson 디바이스 로컬 에이전트 런타임 증거 보고서",
             "evidence/jetson_device_local_agent_runtime_report.md",
-            "evidence/jetson_device_local_agent_runtime_report.md",
+            "evidence/jetson_device_local_agent_runtime_report.ko.md",
         ),
         (
             "docs/agent_runtime_e2e_demo.md",
             "`Jetson Device-Local 5-Minute Sustained Smoke Report`",
             "Jetson 디바이스 로컬 5분급 지속 스모크 보고서",
             "evidence/jetson_device_local_5min_sustained_report.md",
-            "evidence/jetson_device_local_5min_sustained_report.md",
+            "evidence/jetson_device_local_5min_sustained_report.ko.md",
         ),
         (
             "docs/agent_runtime_e2e_demo.md",

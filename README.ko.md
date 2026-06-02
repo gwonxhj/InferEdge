@@ -81,7 +81,10 @@ InferEdgeOrchestrator operation context
 | Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
 
 세부 evidence는 [English README](README.md)의 Evidence Snapshot과
-`docs/evidence/` 문서를 기준으로 확인하세요.
+`docs/evidence/` 문서를 기준으로 확인하세요. Jetson 기록만 빠르게 확인하려면
+[Jetson 디바이스 로컬 evidence quick guide](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)와
+[Jetson 5분급 sustained evidence quick guide](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)를
+먼저 보면 됩니다.
 
 ## Cross-Repo Role Boundary Snapshot
 
