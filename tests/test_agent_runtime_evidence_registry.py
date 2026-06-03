@@ -80,6 +80,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "class=short_96_frame_class, frames=96" in smoke_script
     assert "scope_label=source=entrypoint_requested_frames" in smoke_script
     assert "Orchestrator queue/deadline/fallback markers" in smoke_script
+    assert "Reviewer operation quick scan" in smoke_script
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in smoke_script
     assert "max_total_queue_depth=7" in smoke_script
     assert "deadline_missed_count=2" in smoke_script
@@ -99,6 +100,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "duration_source" in readme
     assert "duration_scope_label" in readme
     assert "compact queue/deadline/fallback operation markers" in readme
+    assert "Reviewer operation quick scan" in readme
     assert "Orchestrator queue/deadline/fallback markers" in readme
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in readme
     assert "max_total_queue_depth=7" in readme
@@ -203,6 +205,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "duration_source" in text
         assert "duration_scope_label" in text
         assert "compact queue/deadline/fallback operation markers" in text
+        assert "Reviewer operation quick scan" in text
         assert "Orchestrator queue/deadline/fallback markers" in text
         assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in text
         assert "max_total_queue_depth=7" in text
@@ -749,6 +752,22 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "resource=resource_snapshot_fixture+tegrastats_timeline, "
         "queue=max_total_queue_depth_exceeded_overload_threshold"
     )
+    assert edgeenv_summary["lab_report_operation_quick_scan_marker"] == (
+        "Reviewer operation quick scan"
+    )
+    assert edgeenv_summary["lab_report_operation_quick_scan_label"] == (
+        "queue_pressure_reason=max_total_queue_depth_exceeded_overload_threshold; "
+        "max_total_queue_depth=5; deadline_missed_count=0; fallback_count=1; "
+        "preservation=identity=jetson_device_local_preservation, "
+        "path=device_local_starter, run=run-edgeenv-runtime-operation"
+    )
+    assert "Reviewer operation quick scan" in edgeenv_summary[
+        "lab_expected_report_markers"
+    ]
+    assert edgeenv_summary["lab_report_marker_context_role"] == (
+        "lab_report_contract_context"
+    )
+    assert edgeenv_summary["aiguard_validates_expected_report_markers"] is False
 
     md_path = tmp_path / "00_evidence_index.md"
     index_module.write_markdown(index, md_path)
@@ -766,6 +785,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "duration_scope_label" in markdown
     assert "lab_report_preservation_section_present" in markdown
     assert "lab_report_preservation_run_id" in markdown
+    assert "lab_report_operation_quick_scan_marker" in markdown
+    assert "Reviewer operation quick scan" in markdown
+    assert "lab_report_operation_quick_scan_label" in markdown
+    assert "lab_expected_report_markers" in markdown
+    assert "lab_report_contract_context" in markdown
+    assert "aiguard_validates_expected_report_markers" in markdown
 
 
 def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:

@@ -652,6 +652,12 @@ When `--edgeenv-run-evidence` is used, the same index also records whether the
 Lab Markdown report rendered `Runtime Intelligence EdgeEnv Preservation`, so
 the EdgeEnv run ID can be traced from the navigation index into Lab-owned
 deployment context.
+The index also carries the Lab report marker contract vocabulary, including
+`Reviewer operation quick scan`, `lab_expected_report_markers`,
+`lab_report_contract_context`, and
+`aiguard_validates_expected_report_markers=false`. These are reviewer
+navigation markers only; they do not make the entrypoint, AIGuard, or CI the
+Lab report owner.
 
 The EdgeEnv preservation marker path was replayed on Jetson with the latest
 entrypoint/Lab main branches and an existing `~/InferEdgeEnv` clone. The
@@ -910,6 +916,9 @@ Expected sustained evidence markers:
 - `preservation_identity` / `preservation_details` in `00_evidence_index.*`
   when `--edgeenv-run-evidence` is used, matching the Lab Agent Runtime report
   split between short identity and detailed navigation markers
+- `Reviewer operation quick scan` and `lab_expected_report_markers` in
+  `00_evidence_index.*`, keeping the entrypoint navigation index aligned with
+  the Lab-owned Runtime Intelligence report marker contract
 - `lab_report_preservation_section_present` in `00_evidence_index.*` and
   `lab_preservation=present` in the run registry when Lab preserves the same
   EdgeEnv context

@@ -75,6 +75,24 @@ KNOWN_OUTPUTS = [
 ]
 
 LAB_EDGEENV_PRESERVATION_MARKER = "Runtime Intelligence EdgeEnv Preservation"
+LAB_OPERATION_QUICK_SCAN_MARKER = "Reviewer operation quick scan"
+LAB_REPORT_MARKER_CONTEXT_ROLE = "lab_report_contract_context"
+LAB_RUNTIME_INTELLIGENCE_REPORT_MARKERS = [
+    "Runtime Intelligence Risk Summary",
+    "Runtime replay duration scope",
+    "Orchestrator operation feed context",
+    LAB_OPERATION_QUICK_SCAN_MARKER,
+    "Orchestrator task event rollup",
+    "Lab EdgeEnv preservation context",
+    "AIGuard task event rollup evidence",
+    "AIGuard runtime operation anomalies",
+    "AIGuard remote dispatch event summary",
+    "AIGuard remote event summary consistency",
+    "Remote fallback starter evidence",
+    "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback",
+    "AIGuard producer-lineage guard alignment",
+    "Lab remains the final deployment decision owner.",
+]
 REMOTE_AIGUARD_EVIDENCE_PRIORITY = [
     "remote_execution_recovered_by_fallback",
     "remote_execution_failed",
@@ -241,6 +259,26 @@ def operation_path(run_summary: dict[str, Any], remote_summary: dict[str, Any]) 
     if run_summary.get("scenario_mode") == "device_local":
         return "device_local_starter"
     return "producer_backed_starter"
+
+
+def operation_quick_scan_label(
+    run_summary: dict[str, Any],
+    preservation_identity_label: Any,
+) -> str:
+    parts: list[str] = []
+    field_names = (
+        "queue_pressure_reason",
+        "max_total_queue_depth",
+        "deadline_missed_count",
+        "fallback_count",
+    )
+    for field in field_names:
+        value = run_summary.get(field)
+        if value not in (None, "", "unknown"):
+            parts.append(f"{field}={value}")
+    if preservation_identity_label not in (None, "", "unknown"):
+        parts.append(f"preservation={preservation_identity_label}")
+    return "; ".join(parts) if parts else "unknown"
 
 
 def int_value(value: Any) -> int | None:
@@ -1000,6 +1038,22 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 "lab",
             ),
         }
+        edgeenv_summary["lab_report_operation_quick_scan_marker"] = (
+            LAB_OPERATION_QUICK_SCAN_MARKER
+        )
+        edgeenv_summary["lab_report_operation_quick_scan_label"] = (
+            operation_quick_scan_label(
+                run_summary,
+                edgeenv_summary["preservation_identity_label"],
+            )
+        )
+        edgeenv_summary["lab_expected_report_markers"] = (
+            LAB_RUNTIME_INTELLIGENCE_REPORT_MARKERS
+        )
+        edgeenv_summary["lab_report_marker_context_role"] = (
+            LAB_REPORT_MARKER_CONTEXT_ROLE
+        )
+        edgeenv_summary["aiguard_validates_expected_report_markers"] = False
 
     return {
         "schema_version": "inferedge-agent-runtime-evidence-index-v1",
@@ -1215,6 +1269,11 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| lab_report_preservation_context_present | {md_value(edgeenv['lab_report_preservation_context_present'])} |",
                 f"| lab_report_preservation_run_id | {md_value(edgeenv['lab_report_preservation_run_id'])} |",
                 f"| lab_report_decision_owner | {md_value(edgeenv['lab_report_decision_owner'])} |",
+                f"| lab_report_operation_quick_scan_marker | {md_value(edgeenv['lab_report_operation_quick_scan_marker'])} |",
+                f"| lab_report_operation_quick_scan_label | {md_value(edgeenv['lab_report_operation_quick_scan_label'])} |",
+                f"| lab_expected_report_markers | {md_value(edgeenv['lab_expected_report_markers'])} |",
+                f"| lab_report_marker_context_role | {md_value(edgeenv['lab_report_marker_context_role'])} |",
+                f"| aiguard_validates_expected_report_markers | {md_value(edgeenv['aiguard_validates_expected_report_markers'])} |",
             ]
         )
 
