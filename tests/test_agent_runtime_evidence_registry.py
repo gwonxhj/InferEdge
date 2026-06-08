@@ -69,6 +69,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "duration_source: source=entrypoint_requested_frames" in smoke_script
     assert "duration_scope_label: scope_label=source=entrypoint_requested_frames" in smoke_script
     assert "duration_label: short 96-frame-class replay (96 frames)" in smoke_script
+    assert "Validated Reviewer Focus" in smoke_script
+    assert "reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated" in smoke_script
     assert "runtime_anomaly_summary.md" in smoke_script
     assert "runtime_anomaly_summary.html" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation run" in smoke_script
@@ -98,6 +100,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Runtime replay duration scope" in readme
     assert "scope_label=source=entrypoint_requested_frames" in readme
     assert "Validated Duration Traceability" in readme
+    assert "Validated Reviewer Focus" in readme
+    assert "reviewer_focus_operation_quick_scan" in readme
     assert "runtime_intelligence_ci_artifact_gate_summary.md" in readme
     assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in readme
     assert "duration_handoff_alignment" in readme
@@ -234,6 +238,8 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "short 96-frame-class replay (96 frames)" in text
         assert "scope_label=source=entrypoint_requested_frames" in text
         assert "Validated Duration Traceability" in text
+        assert "Validated Reviewer Focus" in text
+        assert "reviewer_focus_operation_quick_scan" in text
         assert "runtime_intelligence_ci_artifact_gate_summary.md" in text
         assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in text
         assert "duration_handoff_alignment" in text
