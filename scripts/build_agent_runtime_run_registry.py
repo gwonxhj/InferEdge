@@ -215,6 +215,16 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "edgeenv_lab_report_marker": edgeenv_summary.get("lab_report_marker")
                 if edgeenv_summary
                 else None,
+                "edgeenv_lab_report_operation_quick_scan_marker": edgeenv_summary.get(
+                    "lab_report_operation_quick_scan_marker"
+                )
+                if edgeenv_summary
+                else None,
+                "edgeenv_lab_report_operation_quick_scan_label": edgeenv_summary.get(
+                    "lab_report_operation_quick_scan_label"
+                )
+                if edgeenv_summary
+                else None,
                 "edgeenv_preservation_identity_label": edgeenv_summary.get(
                     "preservation_identity_label"
                 )
@@ -359,8 +369,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "## Runs",
             "",
-            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | EdgeEnv |",
-            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|",
+            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Quick Scan | EdgeEnv |",
+            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|",
         ]
     )
     for run in registry["runs"]:
@@ -398,6 +408,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["lab_decision"]),
                     _remote_cell(run),
                     _remote_boundary_cell(run),
+                    _operation_quick_scan_cell(run),
                     _edgeenv_cell(run),
                 ]
             )
@@ -413,11 +424,24 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "- Use this registry to compare repeat smoke runs such as 96-frame, 5-minute, and remote fallback evidence.",
             "- The `Duration Label` column is reviewer-facing navigation metadata; it helps separate short 96-frame replay, 5-minute-class sustained replay, and quick starter smoke without changing source evidence contracts.",
             "- The `Duration Source` and `Duration Scope` columns preserve whether replay duration came from the entrypoint request or Orchestrator artifact metadata.",
+            "- The `Operation Quick Scan` column preserves Lab report marker context from each run's EdgeEnv summary for reviewer navigation; it does not make this registry a Lab report owner.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
             "",
         ]
     )
     path.write_text("\n".join(lines), encoding="utf-8")
+
+
+def _operation_quick_scan_cell(run: dict[str, Any]) -> str:
+    marker = run.get("edgeenv_lab_report_operation_quick_scan_marker")
+    label = run.get("edgeenv_lab_report_operation_quick_scan_label")
+    if all(value in (None, "", "unknown") for value in (marker, label)):
+        return "-"
+    parts = [
+        str(marker) if marker not in (None, "", "unknown") else None,
+        str(label) if label not in (None, "", "unknown") else None,
+    ]
+    return ": ".join(part for part in parts if part)
 
 
 def _remote_cell(run: dict[str, Any]) -> str:
