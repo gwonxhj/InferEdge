@@ -232,6 +232,7 @@ context.
 | `scripts/clone_all.sh` | Clone pinned repositories into `repos/` |
 | `scripts/update_all.sh` | Pull all cloned repositories |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
+| `scripts/smoke_quick_scan_registry_summary.sh` | Build a fixture-only `Operation Quick Scan Summary` registry gate; Jetson is not required |
 | `scripts/demo_agent_runtime_e2e.sh` | Generate local Agent Runtime evidence bundles |
 | `scripts/check_jetson_sustained_readiness.sh` | Check Jetson readiness before repeat sustained evidence collection |
 | `scripts/demo_jetson_5min_sustained.sh` | Convenience runner for repeat 5-minute-class Jetson sustained smoke |

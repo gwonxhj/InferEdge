@@ -59,9 +59,13 @@ local run evidence / comparability / registry context를 보존합니다.
 |---|---|---|
 | Agent runtime operation smoke | generated operation scenario bundle에서 manifest, Runtime result, Orchestrator, AIGuard, Lab report 연결을 확인 | Runtime regression comparability나 CI artifact bundle completeness를 검증하지 않음 |
 | Runtime Intelligence artifact smoke | committed Orchestrator -> EdgeEnv -> AIGuard -> Lab bundle의 report rows, owner boundary, CI artifact shape를 검증 | production observability, GitLab control plane, live remote execution을 증명하지 않음 |
+| Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh`로 fixture-only device-local preservation bundle을 registry까지 재생성하고 `Operation Quick Scan Summary`, `Reviewer operation quick scan`, queue/deadline/fallback marker를 확인 | live Jetson 실행, thermal endurance validation, production scheduling, Lab ownership 이전을 증명하지 않음 |
 
-둘 다 local-first smoke입니다. Orchestrator나 AIGuard가 final deployment
+세 gate 모두 local-first smoke입니다. Orchestrator나 AIGuard가 final deployment
 decision owner가 되지 않습니다.
+`smoke_quick_scan_registry_summary.sh` 역시 Jetson이 필요 없는 fixture-only
+gate이며, reviewer navigation metadata와 Lab-owner boundary wording이 registry에
+남는지만 좁게 확인합니다.
 
 ## Jetson evidence 해석
 
