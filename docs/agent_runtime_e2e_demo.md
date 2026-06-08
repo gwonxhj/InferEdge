@@ -69,7 +69,7 @@ configured output directory:
 |---|---|
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
 | `edgeenv_runtime_regression.md` / `.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
-| `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, preserved `operation_risk_summary` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |
+| `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, promoted `Operation quick scan` reviewer focus, preserved `operation_risk_summary` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |
 | `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows, Lab ownership wording, and the `Validated Duration Traceability` summary with `duration_handoff_alignment` reviewer context |
 | `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape without making CI a production control plane |
 | `aiguard_edgeenv_handoff_alignment.json` / `.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
@@ -655,7 +655,7 @@ Lab Markdown report rendered `Runtime Intelligence EdgeEnv Preservation`, so
 the EdgeEnv run ID can be traced from the navigation index into Lab-owned
 deployment context.
 The index also carries the Lab report marker contract vocabulary, including
-`Reviewer operation quick scan`, `lab_expected_report_markers`,
+`Operation quick scan`, `Reviewer operation quick scan`, `lab_expected_report_markers`,
 `lab_report_contract_context`, and
 `aiguard_validates_expected_report_markers=false`. These are reviewer
 navigation markers only; they do not make the entrypoint, AIGuard, or CI the

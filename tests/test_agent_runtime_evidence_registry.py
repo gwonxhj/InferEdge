@@ -57,6 +57,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "entrypoint_requested_frames" in smoke_script
     assert "duration_scope_label" in smoke_script
     assert "source=entrypoint_requested_frames" in smoke_script
+    assert "lab_report_operation_quick_scan_focus_marker" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
@@ -80,6 +81,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "class=short_96_frame_class, frames=96" in smoke_script
     assert "scope_label=source=entrypoint_requested_frames" in smoke_script
     assert "Orchestrator queue/deadline/fallback markers" in smoke_script
+    assert "Operation quick scan" in smoke_script
     assert "Reviewer operation quick scan" in smoke_script
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in smoke_script
     assert "max_total_queue_depth=7" in smoke_script
@@ -238,6 +240,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "duration_source" in text
         assert "duration_scope_label" in text
         assert "compact queue/deadline/fallback operation markers" in text
+        assert "Operation quick scan" in text
         assert "Reviewer operation quick scan" in text
         assert "Orchestrator queue/deadline/fallback markers" in text
         assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in text
@@ -785,6 +788,9 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "resource=resource_snapshot_fixture+tegrastats_timeline, "
         "queue=max_total_queue_depth_exceeded_overload_threshold"
     )
+    assert edgeenv_summary["lab_report_operation_quick_scan_focus_marker"] == (
+        "Operation quick scan"
+    )
     assert edgeenv_summary["lab_report_operation_quick_scan_marker"] == (
         "Reviewer operation quick scan"
     )
@@ -794,6 +800,9 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "preservation=identity=jetson_device_local_preservation, "
         "path=device_local_starter, run=run-edgeenv-runtime-operation"
     )
+    assert "Operation quick scan" in edgeenv_summary[
+        "lab_expected_report_markers"
+    ]
     assert "Reviewer operation quick scan" in edgeenv_summary[
         "lab_expected_report_markers"
     ]
@@ -818,6 +827,8 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "duration_scope_label" in markdown
     assert "lab_report_preservation_section_present" in markdown
     assert "lab_report_preservation_run_id" in markdown
+    assert "lab_report_operation_quick_scan_focus_marker" in markdown
+    assert "Operation quick scan" in markdown
     assert "lab_report_operation_quick_scan_marker" in markdown
     assert "Reviewer operation quick scan" in markdown
     assert "lab_report_operation_quick_scan_label" in markdown
