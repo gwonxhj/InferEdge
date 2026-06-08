@@ -696,6 +696,36 @@ decision owner or a production telemetry database. The latest replay also
 confirms the real-device path still renders the preservation identity/details
 and reviewer duration label rows now gated by `scripts/smoke_all.sh`.
 
+The same 96-frame EdgeEnv preservation path was replayed again on Jetson after
+the Runtime Intelligence quick-scan marker gate landed. This run verifies that
+the live device-local bundle carries the Lab report marker contract vocabulary
+inside `00_evidence_index.*`.
+
+| Field | Jetson quick-scan marker replay |
+|---|---:|
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
+| Entrypoint commit | `16a2ef0` |
+| Operation path | `device_local_starter` |
+| Reviewer operation marker | `Reviewer operation quick scan` |
+| Reviewer operation label | `queue_pressure_reason=queue_backlog_threshold_exceeded; max_total_queue_depth=6; deadline_missed_count=50; fallback_count=93` |
+| Report marker context | `lab_report_contract_context` |
+| AIGuard marker ownership | `aiguard_validates_expected_report_markers=false` |
+| Frames | 96 |
+| Duration label | `short 96-frame-class replay (96 frames)` |
+| Max queue depth | 6 |
+| Dropped / fallback count | 93 / 93 |
+| Deadline missed count | 50 |
+| Parsed `tegrastats` samples | 9 |
+| Device-local / producer events | 99 / 99 |
+| EdgeEnv run ID | `run-20260608-105430-f8841ef4` |
+| Lab preservation section | present |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+This record is a live marker-preservation smoke for reviewer navigation. It
+does not change Lab ownership, EdgeEnv comparability ownership, AIGuard
+diagnosis ownership, or the starter-only boundary of the device-local path.
+
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:
 

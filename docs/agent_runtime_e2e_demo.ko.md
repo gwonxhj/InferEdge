@@ -78,6 +78,34 @@ Jetson 작업이 필요한 경우는 `--capture-tegrastats`,
 `demo_jetson_5min_sustained.sh`, `check_jetson_sustained_readiness.sh`처럼
 실제 device telemetry 또는 SSH/device-local input 상태를 확인해야 하는 경로입니다.
 
+## 최근 Jetson quick-scan marker 재현
+
+2026-06-08에 같은 96-frame device-local EdgeEnv preservation 경로를 Jetson에서
+다시 실행했습니다. 목적은 새 성능 수치 갱신이 아니라, `00_evidence_index.*`
+안에 Lab report marker contract가 live device-local bundle에서도 보존되는지
+확인하는 것입니다.
+
+| 항목 | 값 |
+|---|---:|
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
+| Entrypoint commit | `16a2ef0` |
+| Operation path | `device_local_starter` |
+| Reviewer operation marker | `Reviewer operation quick scan` |
+| Quick-scan label | `queue_pressure_reason=queue_backlog_threshold_exceeded; max_total_queue_depth=6; deadline_missed_count=50; fallback_count=93` |
+| Report marker context | `lab_report_contract_context` |
+| AIGuard marker ownership | `aiguard_validates_expected_report_markers=false` |
+| Frames | 96 |
+| Duration label | `short 96-frame-class replay (96 frames)` |
+| EdgeEnv run ID | `run-20260608-105430-f8841ef4` |
+| Lab preservation section | present |
+| AIGuard verdict | `blocked` / `high` |
+| Lab decision | `blocked` |
+
+이 기록은 reviewer navigation marker 보존 smoke입니다. Lab final decision
+ownership, EdgeEnv comparability ownership, AIGuard deterministic diagnosis
+ownership을 바꾸지 않으며, device-local starter를 production operation으로
+격상하지 않습니다.
+
 ## Scope Boundary
 
 포함:
