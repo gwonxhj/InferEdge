@@ -744,6 +744,7 @@ context without opening each full report first. The older documented
 | Parsed `tegrastats` samples | `9` and `309` |
 | EdgeEnv run IDs | `run-20260608-105430-f8841ef4`, `run-20260608-110905-0d126ea1` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| Operation quick-scan registry section | `Operation Quick Scan Summary` before `## Runs` |
 | Operation quick-scan registry column | `Reviewer operation quick scan: queue_pressure_reason=...; max_total_queue_depth=...; deadline_missed_count=...; fallback_count=...` |
 | AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
 
@@ -753,8 +754,9 @@ both as Smoke/Starter evidence, not thermal endurance validation or production
 runtime operation proof. The `Operation Quick Scan` column mirrors Lab report
 marker context from each run's EdgeEnv summary for reviewer navigation only; it
 does not make the registry a Lab report owner. The regenerated Markdown registry
-now shows both rows with `Reviewer operation quick scan` labels before the
-longer EdgeEnv cell, so reviewers can identify queue/deadline/fallback pressure
+now shows both rows in `Operation Quick Scan Summary` before the full `## Runs`
+table, and keeps the detailed `Reviewer operation quick scan` labels before the
+longer EdgeEnv cell. Reviewers can identify queue/deadline/fallback pressure
 without opening each bundle first.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
@@ -792,8 +794,9 @@ execution proof. It also preserves `production_remote_execution` and
 `operation_boundary` when Orchestrator emits them so the starter boundary stays
 visible in the navigation layer. When EdgeEnv preservation evidence carries
 Lab report quick-scan marker context, the registry also renders an
-`Operation Quick Scan` column so reviewers can see the compact
-queue/deadline/fallback label before opening the full run report. The entrypoint smoke now fails if the
+`Operation Quick Scan Summary` before the detailed run table and keeps the
+same compact label in the `Operation Quick Scan` column, so reviewers can see
+queue/deadline/fallback pressure before opening the full run report. The entrypoint smoke now fails if the
 downstream AIGuard, Lab, or evidence-index artifacts drop the compact remote
 runtime event role or starter-only boundary marker.
 For a local-only gate that does not start the fallback HTTP worker, run

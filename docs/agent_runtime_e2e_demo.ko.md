@@ -123,6 +123,7 @@ entrypoint branch에서 3600-frame replay를 새로 생성해 비교했습니다
 | Parsed `tegrastats` samples | `9` / `309` |
 | EdgeEnv run IDs | `run-20260608-105430-f8841ef4`, `run-20260608-110905-0d126ea1` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| Operation quick-scan registry section | `## Runs` 앞의 `Operation Quick Scan Summary` |
 | Operation quick-scan registry column | `Reviewer operation quick scan: queue_pressure_reason=...; max_total_queue_depth=...; deadline_missed_count=...; fallback_count=...` |
 | AIGuard / Lab status | 두 row 모두 `blocked/high`, `blocked` |
 
@@ -133,9 +134,10 @@ runtime operation proof로 격상하지 않습니다. `Operation Quick Scan` col
 각 run의 EdgeEnv summary에 보존된 Lab report marker context를 reviewer
 navigation 용도로만 보여주며, registry가 Lab report owner가 되는 것은
 아닙니다. 재생성된 Markdown registry는 두 row 모두에서
-`Reviewer operation quick scan` label을 긴 EdgeEnv cell 앞에 보여주므로,
-각 bundle을 열기 전에 queue/deadline/fallback pressure를 먼저 식별할 수
-있습니다.
+`Operation Quick Scan Summary`를 full `## Runs` table보다 먼저 보여주고,
+긴 EdgeEnv cell 앞의 `Operation Quick Scan` column에도 같은 compact label을
+유지합니다. 그래서 각 bundle을 열기 전에 queue/deadline/fallback pressure를
+먼저 식별할 수 있습니다.
 
 ## Scope Boundary
 
