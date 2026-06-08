@@ -95,6 +95,7 @@ InferEdgeOrchestrator operation context
 | YOLOv8 subset validation | 10 images, 89 boxes, simplified mAP@50 0.1410, precision 0.2941, recall 0.1685 | Lab evaluation evidence |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
 | Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
+| Jetson operation quick-scan registry | 96-frame and 5-minute rows with `Operation Quick Scan Summary`, queue/deadline/fallback markers, and Lab preservation context | [`Latest Jetson Quick-Scan Registry`](docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry) ([한국어: 최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)) |
 
 The Jetson records prove local evidence preservation and runtime-operation
 handoff. They do not claim decoded YOLO accuracy, live camera service,
@@ -130,7 +131,7 @@ The smoke checks:
 | Duration traceability | `Validated Duration Traceability`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, `runtime_intelligence_ci_artifact_gate_summary.md` |
 | Replay scope | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Duration Comparison Summary` |
 | Jetson/device-local preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
-| Operation pressure | `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth`, `max_total_queue_depth=7`, `fallback_count`, `deadline_missed_count` |
+| Operation pressure | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth`, `max_total_queue_depth=7`, `fallback_count`, `deadline_missed_count` |
 | AIGuard traceability | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
 | Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`, `remote_execution_recovered_by_fallback` |
 
@@ -198,6 +199,7 @@ and [Pipeline Map](docs/pipeline_map.md)
 | 30-second portfolio narrative | [Portfolio Summary](docs/portfolio_summary.md) ([한국어: 포트폴리오 요약](docs/portfolio_summary.ko.md)) |
 | Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
 | Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)) |
+| Latest Jetson quick-scan registry summary | [`Operation Quick Scan Summary`](docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry) ([한국어: 최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)) |
 | Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) ([한국어: 인터뷰 내러티브](docs/interview_narrative.ko.md)) |
 | Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
 | Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)), [`HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
