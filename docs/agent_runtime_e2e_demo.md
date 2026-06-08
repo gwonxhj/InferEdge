@@ -736,8 +736,8 @@ context without opening each full report first. The older documented
 |---|---:|
 | 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
 | 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z` |
-| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_operation_column_20260608T112717Z.md` |
-| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_operation_column_20260608T112717Z.json` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` and `5-minute-class sustained replay (3600 frames)` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
@@ -827,20 +827,15 @@ For the latest Jetson pair, run the registry builder on the Jetson because the
 generated bundles are stored under that device's `/tmp`:
 
 ```bash
-python3 scripts/build_agent_runtime_evidence_index.py \
-  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
-  --requested-frames 3600
-
 python3 scripts/build_agent_runtime_run_registry.py \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_duration_96_20260531T102218Z \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_edgeenv_20260531T091654Z \
-  --output-json /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.json \
-  --output-md /tmp/inferedge_agent_runtime_jetson_duration_compare_registry.md
+  --run-dir /tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z \
+  --output-json /tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.json \
+  --output-md /tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.md
 ```
 
-The first command refreshes the older 5-minute bundle index with the current
-duration-label logic. The generated registry keeps both rows under the same
-navigation table while the `Duration Label` column separates
+The generated registry keeps both rows under the same navigation table while
+the `Duration Label` column separates
 `short 96-frame-class replay (96 frames)` from
 `5-minute-class sustained replay (3600 frames)`. This comparison is for review
 navigation and evidence traceability; it does not upgrade either bundle to
