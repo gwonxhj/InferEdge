@@ -696,6 +696,8 @@ decision owner or a production telemetry database. The latest replay also
 confirms the real-device path still renders the preservation identity/details
 and reviewer duration label rows now gated by `scripts/smoke_all.sh`.
 
+### Latest Jetson Quick-Scan Registry
+
 The same 96-frame EdgeEnv preservation path was replayed again on Jetson after
 the Runtime Intelligence quick-scan marker gate landed. This run verifies that
 the live device-local bundle carries the Lab report marker contract vocabulary
