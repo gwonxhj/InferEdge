@@ -123,12 +123,16 @@ entrypoint branch에서 3600-frame replay를 새로 생성해 비교했습니다
 | Parsed `tegrastats` samples | `9` / `309` |
 | EdgeEnv run IDs | `run-20260608-105430-f8841ef4`, `run-20260608-110905-0d126ea1` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| Operation quick-scan registry column | `Reviewer operation quick scan: queue_pressure_reason=...; max_total_queue_depth=...; deadline_missed_count=...; fallback_count=...` |
 | AIGuard / Lab status | 두 row 모두 `blocked/high`, `blocked` |
 
 이 registry는 local-first reviewer navigation artifact입니다. short replay와
 5-minute-class replay를 duration metadata로 분리해 보여주지만, 둘 다
 Smoke/Starter evidence이며 thermal endurance validation이나 production
-runtime operation proof로 격상하지 않습니다.
+runtime operation proof로 격상하지 않습니다. `Operation Quick Scan` column은
+각 run의 EdgeEnv summary에 보존된 Lab report marker context를 reviewer
+navigation 용도로만 보여주며, registry가 Lab report owner가 되는 것은
+아닙니다.
 
 ## Scope Boundary
 

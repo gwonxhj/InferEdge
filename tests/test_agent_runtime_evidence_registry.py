@@ -997,6 +997,18 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                 "has_runtime_operation_summary": True,
                 "runtime_operation_health_reason": "timeout_threshold_exceeded",
                 "lab_report_marker": "Runtime Intelligence EdgeEnv Preservation",
+                "lab_report_operation_quick_scan_marker": (
+                    "Reviewer operation quick scan"
+                ),
+                "lab_report_operation_quick_scan_label": (
+                    "queue_pressure_reason="
+                    "max_total_queue_depth_exceeded_overload_threshold; "
+                    "max_total_queue_depth=5; deadline_missed_count=0; "
+                    "fallback_count=1; preservation="
+                    "identity=jetson_device_local_preservation, "
+                    "path=device_local_starter, "
+                    "run=run-edgeenv-runtime-operation"
+                ),
                 "preservation_identity_label": (
                     "identity=jetson_device_local_preservation, "
                     "path=device_local_starter, run=run-edgeenv-runtime-operation"
@@ -1057,6 +1069,15 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["edgeenv_lab_report_marker"] == (
         "Runtime Intelligence EdgeEnv Preservation"
     )
+    assert run["edgeenv_lab_report_operation_quick_scan_marker"] == (
+        "Reviewer operation quick scan"
+    )
+    assert run["edgeenv_lab_report_operation_quick_scan_label"] == (
+        "queue_pressure_reason=max_total_queue_depth_exceeded_overload_threshold; "
+        "max_total_queue_depth=5; deadline_missed_count=0; fallback_count=1; "
+        "preservation=identity=jetson_device_local_preservation, "
+        "path=device_local_starter, run=run-edgeenv-runtime-operation"
+    )
     assert run["edgeenv_preservation_identity_label"] == (
         "identity=jetson_device_local_preservation, "
         "path=device_local_starter, run=run-edgeenv-runtime-operation"
@@ -1072,6 +1093,12 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     markdown = md_path.read_text(encoding="utf-8")
     assert "lab_preservation=present" in markdown
     assert "lab_context=present" in markdown
+    assert "Operation Quick Scan" in markdown
+    assert "Reviewer operation quick scan" in markdown
+    assert (
+        "queue_pressure_reason=max_total_queue_depth_exceeded_overload_threshold"
+        in markdown
+    )
     assert "identity=jetson_device_local_preservation" in markdown
     assert "sources=image_file+fastapi_request_fixture+resource_snapshot_fixture" in markdown
     assert "quick_starter_smoke" in markdown
@@ -1082,6 +1109,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "Duration Label" in markdown
     assert "Duration Sources" in markdown
     assert "reviewer-facing navigation metadata" in markdown
+    assert "Lab report marker context" in markdown
+    assert "does not make this registry a Lab report owner" in markdown
 
 
 def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path) -> None:
