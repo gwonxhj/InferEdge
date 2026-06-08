@@ -329,6 +329,32 @@ def duration_summary_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
     )
 
 
+def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    rows = []
+    for run in runs:
+        marker = run.get("edgeenv_lab_report_operation_quick_scan_marker")
+        label = run.get("edgeenv_lab_report_operation_quick_scan_label")
+        if all(value in (None, "", "unknown") for value in (marker, label)):
+            continue
+        rows.append(
+            {
+                "run_id": run.get("run_id", "unknown"),
+                "duration_label": run.get("duration_label", "unknown duration"),
+                "frames": run.get("frames", "unknown"),
+                "operation_path": run.get("operation_path", "unknown"),
+                "queue_reason": run.get("queue_pressure_reason", "unknown"),
+                "queue_max": run.get("max_total_queue_depth", "unknown"),
+                "deadline_missed": run.get("deadline_missed_count", "unknown"),
+                "fallback": run.get("fallback_count", "unknown"),
+                "quick_scan": _operation_quick_scan_cell(run),
+                "lab_decision": run.get("lab_decision", "unknown"),
+                "guard": f"{md_value(run.get('guard_verdict'))}/{md_value(run.get('severity'))}",
+                "min_frame": frame_sort_value(run.get("frames", "unknown")),
+            }
+        )
+    return sorted(rows, key=lambda row: (row["min_frame"], row["run_id"]))
+
+
 def write_markdown(registry: dict[str, Any], path: Path) -> None:
     lines = [
         "# Agent Runtime Run Registry",
@@ -363,6 +389,46 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             )
             + " |"
         )
+
+    quick_scan_rows = operation_quick_scan_rows(registry["runs"])
+    lines.extend(
+        [
+            "",
+            "## Operation Quick Scan Summary",
+            "",
+            "This section highlights the Lab report quick-scan marker context preserved through EdgeEnv before the detailed run table. It is reviewer navigation metadata only and does not make the registry a Lab report owner.",
+            "",
+        ]
+    )
+    if quick_scan_rows:
+        lines.extend(
+            [
+                "| Run | Duration Label | Frames | Operation Path | Queue Reason | Queue Max | Deadline Missed | Fallback | Quick Scan | Lab Decision | Guard |",
+                "|---|---|---:|---|---|---:|---:|---:|---|---|---|",
+            ]
+        )
+        for row in quick_scan_rows:
+            lines.append(
+                "| "
+                + " | ".join(
+                    [
+                        md_value(row["run_id"]),
+                        md_value(row["duration_label"]),
+                        md_value(row["frames"]),
+                        md_value(row["operation_path"]),
+                        md_value(row["queue_reason"]),
+                        md_value(row["queue_max"]),
+                        md_value(row["deadline_missed"]),
+                        md_value(row["fallback"]),
+                        md_value(row["quick_scan"]),
+                        md_value(row["lab_decision"]),
+                        md_value(row["guard"]),
+                    ]
+                )
+                + " |"
+            )
+    else:
+        lines.append("No operation quick-scan marker context was found in the indexed runs.")
 
     lines.extend(
         [

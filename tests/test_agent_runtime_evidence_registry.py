@@ -1106,8 +1106,20 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "entrypoint_requested_frames" in markdown
     assert "source=entrypoint_requested_frames" in markdown
     assert "## Duration Comparison Summary" in markdown
+    assert "## Operation Quick Scan Summary" in markdown
+    assert markdown.index("## Operation Quick Scan Summary") < markdown.index(
+        "## Runs"
+    )
     assert "Duration Label" in markdown
     assert "Duration Sources" in markdown
+    assert "Quick Scan" in markdown
+    assert "Queue Max" in markdown
+    assert "Deadline Missed" in markdown
+    assert (
+        "| device_local_override | quick starter smoke (4 frames) | 4 | "
+        "device_local_starter | max_total_queue_depth_exceeded_overload_threshold | "
+        "5 | 0 | 1 | Reviewer operation quick scan:"
+    ) in markdown
     assert "reviewer-facing navigation metadata" in markdown
     assert "Lab report marker context" in markdown
     assert "does not make this registry a Lab report owner" in markdown
@@ -1181,6 +1193,10 @@ def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path)
     markdown = md_path.read_text(encoding="utf-8")
 
     assert markdown.index("## Duration Comparison Summary") < markdown.index("## Runs")
+    assert markdown.index("## Operation Quick Scan Summary") < markdown.index(
+        "## Runs"
+    )
+    assert "No operation quick-scan marker context was found" in markdown
     assert (
         "| short 96-frame-class replay (96 frames) | short_96_frame_class | 1 | "
         "96 | entrypoint_requested_frames | device_local_starter | review | pass/low |"
