@@ -54,11 +54,13 @@ different parts of the ecosystem.
 |---|---|---|---|
 | Agent runtime operation smoke | `bash scripts/demo_agent_runtime_e2e.sh` or the Agent Runtime EdgeEnv stage inside `bash scripts/smoke_all.sh` | File-based agent manifest, Runtime `result.agent`, Orchestrator operation evidence, AIGuard runtime warning evidence, Lab agent-runtime report, optional remote-dispatch starter markers, optional EdgeEnv run preservation identity/details labels, and duration-class navigation labels are connected in one generated bundle | Runtime regression comparability, telemetry-history replay, or CI artifact bundle completeness |
 | Runtime Intelligence artifact smoke | `bash scripts/smoke_all.sh` or Lab's `bash scripts/smoke_runtime_intelligence_chain.sh --output-dir <dir>` | The committed Orchestrator -> EdgeEnv -> AIGuard -> Lab Runtime Intelligence bundle keeps manifest alignment, telemetry-history coverage, Runtime Intelligence Risk Summary rows, EdgeEnv-preserved `operation_risk_summary` navigation context, AIGuard `edgeenv_orchestrator_operation_risk_summary` evidence, remote-dispatch boundary rows, report gates, and optional CI artifact outputs | Production observability, GitLab as a control plane, live remote execution, or a production scheduler |
+| Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh` | A fixture-only device-local preservation bundle rebuilds the evidence index and run registry with `Operation Quick Scan Summary` before `## Runs`, `Reviewer operation quick scan`, queue/deadline/fallback markers, and Lab-owner boundary wording | Live Jetson execution, thermal endurance validation, production scheduling, or Lab ownership transfer |
 
-Keep both gates local-first. The agent runtime smoke is the operational
+Keep these gates local-first. The agent runtime smoke is the operational
 scenario replay; the Runtime Intelligence smoke is the regression/anomaly
-artifact-bundle gate. Neither path makes Orchestrator or AIGuard the final
-deployment decision owner; Lab remains the report and decision owner.
+artifact-bundle gate; the quick-scan registry smoke is a reviewer-navigation
+marker gate. No path makes Orchestrator or AIGuard the final deployment
+decision owner; Lab remains the report and decision owner.
 
 Runtime Intelligence smoke writes these reviewer-facing artifacts under the
 configured output directory:
@@ -806,6 +808,14 @@ For a local-only gate that does not start the fallback HTTP worker, run
 remote fallback bundle, rebuilds the evidence index and registry, and requires
 `aiguard=remote_execution_recovered_by_fallback` plus
 `lab=Remote fallback starter evidence` in the registry Markdown.
+
+For a fixture-only quick-scan registry gate, run
+`bash scripts/smoke_quick_scan_registry_summary.sh`. It creates a synthetic
+device-local EdgeEnv preservation bundle, rebuilds the evidence index and run
+registry, and requires `Operation Quick Scan Summary` before `## Runs` with
+`Reviewer operation quick scan`, queue/deadline/fallback markers, reviewer
+navigation metadata, and the Lab-owner boundary wording. This gate does not
+need a live Jetson or Orchestrator worker.
 
 For a focused runtime-operation comparison, generate one device-local
 probe/process bundle and one remote fallback bundle, then build a registry from

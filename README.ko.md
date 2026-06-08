@@ -35,6 +35,10 @@ bash scripts/smoke_all.sh
 확인합니다. 이는 reviewer-facing evidence와 contract boundary 검증이며,
 production observability platform 또는 GitLab control plane이 아닙니다.
 
+`bash scripts/smoke_quick_scan_registry_summary.sh`는 Jetson 없이 committed
+fixture만으로 `Operation Quick Scan Summary` registry marker와
+`Reviewer operation quick scan` navigation row를 확인하는 좁은 gate입니다.
+
 ## 핵심 흐름
 
 ```text

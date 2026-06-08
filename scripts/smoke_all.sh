@@ -28,6 +28,8 @@ Environment:
                        Override Runtime Intelligence smoke output directory.
   INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT
                        Override fixture-only remote fallback registry smoke output directory.
+  INFEREDGE_QUICK_SCAN_REGISTRY_SMOKE_OUT
+                       Override fixture-only operation quick-scan registry smoke output directory.
   INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT
                        Override Agent Runtime EdgeEnv preservation smoke output directory.
 USAGE
@@ -208,9 +210,11 @@ ORCHESTRATOR="$(require_repo InferEdgeOrchestrator)"
 ENV_REPO="$(require_repo InferEdgeEnv)"
 RUNTIME_INTELLIGENCE_SMOKE_OUT="${INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT:-/tmp/inferedge_runtime_intelligence_chain_smoke}"
 REMOTE_FALLBACK_REGISTRY_SMOKE_OUT="${INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT:-/tmp/inferedge_remote_fallback_registry_marker_smoke}"
+QUICK_SCAN_REGISTRY_SMOKE_OUT="${INFEREDGE_QUICK_SCAN_REGISTRY_SMOKE_OUT:-/tmp/inferedge_quick_scan_registry_summary_smoke}"
 AGENT_RUNTIME_EDGEENV_SMOKE_OUT="${INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT:-/tmp/inferedge_agent_runtime_edgeenv_preservation_smoke}"
 
 run_step "Remote fallback registry marker smoke" bash "$ROOT_DIR/scripts/smoke_remote_fallback_registry_marker.sh" --output-dir "$REMOTE_FALLBACK_REGISTRY_SMOKE_OUT"
+run_step "Operation quick-scan registry summary smoke" bash "$ROOT_DIR/scripts/smoke_quick_scan_registry_summary.sh" --output-dir "$QUICK_SCAN_REGISTRY_SMOKE_OUT"
 
 run_step "Forge tests" bash -lc "cd '$FORGE' && poetry run pytest -q"
 run_step "Forge manifest validation" bash -lc "cd '$FORGE' && poetry run python -m inferedgeforge.cli validate-manifest --manifest tests/fixtures/runtime_handoff_manifest.json"

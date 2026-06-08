@@ -88,6 +88,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
     assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
     assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script
+    assert "Operation quick-scan registry summary smoke" in smoke_script
+    assert "smoke_quick_scan_registry_summary.sh" in smoke_script
+    assert "INFEREDGE_QUICK_SCAN_REGISTRY_SMOKE_OUT" in smoke_script
     assert "Lab's local-first Runtime Intelligence artifact" in readme
     assert "remote-dispatch boundary rows" in readme
     assert "Runtime replay duration scope" in readme
@@ -132,6 +135,36 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     assert "Duration Comparison Summary" in demo_doc
     assert "source=entrypoint_requested_frames" in script
     assert "Duration Sources" in script
+
+
+def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
+    script = (ROOT / "scripts" / "smoke_quick_scan_registry_summary.sh").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
+        encoding="utf-8"
+    )
+    interview = (ROOT / "docs" / "interview_narrative.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "fixture-only device-local EdgeEnv preservation bundle" in script
+    assert "build_agent_runtime_evidence_index.py" in script
+    assert "build_agent_runtime_run_registry.py" in script
+    assert "Operation Quick Scan Summary" in script
+    assert "Reviewer operation quick scan" in script
+    assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in script
+    assert "max_total_queue_depth=6" in script
+    assert "deadline_missed_count=50" in script
+    assert "fallback_count=93" in script
+    assert "reviewer navigation metadata" in script
+    assert "does not make the registry a Lab report owner" in script
+    assert "Operation Quick Scan Summary must appear before ## Runs" in script
+    assert "Quick-scan registry summary smoke: pass" in script
+    for text in (readme, portfolio, interview):
+        assert "Operation Quick Scan Summary" in text
+        assert "quick-scan registry" in text
 
 
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
