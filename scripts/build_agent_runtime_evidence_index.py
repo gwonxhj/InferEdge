@@ -75,12 +75,14 @@ KNOWN_OUTPUTS = [
 ]
 
 LAB_EDGEENV_PRESERVATION_MARKER = "Runtime Intelligence EdgeEnv Preservation"
+LAB_OPERATION_QUICK_SCAN_FOCUS_MARKER = "Operation quick scan"
 LAB_OPERATION_QUICK_SCAN_MARKER = "Reviewer operation quick scan"
 LAB_REPORT_MARKER_CONTEXT_ROLE = "lab_report_contract_context"
 LAB_RUNTIME_INTELLIGENCE_REPORT_MARKERS = [
     "Runtime Intelligence Risk Summary",
     "Runtime replay duration scope",
     "Orchestrator operation feed context",
+    LAB_OPERATION_QUICK_SCAN_FOCUS_MARKER,
     LAB_OPERATION_QUICK_SCAN_MARKER,
     "Orchestrator task event rollup",
     "Lab EdgeEnv preservation context",
@@ -1038,6 +1040,9 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 "lab",
             ),
         }
+        edgeenv_summary["lab_report_operation_quick_scan_focus_marker"] = (
+            LAB_OPERATION_QUICK_SCAN_FOCUS_MARKER
+        )
         edgeenv_summary["lab_report_operation_quick_scan_marker"] = (
             LAB_OPERATION_QUICK_SCAN_MARKER
         )
@@ -1269,6 +1274,7 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| lab_report_preservation_context_present | {md_value(edgeenv['lab_report_preservation_context_present'])} |",
                 f"| lab_report_preservation_run_id | {md_value(edgeenv['lab_report_preservation_run_id'])} |",
                 f"| lab_report_decision_owner | {md_value(edgeenv['lab_report_decision_owner'])} |",
+                f"| lab_report_operation_quick_scan_focus_marker | {md_value(edgeenv['lab_report_operation_quick_scan_focus_marker'])} |",
                 f"| lab_report_operation_quick_scan_marker | {md_value(edgeenv['lab_report_operation_quick_scan_marker'])} |",
                 f"| lab_report_operation_quick_scan_label | {md_value(edgeenv['lab_report_operation_quick_scan_label'])} |",
                 f"| lab_expected_report_markers | {md_value(edgeenv['lab_expected_report_markers'])} |",

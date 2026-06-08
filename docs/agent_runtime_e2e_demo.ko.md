@@ -42,7 +42,7 @@ local run evidence / comparability / registry context를 보존합니다.
 
 | Output | 용도 |
 |---|---|
-| `00_evidence_index.json` / `.md` | generated bundle navigation index. `Reviewer operation quick scan`, `lab_expected_report_markers`, `lab_report_contract_context` 같은 Lab report marker contract를 reviewer navigation context로 보존 |
+| `00_evidence_index.json` / `.md` | generated bundle navigation index. `Operation quick scan`, `Reviewer operation quick scan`, `lab_expected_report_markers`, `lab_report_contract_context` 같은 Lab report marker contract를 reviewer navigation context로 보존 |
 | `01_forge_agent_manifest_vision.json` | Forge agent manifest handoff example |
 | `02_runtime_result_agent.json` | Runtime result with backward-compatible `agent` block |
 | `03_orchestration_summary.json` | Orchestrator scheduling / queue / policy evidence |
