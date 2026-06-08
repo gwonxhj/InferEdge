@@ -25,6 +25,7 @@ decision으로 연결하는 local-first Edge AI inference validation pipeline입
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
+| Jetson operation quick-scan registry | 96-frame / 5-minute rows, `Operation Quick Scan Summary`, queue/deadline/fallback marker. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 ## 역할 분리
 
@@ -69,7 +70,7 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 | Runtime Intelligence artifact gate | Cross-repo smoke, `Orchestrator -> EdgeEnv -> AIGuard -> Lab`, `directly gated Jetson preservation and remote fallback Lab markers` |
 | Preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
 | Duration | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Validated Duration Traceability`, `runtime_intelligence_ci_artifact_gate_summary.md`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label` |
-| Operation | `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` |
+| Operation | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` |
 | AIGuard / Lab | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
 | Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence` |
 
