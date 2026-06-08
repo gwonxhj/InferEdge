@@ -736,8 +736,8 @@ context without opening each full report first. The older documented
 |---|---:|
 | 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
 | 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z` |
-| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_20260608T110341Z.md` |
-| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_20260608T110341Z.json` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_operation_column_20260608T112717Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_operation_column_20260608T112717Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` and `5-minute-class sustained replay (3600 frames)` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
@@ -752,7 +752,10 @@ the short replay and 5-minute-class replay by duration metadata while preserving
 both as Smoke/Starter evidence, not thermal endurance validation or production
 runtime operation proof. The `Operation Quick Scan` column mirrors Lab report
 marker context from each run's EdgeEnv summary for reviewer navigation only; it
-does not make the registry a Lab report owner.
+does not make the registry a Lab report owner. The regenerated Markdown registry
+now shows both rows with `Reviewer operation quick scan` labels before the
+longer EdgeEnv cell, so reviewers can identify queue/deadline/fallback pressure
+without opening each bundle first.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:
