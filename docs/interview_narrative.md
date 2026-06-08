@@ -34,6 +34,7 @@ generation, deterministic warnings, and deployment decision ownership.
 | Speedup | about 4.51x FPS over ONNX Runtime CPU | Backend comparison evidence, not a universal benchmark claim |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 45.5 C, 1000 MB RAM | ONNX probe + telemetry handoff evidence |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
+| Jetson quick-scan registry | 96-frame and 5-minute rows with `Operation Quick Scan Summary` | Reviewer navigation for queue/deadline/fallback pressure, not production control evidence |
 
 ## Architecture Explanation
 
@@ -104,6 +105,8 @@ Good phrasing:
 - "The Lab report preserves the risk context and remains the decision owner."
 - "The 5-minute-class replay is sustained Smoke/Starter evidence, not thermal
   endurance validation."
+- "The quick-scan registry lets reviewers see queue/deadline/fallback pressure
+  before opening the full report."
 
 Avoid phrasing:
 
@@ -151,6 +154,7 @@ build provenance
 -> comparison/evaluation
 -> deterministic warning evidence
 -> local registry / comparability context
+-> reviewer quick-scan registry for queue/deadline/fallback pressure
 -> operation-risk report context
 -> Lab-owned deployment decision
 ```
