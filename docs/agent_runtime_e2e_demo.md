@@ -726,6 +726,31 @@ This record is a live marker-preservation smoke for reviewer navigation. It
 does not change Lab ownership, EdgeEnv comparability ownership, AIGuard
 diagnosis ownership, or the starter-only boundary of the device-local path.
 
+The 96-frame quick-scan bundle was then indexed together with a fresh
+5-minute-class Jetson replay so reviewers can compare duration and operation
+context without opening each full report first. The older documented
+5-minute-class bundle lived under Jetson `/tmp`, so the comparison uses a new
+3600-frame replay generated on the same current entrypoint branch.
+
+| Field | Jetson duration registry replay |
+|---|---:|
+| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
+| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_20260608T110341Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_20260608T110341Z.json` |
+| Duration rows | `short 96-frame-class replay (96 frames)` and `5-minute-class sustained replay (3600 frames)` |
+| 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
+| 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
+| Parsed `tegrastats` samples | `9` and `309` |
+| EdgeEnv run IDs | `run-20260608-105430-f8841ef4`, `run-20260608-110905-0d126ea1` |
+| Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
+
+This registry is still a local-first review navigation artifact. It separates
+the short replay and 5-minute-class replay by duration metadata while preserving
+both as Smoke/Starter evidence, not thermal endurance validation or production
+runtime operation proof.
+
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:
 

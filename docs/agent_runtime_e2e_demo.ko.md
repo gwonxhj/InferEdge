@@ -106,6 +106,30 @@ ownership, EdgeEnv comparability ownership, AIGuard deterministic diagnosis
 ownership을 바꾸지 않으며, device-local starter를 production operation으로
 격상하지 않습니다.
 
+같은 96-frame quick-scan bundle을 새 5-minute-class Jetson replay와 함께
+registry로 묶어 duration / operation context를 한 테이블에서 비교했습니다.
+기존 5-minute-class bundle은 Jetson `/tmp`에 있던 산출물이므로, 현재
+entrypoint branch에서 3600-frame replay를 새로 생성해 비교했습니다.
+
+| 항목 | 값 |
+|---|---:|
+| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
+| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_20260608T110341Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_20260608T110341Z.json` |
+| Duration rows | `short 96-frame-class replay (96 frames)` / `5-minute-class sustained replay (3600 frames)` |
+| 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
+| 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
+| Parsed `tegrastats` samples | `9` / `309` |
+| EdgeEnv run IDs | `run-20260608-105430-f8841ef4`, `run-20260608-110905-0d126ea1` |
+| Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| AIGuard / Lab status | 두 row 모두 `blocked/high`, `blocked` |
+
+이 registry는 local-first reviewer navigation artifact입니다. short replay와
+5-minute-class replay를 duration metadata로 분리해 보여주지만, 둘 다
+Smoke/Starter evidence이며 thermal endurance validation이나 production
+runtime operation proof로 격상하지 않습니다.
+
 ## Scope Boundary
 
 포함:
