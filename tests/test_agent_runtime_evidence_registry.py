@@ -21,12 +21,36 @@ def write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
-def assert_markers_in_order(text: str, markers: list[str]) -> None:
+def assert_markers_in_order(
+    text: str, markers: list[str], *, label: str
+) -> None:
     previous_index = -1
+    previous_marker = "<start>"
     for marker in markers:
-        current_index = text.index(marker, previous_index + 1)
-        assert current_index > previous_index
+        current_index = text.find(marker, previous_index + 1)
+        assert current_index != -1, (
+            f"{label}: expected marker {marker!r} after "
+            f"{previous_marker!r} at offset {previous_index}"
+        )
         previous_index = current_index
+        previous_marker = marker
+
+
+def test_marker_order_helper_reports_context_for_missing_marker() -> None:
+    try:
+        assert_markers_in_order(
+            "alpha beta",
+            ["alpha", "gamma"],
+            label="sample reviewer path",
+        )
+    except AssertionError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected missing marker assertion")
+
+    assert "sample reviewer path" in message
+    assert "'gamma'" in message
+    assert "'alpha'" in message
 
 
 def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
@@ -592,6 +616,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/evidence/jetson_device_local_agent_runtime_report.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.md",
         ],
+        label="README Docs & Review Path",
     )
     assert_markers_in_order(
         korean_readme,
@@ -603,6 +628,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현",
             "docs/interview_narrative.ko.md",
         ],
+        label="README.ko 먼저 볼 문서",
     )
     assert_markers_in_order(
         ecosystem,
@@ -613,6 +639,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "bash scripts/clone_all.sh --locked",
             "bash scripts/smoke_all.sh",
         ],
+        label="ecosystem_1page Reviewer Path",
     )
     assert_markers_in_order(
         korean_ecosystem,
@@ -622,6 +649,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "[인터뷰 내러티브](interview_narrative.ko.md)",
             "[InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)",
         ],
+        label="ecosystem_1page.ko Reviewer Path",
     )
 
     for text in (readme, korean_readme, ecosystem, korean_ecosystem):
