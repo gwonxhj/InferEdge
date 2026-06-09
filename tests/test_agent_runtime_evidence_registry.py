@@ -75,6 +75,12 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
         "reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report"
         in smoke_script
     )
+    assert "Validated Review Path" in smoke_script
+    assert "review_path: Reviewer Focus -> Detailed Evidence Rows guidance validated" in smoke_script
+    assert (
+        "review_path_scope: comparable regression / telemetry replay / operation evidence preserved"
+        in smoke_script
+    )
     assert "runtime_anomaly_summary.md" in smoke_script
     assert "runtime_anomaly_summary.html" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation run" in smoke_script
@@ -107,6 +113,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in readme
     assert "Runtime Intelligence Risk Summary" in readme
     assert "duration traceability" in readme
+    assert "Lab `Review path` note" in readme
+    assert "Validated Review Path" in readme
+    assert "README -> Lab report -> gate summary reading order" in readme
     assert "Operation Quick Scan Summary" in readme
     assert "max_total_queue_depth" in readme
     assert "raw_marker=reviewer_focus_operation_quick_scan" in readme

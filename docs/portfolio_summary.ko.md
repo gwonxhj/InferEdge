@@ -72,6 +72,7 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 |---|---|
 | evidence chain이 끝까지 이어지는가? | `runtime_intelligence_bundle_manifest_gate_summary.md`의 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
 | report와 deployment decision은 Lab-owned인가? | `runtime_anomaly_summary.md` / `.html`의 Runtime Intelligence Risk Summary와 Lab decision context |
+| reviewer가 Lab report를 빠르게 따라갈 수 있는가? | Lab `Review path` note와 `Validated Review Path` gate summary로 README -> Lab report -> gate summary 읽기 순서 확인 |
 | operation pressure를 빠르게 볼 수 있는가? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
 | Jetson/device-local context가 handoff 이후에도 남는가? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
