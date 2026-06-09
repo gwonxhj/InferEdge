@@ -112,6 +112,7 @@ first.
 |---|---|
 | Is the evidence chain complete? | `runtime_intelligence_bundle_manifest_gate_summary.md` for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
 | Is the report Lab-owned? | `runtime_anomaly_summary.md` / `.html` for Runtime Intelligence Risk Summary and Lab decision context |
+| Can reviewers follow the Lab report quickly? | Lab `Review path` note plus `Validated Review Path` gate summary for the README -> Lab report -> gate summary reading order |
 | Can operation pressure be scanned quickly? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
 | Did Jetson/device-local context survive the handoff? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | Is remote fallback bounded? | `Remote fallback starter evidence` and `remote_execution_recovered_by_fallback`, still not production remote execution |
