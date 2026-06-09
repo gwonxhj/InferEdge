@@ -227,6 +227,11 @@ write_json(
                 "latency_budget_exceeded",
             ],
         },
+        "runtime_operation_summary_label": (
+            "operation_summary: mode=timeout_threshold_exceeded, "
+            "max_queue=n/a, queue_pressure=n/a, deadline_missed=n/a, "
+            "fallback=n/a, dropped=n/a"
+        ),
     },
 )
 PY
@@ -243,10 +248,17 @@ PY
 grep -q "Reviewer operation quick scan" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_report_operation_quick_scan_raw_marker" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "edgeenv_runtime_operation_summary_label" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "operation_summary: mode=timeout_threshold_exceeded" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "lab_report_operation_summary_label" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "operation_summary: mode=device_local_starter" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_expected_report_markers" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_report_contract_context" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "aiguard_validates_expected_report_markers" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "## Operation Quick Scan Summary" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "Operation Summary" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "operation_summary: mode=device_local_starter" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "operation_summary: mode=timeout_threshold_exceeded" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "Raw Marker" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "Raw Marker Label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
@@ -261,6 +273,8 @@ grep -q "does not make this registry a Lab report owner" "$OUTPUT_DIR/agent_runt
 grep -q "raw Lab report markers remain in the detailed" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
+grep -q "edgeenv_runtime_operation_summary_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
+grep -q "edgeenv_lab_report_operation_summary_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 

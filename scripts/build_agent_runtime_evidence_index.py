@@ -994,6 +994,17 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
             "runtime_operation_risk_labels": unique_list(
                 edgeenv_runtime_operation.get("risk_labels", [])
             ),
+            "edgeenv_runtime_operation_summary_label": (
+                edgeenv_runtime_operation_summary_label(
+                    edgeenv,
+                    edgeenv_runtime_operation,
+                )
+            ),
+            "operation_summary_label": operation_summary_label(run_summary, operation),
+            "lab_report_operation_summary_label": operation_summary_label(
+                run_summary,
+                operation,
+            ),
             "comparability_role": "supplemental_evidence_not_gate",
             "lab_report_marker": LAB_EDGEENV_PRESERVATION_MARKER,
             "preservation_identity_label": first_value(
@@ -1146,6 +1157,48 @@ def edgeenv_preservation_details_label(run_summary: dict[str, Any]) -> str:
     )
 
 
+def edgeenv_runtime_operation_summary_label(
+    edgeenv: dict[str, Any],
+    runtime_operation: dict[str, Any],
+) -> str:
+    explicit = edgeenv.get("runtime_operation_summary_label")
+    if explicit not in (None, "", "unknown"):
+        return str(explicit)
+    return operation_summary_label(
+        {
+            "max_total_queue_depth": runtime_operation.get("max_total_queue_depth"),
+            "queue_pressure_reason": runtime_operation.get("queue_pressure_reason"),
+            "deadline_missed_count": runtime_operation.get("deadline_missed_count"),
+            "fallback_count": runtime_operation.get("fallback_count"),
+            "dropped_count": runtime_operation.get("dropped_count"),
+        },
+        runtime_operation.get("health_reason", "unknown"),
+    )
+
+
+def operation_summary_label(
+    run_summary: dict[str, Any],
+    operation: Any,
+) -> str:
+    return (
+        "operation_summary: "
+        f"mode={operation_summary_value(operation)}, "
+        f"max_queue={operation_summary_value(run_summary.get('max_total_queue_depth'))}, "
+        f"queue_pressure={operation_summary_value(run_summary.get('queue_pressure_reason'))}, "
+        f"deadline_missed={operation_summary_value(run_summary.get('deadline_missed_count'))}, "
+        f"fallback={operation_summary_value(run_summary.get('fallback_count'))}, "
+        f"dropped={operation_summary_value(run_summary.get('dropped_count'))}"
+    )
+
+
+def operation_summary_value(value: Any) -> str:
+    if value in (None, "", "unknown"):
+        return "n/a"
+    if isinstance(value, bool):
+        return str(value).lower()
+    return str(value)
+
+
 def label_list(values: list[str]) -> str:
     return "+".join(values) if values else "none"
 
@@ -1284,6 +1337,9 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| runtime_operation_health_reason | {md_value(edgeenv['runtime_operation_health_reason'])} |",
                 f"| runtime_operation_recommended_action | {md_value(edgeenv['runtime_operation_recommended_action'])} |",
                 f"| runtime_operation_risk_labels | {md_value(edgeenv['runtime_operation_risk_labels'])} |",
+                f"| edgeenv_runtime_operation_summary_label | {md_value(edgeenv['edgeenv_runtime_operation_summary_label'])} |",
+                f"| operation_summary_label | {md_value(edgeenv['operation_summary_label'])} |",
+                f"| lab_report_operation_summary_label | {md_value(edgeenv['lab_report_operation_summary_label'])} |",
                 f"| comparability_role | {md_value(edgeenv['comparability_role'])} |",
                 f"| lab_report_marker | {md_value(edgeenv['lab_report_marker'])} |",
                 f"| preservation_identity | {md_value(edgeenv['preservation_identity_label'])} |",
