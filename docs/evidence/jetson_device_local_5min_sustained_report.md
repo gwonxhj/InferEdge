@@ -22,6 +22,30 @@ not decoded YOLO accuracy validation, live camera operation, Whisper/FastAPI
 service execution, production remote execution, or sustained thermal endurance
 validation.
 
+## Relationship To Latest Registry
+
+This report is the representative 5-minute-class Jetson evidence snapshot used
+for submission-facing metrics. The latest reviewer navigation record is the
+operation-summary quick-scan registry documented in
+[`docs/agent_runtime_e2e_demo.md`](../agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry).
+
+Latest registry cross-check:
+
+| Field | Value |
+|---|---|
+| Entrypoint commit | `c04abc9` |
+| Latest 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_summary_latest_20260609T121700Z` |
+| Latest registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
+| Latest registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
+| Latest 5-minute EdgeEnv run ID | `run-20260609-122009-c17a030b` |
+| Duration row | `5-minute-class sustained replay (3600 frames)` |
+| Operation summary labels | `operation_summary: mode=device_local_starter` and `operation_summary: mode=timeout_threshold_exceeded` |
+
+The registry puts the 96-frame replay and this 5-minute-class replay into one
+navigation table. It does not upgrade either run to thermal endurance
+validation, replace this report's metric snapshot, or make the registry a Lab
+report owner.
+
 ## Replay Command
 
 ```bash
