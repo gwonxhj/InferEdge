@@ -281,6 +281,10 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
         "review_path_scope: comparable regression / telemetry replay / operation evidence preserved"
         in smoke_script
     )
+    assert (
+        "review_path_artifact_gate_summary: artifact gate summary reference row validated"
+        in smoke_script
+    )
     assert "runtime_anomaly_summary.md" in smoke_script
     assert "runtime_anomaly_summary.html" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation run" in smoke_script
@@ -321,6 +325,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Validated Review Path" in readme
     assert "short Review Path section" in readme
     assert "readable Review Path fast path" in readme
+    assert "artifact gate summary reference row" in readme
     assert "README -> Lab report -> gate summary reading order" in readme
     assert "Operation Quick Scan Summary" in readme
     assert "max_total_queue_depth" in readme
