@@ -102,24 +102,24 @@ remote fallback marker path reproducible without a live HTTP worker. It must
 preserve `remote_execution_recovered_by_fallback` and
 `lab=Remote fallback starter evidence` in the generated registry/report path.
 
-## Runtime Intelligence Marker Contract
+## Runtime Intelligence Review Path
 
-The marker list below is intentionally compact. It protects reviewer navigation
-without making the portfolio read like a production control plane.
+Detailed marker vocabulary is protected by smoke gates and the Agent Runtime
+demo document. The portfolio view stays focused on what a reviewer should open
+first.
 
-| Area | Protected marker vocabulary |
+| Reviewer question | Evidence path |
 |---|---|
-| Artifact gate | `Runtime Intelligence artifact gate`, `Cross-repo smoke`, `Orchestrator -> EdgeEnv -> AIGuard -> Lab`, `directly gated Jetson preservation and remote fallback Lab markers` |
-| EdgeEnv preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
-| Duration traceability | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Validated Duration Traceability`, `runtime_intelligence_ci_artifact_gate_summary.md`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label` |
-| Handoff alignment | `EdgeEnv/AIGuard duration handoff alignment`, `duration_handoff_alignment_20260601`, EdgeEnv `de64d50` and AIGuard `7289899` |
-| Reviewer focus | `Validated Reviewer Focus`, `reviewer_focus_operation_quick_scan`, `raw_marker=reviewer_focus_operation_quick_scan`, `Operation quick scan` |
-| Operation pressure | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Operation Quick Scan Raw Marker`, `Operation Quick Scan Raw Marker Label`, `reviewer_focus_operation_quick_scan`, `raw_marker=reviewer_focus_operation_quick_scan`, `Operation quick scan`, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth`, `max_total_queue_depth=7`, `fallback_count`, `deadline_missed_count` |
-| AIGuard / Lab traceability | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
-| Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`, `remote_execution_recovered_by_fallback` |
+| Is the evidence chain complete? | `runtime_intelligence_bundle_manifest_gate_summary.md` for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
+| Is the report Lab-owned? | `runtime_anomaly_summary.md` / `.html` for Runtime Intelligence Risk Summary and Lab decision context |
+| Can operation pressure be scanned quickly? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
+| Did Jetson/device-local context survive the handoff? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
+| Is remote fallback bounded? | `Remote fallback starter evidence` and `remote_execution_recovered_by_fallback`, still not production remote execution |
 
-These are local-first review markers. They do not make CI, telemetry
-artifacts, or remote dispatch a production control plane.
+These are local-first review markers. They do not make CI, telemetry artifacts,
+the registry, or remote dispatch a production control plane.
+
+Historical duration alignment is tracked as `EdgeEnv/AIGuard duration handoff alignment`, `duration_handoff_alignment_20260601`, with EdgeEnv `de64d50` and AIGuard `7289899`.
 
 ## Device-Local / Jetson Evidence
 
