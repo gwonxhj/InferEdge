@@ -110,6 +110,38 @@ ownership, EdgeEnv comparability ownership, AIGuard deterministic diagnosis
 ownership을 바꾸지 않으며, device-local starter를 production operation으로
 격상하지 않습니다.
 
+2026-06-09 KST (`20260608T232814Z` UTC)에 entrypoint가 Lab의
+`Validated Reviewer Focus` summary marker를 gate하기 시작한 뒤 같은 경로를
+한 번 더 확인했습니다. 이 재검증은 기존 5-minute-class evidence를 대체하지
+않고, 현재 Jetson checkout과 현재 Lab Runtime Intelligence artifact gate가
+reviewer-facing quick-scan marker를 보존하는지 확인하는 기록입니다.
+
+| 항목 | Jetson reviewer-focus validation |
+|---|---:|
+| Readiness preflight | `--edgeenv-run-evidence` 기준 `passed` |
+| Entrypoint commit | `06e4ab9` |
+| Lab commit | `3a7a464` |
+| Device-local output bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z` |
+| Lab Runtime Intelligence smoke | `/tmp/inferedgelab_runtime_intelligence_reviewer_focus_jetson_20260608T232927Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_registry_20260608T232814Z.md` |
+| Runtime Intelligence summary marker | `Validated Reviewer Focus` |
+| Reviewer focus marker | `reviewer_focus_operation_quick_scan` |
+| Agent runtime preservation marker | `Runtime Intelligence EdgeEnv Preservation` |
+| Operation quick-scan registry section | `Operation Quick Scan Summary` |
+| EdgeEnv run ID | `run-20260608-232827-e584af13` |
+| Frames | 96 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 93 / 93 |
+| Deadline missed count | 50 |
+| Lab decision | `blocked` |
+
+첫 Lab smoke는 Jetson system `python3`에 `typer`가 없어 실패했습니다.
+같은 smoke를 `PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH`로 재실행하면
+통과했고, `runtime_anomaly_gate_summary.md`와
+`runtime_intelligence_ci_artifact_gate_summary.md` 양쪽에서
+`Validated Reviewer Focus`와 `reviewer_focus_operation_quick_scan` marker가
+확인되었습니다. 이는 환경 선택 메모이며 contract 변경이 아닙니다.
+
 같은 96-frame quick-scan bundle을 새 5-minute-class Jetson replay와 함께
 registry로 묶어 duration / operation context를 한 테이블에서 비교했습니다.
 기존 5-minute-class bundle은 Jetson `/tmp`에 있던 산출물이므로, 현재

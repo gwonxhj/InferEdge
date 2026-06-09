@@ -465,6 +465,40 @@ def test_agent_runtime_korean_guide_preserves_execution_boundaries() -> None:
         assert marker in korean_doc
 
 
+def test_agent_runtime_demo_records_latest_jetson_reviewer_focus_validation() -> None:
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+    korean_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (demo_doc, korean_doc):
+        assert "20260608T232814Z" in text
+        assert "06e4ab9" in text
+        assert "3a7a464" in text
+        assert "inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z" in text
+        assert (
+            "inferedgelab_runtime_intelligence_reviewer_focus_jetson_20260608T232927Z"
+            in text
+        )
+        assert (
+            "inferedge_agent_runtime_jetson_reviewer_focus_96_registry_20260608T232814Z.md"
+            in text
+        )
+        assert "Validated Reviewer Focus" in text
+        assert "reviewer_focus_operation_quick_scan" in text
+        assert "Runtime Intelligence EdgeEnv Preservation" in text
+        assert "Operation Quick Scan Summary" in text
+        assert "run-20260608-232827-e584af13" in text
+        assert "yolo_env" in text
+        assert "contract change" in text or "contract 변경" in text
+        assert (
+            "starter-only boundary" in text
+            or "device-local starter를 production operation으로" in text
+        )
+
+
 def test_internal_docs_provide_matching_korean_link_labels() -> None:
     link_pairs = [
         (
