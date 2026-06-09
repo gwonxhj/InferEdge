@@ -29,6 +29,12 @@ Can deployed workloads stay stable under load?
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
 
+Jetson evidence is split between `representative snapshot` reports for
+submission-facing metrics and the `latest registry` for local reviewer
+navigation. `quick-scan navigation` exposes duration and
+queue/deadline/fallback pressure metadata; it is not production runtime
+operation proof.
+
 ## Pipeline
 
 ```text

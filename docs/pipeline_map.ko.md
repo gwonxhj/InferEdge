@@ -26,6 +26,11 @@ InferEdge entrypoint repo는 split repository 구조를 clone, inspect, smoke te
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
 
+Jetson evidence는 submission-facing metric을 보여주는 `representative snapshot`
+report와 local reviewer navigation을 위한 `latest registry`를 분리합니다.
+`quick-scan navigation`은 duration과 queue/deadline/fallback pressure metadata를
+노출하지만 production runtime operation proof가 아닙니다.
+
 ## Pipeline
 
 ```text
