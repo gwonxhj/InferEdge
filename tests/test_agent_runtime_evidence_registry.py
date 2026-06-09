@@ -317,6 +317,24 @@ def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
         assert "production runtime operation proof" in normalized_text
 
 
+def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
+    ecosystem = (ROOT / "docs" / "ecosystem_1page.md").read_text(
+        encoding="utf-8"
+    )
+    korean_ecosystem = (ROOT / "docs" / "ecosystem_1page.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (ecosystem, korean_ecosystem):
+        normalized_text = " ".join(text.split())
+        assert "representative snapshot" in normalized_text
+        assert "latest registry" in normalized_text
+        assert "quick-scan navigation" in normalized_text
+        assert "submission-facing metric report" in normalized_text
+        assert "queue/deadline/fallback pressure" in normalized_text
+        assert "production runtime operation proof" in normalized_text
+
+
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
     script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
         encoding="utf-8"
