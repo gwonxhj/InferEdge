@@ -77,6 +77,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     )
     assert "Validated Review Path" in smoke_script
     assert "review_path_section: short Review Path section rendered" in smoke_script
+    assert "review_path_fast_path: readable Review Path fast path rendered" in smoke_script
     assert "review_path: Reviewer Focus -> Detailed Evidence Rows guidance validated" in smoke_script
     assert (
         "review_path_scope: comparable regression / telemetry replay / operation evidence preserved"
@@ -115,8 +116,10 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Runtime Intelligence Risk Summary" in readme
     assert "duration traceability" in readme
     assert "Lab `Review Path` section" in readme
+    assert "`Fast path` line" in readme
     assert "Validated Review Path" in readme
     assert "short Review Path section" in readme
+    assert "readable Review Path fast path" in readme
     assert "README -> Lab report -> gate summary reading order" in readme
     assert "Operation Quick Scan Summary" in readme
     assert "max_total_queue_depth" in readme
