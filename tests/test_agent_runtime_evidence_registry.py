@@ -298,6 +298,25 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
         assert "production runtime operation proof" in normalized_text
 
 
+def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
+    portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
+        encoding="utf-8"
+    )
+    korean_portfolio = (ROOT / "docs" / "portfolio_summary.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (portfolio, korean_portfolio):
+        normalized_text = " ".join(text.split())
+        assert "representative snapshot" in normalized_text
+        assert "latest registry" in normalized_text
+        assert "quick-scan navigation" in normalized_text
+        assert "Duration Comparison Summary" in normalized_text
+        assert "Operation Quick Scan Summary" in normalized_text
+        assert "queue/deadline/fallback pressure" in normalized_text
+        assert "production runtime operation proof" in normalized_text
+
+
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
     script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
         encoding="utf-8"
