@@ -210,6 +210,39 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
         assert "quick-scan registry" in text
 
 
+def test_jetson_5min_html_preserves_latest_registry_context() -> None:
+    html = (
+        ROOT / "docs" / "evidence" / "jetson_device_local_5min_sustained_report.html"
+    ).read_text(encoding="utf-8")
+    normalized_html = " ".join(html.split())
+
+    assert "<h2>Relationship To Latest Registry</h2>" in html
+    assert "representative 5-minute-class Jetson metric snapshot" in normalized_html
+    assert "latest reviewer navigation record" in normalized_html
+    assert "../agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry" in html
+    assert "c04abc9" in html
+    assert (
+        "/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_summary_latest_20260609T121700Z"
+        in html
+    )
+    assert (
+        "/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md"
+        in html
+    )
+    assert (
+        "/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json"
+        in html
+    )
+    assert "run-20260609-122009-c17a030b" in html
+    assert "5-minute-class sustained replay (3600 frames)" in html
+    assert "operation_summary: mode=device_local_starter" in html
+    assert "operation_summary: mode=timeout_threshold_exceeded" in html
+    assert "one navigation table" in normalized_html
+    assert "thermal endurance validation" in normalized_html
+    assert "replace this report's metric snapshot" in normalized_html
+    assert "make the registry a Lab report owner" in normalized_html
+
+
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
     script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
         encoding="utf-8"
