@@ -765,28 +765,30 @@ both `runtime_anomaly_gate_summary.md` and
 `runtime_intelligence_ci_artifact_gate_summary.md`. This is an environment
 selection note, not a contract change.
 
-After syncing the Jetson entrypoint checkout to `d38df87`, the 96-frame
-reviewer-focus bundle was indexed together with a fresh 5-minute-class Jetson
-replay generated on 2026-06-09 KST (`20260609T001057Z` UTC). This keeps the
-latest reviewer-focus marker gate and the latest 3600-frame sustained smoke in
-one navigation registry so reviewers can compare duration and operation context
-without opening each full report first.
+After syncing the Jetson entrypoint checkout to `c04abc9`, a fresh 96-frame
+device-local bundle was generated and indexed together with the latest
+5-minute-class Jetson replay on 2026-06-09 KST (`20260609T122600Z` UTC). This
+keeps the latest reviewer-focus marker gate, the shared `operation_summary`
+label vocabulary, and the 3600-frame sustained smoke in one navigation
+registry so reviewers can compare duration and operation context without
+opening each full report first.
 
 | Field | Jetson duration registry replay |
 |---|---:|
-| Entrypoint commit | `d38df87` |
+| Entrypoint commit | `c04abc9` |
 | Lab commit | `3a7a464` |
-| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z` |
-| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z` |
-| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md` |
-| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json` |
+| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_96_operation_summary_latest_20260609T122600Z` |
+| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_summary_latest_20260609T121700Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` and `5-minute-class sustained replay (3600 frames)` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
-| Parsed `tegrastats` samples | `9` and `281` |
+| Parsed `tegrastats` samples | `10` and `281` |
 | Device-local / producer events | `99 / 99` and `3603 / 3603` |
-| EdgeEnv run IDs | `run-20260608-232827-e584af13`, `run-20260609-001553-51217d1d` |
+| EdgeEnv run IDs | `run-20260609-122450-a262b037`, `run-20260609-122009-c17a030b` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| Operation summary labels | `operation_summary: mode=device_local_starter` and `operation_summary: mode=timeout_threshold_exceeded` |
 | Operation quick-scan registry section | `Operation Quick Scan Summary` before `## Runs` |
 | Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
@@ -794,12 +796,27 @@ without opening each full report first.
 This registry is still a local-first review navigation artifact. It separates
 the short replay and 5-minute-class replay by duration metadata while preserving
 both as Smoke/Starter evidence, not thermal endurance validation or production
-runtime operation proof. The `Operation Quick Scan Summary` table keeps compact
-queue/deadline/fallback and preservation labels for reviewer navigation only; it
-does not make the registry a Lab report owner. The detailed `## Runs` table and
-registry JSON still preserve the raw `Reviewer operation quick scan` marker
-context, so reviewers can identify queue/deadline/fallback pressure before
-opening each bundle without losing traceability.
+runtime operation proof. The `Duration Comparison Summary` and
+`Operation Quick Scan Summary` tables keep compact duration, queue/deadline,
+fallback, `operation_summary`, and preservation labels for reviewer navigation
+only; they do not make the registry a Lab report owner. The detailed `## Runs`
+table and registry JSON still preserve the raw `Reviewer operation quick scan`
+marker context, so reviewers can identify queue/deadline/fallback pressure
+before opening each bundle without losing traceability.
+
+Historical reference: the previous Jetson duration registry used entrypoint
+commit `d38df87`, paired
+`/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z` with
+`/tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z`,
+and wrote
+`/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md`
+/
+`/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json`.
+That registry preserved EdgeEnv run IDs `run-20260608-232827-e584af13` and
+`run-20260609-001553-51217d1d`, including the 5-minute row
+`6 / 3597 / 3597 / 1802` and `281` parsed `tegrastats` samples. It remains a
+historical marker-preservation reference; the `c04abc9` registry above is the
+latest operation-summary duration record.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:
@@ -883,10 +900,10 @@ generated bundles are stored under that device's `/tmp`:
 
 ```bash
 python3 scripts/build_agent_runtime_run_registry.py \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z \
-  --output-json /tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json \
-  --output-md /tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md
+  --run-dir /tmp/inferedge_agent_runtime_jetson_96_operation_summary_latest_20260609T122600Z \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_summary_latest_20260609T121700Z \
+  --output-json /tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json \
+  --output-md /tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md
 ```
 
 The generated registry keeps both rows under the same navigation table while

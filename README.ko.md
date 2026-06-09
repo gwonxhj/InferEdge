@@ -83,7 +83,7 @@ InferEdgeOrchestrator operation context
 | YOLOv8 subset validation | 10 images, 89 boxes, simplified mAP@50 0.1410 |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
-| Jetson operation quick-scan registry | 96-frame / 5-minute rows, `Operation Quick Scan Summary`, queue/deadline/fallback marker. [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
+| Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label, Lab preservation context. [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 세부 evidence는 [English README](README.md)의 Evidence Snapshot과
 `docs/evidence/` 문서를 기준으로 확인하세요. Jetson 기록만 빠르게 확인하려면
@@ -158,7 +158,7 @@ registry / comparability / regression evidence owner입니다.
 | [포트폴리오 요약](docs/portfolio_summary.ko.md) | 포트폴리오용 30초 요약 |
 | [파이프라인 맵](docs/pipeline_map.ko.md) | 레포별 책임과 contract boundary |
 | [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md) | Runtime Operation / Agent Runtime smoke 흐름 |
-| [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | `Operation Quick Scan Summary` registry와 reviewer navigation marker |
+| [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label이 포함된 최신 registry |
 | [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
 
 ## Cross-Repo Quick Guide Path

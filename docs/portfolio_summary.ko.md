@@ -25,7 +25,7 @@ decision으로 연결하는 local-first Edge AI inference validation pipeline입
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
-| Jetson operation quick-scan registry | 96-frame / 5-minute rows, `Operation Quick Scan Summary`, queue/deadline/fallback marker. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
+| Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 ## 역할 분리
 
@@ -74,7 +74,7 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 | EdgeEnv fixture matrix가 보존되는가? | InferEdgeEnv `examples/regression/fixture_matrix.json`의 same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, replay-sequence fixture role |
 | report와 deployment decision은 Lab-owned인가? | `runtime_anomaly_summary.md` / `.html`의 Runtime Intelligence Risk Summary와 Lab decision context |
 | reviewer가 Lab report를 빠르게 따라갈 수 있는가? | Lab `Review Path` section과 `Validated Review Path` gate summary, `review_path_section: short Review Path section rendered`, `review_path_fast_path: readable Review Path fast path rendered`로 README -> Lab report -> gate summary 읽기 순서 확인 |
-| operation pressure를 빠르게 볼 수 있는가? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
+| operation pressure를 빠르게 볼 수 있는가? | `Duration Comparison Summary`, `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count, `operation_summary` label |
 | Jetson/device-local context가 handoff 이후에도 남는가? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
 

@@ -150,28 +150,30 @@ telemetry-gap, replay-sequence fixture role이 유지되는지 검증하며,
 production monitoring이나 Lab deployment decision ownership을 의미하지
 않습니다.
 
-Jetson entrypoint checkout을 `d38df87`로 동기화한 뒤, 96-frame
-reviewer-focus bundle과 2026-06-09 KST (`20260609T001057Z` UTC)에 새로
-생성한 5-minute-class Jetson replay를 하나의 registry로 묶었습니다. 이
-기록은 최신 reviewer-focus marker gate와 최신 3600-frame sustained smoke를
-같은 navigation registry에서 비교하게 해, 각 full report를 열기 전에
-duration / operation context를 확인할 수 있게 합니다.
+Jetson entrypoint checkout을 `c04abc9`로 동기화한 뒤, 최신 96-frame
+device-local bundle과 2026-06-09 KST (`20260609T122600Z` UTC)에 확인한
+5-minute-class Jetson replay를 하나의 registry로 묶었습니다. 이 기록은
+최신 reviewer-focus marker gate, 공통 `operation_summary` label vocabulary,
+3600-frame sustained smoke를 같은 navigation registry에서 비교하게 해, 각
+full report를 열기 전에 duration / operation context를 확인할 수 있게
+합니다.
 
 | 항목 | 값 |
 |---|---:|
-| Entrypoint commit | `d38df87` |
+| Entrypoint commit | `c04abc9` |
 | Lab commit | `3a7a464` |
-| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z` |
-| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z` |
-| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md` |
-| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json` |
+| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_96_operation_summary_latest_20260609T122600Z` |
+| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_summary_latest_20260609T121700Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` / `5-minute-class sustained replay (3600 frames)` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
-| Parsed `tegrastats` samples | `9` / `281` |
+| Parsed `tegrastats` samples | `10` / `281` |
 | Device-local / producer events | `99 / 99` / `3603 / 3603` |
-| EdgeEnv run IDs | `run-20260608-232827-e584af13`, `run-20260609-001553-51217d1d` |
+| EdgeEnv run IDs | `run-20260609-122450-a262b037`, `run-20260609-122009-c17a030b` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
+| Operation summary labels | `operation_summary: mode=device_local_starter` / `operation_summary: mode=timeout_threshold_exceeded` |
 | Operation quick-scan registry section | `## Runs` 앞의 `Operation Quick Scan Summary` |
 | Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | 두 row 모두 `blocked/high`, `blocked` |
@@ -179,14 +181,28 @@ duration / operation context를 확인할 수 있게 합니다.
 이 registry는 local-first reviewer navigation artifact입니다. short replay와
 5-minute-class replay를 duration metadata로 분리해 보여주지만, 둘 다
 Smoke/Starter evidence이며 thermal endurance validation이나 production
-runtime operation proof로 격상하지 않습니다. `Operation Quick Scan Summary`
-table은 reviewer navigation 용도로 compact queue/deadline/fallback 및
-preservation label만 먼저 보여주며, registry가 Lab report owner가 되는
-것은 아닙니다. raw `Reviewer operation quick scan` marker context는 detailed
-`## Runs` table과 registry JSON에 계속 보존되므로, source contract를
-바꾸지 않고 Lab report gate marker까지 추적할 수 있습니다. 그래서 각
-bundle을 열기 전에 queue/deadline/fallback pressure를 먼저 식별할 수
-있습니다.
+runtime operation proof로 격상하지 않습니다. `Duration Comparison Summary`와
+`Operation Quick Scan Summary` table은 reviewer navigation 용도로 duration,
+compact queue/deadline/fallback, `operation_summary`, preservation label만
+먼저 보여주며, registry가 Lab report owner가 되는 것은 아닙니다. raw
+`Reviewer operation quick scan` marker context는 detailed `## Runs` table과
+registry JSON에 계속 보존되므로, source contract를 바꾸지 않고 Lab report
+gate marker까지 추적할 수 있습니다. 그래서 각 bundle을 열기 전에
+queue/deadline/fallback pressure를 먼저 식별할 수 있습니다.
+
+Historical reference: 이전 Jetson duration registry는 entrypoint commit
+`d38df87` 기준으로
+`/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z`와
+`/tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z`를
+묶고,
+`/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md`
+/
+`/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json`을
+생성했습니다. 이 registry는 EdgeEnv run ID
+`run-20260608-232827-e584af13`, `run-20260609-001553-51217d1d`와 5-minute row
+`6 / 3597 / 3597 / 1802`, parsed `tegrastats` samples `281`을 보존한
+historical marker-preservation reference입니다. 최신 operation-summary
+duration record는 위의 `c04abc9` registry입니다.
 
 ## Scope Boundary
 

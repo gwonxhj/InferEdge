@@ -18,7 +18,7 @@ decision.
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
-| Jetson operation quick-scan registry | 96-frame and 5-minute rows with `Operation Quick Scan Summary` and queue/deadline/fallback markers |
+| Jetson operation-summary quick-scan registry | Latest `c04abc9` 96-frame and 5-minute rows with `Duration Comparison Summary`, `Operation Quick Scan Summary`, and `operation_summary` labels |
 
 For the diagram-first version, see
 [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)
@@ -130,7 +130,7 @@ Historical duration alignment is tracked as `EdgeEnv/AIGuard duration handoff al
 | Device-local ONNX replay | Jetson Orin Nano 25W, 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | Real ONNX probe and telemetry handoff, not decoded YOLO accuracy |
 | EdgeEnv preservation replay | EdgeEnv run evidence stores `runtime_operation_summary`; Lab preserves `Runtime Intelligence EdgeEnv Preservation` | Registry/report preservation, not a deployment decision override |
 | 5-minute-class sustained replay | 3600 frames, 281 `tegrastats` samples, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM | Smoke/Starter sustained evidence, not thermal endurance validation |
-| Operation quick-scan registry | 96-frame and 5-minute-class rows expose queue/deadline/fallback pressure before the full registry table | Reviewer navigation metadata, not a Lab report owner or production operation proof |
+| Operation-summary quick-scan registry | 96-frame and 5-minute-class rows expose duration, queue/deadline/fallback pressure, and `operation_summary` labels before the full registry table | Reviewer navigation metadata, not a Lab report owner or production operation proof |
 
 Submission-facing Lab evidence snapshot:
 [`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md)
@@ -140,8 +140,8 @@ For the 5-minute-class sustained record, see
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](evidence/jetson_device_local_5min_sustained_report.md)
 ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](evidence/jetson_device_local_5min_sustained_report.ko.md)).
 
-For the latest quick-scan registry summary, see
-[`Operation Quick Scan Summary`](agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry)
+For the latest operation-summary quick-scan registry, see
+[`Duration Comparison Summary` and `Operation Quick Scan Summary`](agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry)
 ([한국어: 최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)).
 
 ## What To Show First
