@@ -25,6 +25,11 @@ InferEdge는 Edge AI inference 프로젝트에서 자주 섞이는 세 질문을
 | Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
 
+Jetson evidence는 compact reviewer terms를 사용합니다. `representative snapshot`은
+submission-facing metric report, `latest registry`는 최신 local navigation
+record, `quick-scan navigation`은 duration과 queue/deadline/fallback pressure를
+보는 metadata입니다. production runtime operation proof가 아닙니다.
+
 ## Layer 역할
 
 | Layer | Project | 책임 |
