@@ -129,11 +129,12 @@ Reviewer path:
 | Step | What to inspect | Why it matters |
 |---|---|---|
 | 1 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle and owner boundary are intact. |
-| 2 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary, duration traceability, and operation quick scan in one report. |
-| 3 | Lab `Review Path` section, `Review path` note, `Fast path` line, and `Validated Review Path` gate summary | Keeps the README -> Lab report -> gate summary reading order explicit for reviewers; the gate preserves `review_path_section: short Review Path section rendered` and `review_path_fast_path: readable Review Path fast path rendered` without making CI, AIGuard, or Orchestrator the report owner. |
-| 4 | `Operation Quick Scan Summary` in the generated registry | Lets reviewers spot queue pressure, `max_total_queue_depth`, deadline misses, fallback count, and the Lab quick-scan raw marker before the wide run table. |
-| 5 | `00_evidence_index.md` / `.json` | Verifies Jetson/device-local preservation context, `identity=jetson_device_local_preservation`, `lab_preservation=present`, and `raw_marker=reviewer_focus_operation_quick_scan` are still navigation metadata. |
-| 6 | Remote fallback rows | Keeps `Remote fallback starter evidence` visible without claiming production remote execution. |
+| 2 | EdgeEnv `examples/regression/fixture_matrix.json` | Confirms same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, and replay-sequence fixtures are covered before Lab consumes the evidence. |
+| 3 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary, duration traceability, and operation quick scan in one report. |
+| 4 | Lab `Review Path` section, `Review path` note, `Fast path` line, and `Validated Review Path` gate summary | Keeps the README -> Lab report -> gate summary reading order explicit for reviewers; the gate preserves `review_path_section: short Review Path section rendered` and `review_path_fast_path: readable Review Path fast path rendered` without making CI, AIGuard, or Orchestrator the report owner. |
+| 5 | `Operation Quick Scan Summary` in the generated registry | Lets reviewers spot queue pressure, `max_total_queue_depth`, deadline misses, fallback count, and the Lab quick-scan raw marker before the wide run table. |
+| 6 | `00_evidence_index.md` / `.json` | Verifies Jetson/device-local preservation context, `identity=jetson_device_local_preservation`, `lab_preservation=present`, and `raw_marker=reviewer_focus_operation_quick_scan` are still navigation metadata. |
+| 7 | Remote fallback rows | Keeps `Remote fallback starter evidence` visible without claiming production remote execution. |
 
 For the generated artifact list and the split between operation-smoke and
 Runtime Intelligence smoke gates, see

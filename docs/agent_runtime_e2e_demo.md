@@ -67,6 +67,7 @@ configured output directory:
 
 | Artifact | Purpose |
 |---|---|
+| EdgeEnv `examples/regression/fixture_matrix.json` | Gated from the sibling EdgeEnv repo before the Lab smoke so same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, and replay-sequence fixture roles stay aligned |
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
 | `edgeenv_runtime_regression.md` / `.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, promoted `Operation quick scan` reviewer focus, preserved `operation_risk_summary` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |

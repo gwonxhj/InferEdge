@@ -16,6 +16,7 @@ Default checks:
   - Runtime smoke + manifest identity test
   - Lab portfolio demo check + Core 4 conformance check
   - Agent Runtime EdgeEnv preservation identity/details smoke
+  - EdgeEnv regression replay fixture matrix gate
   - Lab Runtime Intelligence artifact smoke
   - AIGuard pytest + portfolio demo
 
@@ -74,6 +75,122 @@ require_marker() {
     echo "missing required marker in $file: $marker" >&2
     exit 1
   fi
+}
+
+require_edgeenv_regression_fixture_matrix() {
+  local matrix="$ENV_REPO/examples/regression/fixture_matrix.json"
+  if [[ ! -f "$matrix" ]]; then
+    echo "missing EdgeEnv regression fixture matrix: $matrix" >&2
+    exit 1
+  fi
+  python3 - "$matrix" <<'PY'
+import json
+import sys
+from pathlib import Path
+
+matrix_path = Path(sys.argv[1])
+matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+root = matrix_path.parent
+
+
+def fail(message: str) -> None:
+    raise SystemExit(f"EdgeEnv regression fixture matrix gate failed: {message}")
+
+
+required_boundaries = {
+    "not_a_deployment_decision": True,
+    "not_a_guard_analysis": True,
+    "not_production_monitoring": True,
+    "comparability_first": True,
+}
+required_roles = {
+    "same_condition_regression",
+    "runtime_comparison_blocked",
+    "target_comparison_blocked",
+    "protocol_mismatch_blocked",
+    "telemetry_gap_same_condition",
+    "replay_sequence_context",
+}
+delta_keys = {
+    "mean_delta_pct",
+    "p95_delta_pct",
+    "p99_delta_pct",
+    "fps_delta_pct",
+    "memory_peak_delta_pct",
+}
+
+if matrix.get("schema_version") != "edgeenv-regression-replay-fixture-matrix-v1":
+    fail("unexpected schema_version")
+if matrix.get("owner") != "edgeenv":
+    fail("owner must be edgeenv")
+if matrix.get("boundaries") != required_boundaries:
+    fail("boundary flags changed")
+if set(matrix.get("required_roles", [])) != required_roles:
+    fail("required_roles coverage changed")
+
+fixtures = matrix.get("fixtures")
+if not isinstance(fixtures, list):
+    fail("fixtures must be a list")
+if {entry.get("role") for entry in fixtures} != required_roles:
+    fail("fixture roles do not cover required roles exactly")
+
+seen_modes = set()
+for entry in fixtures:
+    path = root / entry["path"]
+    if not path.is_file():
+        fail(f"missing fixture report: {entry['path']}")
+    report = json.loads(path.read_text(encoding="utf-8"))
+    seen_modes.add(entry["mode"])
+    if "guard_analysis" in report or "deployment_decision" in report:
+        fail(f"{entry['path']} must stay EdgeEnv-owned")
+    if report.get("mode") != entry["mode"]:
+        fail(f"{entry['path']} mode mismatch")
+    if report.get("comparable") is not entry["comparable"]:
+        fail(f"{entry['path']} comparable mismatch")
+    if report.get("regression_detected") is not entry["expected_regression_detected"]:
+        fail(f"{entry['path']} regression_detected mismatch")
+    if report.get("recommendation") != entry["expected_recommendation"]:
+        fail(f"{entry['path']} recommendation mismatch")
+
+    evidence = report.get("evidence", {})
+    if entry["regression_delta_allowed"]:
+        if not delta_keys <= set(evidence):
+            fail(f"{entry['path']} must preserve same-condition deltas")
+    elif delta_keys & set(evidence):
+        fail(f"{entry['path']} must suppress regression deltas")
+
+    context = report.get("runtime_telemetry_context")
+    if entry["requires_runtime_telemetry_context"]:
+        if not isinstance(context, dict):
+            fail(f"{entry['path']} missing runtime telemetry context")
+        notes = context.get("notes", [])
+        if not any("not a comparability gate" in note for note in notes):
+            fail(f"{entry['path']} missing comparability boundary note")
+    elif context is not None:
+        fail(f"{entry['path']} should not require telemetry context")
+
+    if entry["requires_history_seed_run_config"]:
+        summary = context["history"]["summary"]
+        if summary.get("history_seed_run_config_runs") != 2:
+            fail(f"{entry['path']} missing history seed run_config coverage")
+
+    if entry["telemetry_gap_expected"]:
+        observed = {gap["reason"] for gap in context.get("evidence_gaps", [])}
+        expected = set(entry.get("expected_evidence_gaps", []))
+        if not expected <= observed:
+            fail(f"{entry['path']} telemetry gap mismatch")
+
+    if entry.get("sequence_context") == "inverted":
+        baseline_sequence = context["baseline"]["execution_sequence_id"]
+        candidate_sequence = context["candidate"]["execution_sequence_id"]
+        if baseline_sequence <= candidate_sequence:
+            fail(f"{entry['path']} sequence context is not inverted")
+
+if not {"same-condition", "runtime-comparison", "target-comparison", "protocol_mismatch"} <= seen_modes:
+    fail("mode coverage is incomplete")
+
+print("EdgeEnv regression fixture matrix gate passed")
+PY
 }
 
 require_runtime_intelligence_report_markers() {
@@ -255,6 +372,7 @@ run_step "Lab portfolio demo check" bash -lc "cd '$LAB' && poetry run inferedgel
 run_step "Lab Core 4 conformance check" bash -lc "cd '$LAB' && poetry run inferedgelab core4-conformance-check"
 run_step "Agent Runtime EdgeEnv preservation identity/details smoke" bash "$ROOT_DIR/scripts/demo_agent_runtime_e2e.sh" --device-local --edgeenv-run-evidence --output-dir "$AGENT_RUNTIME_EDGEENV_SMOKE_OUT"
 run_step "Agent Runtime EdgeEnv preservation marker gate" require_agent_runtime_edgeenv_markers
+run_step "EdgeEnv regression replay fixture matrix gate" require_edgeenv_regression_fixture_matrix
 run_step "Lab Runtime Intelligence artifact smoke" bash -lc "cd '$LAB' && bash scripts/smoke_runtime_intelligence_chain.sh --output-dir '$RUNTIME_INTELLIGENCE_SMOKE_OUT'"
 run_step "Lab Runtime Intelligence report marker gate" require_runtime_intelligence_report_markers
 if [[ "$FULL" -eq 1 ]]; then

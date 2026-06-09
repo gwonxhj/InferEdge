@@ -111,6 +111,7 @@ first.
 | Reviewer question | Evidence path |
 |---|---|
 | Is the evidence chain complete? | `runtime_intelligence_bundle_manifest_gate_summary.md` for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
+| Is the EdgeEnv fixture matrix covered? | `examples/regression/fixture_matrix.json` in InferEdgeEnv for same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, and replay-sequence fixture roles |
 | Is the report Lab-owned? | `runtime_anomaly_summary.md` / `.html` for Runtime Intelligence Risk Summary and Lab decision context |
 | Can reviewers follow the Lab report quickly? | Lab `Review Path` section plus `Validated Review Path` gate summary, including `review_path_section: short Review Path section rendered` and `review_path_fast_path: readable Review Path fast path rendered`, for the README -> Lab report -> gate summary reading order |
 | Can operation pressure be scanned quickly? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
