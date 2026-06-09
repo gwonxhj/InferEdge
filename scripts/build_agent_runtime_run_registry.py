@@ -403,6 +403,9 @@ def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]
                 "queue_max": run.get("max_total_queue_depth", "unknown"),
                 "deadline_missed": run.get("deadline_missed_count", "unknown"),
                 "fallback": run.get("fallback_count", "unknown"),
+                "preservation": compact_preservation_label(
+                    run.get("edgeenv_preservation_identity_label")
+                ),
                 "raw_marker": raw_marker,
                 "raw_marker_label": raw_marker_label,
                 "quick_scan": _operation_quick_scan_cell(run),
@@ -455,15 +458,15 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "## Operation Quick Scan Summary",
             "",
-            "This section highlights the Lab report quick-scan marker context preserved through EdgeEnv before the detailed run table. It is reviewer navigation metadata only and does not make the registry a Lab report owner.",
+            "This section highlights the Lab report quick-scan marker context preserved through EdgeEnv before the detailed run table. It is reviewer navigation metadata only and does not make this registry a Lab report owner.",
             "",
         ]
     )
     if quick_scan_rows:
         lines.extend(
             [
-                "| Run | Duration Label | Frames | Operation Path | Queue Reason | Queue Max | Deadline Missed | Fallback | Raw Marker | Raw Marker Label | Quick Scan | Lab Decision | Guard |",
-                "|---|---|---:|---|---|---:|---:|---:|---|---|---|---|---|",
+                "| Run | Duration Label | Frames | Operation Path | Queue | Depth | Deadline Miss | Fallback | Preservation | Lab Decision | Guard |",
+                "|---|---|---:|---|---|---:|---:|---:|---|---|---|",
             ]
         )
         for row in quick_scan_rows:
@@ -479,9 +482,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                         md_value(row["queue_max"]),
                         md_value(row["deadline_missed"]),
                         md_value(row["fallback"]),
-                        md_value(row["raw_marker"]),
-                        md_value(row["raw_marker_label"]),
-                        md_value(row["quick_scan"]),
+                        md_value(row["preservation"]),
                         md_value(row["lab_decision"]),
                         md_value(row["guard"]),
                     ]
@@ -557,9 +558,9 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "- Use this registry to compare repeat smoke runs such as 96-frame, 5-minute, and remote fallback evidence.",
             "- The `Duration Label` column is reviewer-facing navigation metadata; it helps separate short 96-frame replay, 5-minute-class sustained replay, and quick starter smoke without changing source evidence contracts.",
             "- The `Duration Source` and `Duration Scope` columns preserve whether replay duration came from the entrypoint request or Orchestrator artifact metadata.",
-            "- The `Operation Quick Scan` column preserves Lab report marker context from each run's EdgeEnv summary for reviewer navigation; it does not make this registry a Lab report owner.",
-            f"- The `Operation Quick Scan Raw Marker` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}` as additive reviewer-navigation metadata when Lab quick-scan marker context is present.",
-            f"- The `Operation Quick Scan Raw Marker Label` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL}` so the registry vocabulary matches the Lab Runtime Intelligence report row.",
+            "- The `Operation Quick Scan Summary` table keeps only compact queue/deadline/fallback and preservation labels; raw Lab report markers remain in the detailed `## Runs` table and registry JSON as Lab report marker context.",
+            f"- The detailed `Operation Quick Scan Raw Marker` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}` as additive reviewer-navigation metadata when Lab quick-scan marker context is present.",
+            f"- The detailed `Operation Quick Scan Raw Marker Label` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL}` so the registry vocabulary matches the Lab Runtime Intelligence report row.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
             "",
         ]
@@ -577,6 +578,12 @@ def _operation_quick_scan_cell(run: dict[str, Any]) -> str:
         str(label) if label not in (None, "", "unknown") else None,
     ]
     return ": ".join(part for part in parts if part)
+
+
+def compact_preservation_label(value: Any) -> str:
+    if value in (None, "", "unknown"):
+        return "unknown"
+    return str(value).replace("identity=", "")
 
 
 def _remote_cell(run: dict[str, Any]) -> str:

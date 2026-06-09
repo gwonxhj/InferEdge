@@ -173,24 +173,20 @@ duration / operation context를 확인할 수 있게 합니다.
 | EdgeEnv run IDs | `run-20260608-232827-e584af13`, `run-20260609-001553-51217d1d` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
 | Operation quick-scan registry section | `## Runs` 앞의 `Operation Quick Scan Summary` |
-| Operation quick-scan registry column | `Reviewer operation quick scan: queue_pressure_reason=...; max_total_queue_depth=...; deadline_missed_count=...; fallback_count=...` |
+| Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | 두 row 모두 `blocked/high`, `blocked` |
 
 이 registry는 local-first reviewer navigation artifact입니다. short replay와
 5-minute-class replay를 duration metadata로 분리해 보여주지만, 둘 다
 Smoke/Starter evidence이며 thermal endurance validation이나 production
-runtime operation proof로 격상하지 않습니다. `Operation Quick Scan` column은
-각 run의 EdgeEnv summary에 보존된 Lab report marker context를 reviewer
-navigation 용도로만 보여주며, registry가 Lab report owner가 되는 것은
-아닙니다. 재생성된 Markdown registry는 두 row 모두에서
-`Operation Quick Scan Summary`를 full `## Runs` table보다 먼저 보여주고,
-긴 EdgeEnv cell 앞의 `Operation Quick Scan` column에도 같은 compact label을
-유지합니다. 또한 사람이 읽는 `Reviewer operation quick scan` label 옆에
-raw `reviewer_focus_operation_quick_scan` marker와
-`raw_marker=reviewer_focus_operation_quick_scan` label을 JSON과 Markdown에
-함께 보존하므로, source contract를 바꾸지 않고 Lab report gate marker까지
-추적할 수 있습니다. 그래서 각 bundle을 열기 전에 queue/deadline/fallback
-pressure를 먼저 식별할 수 있습니다.
+runtime operation proof로 격상하지 않습니다. `Operation Quick Scan Summary`
+table은 reviewer navigation 용도로 compact queue/deadline/fallback 및
+preservation label만 먼저 보여주며, registry가 Lab report owner가 되는
+것은 아닙니다. raw `Reviewer operation quick scan` marker context는 detailed
+`## Runs` table과 registry JSON에 계속 보존되므로, source contract를
+바꾸지 않고 Lab report gate marker까지 추적할 수 있습니다. 그래서 각
+bundle을 열기 전에 queue/deadline/fallback pressure를 먼저 식별할 수
+있습니다.
 
 ## Scope Boundary
 

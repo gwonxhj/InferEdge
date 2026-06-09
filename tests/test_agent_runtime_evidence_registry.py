@@ -198,7 +198,7 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "deadline_missed_count=50" in script
     assert "fallback_count=93" in script
     assert "reviewer navigation metadata" in script
-    assert "does not make the registry a Lab report owner" in script
+    assert "does not make this registry a Lab report owner" in script
     assert "Operation Quick Scan Summary must appear before ## Runs" in script
     assert "Quick-scan registry summary smoke: pass" in script
     for text in (readme, portfolio, interview):
@@ -1260,13 +1260,22 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "Quick Scan" in markdown
     assert "Queue Max" in markdown
     assert "Deadline Missed" in markdown
+    summary_block = markdown[
+        markdown.index("## Operation Quick Scan Summary") : markdown.index("## Runs")
+    ]
+    runs_block = markdown[markdown.index("## Runs") :]
+    assert "Raw Marker" not in summary_block
+    assert "raw_marker=reviewer_focus_operation_quick_scan" not in summary_block
+    assert "Reviewer operation quick scan:" not in summary_block
     assert (
         "| device_local_override | quick starter smoke (4 frames) | 4 | "
         "device_local_starter | max_total_queue_depth_exceeded_overload_threshold | "
-        "5 | 0 | 1 | reviewer_focus_operation_quick_scan | "
-        "raw_marker=reviewer_focus_operation_quick_scan | "
-        "Reviewer operation quick scan:"
-    ) in markdown
+        "5 | 0 | 1 | jetson_device_local_preservation, "
+        "path=device_local_starter, run=run-edgeenv-runtime-operation | "
+        "blocked | blocked/high |"
+    ) in summary_block
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in runs_block
+    assert "Reviewer operation quick scan:" in runs_block
     assert "reviewer-facing navigation metadata" in markdown
     assert "Lab report marker context" in markdown
     assert "does not make this registry a Lab report owner" in markdown
