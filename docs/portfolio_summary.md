@@ -114,7 +114,7 @@ first.
 | Is the EdgeEnv fixture matrix covered? | `examples/regression/fixture_matrix.json` in InferEdgeEnv for same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, and replay-sequence fixture roles |
 | Is the report Lab-owned? | `runtime_anomaly_summary.md` / `.html` for Runtime Intelligence Risk Summary and Lab decision context |
 | Can reviewers follow the Lab report quickly? | Lab `Review Path` section plus `Validated Review Path` gate summary, including `review_path_section: short Review Path section rendered` and `review_path_fast_path: readable Review Path fast path rendered`, for the README -> Lab report -> gate summary reading order |
-| Can operation pressure be scanned quickly? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
+| Can operation pressure be scanned quickly? | `Duration Comparison Summary`, `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count, `operation_summary` labels |
 | Did Jetson/device-local context survive the handoff? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | Is remote fallback bounded? | `Remote fallback starter evidence` and `remote_execution_recovered_by_fallback`, still not production remote execution |
 
