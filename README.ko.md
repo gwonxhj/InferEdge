@@ -89,7 +89,9 @@ InferEdgeOrchestrator operation context
 `docs/evidence/` 문서를 기준으로 확인하세요. Jetson 기록만 빠르게 확인하려면
 [Jetson 디바이스 로컬 evidence quick guide](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)와
 [Jetson 5분급 sustained evidence quick guide](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)를
-먼저 보면 됩니다.
+먼저 보면 됩니다. 대표 스냅샷 HTML은
+[Jetson 5-minute-class snapshot HTML report](docs/evidence/jetson_device_local_5min_sustained_report.html)에서
+확인할 수 있습니다.
 
 ## Cross-Repo Role Boundary Snapshot
 

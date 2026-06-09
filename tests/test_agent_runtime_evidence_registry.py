@@ -583,8 +583,8 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
         ),
         (
             "README.md",
-            "`HTML report`",
-            "HTML 보고서",
+            "`Snapshot HTML report`",
+            "대표 스냅샷 HTML 보고서",
             "docs/evidence/jetson_device_local_5min_sustained_report.html",
             "docs/evidence/jetson_device_local_5min_sustained_report.html",
         ),
