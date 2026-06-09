@@ -730,6 +730,40 @@ This record is a live marker-preservation smoke for reviewer navigation. It
 does not change Lab ownership, EdgeEnv comparability ownership, AIGuard
 diagnosis ownership, or the starter-only boundary of the device-local path.
 
+A newer reviewer-focus validation was run on 2026-06-09 KST
+(`20260608T232814Z` UTC) after the entrypoint started gating Lab's
+`Validated Reviewer Focus` summary marker. This rerun does not replace the
+5-minute-class evidence above; it confirms that the current Jetson checkout and
+the current Lab Runtime Intelligence artifact gate both preserve the
+reviewer-facing quick-scan markers.
+
+| Field | Jetson reviewer-focus validation |
+|---|---:|
+| Readiness preflight | `passed` with `--edgeenv-run-evidence` |
+| Entrypoint commit | `06e4ab9` |
+| Lab commit | `3a7a464` |
+| Device-local output bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z` |
+| Lab Runtime Intelligence smoke | `/tmp/inferedgelab_runtime_intelligence_reviewer_focus_jetson_20260608T232927Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_registry_20260608T232814Z.md` |
+| Runtime Intelligence summary marker | `Validated Reviewer Focus` |
+| Reviewer focus marker | `reviewer_focus_operation_quick_scan` |
+| Agent runtime preservation marker | `Runtime Intelligence EdgeEnv Preservation` |
+| Operation quick-scan registry section | `Operation Quick Scan Summary` |
+| EdgeEnv run ID | `run-20260608-232827-e584af13` |
+| Frames | 96 |
+| Max queue depth | 6 |
+| Dropped / fallback count | 93 / 93 |
+| Deadline missed count | 50 |
+| Lab decision | `blocked` |
+
+The first Lab smoke attempt used Jetson's system `python3` and failed because
+`typer` was not installed in that interpreter. Re-running the same Lab smoke
+with `PATH=$HOME/miniconda3/envs/yolo_env/bin:$PATH` passed and produced the
+`Validated Reviewer Focus` and `reviewer_focus_operation_quick_scan` markers in
+both `runtime_anomaly_gate_summary.md` and
+`runtime_intelligence_ci_artifact_gate_summary.md`. This is an environment
+selection note, not a contract change.
+
 The 96-frame quick-scan bundle was then indexed together with a fresh
 5-minute-class Jetson replay so reviewers can compare duration and operation
 context without opening each full report first. The older documented
