@@ -21,6 +21,14 @@ def write_json(path: Path, payload: dict) -> None:
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")
 
 
+def assert_markers_in_order(text: str, markers: list[str]) -> None:
+    previous_index = -1
+    for marker in markers:
+        current_index = text.index(marker, previous_index + 1)
+        assert current_index > previous_index
+        previous_index = current_index
+
+
 def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     smoke_script = (ROOT / "scripts" / "smoke_all.sh").read_text(
         encoding="utf-8"
@@ -555,6 +563,72 @@ def test_core_docs_language_selectors_link_to_korean_guides() -> None:
     assert "Runtime Intelligence artifact gate" in portfolio_ko
     assert "Core 4 validation contract" in pipeline_ko
     assert "AIGuard `guard_analysis`" in pipeline_ko
+
+
+def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+    ecosystem = (ROOT / "docs" / "ecosystem_1page.md").read_text(
+        encoding="utf-8"
+    )
+    korean_ecosystem = (ROOT / "docs" / "ecosystem_1page.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "## Docs & Review Path" in readme
+    assert "## 먼저 볼 문서" in korean_readme
+    assert "## Reviewer Path" in ecosystem
+    assert "## Reviewer Path" in korean_ecosystem
+
+    assert_markers_in_order(
+        readme,
+        [
+            "docs/ecosystem_1page.md",
+            "docs/portfolio_summary.md",
+            "docs/pipeline_map.md",
+            "docs/agent_runtime_e2e_demo.md",
+            "docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry",
+            "docs/interview_narrative.md",
+            "docs/evidence/jetson_device_local_agent_runtime_report.md",
+            "docs/evidence/jetson_device_local_5min_sustained_report.md",
+        ],
+    )
+    assert_markers_in_order(
+        korean_readme,
+        [
+            "docs/ecosystem_1page.ko.md",
+            "docs/portfolio_summary.ko.md",
+            "docs/pipeline_map.ko.md",
+            "docs/agent_runtime_e2e_demo.ko.md",
+            "docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현",
+            "docs/interview_narrative.ko.md",
+        ],
+    )
+    assert_markers_in_order(
+        ecosystem,
+        [
+            "[Portfolio Summary](portfolio_summary.md)",
+            "[Pipeline Map](pipeline_map.md)",
+            "[Interview Narrative](interview_narrative.md)",
+            "bash scripts/clone_all.sh --locked",
+            "bash scripts/smoke_all.sh",
+        ],
+    )
+    assert_markers_in_order(
+        korean_ecosystem,
+        [
+            "[포트폴리오 요약](portfolio_summary.ko.md)",
+            "[파이프라인 맵](pipeline_map.ko.md)",
+            "[인터뷰 내러티브](interview_narrative.ko.md)",
+            "[InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)",
+        ],
+    )
+
+    for text in (readme, korean_readme, ecosystem, korean_ecosystem):
+        normalized_text = " ".join(text.split())
+        assert "Lab-owned deployment decision" in normalized_text
+        assert "production observability" in normalized_text
+        assert "cloud control plane" in normalized_text
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:
