@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
+MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 
 
 def load_script_module(name: str, relative_path: str):
@@ -36,6 +38,50 @@ def assert_markers_in_order(
         previous_marker = marker
 
 
+def section_by_heading(text: str, heading: str) -> str:
+    start = text.find(heading)
+    assert start != -1, f"expected section heading {heading!r}"
+    next_heading = text.find("\n## ", start + len(heading))
+    if next_heading == -1:
+        return text[start:]
+    return text[start:next_heading]
+
+
+def local_link_target(target: str) -> str | None:
+    target = target.strip()
+    if target.startswith(("http://", "https://", "mailto:")):
+        return None
+    if target.startswith("<") and target.endswith(">"):
+        target = target[1:-1]
+    path_without_fragment = target.split("#", 1)[0]
+    if not path_without_fragment:
+        return None
+    return path_without_fragment
+
+
+def assert_local_links_exist(doc_path: str, section_heading: str) -> None:
+    source_path = ROOT / doc_path
+    section = section_by_heading(
+        source_path.read_text(encoding="utf-8"), section_heading
+    )
+    links = [
+        link
+        for link in (
+            local_link_target(match.group(1))
+            for match in MARKDOWN_LINK_RE.finditer(section)
+        )
+        if link is not None
+    ]
+
+    assert links, f"{doc_path}: expected local reviewer path links"
+    for link in links:
+        target_path = source_path.parent / link
+        assert target_path.exists(), (
+            f"{doc_path} {section_heading}: missing local link target "
+            f"{link!r} -> {target_path}"
+        )
+
+
 def test_marker_order_helper_reports_context_for_missing_marker() -> None:
     try:
         assert_markers_in_order(
@@ -51,6 +97,17 @@ def test_marker_order_helper_reports_context_for_missing_marker() -> None:
     assert "sample reviewer path" in message
     assert "'gamma'" in message
     assert "'alpha'" in message
+
+
+def test_local_link_helper_reports_missing_section() -> None:
+    try:
+        assert_local_links_exist("README.md", "## Missing Section")
+    except AssertionError as exc:
+        message = str(exc)
+    else:
+        raise AssertionError("expected missing section lookup failure")
+
+    assert "## Missing Section" in message
 
 
 def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
@@ -657,6 +714,16 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         assert "Lab-owned deployment decision" in normalized_text
         assert "production observability" in normalized_text
         assert "cloud control plane" in normalized_text
+
+
+def test_entrypoint_reviewer_path_local_links_exist() -> None:
+    for doc_path, section_heading in [
+        ("README.md", "## Docs & Review Path"),
+        ("README.ko.md", "## 먼저 볼 문서"),
+        ("docs/ecosystem_1page.md", "## Reviewer Path"),
+        ("docs/ecosystem_1page.ko.md", "## Reviewer Path"),
+    ]:
+        assert_local_links_exist(doc_path, section_heading)
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:
