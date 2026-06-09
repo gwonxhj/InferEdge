@@ -497,6 +497,22 @@ def test_agent_runtime_demo_records_latest_jetson_reviewer_focus_validation() ->
             "starter-only boundary" in text
             or "device-local starter를 production operation으로" in text
         )
+        assert "d38df87" in text
+        assert "inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z" in text
+        assert (
+            "inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md"
+            in text
+        )
+        assert (
+            "inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json"
+            in text
+        )
+        assert "run-20260609-001553-51217d1d" in text
+        assert "5-minute-class sustained replay (3600 frames)" in text
+        assert "6 / 3597 / 3597 / 1802" in text
+        assert "281" in text
+        assert "Reviewer operation quick scan" in text
+        assert "lab_preservation=present" in text
 
 
 def test_internal_docs_provide_matching_korean_link_labels() -> None:

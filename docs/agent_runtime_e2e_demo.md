@@ -764,23 +764,27 @@ both `runtime_anomaly_gate_summary.md` and
 `runtime_intelligence_ci_artifact_gate_summary.md`. This is an environment
 selection note, not a contract change.
 
-The 96-frame quick-scan bundle was then indexed together with a fresh
-5-minute-class Jetson replay so reviewers can compare duration and operation
-context without opening each full report first. The older documented
-5-minute-class bundle lived under Jetson `/tmp`, so the comparison uses a new
-3600-frame replay generated on the same current entrypoint branch.
+After syncing the Jetson entrypoint checkout to `d38df87`, the 96-frame
+reviewer-focus bundle was indexed together with a fresh 5-minute-class Jetson
+replay generated on 2026-06-09 KST (`20260609T001057Z` UTC). This keeps the
+latest reviewer-focus marker gate and the latest 3600-frame sustained smoke in
+one navigation registry so reviewers can compare duration and operation context
+without opening each full report first.
 
 | Field | Jetson duration registry replay |
 |---|---:|
-| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z` |
-| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z` |
-| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.md` |
-| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.json` |
+| Entrypoint commit | `d38df87` |
+| Lab commit | `3a7a464` |
+| 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z` |
+| 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z` |
+| Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md` |
+| Registry JSON | `/tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` and `5-minute-class sustained replay (3600 frames)` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
-| Parsed `tegrastats` samples | `9` and `309` |
-| EdgeEnv run IDs | `run-20260608-105430-f8841ef4`, `run-20260608-110905-0d126ea1` |
+| Parsed `tegrastats` samples | `9` and `281` |
+| Device-local / producer events | `99 / 99` and `3603 / 3603` |
+| EdgeEnv run IDs | `run-20260608-232827-e584af13`, `run-20260609-001553-51217d1d` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
 | Operation quick-scan registry section | `Operation Quick Scan Summary` before `## Runs` |
 | Operation quick-scan registry column | `Reviewer operation quick scan: queue_pressure_reason=...; max_total_queue_depth=...; deadline_missed_count=...; fallback_count=...` |
@@ -874,10 +878,10 @@ generated bundles are stored under that device's `/tmp`:
 
 ```bash
 python3 scripts/build_agent_runtime_run_registry.py \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_quick_scan_96_20260608T105418Z \
-  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_quick_scan_compare_20260608T110341Z \
-  --output-json /tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.json \
-  --output-md /tmp/inferedge_agent_runtime_jetson_duration_quick_scan_registry_summary_20260608T115310Z.md
+  --run-dir /tmp/inferedge_agent_runtime_jetson_reviewer_focus_96_20260608T232814Z \
+  --run-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_reviewer_focus_20260609T001057Z \
+  --output-json /tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.json \
+  --output-md /tmp/inferedge_agent_runtime_jetson_reviewer_focus_duration_registry_20260609T001057Z.md
 ```
 
 The generated registry keeps both rows under the same navigation table while
