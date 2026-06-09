@@ -71,7 +71,7 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 | Preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
 | Duration | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Validated Duration Traceability`, `runtime_intelligence_ci_artifact_gate_summary.md`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label` |
 | Reviewer focus | `Validated Reviewer Focus`, `reviewer_focus_operation_quick_scan`, `Operation quick scan` |
-| Operation | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Operation quick scan`, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` |
+| Operation | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Operation Quick Scan Raw Marker`, `reviewer_focus_operation_quick_scan`, `Operation quick scan`, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` |
 | AIGuard / Lab | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
 | Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence` |
 

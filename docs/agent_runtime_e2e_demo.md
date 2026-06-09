@@ -838,7 +838,11 @@ visible in the navigation layer. When EdgeEnv preservation evidence carries
 Lab report quick-scan marker context, the registry also renders an
 `Operation Quick Scan Summary` before the detailed run table and keeps the
 same compact label in the `Operation Quick Scan` column, so reviewers can see
-queue/deadline/fallback pressure before opening the full run report. The entrypoint smoke now fails if the
+queue/deadline/fallback pressure before opening the full run report. The
+registry also preserves the raw `reviewer_focus_operation_quick_scan` marker in
+JSON and Markdown beside the human-readable `Reviewer operation quick scan`
+label, so the Lab report gate marker remains traceable without changing source
+contracts. The entrypoint smoke now fails if the
 downstream AIGuard, Lab, or evidence-index artifacts drop the compact remote
 runtime event role or starter-only boundary marker.
 For a local-only gate that does not start the fallback HTTP worker, run
