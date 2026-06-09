@@ -8,6 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
+MARKDOWN_HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 
 
 def load_script_module(name: str, relative_path: str):
@@ -48,15 +49,47 @@ def section_by_heading(text: str, heading: str) -> str:
 
 
 def local_link_target(target: str) -> str | None:
-    target = target.strip()
+    target = normalized_link_target(target)
     if target.startswith(("http://", "https://", "mailto:")):
         return None
-    if target.startswith("<") and target.endswith(">"):
-        target = target[1:-1]
     path_without_fragment = target.split("#", 1)[0]
     if not path_without_fragment:
         return None
     return path_without_fragment
+
+
+def normalized_link_target(target: str) -> str:
+    target = target.strip()
+    if target.startswith("<") and target.endswith(">"):
+        return target[1:-1]
+    return target
+
+
+def github_heading_slug(heading: str) -> str:
+    slug_chars = []
+    for char in heading.strip().lower():
+        if char.isalnum():
+            slug_chars.append(char)
+        elif char.isspace() or char == "-":
+            slug_chars.append("-")
+    return re.sub(r"-+", "-", "".join(slug_chars)).strip("-")
+
+
+def markdown_heading_anchors(text: str) -> set[str]:
+    anchors: set[str] = set()
+    counts: dict[str, int] = {}
+    for line in text.splitlines():
+        match = MARKDOWN_HEADING_RE.match(line)
+        if not match:
+            continue
+
+        base_slug = github_heading_slug(match.group(2))
+        if not base_slug:
+            continue
+        count = counts.get(base_slug, 0)
+        counts[base_slug] = count + 1
+        anchors.add(base_slug if count == 0 else f"{base_slug}-{count}")
+    return anchors
 
 
 def assert_local_links_exist(doc_path: str, section_heading: str) -> None:
@@ -80,6 +113,40 @@ def assert_local_links_exist(doc_path: str, section_heading: str) -> None:
             f"{doc_path} {section_heading}: missing local link target "
             f"{link!r} -> {target_path}"
         )
+
+
+def assert_local_markdown_link_fragments_exist(
+    doc_path: str, section_heading: str
+) -> None:
+    source_path = ROOT / doc_path
+    section = section_by_heading(
+        source_path.read_text(encoding="utf-8"), section_heading
+    )
+    checked_fragments = []
+    for match in MARKDOWN_LINK_RE.finditer(section):
+        target = normalized_link_target(match.group(1))
+        if target.startswith(("http://", "https://", "mailto:")):
+            continue
+        if "#" not in target:
+            continue
+        link_path, fragment = target.split("#", 1)
+        if not fragment:
+            continue
+
+        target_path = source_path if not link_path else source_path.parent / link_path
+        if target_path.suffix.lower() != ".md":
+            continue
+
+        anchors = markdown_heading_anchors(target_path.read_text(encoding="utf-8"))
+        checked_fragments.append(target)
+        assert fragment in anchors, (
+            f"{doc_path} {section_heading}: missing heading anchor "
+            f"#{fragment!r} in {target_path}"
+        )
+
+    assert checked_fragments, (
+        f"{doc_path} {section_heading}: expected local Markdown anchor links"
+    )
 
 
 def test_marker_order_helper_reports_context_for_missing_marker() -> None:
@@ -108,6 +175,21 @@ def test_local_link_helper_reports_missing_section() -> None:
         raise AssertionError("expected missing section lookup failure")
 
     assert "## Missing Section" in message
+
+
+def test_markdown_heading_anchor_helper_handles_reviewer_headings() -> None:
+    anchors = markdown_heading_anchors(
+        "\n".join(
+            [
+                "# Demo",
+                "### Latest Jetson Quick-Scan Registry",
+                "## 최근 Jetson quick-scan marker 재현",
+            ]
+        )
+    )
+
+    assert "latest-jetson-quick-scan-registry" in anchors
+    assert "최근-jetson-quick-scan-marker-재현" in anchors
 
 
 def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
@@ -724,6 +806,14 @@ def test_entrypoint_reviewer_path_local_links_exist() -> None:
         ("docs/ecosystem_1page.ko.md", "## Reviewer Path"),
     ]:
         assert_local_links_exist(doc_path, section_heading)
+
+
+def test_entrypoint_reviewer_path_anchor_fragments_exist() -> None:
+    for doc_path, section_heading in [
+        ("README.md", "## Docs & Review Path"),
+        ("README.ko.md", "## 먼저 볼 문서"),
+    ]:
+        assert_local_markdown_link_fragments_exist(doc_path, section_heading)
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:
