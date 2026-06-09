@@ -63,17 +63,22 @@ Orchestrator worker selection / fallback starter
 이 chain의 가치는 production remote operation 주장이 아니라 repo별 책임 분리입니다.
 Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 
-## Marker 요약
+## Runtime Intelligence 검토 경로
 
-| 영역 | marker |
+세부 marker vocabulary는 smoke gate와 Agent Runtime demo 문서에 보존합니다.
+포트폴리오 요약에서는 reviewer가 먼저 확인할 evidence path만 남깁니다.
+
+| 리뷰 질문 | evidence path |
 |---|---|
-| Runtime Intelligence artifact gate | Cross-repo smoke, `Orchestrator -> EdgeEnv -> AIGuard -> Lab`, `directly gated Jetson preservation and remote fallback Lab markers` |
-| Preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
-| Duration | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Validated Duration Traceability`, `runtime_intelligence_ci_artifact_gate_summary.md`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label` |
-| Reviewer focus | `Validated Reviewer Focus`, `reviewer_focus_operation_quick_scan`, `raw_marker=reviewer_focus_operation_quick_scan`, `Operation quick scan` |
-| Operation | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Operation Quick Scan Raw Marker`, `Operation Quick Scan Raw Marker Label`, `reviewer_focus_operation_quick_scan`, `raw_marker=reviewer_focus_operation_quick_scan`, `Operation quick scan`, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth=7` |
-| AIGuard / Lab | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
-| Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence` |
+| evidence chain이 끝까지 이어지는가? | `runtime_intelligence_bundle_manifest_gate_summary.md`의 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
+| report와 deployment decision은 Lab-owned인가? | `runtime_anomaly_summary.md` / `.html`의 Runtime Intelligence Risk Summary와 Lab decision context |
+| operation pressure를 빠르게 볼 수 있는가? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
+| Jetson/device-local context가 handoff 이후에도 남는가? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
+| remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
+
+Duration handoff 이력은 `EdgeEnv/AIGuard duration handoff alignment`,
+`duration_handoff_alignment_20260601`, EdgeEnv `de64d50` / AIGuard `7289899`
+marker로 추적합니다.
 
 ## 주장하지 말아야 할 것
 

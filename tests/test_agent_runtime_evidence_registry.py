@@ -102,23 +102,15 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "INFEREDGE_QUICK_SCAN_REGISTRY_SMOKE_OUT" in smoke_script
     assert "Lab's local-first Runtime Intelligence artifact" in readme
     assert "remote-dispatch boundary rows" in readme
-    assert "Runtime replay duration scope" in readme
-    assert "scope_label=source=entrypoint_requested_frames" in readme
-    assert "Validated Duration Traceability" in readme
-    assert "Validated Reviewer Focus" in readme
-    assert "reviewer_focus_operation_quick_scan" in readme
-    assert "runtime_intelligence_ci_artifact_gate_summary.md" in readme
-    assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in readme
-    assert "duration_handoff_alignment" in readme
-    assert "Duration Comparison Summary" in readme
-    assert "duration_source" in readme
-    assert "duration_scope_label" in readme
-    assert "compact queue/deadline/fallback operation markers" in readme
-    assert "Reviewer operation quick scan" in readme
-    assert "Orchestrator queue/deadline/fallback markers" in readme
-    assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in readme
-    assert "max_total_queue_depth=7" in readme
-    assert "Queue pressure reasons" in readme
+    assert "Reviewer path" in readme
+    assert "What to inspect" in readme
+    assert "runtime_intelligence_bundle_manifest_gate_summary.md" in readme
+    assert "Runtime Intelligence Risk Summary" in readme
+    assert "duration traceability" in readme
+    assert "Operation Quick Scan Summary" in readme
+    assert "max_total_queue_depth" in readme
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in readme
+    assert "queue pressure" in readme
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
@@ -235,47 +227,30 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
     portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
         encoding="utf-8"
     )
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
 
     for text in (readme, portfolio):
         assert "Runtime Intelligence artifact gate" in text
-        assert "Cross-repo smoke" in text
         assert "Orchestrator -> EdgeEnv -> AIGuard -> Lab" in text
-        assert "Lab EdgeEnv preservation context" in text
-        assert "lab_report_preservation_context_present=True" in text
+        assert "Runtime Intelligence Risk Summary" in text
+        assert "Operation Quick Scan Summary" in text
         assert "lab_preservation=present" in text
         assert "identity=jetson_device_local_preservation" in text
-        assert "path=device_local_starter" in text
-        assert "Runtime replay duration scope" in text
-        assert "short 96-frame-class replay (96 frames)" in text
-        assert "scope_label=source=entrypoint_requested_frames" in text
-        assert "Validated Duration Traceability" in text
-        assert "Validated Reviewer Focus" in text
-        assert "reviewer_focus_operation_quick_scan" in text
         assert "raw_marker=reviewer_focus_operation_quick_scan" in text
-        assert "runtime_intelligence_ci_artifact_gate_summary.md" in text
-        assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in text
-        assert "duration_handoff_alignment" in text
-        assert "duration_source" in text
-        assert "duration_scope_label" in text
-        assert "compact queue/deadline/fallback operation markers" in text
-        assert "Operation quick scan" in text
-        assert "Reviewer operation quick scan" in text
-        assert "Operation Quick Scan Raw Marker" in text
-        assert "Orchestrator queue/deadline/fallback markers" in text
-        assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in text
-        assert "max_total_queue_depth=7" in text
-        assert "queue_pressure_reason" in text
         assert "max_total_queue_depth" in text
-        assert "fallback_count" in text
-        assert "deadline_missed_count" in text
-        assert "Queue pressure reasons" in text
+        assert "fallback count" in text
+        assert "deadline miss" in text
         assert "Remote fallback starter evidence" in text
-        assert "lab=Remote fallback starter evidence" in text
-        assert "directly gated Jetson preservation and remote fallback Lab markers" in text
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio
-    for text in (readme, portfolio):
+    for text in (demo_doc,):
+        assert "Validated Duration Traceability" in text
+        assert "Validated Reviewer Focus" in text
+        assert "reviewer_focus_operation_quick_scan" in text
+        assert "runtime_intelligence_ci_artifact_gate_summary.md" in text
         assert "lab_expected_report_markers" in text
         assert "lab_report_contract_context" in text
         assert "aiguard_validates_expected_report_markers=false" in text

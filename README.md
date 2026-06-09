@@ -124,17 +124,15 @@ remote-dispatch boundary rows, Runtime replay duration scope, and compact
 queue/deadline/fallback operation markers without making CI a runtime control
 plane.
 
-The smoke checks:
+Reviewer path:
 
-| Gate area | Reviewer-facing marker |
-|---|---|
-| Duration traceability | `Validated Duration Traceability`, `duration_handoff_alignment`, `duration_source`, `duration_scope_label`, `runtime_intelligence_ci_artifact_gate_summary.md` |
-| Replay scope | `Runtime replay duration scope`, `short 96-frame-class replay (96 frames)`, `scope_label=source=entrypoint_requested_frames`, `Duration Comparison Summary` |
-| Jetson/device-local preservation | `Lab EdgeEnv preservation context`, `lab_report_preservation_context_present=True`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `path=device_local_starter` |
-| Reviewer focus | `Validated Reviewer Focus`, `reviewer_focus_operation_quick_scan`, `raw_marker=reviewer_focus_operation_quick_scan`, `Operation quick scan` |
-| Operation pressure | `Operation Quick Scan Summary`, `Operation Quick Scan` column, `Operation Quick Scan Raw Marker`, `Operation Quick Scan Raw Marker Label`, `reviewer_focus_operation_quick_scan`, `raw_marker=reviewer_focus_operation_quick_scan`, `Operation quick scan`, `Reviewer operation quick scan`, `compact queue/deadline/fallback operation markers`, `Orchestrator queue/deadline/fallback markers`, `Queue pressure reasons`, `queue_pressure_reason`, `queue_pressure_reason=queue_backlog_threshold_exceeded`, `max_total_queue_depth`, `max_total_queue_depth=7`, `fallback_count`, `deadline_missed_count` |
-| AIGuard traceability | `aiguard_raw_context: max_total_queue_depth traceability preserved`, `lab_expected_report_markers`, `lab_report_contract_context`, `aiguard_validates_expected_report_markers=false` |
-| Remote fallback | `Remote fallback starter evidence`, `lab=Remote fallback starter evidence`, `remote_execution_recovered_by_fallback` |
+| Step | What to inspect | Why it matters |
+|---|---|---|
+| 1 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle and owner boundary are intact. |
+| 2 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary, duration traceability, and operation quick scan in one report. |
+| 3 | `Operation Quick Scan Summary` in the generated registry | Lets reviewers spot queue pressure, `max_total_queue_depth`, deadline misses, fallback count, and the Lab quick-scan raw marker before the wide run table. |
+| 4 | `00_evidence_index.md` / `.json` | Verifies Jetson/device-local preservation context, `identity=jetson_device_local_preservation`, `lab_preservation=present`, and `raw_marker=reviewer_focus_operation_quick_scan` are still navigation metadata. |
+| 5 | Remote fallback rows | Keeps `Remote fallback starter evidence` visible without claiming production remote execution. |
 
 For the generated artifact list and the split between operation-smoke and
 Runtime Intelligence smoke gates, see
