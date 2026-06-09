@@ -34,6 +34,14 @@ report, deterministic warning, deployment decision ownership까지 evidence chai
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
 | Jetson quick-scan registry | 96-frame / 5-minute rows, `Operation Quick Scan Summary` | queue/deadline/fallback pressure를 먼저 보는 reviewer navigation evidence |
 
+demo / evidence report와 같은 Jetson evidence 용어를 사용합니다.
+
+| 용어 | 인터뷰 표현 |
+|---|---|
+| Representative snapshot | 96-frame / 5-minute Markdown/HTML report는 submission-facing metric snapshot이며, 최신 registry 자체가 아닙니다. |
+| Latest registry | `c04abc9` operation-summary registry는 96-frame / 5-minute row를 비교하는 최신 local navigation record입니다. |
+| Quick-scan navigation | `Duration Comparison Summary`와 `Operation Quick Scan Summary`는 full report를 열기 전에 duration과 queue/deadline/fallback pressure를 훑어보는 reviewer navigation입니다. |
+
 ## 역할 설명
 
 | Repository | 인터뷰 표현 | 경계 |
@@ -79,6 +87,8 @@ service-readiness, endurance claim으로 말하면 안 됩니다.
 - "5-minute-class replay is sustained Smoke/Starter evidence"
 - "quick-scan registry shows queue/deadline/fallback pressure before opening
   the full report"
+- "registry는 quick-scan navigation metadata이며 production runtime operation
+  proof가 아니다"
 
 피해야 할 표현:
 
