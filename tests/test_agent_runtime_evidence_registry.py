@@ -71,6 +71,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "duration_scope_label" in smoke_script
     assert "source=entrypoint_requested_frames" in smoke_script
     assert "lab_report_operation_quick_scan_focus_marker" in smoke_script
+    assert "operation_summary: mode=device_local_starter" in smoke_script
+    assert "operation_summary: mode=timeout_threshold_exceeded" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
@@ -197,6 +199,8 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "max_total_queue_depth=6" in script
     assert "deadline_missed_count=50" in script
     assert "fallback_count=93" in script
+    assert "operation_summary: mode=device_local_starter" in script
+    assert "operation_summary: mode=timeout_threshold_exceeded" in script
     assert "reviewer navigation metadata" in script
     assert "does not make this registry a Lab report owner" in script
     assert "Operation Quick Scan Summary must appear before ## Runs" in script
@@ -794,6 +798,11 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
                     "latency_budget_exceeded",
                 ],
             },
+            "runtime_operation_summary_label": (
+                "operation_summary: mode=timeout_threshold_exceeded, "
+                "max_queue=n/a, queue_pressure=n/a, deadline_missed=n/a, "
+                "fallback=n/a, dropped=n/a"
+            ),
         },
     )
 
@@ -841,6 +850,18 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert edgeenv_summary["has_runtime_operation_summary"] is True
     assert edgeenv_summary["runtime_operation_schema_version"] == (
         "inferedge-runtime-operation-summary-v1"
+    )
+    assert edgeenv_summary["edgeenv_runtime_operation_summary_label"] == (
+        "operation_summary: mode=timeout_threshold_exceeded, max_queue=n/a, "
+        "queue_pressure=n/a, deadline_missed=n/a, fallback=n/a, dropped=n/a"
+    )
+    assert edgeenv_summary["operation_summary_label"] == (
+        "operation_summary: mode=device_local_starter, max_queue=5, "
+        "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
+        "deadline_missed=0, fallback=1, dropped=1"
+    )
+    assert edgeenv_summary["lab_report_operation_summary_label"] == (
+        edgeenv_summary["operation_summary_label"]
     )
     assert edgeenv_summary["comparability_role"] == "supplemental_evidence_not_gate"
     assert edgeenv_summary["lab_report_marker"] == (
@@ -913,6 +934,11 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "duration_scope_label" in markdown
     assert "lab_report_preservation_section_present" in markdown
     assert "lab_report_preservation_run_id" in markdown
+    assert "edgeenv_runtime_operation_summary_label" in markdown
+    assert "operation_summary: mode=timeout_threshold_exceeded" in markdown
+    assert "operation_summary_label" in markdown
+    assert "lab_report_operation_summary_label" in markdown
+    assert "operation_summary: mode=device_local_starter" in markdown
     assert "lab_report_operation_quick_scan_focus_marker" in markdown
     assert "Operation quick scan" in markdown
     assert "lab_report_operation_quick_scan_marker" in markdown
@@ -1144,6 +1170,21 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                     "path=device_local_starter, "
                     "run=run-edgeenv-runtime-operation"
                 ),
+                "edgeenv_runtime_operation_summary_label": (
+                    "operation_summary: mode=timeout_threshold_exceeded, "
+                    "max_queue=n/a, queue_pressure=n/a, deadline_missed=n/a, "
+                    "fallback=n/a, dropped=n/a"
+                ),
+                "operation_summary_label": (
+                    "operation_summary: mode=device_local_starter, max_queue=5, "
+                    "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
+                    "deadline_missed=0, fallback=1, dropped=1"
+                ),
+                "lab_report_operation_summary_label": (
+                    "operation_summary: mode=device_local_starter, max_queue=5, "
+                    "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
+                    "deadline_missed=0, fallback=1, dropped=1"
+                ),
                 "preservation_identity_label": (
                     "identity=jetson_device_local_preservation, "
                     "path=device_local_starter, run=run-edgeenv-runtime-operation"
@@ -1200,6 +1241,18 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["edgeenv_has_runtime_operation_summary"] is True
     assert run["edgeenv_runtime_operation_health_reason"] == (
         "timeout_threshold_exceeded"
+    )
+    assert run["edgeenv_runtime_operation_summary_label"] == (
+        "operation_summary: mode=timeout_threshold_exceeded, max_queue=n/a, "
+        "queue_pressure=n/a, deadline_missed=n/a, fallback=n/a, dropped=n/a"
+    )
+    assert run["edgeenv_operation_summary_label"] == (
+        "operation_summary: mode=device_local_starter, max_queue=5, "
+        "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
+        "deadline_missed=0, fallback=1, dropped=1"
+    )
+    assert run["edgeenv_lab_report_operation_summary_label"] == (
+        run["edgeenv_operation_summary_label"]
     )
     assert run["edgeenv_lab_report_marker"] == (
         "Runtime Intelligence EdgeEnv Preservation"
@@ -1260,6 +1313,7 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "Quick Scan" in markdown
     assert "Queue Max" in markdown
     assert "Deadline Missed" in markdown
+    assert "Operation Summary" in markdown
     summary_block = markdown[
         markdown.index("## Operation Quick Scan Summary") : markdown.index("## Runs")
     ]
@@ -1269,11 +1323,17 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "Reviewer operation quick scan:" not in summary_block
     assert (
         "| device_local_override | quick starter smoke (4 frames) | 4 | "
-        "device_local_starter | max_total_queue_depth_exceeded_overload_threshold | "
+        "device_local_starter | operation_summary: mode=device_local_starter, "
+        "max_queue=5, "
+        "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
+        "deadline_missed=0, fallback=1, dropped=1 | "
+        "max_total_queue_depth_exceeded_overload_threshold | "
         "5 | 0 | 1 | jetson_device_local_preservation, "
         "path=device_local_starter, run=run-edgeenv-runtime-operation | "
         "blocked | blocked/high |"
     ) in summary_block
+    assert "operation_summary: mode=timeout_threshold_exceeded" in runs_block
+    assert "operation_summary: mode=device_local_starter" in runs_block
     assert "raw_marker=reviewer_focus_operation_quick_scan" in runs_block
     assert "Reviewer operation quick scan:" in runs_block
     assert "reviewer-facing navigation metadata" in markdown

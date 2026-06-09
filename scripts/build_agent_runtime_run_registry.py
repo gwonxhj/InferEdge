@@ -218,6 +218,21 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 )
                 if edgeenv_summary
                 else None,
+                "edgeenv_runtime_operation_summary_label": edgeenv_summary.get(
+                    "edgeenv_runtime_operation_summary_label"
+                )
+                if edgeenv_summary
+                else None,
+                "edgeenv_operation_summary_label": edgeenv_summary.get(
+                    "operation_summary_label"
+                )
+                if edgeenv_summary
+                else None,
+                "edgeenv_lab_report_operation_summary_label": edgeenv_summary.get(
+                    "lab_report_operation_summary_label"
+                )
+                if edgeenv_summary
+                else None,
                 "edgeenv_lab_report_marker": edgeenv_summary.get("lab_report_marker")
                 if edgeenv_summary
                 else None,
@@ -399,6 +414,10 @@ def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]
                 "duration_label": run.get("duration_label", "unknown duration"),
                 "frames": run.get("frames", "unknown"),
                 "operation_path": run.get("operation_path", "unknown"),
+                "operation_summary": run.get(
+                    "edgeenv_lab_report_operation_summary_label",
+                    "unknown",
+                ),
                 "queue_reason": run.get("queue_pressure_reason", "unknown"),
                 "queue_max": run.get("max_total_queue_depth", "unknown"),
                 "deadline_missed": run.get("deadline_missed_count", "unknown"),
@@ -465,8 +484,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
     if quick_scan_rows:
         lines.extend(
             [
-                "| Run | Duration Label | Frames | Operation Path | Queue | Depth | Deadline Miss | Fallback | Preservation | Lab Decision | Guard |",
-                "|---|---|---:|---|---|---:|---:|---:|---|---|---|",
+                "| Run | Duration Label | Frames | Operation Path | Operation Summary | Queue | Depth | Deadline Miss | Fallback | Preservation | Lab Decision | Guard |",
+                "|---|---|---:|---|---|---|---:|---:|---:|---|---|---|",
             ]
         )
         for row in quick_scan_rows:
@@ -478,6 +497,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                         md_value(row["duration_label"]),
                         md_value(row["frames"]),
                         md_value(row["operation_path"]),
+                        md_value(row["operation_summary"]),
                         md_value(row["queue_reason"]),
                         md_value(row["queue_max"]),
                         md_value(row["deadline_missed"]),
@@ -497,8 +517,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "## Runs",
             "",
-            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Quick Scan Raw Marker | Operation Quick Scan Raw Marker Label | Operation Quick Scan | EdgeEnv |",
-            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|---|---|",
+            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Summary | EdgeEnv Runtime Operation Summary | Operation Quick Scan Raw Marker | Operation Quick Scan Raw Marker Label | Operation Quick Scan | EdgeEnv |",
+            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|---|---|---|---|",
         ]
     )
     for run in registry["runs"]:
@@ -536,6 +556,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["lab_decision"]),
                     _remote_cell(run),
                     _remote_boundary_cell(run),
+                    md_value(run["edgeenv_lab_report_operation_summary_label"]),
+                    md_value(run["edgeenv_runtime_operation_summary_label"]),
                     md_value(run["edgeenv_lab_report_operation_quick_scan_raw_marker"]),
                     md_value(
                         run[
@@ -559,6 +581,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "- The `Duration Label` column is reviewer-facing navigation metadata; it helps separate short 96-frame replay, 5-minute-class sustained replay, and quick starter smoke without changing source evidence contracts.",
             "- The `Duration Source` and `Duration Scope` columns preserve whether replay duration came from the entrypoint request or Orchestrator artifact metadata.",
             "- The `Operation Quick Scan Summary` table keeps only compact queue/deadline/fallback and preservation labels; raw Lab report markers remain in the detailed `## Runs` table and registry JSON as Lab report marker context.",
+            "- The `Operation Summary` column uses the shared `operation_summary: mode/max_queue/queue_pressure/deadline_missed/fallback/dropped` vocabulary so EdgeEnv and Lab handoff evidence can be scanned consistently.",
             f"- The detailed `Operation Quick Scan Raw Marker` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}` as additive reviewer-navigation metadata when Lab quick-scan marker context is present.",
             f"- The detailed `Operation Quick Scan Raw Marker Label` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL}` so the registry vocabulary matches the Lab Runtime Intelligence report row.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
