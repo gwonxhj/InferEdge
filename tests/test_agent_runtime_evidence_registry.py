@@ -278,6 +278,26 @@ def test_jetson_evidence_terms_align_snapshot_registry_navigation() -> None:
         assert "metric snapshot" in text or "metric record" in text
 
 
+def test_interview_narrative_uses_jetson_evidence_terms() -> None:
+    interview = (ROOT / "docs" / "interview_narrative.md").read_text(
+        encoding="utf-8"
+    )
+    korean_interview = (ROOT / "docs" / "interview_narrative.ko.md").read_text(
+        encoding="utf-8"
+    )
+
+    for text in (interview, korean_interview):
+        normalized_text = " ".join(text.split())
+        assert "Representative snapshot" in normalized_text
+        assert "Latest registry" in normalized_text
+        assert "Quick-scan navigation" in normalized_text
+        assert "Duration Comparison Summary" in normalized_text
+        assert "Operation Quick Scan Summary" in normalized_text
+        assert "submission-facing metric snapshot" in normalized_text
+        assert "queue/deadline/fallback pressure" in normalized_text
+        assert "production runtime operation proof" in normalized_text
+
+
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
     script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
         encoding="utf-8"

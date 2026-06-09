@@ -36,6 +36,14 @@ generation, deterministic warnings, and deployment decision ownership.
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
 | Jetson quick-scan registry | 96-frame and 5-minute rows with `Operation Quick Scan Summary` | Reviewer navigation for queue/deadline/fallback pressure, not production control evidence |
 
+Use the same Jetson evidence terms as the demo and evidence reports:
+
+| Term | Interview phrasing |
+|---|---|
+| Representative snapshot | The 96-frame and 5-minute Markdown/HTML reports are submission-facing metric snapshots, not the latest registry itself. |
+| Latest registry | The `c04abc9` operation-summary registry is the latest local navigation record for comparing the 96-frame and 5-minute rows. |
+| Quick-scan navigation | `Duration Comparison Summary` and `Operation Quick Scan Summary` help reviewers scan duration and queue/deadline/fallback pressure before opening full reports. |
+
 ## Architecture Explanation
 
 ```text
@@ -107,6 +115,8 @@ Good phrasing:
   endurance validation."
 - "The quick-scan registry lets reviewers see queue/deadline/fallback pressure
   before opening the full report."
+- "The registry is quick-scan navigation metadata, not production runtime
+  operation proof."
 
 Avoid phrasing:
 
