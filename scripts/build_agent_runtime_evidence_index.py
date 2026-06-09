@@ -77,6 +77,13 @@ KNOWN_OUTPUTS = [
 LAB_EDGEENV_PRESERVATION_MARKER = "Runtime Intelligence EdgeEnv Preservation"
 LAB_OPERATION_QUICK_SCAN_FOCUS_MARKER = "Operation quick scan"
 LAB_OPERATION_QUICK_SCAN_MARKER = "Reviewer operation quick scan"
+LAB_OPERATION_QUICK_SCAN_RENDERED_LABEL = (
+    f"rendered_label={LAB_OPERATION_QUICK_SCAN_MARKER}"
+)
+LAB_OPERATION_QUICK_SCAN_RAW_MARKER = "reviewer_focus_operation_quick_scan"
+LAB_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL = (
+    f"raw_marker={LAB_OPERATION_QUICK_SCAN_RAW_MARKER}"
+)
 LAB_REPORT_MARKER_CONTEXT_ROLE = "lab_report_contract_context"
 LAB_RUNTIME_INTELLIGENCE_REPORT_MARKERS = [
     "Runtime Intelligence Risk Summary",
@@ -84,6 +91,8 @@ LAB_RUNTIME_INTELLIGENCE_REPORT_MARKERS = [
     "Orchestrator operation feed context",
     LAB_OPERATION_QUICK_SCAN_FOCUS_MARKER,
     LAB_OPERATION_QUICK_SCAN_MARKER,
+    LAB_OPERATION_QUICK_SCAN_RENDERED_LABEL,
+    LAB_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL,
     "Orchestrator task event rollup",
     "Lab EdgeEnv preservation context",
     "AIGuard task event rollup evidence",
@@ -1046,6 +1055,15 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         edgeenv_summary["lab_report_operation_quick_scan_marker"] = (
             LAB_OPERATION_QUICK_SCAN_MARKER
         )
+        edgeenv_summary["lab_report_operation_quick_scan_rendered_label"] = (
+            LAB_OPERATION_QUICK_SCAN_RENDERED_LABEL
+        )
+        edgeenv_summary["lab_report_operation_quick_scan_raw_marker"] = (
+            LAB_OPERATION_QUICK_SCAN_RAW_MARKER
+        )
+        edgeenv_summary["lab_report_operation_quick_scan_raw_marker_label"] = (
+            LAB_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL
+        )
         edgeenv_summary["lab_report_operation_quick_scan_label"] = (
             operation_quick_scan_label(
                 run_summary,
@@ -1276,6 +1294,9 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| lab_report_decision_owner | {md_value(edgeenv['lab_report_decision_owner'])} |",
                 f"| lab_report_operation_quick_scan_focus_marker | {md_value(edgeenv['lab_report_operation_quick_scan_focus_marker'])} |",
                 f"| lab_report_operation_quick_scan_marker | {md_value(edgeenv['lab_report_operation_quick_scan_marker'])} |",
+                f"| lab_report_operation_quick_scan_rendered_label | {md_value(edgeenv['lab_report_operation_quick_scan_rendered_label'])} |",
+                f"| lab_report_operation_quick_scan_raw_marker | {md_value(edgeenv['lab_report_operation_quick_scan_raw_marker'])} |",
+                f"| lab_report_operation_quick_scan_raw_marker_label | {md_value(edgeenv['lab_report_operation_quick_scan_raw_marker_label'])} |",
                 f"| lab_report_operation_quick_scan_label | {md_value(edgeenv['lab_report_operation_quick_scan_label'])} |",
                 f"| lab_expected_report_markers | {md_value(edgeenv['lab_expected_report_markers'])} |",
                 f"| lab_report_marker_context_role | {md_value(edgeenv['lab_report_marker_context_role'])} |",

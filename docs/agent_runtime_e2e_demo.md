@@ -839,10 +839,10 @@ Lab report quick-scan marker context, the registry also renders an
 `Operation Quick Scan Summary` before the detailed run table and keeps the
 same compact label in the `Operation Quick Scan` column, so reviewers can see
 queue/deadline/fallback pressure before opening the full run report. The
-registry also preserves the raw `reviewer_focus_operation_quick_scan` marker in
-JSON and Markdown beside the human-readable `Reviewer operation quick scan`
-label, so the Lab report gate marker remains traceable without changing source
-contracts. The entrypoint smoke now fails if the
+registry also preserves the raw `reviewer_focus_operation_quick_scan` marker and
+the literal `raw_marker=reviewer_focus_operation_quick_scan` label in JSON and
+Markdown beside the human-readable `Reviewer operation quick scan` label, so the
+Lab report gate marker remains traceable without changing source contracts. The entrypoint smoke now fails if the
 downstream AIGuard, Lab, or evidence-index artifacts drop the compact remote
 runtime event role or starter-only boundary marker.
 For a local-only gate that does not start the fallback HTTP worker, run
@@ -855,8 +855,9 @@ For a fixture-only quick-scan registry gate, run
 `bash scripts/smoke_quick_scan_registry_summary.sh`. It creates a synthetic
 device-local EdgeEnv preservation bundle, rebuilds the evidence index and run
 registry, and requires `Operation Quick Scan Summary` before `## Runs` with
-`Reviewer operation quick scan`, queue/deadline/fallback markers, reviewer
-navigation metadata, and the Lab-owner boundary wording. This gate does not
+`Reviewer operation quick scan`, `raw_marker=reviewer_focus_operation_quick_scan`,
+queue/deadline/fallback markers, reviewer navigation metadata, and the
+Lab-owner boundary wording. This gate does not
 need a live Jetson or Orchestrator worker.
 
 For a focused runtime-operation comparison, generate one device-local

@@ -178,8 +178,9 @@ navigation 용도로만 보여주며, registry가 Lab report owner가 되는 것
 `Operation Quick Scan Summary`를 full `## Runs` table보다 먼저 보여주고,
 긴 EdgeEnv cell 앞의 `Operation Quick Scan` column에도 같은 compact label을
 유지합니다. 또한 사람이 읽는 `Reviewer operation quick scan` label 옆에
-raw `reviewer_focus_operation_quick_scan` marker를 JSON과 Markdown에 함께
-보존하므로, source contract를 바꾸지 않고 Lab report gate marker까지
+raw `reviewer_focus_operation_quick_scan` marker와
+`raw_marker=reviewer_focus_operation_quick_scan` label을 JSON과 Markdown에
+함께 보존하므로, source contract를 바꾸지 않고 Lab report gate marker까지
 추적할 수 있습니다. 그래서 각 bundle을 열기 전에 queue/deadline/fallback
 pressure를 먼저 식별할 수 있습니다.
 

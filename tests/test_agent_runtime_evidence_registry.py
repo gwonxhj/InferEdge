@@ -71,6 +71,10 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "duration_label: short 96-frame-class replay (96 frames)" in smoke_script
     assert "Validated Reviewer Focus" in smoke_script
     assert "reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated" in smoke_script
+    assert (
+        "reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report"
+        in smoke_script
+    )
     assert "runtime_anomaly_summary.md" in smoke_script
     assert "runtime_anomaly_summary.html" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation run" in smoke_script
@@ -85,6 +89,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Orchestrator queue/deadline/fallback markers" in smoke_script
     assert "Operation quick scan" in smoke_script
     assert "Reviewer operation quick scan" in smoke_script
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in smoke_script
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in smoke_script
     assert "max_total_queue_depth=7" in smoke_script
     assert "deadline_missed_count=2" in smoke_script
@@ -160,8 +165,11 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "build_agent_runtime_run_registry.py" in script
     assert "Operation Quick Scan Summary" in script
     assert "Raw Marker" in script
+    assert "Raw Marker Label" in script
     assert "edgeenv_lab_report_operation_quick_scan_raw_marker" in script
+    assert "edgeenv_lab_report_operation_quick_scan_raw_marker_label" in script
     assert "reviewer_focus_operation_quick_scan" in script
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in script
     assert "Reviewer operation quick scan" in script
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in script
     assert "max_total_queue_depth=6" in script
@@ -243,6 +251,7 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
         assert "Validated Duration Traceability" in text
         assert "Validated Reviewer Focus" in text
         assert "reviewer_focus_operation_quick_scan" in text
+        assert "raw_marker=reviewer_focus_operation_quick_scan" in text
         assert "runtime_intelligence_ci_artifact_gate_summary.md" in text
         assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in text
         assert "duration_handoff_alignment" in text
@@ -854,6 +863,15 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert edgeenv_summary["lab_report_operation_quick_scan_marker"] == (
         "Reviewer operation quick scan"
     )
+    assert edgeenv_summary["lab_report_operation_quick_scan_rendered_label"] == (
+        "rendered_label=Reviewer operation quick scan"
+    )
+    assert edgeenv_summary["lab_report_operation_quick_scan_raw_marker"] == (
+        "reviewer_focus_operation_quick_scan"
+    )
+    assert edgeenv_summary["lab_report_operation_quick_scan_raw_marker_label"] == (
+        "raw_marker=reviewer_focus_operation_quick_scan"
+    )
     assert edgeenv_summary["lab_report_operation_quick_scan_label"] == (
         "queue_pressure_reason=max_total_queue_depth_exceeded_overload_threshold; "
         "max_total_queue_depth=5; deadline_missed_count=0; fallback_count=1; "
@@ -864,6 +882,9 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
         "lab_expected_report_markers"
     ]
     assert "Reviewer operation quick scan" in edgeenv_summary[
+        "lab_expected_report_markers"
+    ]
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in edgeenv_summary[
         "lab_expected_report_markers"
     ]
     assert edgeenv_summary["lab_report_marker_context_role"] == (
@@ -891,6 +912,11 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "Operation quick scan" in markdown
     assert "lab_report_operation_quick_scan_marker" in markdown
     assert "Reviewer operation quick scan" in markdown
+    assert "lab_report_operation_quick_scan_rendered_label" in markdown
+    assert "rendered_label=Reviewer operation quick scan" in markdown
+    assert "lab_report_operation_quick_scan_raw_marker" in markdown
+    assert "lab_report_operation_quick_scan_raw_marker_label" in markdown
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in markdown
     assert "lab_report_operation_quick_scan_label" in markdown
     assert "lab_expected_report_markers" in markdown
     assert "lab_report_contract_context" in markdown
@@ -1179,6 +1205,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert run["edgeenv_lab_report_operation_quick_scan_raw_marker"] == (
         "reviewer_focus_operation_quick_scan"
     )
+    assert run["edgeenv_lab_report_operation_quick_scan_raw_marker_label"] == (
+        "raw_marker=reviewer_focus_operation_quick_scan"
+    )
     assert run["edgeenv_lab_report_operation_quick_scan_label"] == (
         "queue_pressure_reason=max_total_queue_depth_exceeded_overload_threshold; "
         "max_total_queue_depth=5; deadline_missed_count=0; fallback_count=1; "
@@ -1199,7 +1228,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     registry_module.write_markdown(registry, md_path)
     markdown = md_path.read_text(encoding="utf-8")
     assert "Operation Quick Scan Raw Marker" in markdown
+    assert "Operation Quick Scan Raw Marker Label" in markdown
     assert "reviewer_focus_operation_quick_scan" in markdown
+    assert "raw_marker=reviewer_focus_operation_quick_scan" in markdown
     assert "lab_preservation=present" in markdown
     assert "lab_context=present" in markdown
     assert "Operation Quick Scan" in markdown
@@ -1228,6 +1259,7 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         "| device_local_override | quick starter smoke (4 frames) | 4 | "
         "device_local_starter | max_total_queue_depth_exceeded_overload_threshold | "
         "5 | 0 | 1 | reviewer_focus_operation_quick_scan | "
+        "raw_marker=reviewer_focus_operation_quick_scan | "
         "Reviewer operation quick scan:"
     ) in markdown
     assert "reviewer-facing navigation metadata" in markdown
