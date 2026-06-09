@@ -11,6 +11,9 @@ from typing import Any
 
 
 REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER = "reviewer_focus_operation_quick_scan"
+REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL = (
+    f"raw_marker={REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}"
+)
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -233,6 +236,11 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 )
                 if edgeenv_summary
                 else None,
+                "edgeenv_lab_report_operation_quick_scan_raw_marker_label": operation_quick_scan_raw_marker_label(
+                    edgeenv_summary
+                )
+                if edgeenv_summary
+                else None,
                 "edgeenv_lab_report_operation_quick_scan_label": edgeenv_summary.get(
                     "lab_report_operation_quick_scan_label"
                 )
@@ -298,6 +306,19 @@ def operation_quick_scan_raw_marker(edgeenv_summary: dict[str, Any]) -> str | No
     )
     if any(has_registry_value(value) for value in marker_context):
         return REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER
+    return None
+
+
+def operation_quick_scan_raw_marker_label(
+    edgeenv_summary: dict[str, Any],
+) -> str | None:
+    explicit = edgeenv_summary.get("lab_report_operation_quick_scan_raw_marker_label")
+    if has_registry_value(explicit):
+        return str(explicit)
+
+    raw_marker = operation_quick_scan_raw_marker(edgeenv_summary)
+    if has_registry_value(raw_marker):
+        return f"raw_marker={raw_marker}"
     return None
 
 
@@ -367,6 +388,9 @@ def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]
         marker = run.get("edgeenv_lab_report_operation_quick_scan_marker")
         label = run.get("edgeenv_lab_report_operation_quick_scan_label")
         raw_marker = run.get("edgeenv_lab_report_operation_quick_scan_raw_marker")
+        raw_marker_label = run.get(
+            "edgeenv_lab_report_operation_quick_scan_raw_marker_label"
+        )
         if all(value in (None, "", "unknown") for value in (marker, label, raw_marker)):
             continue
         rows.append(
@@ -380,6 +404,7 @@ def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]
                 "deadline_missed": run.get("deadline_missed_count", "unknown"),
                 "fallback": run.get("fallback_count", "unknown"),
                 "raw_marker": raw_marker,
+                "raw_marker_label": raw_marker_label,
                 "quick_scan": _operation_quick_scan_cell(run),
                 "lab_decision": run.get("lab_decision", "unknown"),
                 "guard": f"{md_value(run.get('guard_verdict'))}/{md_value(run.get('severity'))}",
@@ -437,8 +462,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
     if quick_scan_rows:
         lines.extend(
             [
-                "| Run | Duration Label | Frames | Operation Path | Queue Reason | Queue Max | Deadline Missed | Fallback | Raw Marker | Quick Scan | Lab Decision | Guard |",
-                "|---|---|---:|---|---|---:|---:|---:|---|---|---|---|",
+                "| Run | Duration Label | Frames | Operation Path | Queue Reason | Queue Max | Deadline Missed | Fallback | Raw Marker | Raw Marker Label | Quick Scan | Lab Decision | Guard |",
+                "|---|---|---:|---|---|---:|---:|---:|---|---|---|---|---|",
             ]
         )
         for row in quick_scan_rows:
@@ -455,6 +480,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                         md_value(row["deadline_missed"]),
                         md_value(row["fallback"]),
                         md_value(row["raw_marker"]),
+                        md_value(row["raw_marker_label"]),
                         md_value(row["quick_scan"]),
                         md_value(row["lab_decision"]),
                         md_value(row["guard"]),
@@ -470,8 +496,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "## Runs",
             "",
-            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Quick Scan Raw Marker | Operation Quick Scan | EdgeEnv |",
-            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|---|",
+            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Quick Scan Raw Marker | Operation Quick Scan Raw Marker Label | Operation Quick Scan | EdgeEnv |",
+            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|---|---|",
         ]
     )
     for run in registry["runs"]:
@@ -510,6 +536,11 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     _remote_cell(run),
                     _remote_boundary_cell(run),
                     md_value(run["edgeenv_lab_report_operation_quick_scan_raw_marker"]),
+                    md_value(
+                        run[
+                            "edgeenv_lab_report_operation_quick_scan_raw_marker_label"
+                        ]
+                    ),
                     _operation_quick_scan_cell(run),
                     _edgeenv_cell(run),
                 ]
@@ -528,6 +559,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "- The `Duration Source` and `Duration Scope` columns preserve whether replay duration came from the entrypoint request or Orchestrator artifact metadata.",
             "- The `Operation Quick Scan` column preserves Lab report marker context from each run's EdgeEnv summary for reviewer navigation; it does not make this registry a Lab report owner.",
             f"- The `Operation Quick Scan Raw Marker` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}` as additive reviewer-navigation metadata when Lab quick-scan marker context is present.",
+            f"- The `Operation Quick Scan Raw Marker Label` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL}` so the registry vocabulary matches the Lab Runtime Intelligence report row.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
             "",
         ]

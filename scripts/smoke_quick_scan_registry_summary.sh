@@ -241,12 +241,16 @@ PY
   --output-md "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 
 grep -q "Reviewer operation quick scan" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "lab_report_operation_quick_scan_raw_marker" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_expected_report_markers" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_report_contract_context" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "aiguard_validates_expected_report_markers" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "## Operation Quick Scan Summary" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "Raw Marker" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "Raw Marker Label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "Reviewer operation quick scan:" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "queue_pressure_reason=queue_backlog_threshold_exceeded" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "max_total_queue_depth=6" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
@@ -255,7 +259,9 @@ grep -q "fallback_count=93" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "reviewer navigation metadata" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "does not make the registry a Lab report owner" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
+grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
+grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 
 "$PYTHON_BIN" - "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md" <<'PY'
 import sys
