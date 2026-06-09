@@ -61,6 +61,15 @@ local run evidence / comparability / registry context를 보존합니다.
 | Runtime Intelligence artifact smoke | committed Orchestrator -> EdgeEnv -> AIGuard -> Lab bundle의 report rows, owner boundary, CI artifact shape를 검증 | production observability, GitLab control plane, live remote execution을 증명하지 않음 |
 | Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh`로 fixture-only device-local preservation bundle을 registry까지 재생성하고 `Operation Quick Scan Summary`, `Reviewer operation quick scan`, queue/deadline/fallback marker를 확인 | live Jetson 실행, thermal endurance validation, production scheduling, Lab ownership 이전을 증명하지 않음 |
 
+`Validated Review Path` gate summary의 세부 marker vocabulary는 README가
+아니라 이 문서에 보존합니다. 현재 필수 marker는 다음입니다.
+
+- `review_path_section: short Review Path section rendered`
+- `review_path_fast_path: readable Review Path fast path rendered`
+- `review_path: Reviewer Focus -> Detailed Evidence Rows guidance validated`
+- `review_path_scope: comparable regression / telemetry replay / operation evidence preserved`
+- `review_path_artifact_gate_summary: artifact gate summary reference row validated`
+
 세 gate 모두 local-first smoke입니다. Orchestrator나 AIGuard가 final deployment
 decision owner가 되지 않습니다.
 `smoke_quick_scan_registry_summary.sh` 역시 Jetson이 필요 없는 fixture-only

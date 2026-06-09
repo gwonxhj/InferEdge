@@ -197,6 +197,12 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
         encoding="utf-8"
     )
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+    demo_doc_ko = (ROOT / "docs" / "agent_runtime_e2e_demo.ko.md").read_text(
+        encoding="utf-8"
+    )
 
     assert "Lab Runtime Intelligence artifact smoke" in smoke_script
     assert "scripts/smoke_runtime_intelligence_chain.sh --output-dir" in smoke_script
@@ -321,16 +327,26 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Runtime Intelligence Risk Summary" in readme
     assert "duration traceability" in readme
     assert "Lab `Review Path` section" in readme
-    assert "`Fast path` line" in readme
     assert "Validated Review Path" in readme
-    assert "short Review Path section" in readme
-    assert "readable Review Path fast path" in readme
-    assert "artifact gate summary reference row" in readme
+    assert (
+        "Detailed marker vocabulary lives in the Agent Runtime E2E demo docs"
+        in readme
+    )
     assert "README -> Lab report -> gate summary reading order" in readme
+    assert "short Review Path section" not in readme
+    assert "artifact gate summary reference row" not in readme
     assert "Operation Quick Scan Summary" in readme
     assert "max_total_queue_depth" in readme
     assert "raw_marker=reviewer_focus_operation_quick_scan" in readme
     assert "queue pressure" in readme
+
+    for doc_text in (demo_doc, demo_doc_ko):
+        assert "review_path_section: short Review Path section rendered" in doc_text
+        assert "review_path_fast_path: readable Review Path fast path rendered" in doc_text
+        assert (
+            "review_path_artifact_gate_summary: artifact gate summary reference row validated"
+            in doc_text
+        )
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:

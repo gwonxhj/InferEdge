@@ -71,9 +71,18 @@ configured output directory:
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
 | `edgeenv_runtime_regression.md` / `.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, promoted `Operation quick scan` reviewer focus, preserved `operation_risk_summary` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |
-| `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows, Lab ownership wording, `Validated Duration Traceability`, `Validated Reviewer Focus`, and `review_path_fast_path` reviewer navigation context |
-| `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape, including the copied `Validated Reviewer Focus` and `review_path_fast_path` markers, without making CI a production control plane |
+| `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows, Lab ownership wording, `Validated Duration Traceability`, `Validated Reviewer Focus`, and `Validated Review Path` reviewer navigation context |
+| `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape, including the copied `Validated Reviewer Focus` and `Validated Review Path` markers, without making CI a production control plane |
 | `aiguard_edgeenv_handoff_alignment.json` / `.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
+
+The `Validated Review Path` gate summary intentionally keeps the detailed
+marker vocabulary outside the README. The current required markers are:
+
+- `review_path_section: short Review Path section rendered`
+- `review_path_fast_path: readable Review Path fast path rendered`
+- `review_path: Reviewer Focus -> Detailed Evidence Rows guidance validated`
+- `review_path_scope: comparable regression / telemetry replay / operation evidence preserved`
+- `review_path_artifact_gate_summary: artifact gate summary reference row validated`
 
 Use this output list when reviewing Runtime Intelligence evidence. Use
 `00_evidence_index.*` from the agent runtime smoke when reviewing generated
