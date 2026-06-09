@@ -11,6 +11,30 @@ runtime-operation evidence 요약입니다. 목적은 장시간 production servi
 telemetry, EdgeEnv preservation, AIGuard warning, Lab-owned deployment
 decision 흐름을 재현하는 것입니다.
 
+## 최신 registry와의 관계
+
+이 문서는 submission-facing 5-minute-class Jetson evidence snapshot입니다.
+최신 reviewer navigation 기록은
+[`docs/agent_runtime_e2e_demo.ko.md`](../agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)에
+정리된 operation-summary quick-scan registry입니다.
+
+최신 registry cross-check:
+
+| 항목 | 값 |
+|---|---|
+| Entrypoint commit | `c04abc9` |
+| 최신 5-minute-class bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_operation_summary_latest_20260609T121700Z` |
+| 최신 registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
+| 최신 registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
+| 최신 5-minute EdgeEnv run ID | `run-20260609-122009-c17a030b` |
+| Duration row | `5-minute-class sustained replay (3600 frames)` |
+| Operation summary labels | `operation_summary: mode=device_local_starter` / `operation_summary: mode=timeout_threshold_exceeded` |
+
+이 registry는 96-frame replay와 5-minute-class replay를 하나의 navigation
+table에서 비교하게 해줍니다. 두 run을 thermal endurance validation으로
+격상하거나, 이 문서의 metric snapshot을 대체하거나, registry를 Lab report
+owner로 만들지 않습니다.
+
 ## Scope
 
 | 항목 | 값 |

@@ -10,6 +10,29 @@ submission-facing 요약입니다. 목적은 Jetson device-local starter에서
 Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence chain이 보존되는지
 보여주는 것입니다.
 
+## 최신 registry와의 관계
+
+이 문서는 submission-facing 96-frame Jetson evidence snapshot입니다. 최신
+reviewer navigation 기록은
+[`docs/agent_runtime_e2e_demo.ko.md`](../agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)에
+정리된 operation-summary quick-scan registry입니다.
+
+최신 registry cross-check:
+
+| 항목 | 값 |
+|---|---|
+| Entrypoint commit | `c04abc9` |
+| 최신 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_96_operation_summary_latest_20260609T122600Z` |
+| 최신 registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
+| 최신 registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
+| 최신 96-frame EdgeEnv run ID | `run-20260609-122450-a262b037` |
+| Operation summary labels | `operation_summary: mode=device_local_starter` / `operation_summary: mode=timeout_threshold_exceeded` |
+
+이 registry는 `Duration Comparison Summary`와 `Operation Quick Scan Summary`
+reviewer-navigation row를 추가로 보여줍니다. 이 문서의 metric snapshot을
+대체하거나, EdgeEnv comparability ownership을 바꾸거나, registry를 Lab
+report owner로 만들지 않습니다.
+
 ## Scope
 
 | 항목 | 값 |

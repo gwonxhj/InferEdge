@@ -22,6 +22,29 @@ This is device-local runtime reliability smoke evidence. It is not decoded YOLO
 accuracy validation, live camera operation, Whisper/FastAPI service execution,
 production remote execution, or sustained thermal endurance validation.
 
+## Relationship To Latest Registry
+
+This report is the representative 96-frame Jetson evidence snapshot used for
+submission-facing metrics. The latest reviewer navigation record is the
+operation-summary quick-scan registry documented in
+[`docs/agent_runtime_e2e_demo.md`](../agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry).
+
+Latest registry cross-check:
+
+| Field | Value |
+|---|---|
+| Entrypoint commit | `c04abc9` |
+| Latest 96-frame bundle | `/tmp/inferedge_agent_runtime_jetson_96_operation_summary_latest_20260609T122600Z` |
+| Latest registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
+| Latest registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
+| Latest 96-frame EdgeEnv run ID | `run-20260609-122450-a262b037` |
+| Operation summary labels | `operation_summary: mode=device_local_starter` and `operation_summary: mode=timeout_threshold_exceeded` |
+
+The registry adds `Duration Comparison Summary` and `Operation Quick Scan
+Summary` reviewer-navigation rows. It does not replace the metric snapshot in
+this report, change EdgeEnv comparability ownership, or make the registry a Lab
+report owner.
+
 ## Replay Command
 
 ```bash
