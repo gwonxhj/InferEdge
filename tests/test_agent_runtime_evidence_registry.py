@@ -243,6 +243,41 @@ def test_jetson_5min_html_preserves_latest_registry_context() -> None:
     assert "make the registry a Lab report owner" in normalized_html
 
 
+def test_jetson_evidence_terms_align_snapshot_registry_navigation() -> None:
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+    korean_demo_doc = (
+        ROOT / "docs" / "agent_runtime_e2e_demo.ko.md"
+    ).read_text(encoding="utf-8")
+    evidence_docs = [
+        ROOT / "docs" / "evidence" / "jetson_device_local_agent_runtime_report.md",
+        ROOT / "docs" / "evidence" / "jetson_device_local_5min_sustained_report.md",
+        ROOT / "docs" / "evidence" / "jetson_device_local_agent_runtime_report.ko.md",
+        ROOT
+        / "docs"
+        / "evidence"
+        / "jetson_device_local_5min_sustained_report.ko.md",
+    ]
+
+    for text in (demo_doc, korean_demo_doc):
+        assert "Representative snapshot" in text
+        assert "Latest registry" in text
+        assert "Quick-scan navigation" in text
+        assert "Duration Comparison Summary" in text
+        assert "Operation Quick Scan Summary" in text
+        assert "reviewer navigation metadata" in text
+        assert "production runtime operation proof" in text
+
+    for path in evidence_docs:
+        text = path.read_text(encoding="utf-8")
+        assert "representative snapshot" in text
+        assert "latest registry" in text
+        assert "quick-scan navigation" in text
+        assert "Relationship To Latest Registry" in text or "최신 registry와의 관계" in text
+        assert "metric snapshot" in text or "metric record" in text
+
+
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
     script = (ROOT / "scripts" / "check_jetson_sustained_readiness.sh").read_text(
         encoding="utf-8"

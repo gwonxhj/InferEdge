@@ -16,6 +16,9 @@ Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence chain이 보존되는지
 reviewer navigation 기록은
 [`docs/agent_runtime_e2e_demo.ko.md`](../agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)에
 정리된 operation-summary quick-scan registry입니다.
+해당 section의 용어 표를 기준으로 `representative snapshot`,
+`latest registry`, `quick-scan navigation` 의미를 5-minute-class report와
+맞춰 읽습니다.
 
 최신 registry cross-check:
 
