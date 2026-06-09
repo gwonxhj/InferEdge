@@ -248,6 +248,18 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
     assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in smoke_script
+    assert (
+        "reviewer_path_gate: README/ecosystem reviewer path gate context declared"
+        in smoke_script
+    )
+    assert (
+        "reviewer_path_local_links: local reviewer path link gate context preserved"
+        in smoke_script
+    )
+    assert (
+        "reviewer_path_anchor_fragments: reviewer path anchor gate context preserved"
+        in smoke_script
+    )
     assert "runtime_anomaly_gate_summary.md" in smoke_script
     assert "runtime_intelligence_ci_artifact_gate_summary.md" in smoke_script
     assert "Validated Duration Traceability" in smoke_script
