@@ -27,6 +27,12 @@ decision으로 연결하는 local-first Edge AI inference validation pipeline입
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
 | Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
+Jetson evidence는 demo / evidence report와 같은 용어를 사용합니다.
+`representative snapshot`은 submission-facing metric report,
+`latest registry`는 최신 local navigation record,
+`quick-scan navigation`은 duration과 queue/deadline/fallback pressure를 먼저
+보는 reviewer metadata이며 production runtime operation proof가 아닙니다.
+
 ## 역할 분리
 
 | Repository | 역할 | 경계 |
@@ -77,6 +83,11 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 | operation pressure를 빠르게 볼 수 있는가? | `Duration Comparison Summary`, `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count, `operation_summary` label |
 | Jetson/device-local context가 handoff 이후에도 남는가? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
+
+이 quick-scan registry는 `latest registry` 기반의 `quick-scan navigation`
+metadata입니다. 대표 metric은 각 `representative snapshot` report에서
+확인하며, registry가 Lab report owner나 production runtime operation proof가
+되는 것은 아닙니다.
 
 Duration handoff 이력은 `EdgeEnv/AIGuard duration handoff alignment`,
 `duration_handoff_alignment_20260601`, EdgeEnv `de64d50` / AIGuard `7289899`
