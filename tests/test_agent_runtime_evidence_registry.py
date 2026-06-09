@@ -679,8 +679,8 @@ def test_internal_docs_provide_matching_korean_link_labels() -> None:
         ),
         (
             "docs/agent_runtime_e2e_demo.md",
-            "`HTML report`",
-            "HTML 보고서",
+            "`Snapshot HTML report`",
+            "대표 스냅샷 HTML 보고서",
             "evidence/jetson_device_local_5min_sustained_report.html",
             "evidence/jetson_device_local_5min_sustained_report.html",
         ),

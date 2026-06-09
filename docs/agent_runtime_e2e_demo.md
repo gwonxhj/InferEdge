@@ -551,8 +551,8 @@ submission-facing snapshot is captured as
 [`Jetson Device-Local 5-Minute Sustained Smoke Report`](evidence/jetson_device_local_5min_sustained_report.md)
 ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](evidence/jetson_device_local_5min_sustained_report.ko.md))
 and
-[`HTML report`](evidence/jetson_device_local_5min_sustained_report.html)
-([한국어: HTML 보고서](evidence/jetson_device_local_5min_sustained_report.html)).
+[`Snapshot HTML report`](evidence/jetson_device_local_5min_sustained_report.html)
+([한국어: 대표 스냅샷 HTML 보고서](evidence/jetson_device_local_5min_sustained_report.html)).
 It is still runtime-operation smoke evidence, not decoded YOLO accuracy
 validation, live camera operation, Whisper/FastAPI service execution, production
 remote execution, or sustained thermal endurance validation.
