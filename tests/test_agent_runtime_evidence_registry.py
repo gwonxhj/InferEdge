@@ -9,6 +9,23 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 MARKDOWN_LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 MARKDOWN_HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
+RUNTIME_INTELLIGENCE_ARTIFACT_ORDER = [
+    "examples/regression/fixture_matrix.json",
+    "runtime_intelligence_bundle_manifest_gate_summary.md",
+    "edgeenv_runtime_regression.md",
+    "edgeenv_runtime_regression.html",
+    "runtime_anomaly_summary.md",
+    "runtime_anomaly_summary.html",
+    "runtime_anomaly_gate_summary.md",
+    "runtime_intelligence_ci_artifact_gate_summary.md",
+    "aiguard_edgeenv_handoff_alignment.json",
+    "aiguard_edgeenv_handoff_alignment.md",
+]
+RUNTIME_INTELLIGENCE_SMOKE_GATE_ORDER = [
+    "EdgeEnv regression replay fixture matrix gate",
+    "Lab Runtime Intelligence artifact smoke",
+    "Lab Runtime Intelligence report marker gate",
+]
 
 
 def load_script_module(name: str, relative_path: str):
@@ -347,6 +364,40 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
             "review_path_artifact_gate_summary: artifact gate summary reference row validated"
             in doc_text
         )
+
+
+def test_runtime_intelligence_demo_docs_preserve_artifact_and_gate_order() -> None:
+    smoke_script = (ROOT / "scripts" / "smoke_all.sh").read_text(
+        encoding="utf-8"
+    )
+    doc_sections = [
+        (
+            "docs/agent_runtime_e2e_demo.md",
+            "## Smoke Gate Split",
+            "English Runtime Intelligence artifact output list",
+        ),
+        (
+            "docs/agent_runtime_e2e_demo.ko.md",
+            "## Runtime Intelligence artifact smoke와의 차이",
+            "Korean Runtime Intelligence artifact output list",
+        ),
+    ]
+
+    for doc_path, heading, label in doc_sections:
+        section = section_by_heading(
+            (ROOT / doc_path).read_text(encoding="utf-8"), heading
+        )
+        assert_markers_in_order(
+            section,
+            RUNTIME_INTELLIGENCE_ARTIFACT_ORDER,
+            label=label,
+        )
+
+    assert_markers_in_order(
+        smoke_script,
+        RUNTIME_INTELLIGENCE_SMOKE_GATE_ORDER,
+        label="scripts/smoke_all.sh Runtime Intelligence gate order",
+    )
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
