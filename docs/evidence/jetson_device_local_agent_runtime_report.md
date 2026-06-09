@@ -28,6 +28,9 @@ This report is the representative 96-frame Jetson evidence snapshot used for
 submission-facing metrics. The latest reviewer navigation record is the
 operation-summary quick-scan registry documented in
 [`docs/agent_runtime_e2e_demo.md`](../agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry).
+Use that section's terminology table to keep `representative snapshot`,
+`latest registry`, and `quick-scan navigation` aligned with the 5-minute-class
+report.
 
 Latest registry cross-check:
 

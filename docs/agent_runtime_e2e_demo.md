@@ -793,6 +793,14 @@ opening each full report first.
 | Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
 
+Terminology used by the linked Jetson evidence reports:
+
+| Term | Meaning | Boundary |
+|---|---|---|
+| Representative snapshot | Submission-facing Markdown/HTML report that preserves one run class's metrics and Lab-owned decision context | The latest registry does not replace the snapshot's metric record |
+| Latest registry | Most recent local run-navigation record rebuilt from generated `00_evidence_index.*` files | Registry rows are not a Lab report owner, EdgeEnv comparability gate, or deployment decision |
+| Quick-scan navigation | Compact `Duration Comparison Summary` and `Operation Quick Scan Summary` rows for duration and queue/deadline/fallback pressure | Reviewer navigation metadata only, not production runtime operation proof |
+
 This registry is still a local-first review navigation artifact. It separates
 the short replay and 5-minute-class replay by duration metadata while preserving
 both as Smoke/Starter evidence, not thermal endurance validation or production
