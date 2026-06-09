@@ -788,19 +788,18 @@ without opening each full report first.
 | EdgeEnv run IDs | `run-20260608-232827-e584af13`, `run-20260609-001553-51217d1d` |
 | Lab preservation registry cell | `lab_preservation=present`, `lab_context=present` |
 | Operation quick-scan registry section | `Operation Quick Scan Summary` before `## Runs` |
-| Operation quick-scan registry column | `Reviewer operation quick scan: queue_pressure_reason=...; max_total_queue_depth=...; deadline_missed_count=...; fallback_count=...` |
+| Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
 
 This registry is still a local-first review navigation artifact. It separates
 the short replay and 5-minute-class replay by duration metadata while preserving
 both as Smoke/Starter evidence, not thermal endurance validation or production
-runtime operation proof. The `Operation Quick Scan` column mirrors Lab report
-marker context from each run's EdgeEnv summary for reviewer navigation only; it
-does not make the registry a Lab report owner. The regenerated Markdown registry
-now shows both rows in `Operation Quick Scan Summary` before the full `## Runs`
-table, and keeps the detailed `Reviewer operation quick scan` labels before the
-longer EdgeEnv cell. Reviewers can identify queue/deadline/fallback pressure
-without opening each bundle first.
+runtime operation proof. The `Operation Quick Scan Summary` table keeps compact
+queue/deadline/fallback and preservation labels for reviewer navigation only; it
+does not make the registry a Lab report owner. The detailed `## Runs` table and
+registry JSON still preserve the raw `Reviewer operation quick scan` marker
+context, so reviewers can identify queue/deadline/fallback pressure before
+opening each bundle without losing traceability.
 
 To compare multiple generated run bundles, build a local entrypoint navigation
 registry from their indexes:

@@ -257,7 +257,8 @@ grep -q "max_total_queue_depth=6" "$OUTPUT_DIR/agent_runtime_quick_scan_registry
 grep -q "deadline_missed_count=50" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "fallback_count=93" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "reviewer navigation metadata" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
-grep -q "does not make the registry a Lab report owner" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "does not make this registry a Lab report owner" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "raw Lab report markers remain in the detailed" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
@@ -272,6 +273,21 @@ summary = markdown.index("## Operation Quick Scan Summary")
 runs = markdown.index("## Runs")
 if summary >= runs:
     raise SystemExit("Operation Quick Scan Summary must appear before ## Runs")
+summary_block = markdown[summary:runs]
+runs_block = markdown[runs:]
+for marker in (
+    "Raw Marker",
+    "raw_marker=reviewer_focus_operation_quick_scan",
+    "Reviewer operation quick scan:",
+):
+    if marker in summary_block:
+        raise SystemExit(f"summary leaked detailed marker: {marker}")
+for marker in (
+    "raw_marker=reviewer_focus_operation_quick_scan",
+    "Reviewer operation quick scan:",
+):
+    if marker not in runs_block:
+        raise SystemExit(f"detailed run table missing marker: {marker}")
 PY
 
 echo "Quick-scan registry summary smoke: pass"
