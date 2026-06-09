@@ -30,6 +30,19 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Lab Runtime Intelligence artifact smoke" in smoke_script
     assert "scripts/smoke_runtime_intelligence_chain.sh --output-dir" in smoke_script
     assert "INFEREDGE_RUNTIME_INTELLIGENCE_SMOKE_OUT" in smoke_script
+    assert "EdgeEnv regression replay fixture matrix gate" in smoke_script
+    assert "examples/regression/fixture_matrix.json" in smoke_script
+    assert "edgeenv-regression-replay-fixture-matrix-v1" in smoke_script
+    assert "same_condition_regression" in smoke_script
+    assert "runtime_comparison_blocked" in smoke_script
+    assert "target_comparison_blocked" in smoke_script
+    assert "protocol_mismatch_blocked" in smoke_script
+    assert "telemetry_gap_same_condition" in smoke_script
+    assert "replay_sequence_context" in smoke_script
+    assert "regression_delta_allowed" in smoke_script
+    assert "not_a_deployment_decision" in smoke_script
+    assert "not_a_guard_analysis" in smoke_script
+    assert "not_production_monitoring" in smoke_script
     assert "Agent Runtime EdgeEnv preservation identity/details smoke" in smoke_script
     assert "INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT" in smoke_script
     assert "demo_agent_runtime_e2e.sh\" --device-local --edgeenv-run-evidence" in smoke_script
@@ -113,6 +126,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Reviewer path" in readme
     assert "What to inspect" in readme
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in readme
+    assert "EdgeEnv `examples/regression/fixture_matrix.json`" in readme
+    assert "telemetry-gap" in readme
+    assert "replay-sequence fixtures" in readme
     assert "Runtime Intelligence Risk Summary" in readme
     assert "duration traceability" in readme
     assert "Lab `Review Path` section" in readme

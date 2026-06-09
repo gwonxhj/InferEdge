@@ -71,6 +71,7 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 | 리뷰 질문 | evidence path |
 |---|---|
 | evidence chain이 끝까지 이어지는가? | `runtime_intelligence_bundle_manifest_gate_summary.md`의 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
+| EdgeEnv fixture matrix가 보존되는가? | InferEdgeEnv `examples/regression/fixture_matrix.json`의 same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, replay-sequence fixture role |
 | report와 deployment decision은 Lab-owned인가? | `runtime_anomaly_summary.md` / `.html`의 Runtime Intelligence Risk Summary와 Lab decision context |
 | reviewer가 Lab report를 빠르게 따라갈 수 있는가? | Lab `Review Path` section과 `Validated Review Path` gate summary, `review_path_section: short Review Path section rendered`, `review_path_fast_path: readable Review Path fast path rendered`로 README -> Lab report -> gate summary 읽기 순서 확인 |
 | operation pressure를 빠르게 볼 수 있는가? | `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count |
