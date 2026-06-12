@@ -47,8 +47,8 @@ bash scripts/check_publish_ready.sh
 
 [Publish InferEdge Entrypoint](docs/publish_inferedge.md)는
 non-fast-forward와 unrelated-history 차단 상태, PR 생성과 merge까지 한 단계로
-묶는 기준, local checkout safety, optional branch cleanup을 설명합니다. 기존
-public `main` history 위에 force push하지 않습니다.
+묶는 기준, 최종 상태 확인, local checkout safety, optional branch cleanup을
+설명합니다. 기존 public `main` history 위에 force push하지 않습니다.
 
 ## 핵심 흐름
 
