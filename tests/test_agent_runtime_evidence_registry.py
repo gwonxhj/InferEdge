@@ -741,6 +741,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Do not force push" in publish_doc
     assert "Origin branch state: unrelated-history" in publish_doc
     assert "Upstream status: different branch" in publish_doc
+    assert "whitespace and patch sanity check" in publish_doc
+    assert "git diff --check" in publish_doc
     assert "Local Checkout Safety" in publish_doc
     assert "If local `main` has unrelated" in publish_doc
     assert "history, do not use it as the base for new work" in publish_doc

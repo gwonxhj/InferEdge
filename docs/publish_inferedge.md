@@ -12,6 +12,12 @@ Run the focused local tests from the repository root:
 python -m pytest -q
 ```
 
+Run a whitespace and patch sanity check before staging or pushing:
+
+```bash
+git diff --check
+```
+
 When the sibling repositories are available, run the cross-repo portfolio smoke:
 
 ```bash
@@ -41,6 +47,7 @@ Start from the current remote `main` and publish a review branch:
 ```bash
 git fetch origin main
 git switch -c codex/<topic> origin/main
+git diff --check
 python -m pytest -q
 bash scripts/check_publish_ready.sh
 git push -u origin codex/<topic>
