@@ -39,6 +39,16 @@ production observability platform 또는 GitLab control plane이 아닙니다.
 fixture만으로 `Operation Quick Scan Summary` registry marker와
 `Reviewer operation quick scan` navigation row를 확인하는 좁은 gate입니다.
 
+review branch publish 전에는 아래 helper로 원격 상태를 확인합니다.
+
+```bash
+bash scripts/check_publish_ready.sh
+```
+
+[Publish InferEdge Entrypoint](docs/publish_inferedge.md)는
+non-fast-forward와 unrelated-history 차단 상태를 설명합니다. 기존 public
+`main` history 위에 force push하지 않습니다.
+
 ## 핵심 흐름
 
 ```text

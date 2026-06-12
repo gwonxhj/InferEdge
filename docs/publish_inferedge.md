@@ -1,0 +1,82 @@
+# Publish InferEdge Entrypoint
+
+This repository is the public InferEdge ecosystem entrypoint. It already has a
+real `main` history, so publishing work must preserve that history. Do not force
+push over `main` to import another local repository.
+
+## Pre-publish Checks
+
+Run the focused local tests from the repository root:
+
+```bash
+python -m pytest -q
+```
+
+When the sibling repositories are available, run the cross-repo portfolio smoke:
+
+```bash
+bash scripts/smoke_all.sh
+```
+
+Before pushing, run the publish readiness check:
+
+```bash
+bash scripts/check_publish_ready.sh
+```
+
+The readiness check verifies:
+
+- current branch
+- latest commit
+- working tree cleanliness
+- `origin` remote presence
+- `origin` remote reachability
+- `origin` branch fast-forward safety
+- suggested push command
+
+## Safe Branch Publish
+
+Start from the current remote `main` and publish a review branch:
+
+```bash
+git fetch origin main
+git switch -c codex/<topic> origin/main
+python -m pytest -q
+bash scripts/check_publish_ready.sh
+git push -u origin codex/<topic>
+```
+
+If the check reports `Upstream status: different branch`, use the suggested
+`git push -u origin <current-branch>` command instead of plain `git push`.
+
+## Blocked States
+
+If the check reports `Origin reachability: failed`, the URL points to a
+repository that does not exist or that your authenticated GitHub account cannot
+access. Create the repository first or replace `origin` with the correct URL.
+
+If the check reports `Origin branch state: unrelated-history`, `local-behind`,
+or `diverged`, the remote branch already contains commits that cannot be
+updated by a normal fast-forward push. Do not force push; integrate the remote
+history first, push a separate review branch, or choose an empty repository
+intended for the new history.
+
+If `origin` is missing, add the intended remote URL:
+
+```bash
+REMOTE_URL="<paste-real-git-remote-url-here>"
+git remote add origin "$REMOTE_URL"
+```
+
+Replace the entire value inside quotes with the real repository URL before
+running the command. Do not type unquoted angle-bracket placeholders such as
+`<remote-url>` into zsh; `<` is parsed as shell redirection.
+
+## Notes
+
+- Do not publish if any validation smoke fails.
+- Do not commit generated sibling `reports/` folders unless a fixture
+  explicitly requires them.
+- A missing `origin`, placeholder `origin`, unreachable `origin`, or unrelated
+  existing `origin/main` is a blocked publish state.
+- Jetson hardware is not required for the publish readiness check.

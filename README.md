@@ -40,6 +40,16 @@ That smoke checks Forge, Runtime, Lab, AIGuard, and the local-first Runtime
 Intelligence artifact chain. It validates reviewer-facing report markers and
 contract boundaries. Boundary marker: Production observability platform or GitLab control plane is out of scope.
 
+For safe review-branch publishing, run:
+
+```bash
+bash scripts/check_publish_ready.sh
+```
+
+See [Publish InferEdge Entrypoint](docs/publish_inferedge.md) for the
+non-fast-forward and unrelated-history blocked states. Do not force push over
+the existing public `main` history.
+
 ## Architecture
 
 InferEdge separates three questions that are often mixed together in inference
@@ -233,6 +243,7 @@ context.
 | `scripts/clone_all.sh` | Clone pinned repositories into `repos/` |
 | `scripts/update_all.sh` | Pull all cloned repositories |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
+| `scripts/check_publish_ready.sh` | Check publish readiness and block unsafe remote branch updates |
 | `scripts/smoke_quick_scan_registry_summary.sh` | Build a fixture-only `Operation Quick Scan Summary` registry gate; Jetson is not required |
 | `scripts/demo_agent_runtime_e2e.sh` | Generate local Agent Runtime evidence bundles |
 | `scripts/check_jetson_sustained_readiness.sh` | Check Jetson readiness before repeat sustained evidence collection |
