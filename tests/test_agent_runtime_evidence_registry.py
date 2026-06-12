@@ -745,6 +745,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "If local `main` has unrelated" in publish_doc
     assert "history, do not use it as the base for new work" in publish_doc
     assert "origin/main` as the source of truth" in publish_doc
+    assert "After PR Merge" in publish_doc
+    assert "git log --oneline -3 origin/main" in publish_doc
+    assert "not run `git pull` into a stale or unrelated local `main`" in publish_doc
     assert "git switch -c codex/<topic> origin/main" in publish_doc
     assert "git switch -c codex/<next-task> origin/main" in publish_doc
     assert "git push -u origin codex/<topic>" in publish_doc

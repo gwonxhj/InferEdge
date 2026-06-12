@@ -67,6 +67,27 @@ Only repoint or delete a stale local `main` after confirming the working tree is
 clean and no local-only commits need to be preserved. Until then, treat
 `origin/main` as the source of truth for new InferEdge entrypoint branches.
 
+## After PR Merge
+
+After a pull request is merged, fetch `main` and verify the merge commit before
+starting more work:
+
+```bash
+git fetch origin main
+git log --oneline -3 origin/main
+```
+
+It is fine for the local checkout to remain on the merged feature branch. Do
+not run `git pull` into a stale or unrelated local `main`. Start the next task
+from `origin/main` instead:
+
+```bash
+git switch -c codex/<next-task> origin/main
+```
+
+Delete merged local or remote branches only when you are sure they are no
+longer needed for review or audit.
+
 ## Blocked States
 
 If the check reports `Origin reachability: failed`, the URL points to a
