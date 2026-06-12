@@ -49,6 +49,17 @@ git push -u origin codex/<topic>
 If the check reports `Upstream status: different branch`, use the suggested
 `git push -u origin <current-branch>` command instead of plain `git push`.
 
+## Bundled PR Merge Step
+
+For small documentation, workflow, or marker-test changes, treat branch
+publishing, PR creation, and PR merge as one execution step after local
+validation passes. Do not commit, push, open a PR, or merge while any required
+test or smoke check is failing.
+
+Before merging, verify the changed file list is scoped to the intended task and
+the pull request is mergeable. After merging, fetch `origin/main`, confirm the
+new merge commit, and start the next task from `origin/main`.
+
 ## Local Checkout Safety
 
 Some local workspaces may have a `main` branch that was created before this
