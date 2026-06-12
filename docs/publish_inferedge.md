@@ -18,6 +18,13 @@ Run a whitespace and patch sanity check before staging or pushing:
 git diff --check
 ```
 
+After staging files, repeat the check against the staged patch before
+committing:
+
+```bash
+git diff --cached --check
+```
+
 When the sibling repositories are available, run the cross-repo portfolio smoke:
 
 ```bash
