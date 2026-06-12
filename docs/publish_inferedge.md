@@ -113,6 +113,11 @@ git push origin --delete codex/<merged-topic>
 If a branch is not listed by `git branch --merged origin/main`, stop and inspect
 the branch before deleting it.
 
+Squash-merged branches may not appear in `git branch --merged origin/main`
+because their branch commits were copied into new commits on `main`. In that
+case, do not delete the branch based on `--merged` alone. Verify the PR is
+closed as merged and keep the branch if review or audit context is still useful.
+
 ## Blocked States
 
 If the check reports `Origin reachability: failed`, the URL points to a

@@ -751,6 +751,10 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Optional Branch Cleanup" in publish_doc
     assert "Never delete `main`" in publish_doc
     assert "git branch --merged origin/main" in publish_doc
+    assert "Squash-merged branches may not appear" in publish_doc
+    assert "do not delete the branch based on `--merged` alone" in publish_doc
+    assert "Verify the PR is" in publish_doc
+    assert "closed as merged" in publish_doc
     assert "git push origin --delete codex/<merged-topic>" in publish_doc
     assert "git switch -c codex/<topic> origin/main" in publish_doc
     assert "git switch -c codex/<next-task> origin/main" in publish_doc
