@@ -60,6 +60,20 @@ Before merging, verify the changed file list is scoped to the intended task and
 the pull request is mergeable. After merging, fetch `origin/main`, confirm the
 new merge commit, and start the next task from `origin/main`.
 
+## Final Status Check
+
+Before considering the publish step complete, verify the local checkout has no
+unexpected working-tree or staged changes:
+
+```bash
+git status --short --branch
+git diff --stat
+git diff --cached --stat
+```
+
+If any unexpected file appears, investigate it before starting another branch,
+opening another pull request, or deleting any branch.
+
 ## Local Checkout Safety
 
 Some local workspaces may have a `main` branch that was created before this
