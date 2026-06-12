@@ -748,6 +748,10 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "After PR Merge" in publish_doc
     assert "git log --oneline -3 origin/main" in publish_doc
     assert "not run `git pull` into a stale or unrelated local `main`" in publish_doc
+    assert "Optional Branch Cleanup" in publish_doc
+    assert "Never delete `main`" in publish_doc
+    assert "git branch --merged origin/main" in publish_doc
+    assert "git push origin --delete codex/<merged-topic>" in publish_doc
     assert "git switch -c codex/<topic> origin/main" in publish_doc
     assert "git switch -c codex/<next-task> origin/main" in publish_doc
     assert "git push -u origin codex/<topic>" in publish_doc
