@@ -47,8 +47,9 @@ bash scripts/check_publish_ready.sh
 ```
 
 See [Publish InferEdge Entrypoint](docs/publish_inferedge.md) for the
-non-fast-forward and unrelated-history blocked states. Do not force push over
-the existing public `main` history.
+non-fast-forward and unrelated-history blocked states, bundled PR merge step,
+local checkout safety, and optional branch cleanup. Do not force push over the
+existing public `main` history.
 
 ## Architecture
 

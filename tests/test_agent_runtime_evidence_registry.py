@@ -769,8 +769,14 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "scripts/check_publish_ready.sh" in readme
     assert "docs/publish_inferedge.md" in readme
     assert "Do not force push over" in readme
+    assert "bundled PR merge step" in readme
+    assert "local checkout safety" in readme
+    assert "optional branch cleanup" in readme
     assert "scripts/check_publish_ready.sh" in korean_readme
     assert "docs/publish_inferedge.md" in korean_readme
+    assert "PR 생성과 merge까지 한 단계" in korean_readme
+    assert "local checkout safety" in korean_readme
+    assert "optional branch cleanup" in korean_readme
     assert "force push하지 않습니다" in korean_readme
 
 
