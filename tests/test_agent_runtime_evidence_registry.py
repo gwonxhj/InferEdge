@@ -751,6 +751,11 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Do not commit, push, open a PR, or merge" in publish_doc
     assert "verify the changed file list" in publish_doc
     assert "the pull request is mergeable" in publish_doc
+    assert "Final Status Check" in publish_doc
+    assert "git status --short --branch" in publish_doc
+    assert "git diff --stat" in publish_doc
+    assert "git diff --cached --stat" in publish_doc
+    assert "If any unexpected file appears" in publish_doc
     assert "git log --oneline -3 origin/main" in publish_doc
     assert "not run `git pull` into a stale or unrelated local `main`" in publish_doc
     assert "Optional Branch Cleanup" in publish_doc
