@@ -74,6 +74,10 @@ Before merging, verify the changed file list is scoped to the intended task and
 the pull request is mergeable. After merging, fetch `origin/main`, confirm the
 new merge commit, and start the next task from `origin/main`.
 
+The PR body should include a short `Summary` and `Tests` section. List the
+exact validation commands that passed so reviewers can connect the merge to the
+local checks.
+
 ## Final Status Check
 
 Before considering the publish step complete, verify the local checkout has no
