@@ -719,6 +719,40 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     )
 
 
+def test_publish_readiness_preserves_safe_branch_boundary() -> None:
+    script = (ROOT / "scripts" / "check_publish_ready.sh").read_text(
+        encoding="utf-8"
+    )
+    publish_doc = (ROOT / "docs" / "publish_inferedge.md").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+
+    assert "InferEdge publish readiness" in script
+    assert "check_origin_branch_state" in script
+    assert "Origin branch state: unrelated-history" in script
+    assert "do not force push" in script
+    assert "Upstream status: different branch" in script
+    assert "git push -u origin $branch_name" in script
+    assert "--skip-remote-check" in script
+
+    assert "public InferEdge ecosystem entrypoint" in publish_doc
+    assert "Do not force push" in publish_doc
+    assert "Origin branch state: unrelated-history" in publish_doc
+    assert "Upstream status: different branch" in publish_doc
+    assert "git switch -c codex/<topic> origin/main" in publish_doc
+    assert "git push -u origin codex/<topic>" in publish_doc
+    assert "Jetson hardware is not required" in publish_doc
+
+    assert "scripts/check_publish_ready.sh" in readme
+    assert "docs/publish_inferedge.md" in readme
+    assert "Do not force push over" in readme
+    assert "scripts/check_publish_ready.sh" in korean_readme
+    assert "docs/publish_inferedge.md" in korean_readme
+    assert "force push하지 않습니다" in korean_readme
+
+
 def test_cross_repo_role_boundary_matrix_preserves_canonical_ownership() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
