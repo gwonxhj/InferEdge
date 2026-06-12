@@ -741,7 +741,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Do not force push" in publish_doc
     assert "Origin branch state: unrelated-history" in publish_doc
     assert "Upstream status: different branch" in publish_doc
+    assert "Local Checkout Safety" in publish_doc
+    assert "If local `main` has unrelated" in publish_doc
+    assert "history, do not use it as the base for new work" in publish_doc
+    assert "origin/main` as the source of truth" in publish_doc
     assert "git switch -c codex/<topic> origin/main" in publish_doc
+    assert "git switch -c codex/<next-task> origin/main" in publish_doc
     assert "git push -u origin codex/<topic>" in publish_doc
     assert "Jetson hardware is not required" in publish_doc
 
