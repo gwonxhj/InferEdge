@@ -776,6 +776,39 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "git push -u origin codex/<topic>" in publish_doc
     assert "Jetson hardware is not required" in publish_doc
 
+    assert_markers_in_order(
+        section_by_heading(publish_doc, "## Pre-publish Checks"),
+        [
+            "python -m pytest -q",
+            "git diff --check",
+            "git diff --cached --check",
+            "bash scripts/smoke_all.sh",
+            "bash scripts/check_publish_ready.sh",
+        ],
+        label="docs/publish_inferedge.md pre-publish command order",
+    )
+    assert_markers_in_order(
+        section_by_heading(publish_doc, "## Safe Branch Publish"),
+        [
+            "git fetch origin main",
+            "git switch -c codex/<topic> origin/main",
+            "git diff --check",
+            "python -m pytest -q",
+            "bash scripts/check_publish_ready.sh",
+            "git push -u origin codex/<topic>",
+        ],
+        label="docs/publish_inferedge.md safe branch publish command order",
+    )
+    assert_markers_in_order(
+        section_by_heading(publish_doc, "## Final Status Check"),
+        [
+            "git status --short --branch",
+            "git diff --stat",
+            "git diff --cached --stat",
+        ],
+        label="docs/publish_inferedge.md final status command order",
+    )
+
     assert "scripts/check_publish_ready.sh" in readme
     assert "docs/publish_inferedge.md" in readme
     assert "Do not" in readme
