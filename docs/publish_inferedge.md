@@ -88,6 +88,31 @@ git switch -c codex/<next-task> origin/main
 Delete merged local or remote branches only when you are sure they are no
 longer needed for review or audit.
 
+## Optional Branch Cleanup
+
+Branch cleanup is optional. Keep merged branches if they are still useful for
+review, audit, or comparing local logs. Never delete `main`.
+
+Before deleting a local branch, verify it is merged into the current
+`origin/main`:
+
+```bash
+git fetch origin main
+git branch --merged origin/main
+git branch -d codex/<merged-topic>
+```
+
+Before deleting a remote branch, verify the pull request is merged and the
+merge commit is present on `origin/main`:
+
+```bash
+git log --oneline -3 origin/main
+git push origin --delete codex/<merged-topic>
+```
+
+If a branch is not listed by `git branch --merged origin/main`, stop and inspect
+the branch before deleting it.
+
 ## Blocked States
 
 If the check reports `Origin reachability: failed`, the URL points to a
