@@ -746,6 +746,11 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "history, do not use it as the base for new work" in publish_doc
     assert "origin/main` as the source of truth" in publish_doc
     assert "After PR Merge" in publish_doc
+    assert "Bundled PR Merge Step" in publish_doc
+    assert "PR creation, and PR merge as one execution step" in publish_doc
+    assert "Do not commit, push, open a PR, or merge" in publish_doc
+    assert "verify the changed file list" in publish_doc
+    assert "the pull request is mergeable" in publish_doc
     assert "git log --oneline -3 origin/main" in publish_doc
     assert "not run `git pull` into a stale or unrelated local `main`" in publish_doc
     assert "Optional Branch Cleanup" in publish_doc
