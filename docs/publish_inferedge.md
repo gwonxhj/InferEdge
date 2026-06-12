@@ -49,6 +49,24 @@ git push -u origin codex/<topic>
 If the check reports `Upstream status: different branch`, use the suggested
 `git push -u origin <current-branch>` command instead of plain `git push`.
 
+## Local Checkout Safety
+
+Some local workspaces may have a `main` branch that was created before this
+repository was connected to `gwonxhj/InferEdge`. If local `main` has unrelated
+history, do not use it as the base for new work and do not force push it over
+the public `main` branch.
+
+For new work, use the remote-tracking branch directly:
+
+```bash
+git fetch origin main
+git switch -c codex/<next-task> origin/main
+```
+
+Only repoint or delete a stale local `main` after confirming the working tree is
+clean and no local-only commits need to be preserved. Until then, treat
+`origin/main` as the source of truth for new InferEdge entrypoint branches.
+
 ## Blocked States
 
 If the check reports `Origin reachability: failed`, the URL points to a
