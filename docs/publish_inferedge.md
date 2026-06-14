@@ -185,6 +185,11 @@ Replace the entire value inside quotes with the real repository URL before
 running the command. Do not type unquoted angle-bracket placeholders such as
 `<remote-url>` into zsh; `<` is parsed as shell redirection.
 
+The `--allow-dirty`, `--allow-missing-remote`,
+`--allow-placeholder-remote`, and `--skip-remote-check` flags are diagnostic
+escape hatches. Do not use them for normal branch publish or PR merge flow,
+because they can bypass the blocked-state evidence that protects `main`.
+
 ## Notes
 
 - Do not publish if any validation smoke fails.
