@@ -1004,6 +1004,9 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/agent_runtime_e2e_demo.ko.md",
             "docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현",
             "docs/interview_narrative.ko.md",
+            "docs/evidence/jetson_device_local_agent_runtime_report.ko.md",
+            "docs/evidence/jetson_device_local_5min_sustained_report.ko.md",
+            "docs/evidence/jetson_device_local_5min_sustained_report.html",
         ],
         label="README.ko 먼저 볼 문서",
     )
