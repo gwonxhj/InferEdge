@@ -171,6 +171,7 @@ registry / comparability / regression evidence owner입니다.
 | [InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.ko.md) | ecosystem diagram과 layer split |
 | [포트폴리오 요약](docs/portfolio_summary.ko.md) | 포트폴리오용 30초 요약 |
 | [파이프라인 맵](docs/pipeline_map.ko.md) | 레포별 책임과 contract boundary |
+| [Publish InferEdge Entrypoint](docs/publish_inferedge.md) | 안전한 branch publish, PR 생성/merge, readiness check |
 | [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md) | Runtime Operation / Agent Runtime smoke 흐름 |
 | [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label이 포함된 최신 registry |
 | [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
