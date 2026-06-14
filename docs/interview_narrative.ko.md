@@ -30,8 +30,8 @@ report, deterministic warning, deployment decision ownership까지 evidence chai
 | TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS | 실제 Jetson runtime evidence |
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS | Local Studio demo baseline |
 | Speedup | ONNX Runtime CPU 대비 약 4.51x FPS | backend comparison evidence |
-| Jetson device-local replay | 96 frames, 155.86 ms mean, 45.5 C, 1000 MB RAM | ONNX probe + telemetry handoff evidence |
-| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM | ONNX probe + telemetry handoff evidence |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
 | Jetson quick-scan registry | 96-frame / 5-minute rows, `Operation Quick Scan Summary` | queue/deadline/fallback pressure를 먼저 보는 reviewer navigation evidence |
 
 demo / evidence report와 같은 Jetson evidence 용어를 사용합니다.

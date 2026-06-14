@@ -549,6 +549,8 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
         assert "Quick-scan navigation" in normalized_text
         assert "Duration Comparison Summary" in normalized_text
         assert "Operation Quick Scan Summary" in normalized_text
+        assert "96 frames, 155.86 ms mean, 156.877 ms p95" in normalized_text
+        assert "Vision mean 152.77 ms, p95 156.948 ms" in normalized_text
         assert "submission-facing metric snapshot" in normalized_text
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
