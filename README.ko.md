@@ -19,8 +19,8 @@ diagnosis, Lab-owned deployment decision을 하나의 local-first 검증 흐름�
 | 운영 계층 | Orchestrator queue/deadline/fallback, worker-health evidence |
 | Jetson TensorRT 실측 | YOLOv8n TensorRT FP16: 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
 | CPU baseline | ONNX Runtime CPU: 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
-| Jetson device-local replay | 155.86 ms mean, 45.5 C, 1000 MB RAM |
-| Jetson 5분급 sustained replay | 3600 frames, 50.375 C, 1038 MB RAM |
+| Jetson device-local replay | 155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM |
+| Jetson 5분급 sustained replay | 3600 frames, 152.77 ms mean, 156.948 ms p95, 50.375 C, 1038 MB RAM |
 
 ## Quick Start
 
@@ -93,8 +93,8 @@ InferEdgeOrchestrator operation context
 | ONNX Runtime CPU baseline | mean 45.4299 ms, p99 49.2128 ms, 22.0119 FPS |
 | TensorRT speedup | ONNX Runtime CPU 대비 약 4.51x FPS |
 | YOLOv8 subset validation | 10 images, 89 boxes, simplified mAP@50 0.1410 |
-| Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
-| Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
+| Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
 | Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label, Lab preservation context. [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 세부 evidence는 [English README](README.md)의 Evidence Snapshot과
