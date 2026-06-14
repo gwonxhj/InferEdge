@@ -62,6 +62,30 @@ def assert_jetson_p95_evidence_terms(text: str) -> None:
     assert "Vision mean 152.77 ms, p95 156.948 ms" in text
 
 
+def assert_readme_top_jetson_p95_evidence_terms(text: str) -> None:
+    assert (
+        "Real device replay | Jetson Orin Nano ONNX replay: "
+        "155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM"
+    ) in text
+    assert (
+        "Sustained operation smoke | 5-minute-class Jetson replay: "
+        "3600 frames, 152.77 ms mean, 156.948 ms p95, "
+        "50.375 C, 1038 MB RAM"
+    ) in text
+
+
+def assert_korean_readme_jetson_p95_evidence_terms(text: str) -> None:
+    assert (
+        "Jetson device-local replay | 96 frames, 155.86 ms mean, "
+        "156.877 ms p95, max 45.5 C / 1000 MB RAM"
+    ) in text
+    assert (
+        "Jetson 5-minute-class sustained replay | 3600 frames, "
+        "Vision mean 152.77 ms, p95 156.948 ms, "
+        "max 50.375 C / 1038 MB RAM"
+    ) in text
+
+
 def section_by_heading(text: str, heading: str) -> str:
     start = text.find(heading)
     assert start != -1, f"expected section heading {heading!r}"
@@ -706,15 +730,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
 
     assert readme.startswith("# InferEdge\n\nLanguage: English | [한국어](README.ko.md)")
     assert korean_readme.startswith("# InferEdge\n\n언어: [English](README.md) | 한국어")
-    assert (
-        "Real device replay | Jetson Orin Nano ONNX replay: "
-        "155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM"
-    ) in readme
-    assert (
-        "Sustained operation smoke | 5-minute-class Jetson replay: "
-        "3600 frames, 152.77 ms mean, 156.948 ms p95, "
-        "50.375 C, 1038 MB RAM"
-    ) in readme
+    assert_readme_top_jetson_p95_evidence_terms(readme)
     assert "대표 README와 가장 최신 상세 설명" in korean_readme
     assert "[English README](README.md)" in korean_readme
     assert "Lab-owned deployment decision" in korean_readme
@@ -726,15 +742,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[포트폴리오 요약](docs/portfolio_summary.ko.md)" in korean_readme
     assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
-    assert (
-        "Jetson device-local replay | 96 frames, 155.86 ms mean, "
-        "156.877 ms p95, max 45.5 C / 1000 MB RAM"
-    ) in korean_readme
-    assert (
-        "Jetson 5-minute-class sustained replay | 3600 frames, "
-        "Vision mean 152.77 ms, p95 156.948 ms, "
-        "max 50.375 C / 1038 MB RAM"
-    ) in korean_readme
+    assert_korean_readme_jetson_p95_evidence_terms(korean_readme)
     assert (
         "[Jetson 디바이스 로컬 evidence quick guide]"
         "(docs/evidence/jetson_device_local_agent_runtime_report.ko.md)"
