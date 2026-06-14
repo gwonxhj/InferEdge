@@ -3,6 +3,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import re
+import subprocess
 from pathlib import Path
 
 
@@ -846,6 +847,28 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "optional branch cleanup" in korean_readme
     assert "diagnostic escape-hatch flag" in korean_readme
     assert "force push하지 않습니다" in korean_readme
+
+
+def test_publish_readiness_help_output_lists_safety_boundaries() -> None:
+    result = subprocess.run(
+        ["bash", "scripts/check_publish_ready.sh", "--help"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    output = result.stdout
+
+    assert "Usage:" in output
+    assert "bash scripts/check_publish_ready.sh [options]" in output
+    assert "--allow-dirty" in output
+    assert "--allow-missing-remote" in output
+    assert "--allow-placeholder-remote" in output
+    assert "--skip-remote-check" in output
+    assert "origin remote placeholder detection" in output
+    assert "origin branch fast-forward safety" in output
+    assert "suggested push command" in output
+    assert result.stderr == ""
 
 
 def test_cross_repo_role_boundary_matrix_preserves_canonical_ownership() -> None:
