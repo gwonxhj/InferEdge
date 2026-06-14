@@ -57,6 +57,11 @@ def assert_markers_in_order(
         previous_marker = marker
 
 
+def assert_jetson_p95_evidence_terms(text: str) -> None:
+    assert "96 frames, 155.86 ms mean, 156.877 ms p95" in text
+    assert "Vision mean 152.77 ms, p95 156.948 ms" in text
+
+
 def section_by_heading(text: str, heading: str) -> str:
     start = text.find(heading)
     assert start != -1, f"expected section heading {heading!r}"
@@ -549,8 +554,7 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
         assert "Quick-scan navigation" in normalized_text
         assert "Duration Comparison Summary" in normalized_text
         assert "Operation Quick Scan Summary" in normalized_text
-        assert "96 frames, 155.86 ms mean, 156.877 ms p95" in normalized_text
-        assert "Vision mean 152.77 ms, p95 156.948 ms" in normalized_text
+        assert_jetson_p95_evidence_terms(normalized_text)
         assert "submission-facing metric snapshot" in normalized_text
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
@@ -571,8 +575,7 @@ def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
         assert "quick-scan navigation" in normalized_text
         assert "Duration Comparison Summary" in normalized_text
         assert "Operation Quick Scan Summary" in normalized_text
-        assert "96 frames, 155.86 ms mean, 156.877 ms p95" in normalized_text
-        assert "Vision mean 152.77 ms, p95 156.948 ms" in normalized_text
+        assert_jetson_p95_evidence_terms(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
@@ -591,8 +594,7 @@ def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
         assert "latest registry" in normalized_text
         assert "quick-scan navigation" in normalized_text
         assert "submission-facing metric report" in normalized_text
-        assert "96 frames, 155.86 ms mean, 156.877 ms p95" in normalized_text
-        assert "Vision mean 152.77 ms, p95 156.948 ms" in normalized_text
+        assert_jetson_p95_evidence_terms(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
@@ -610,8 +612,7 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
         assert "quick-scan navigation" in normalized_text
         assert "submission-facing metric" in normalized_text
         assert "local reviewer navigation" in normalized_text
-        assert "96 frames, 155.86 ms mean, 156.877 ms p95" in normalized_text
-        assert "Vision mean 152.77 ms, p95 156.948 ms" in normalized_text
+        assert_jetson_p95_evidence_terms(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
