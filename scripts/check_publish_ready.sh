@@ -25,6 +25,7 @@ Checks:
   - latest commit
   - working tree cleanliness
   - origin remote presence
+  - origin remote placeholder detection
   - origin remote reachability
   - origin branch fast-forward safety
   - suggested push command

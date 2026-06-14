@@ -735,12 +735,14 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "do not force push" in script
     assert "Upstream status: different branch" in script
     assert "git push -u origin $branch_name" in script
+    assert "origin remote placeholder detection" in script
     assert "--skip-remote-check" in script
 
     assert "public InferEdge ecosystem entrypoint" in publish_doc
     assert "Do not force push" in publish_doc
     assert "Origin branch state: unrelated-history" in publish_doc
     assert "Upstream status: different branch" in publish_doc
+    assert "`origin` remote placeholder detection" in publish_doc
     assert "whitespace and patch sanity check" in publish_doc
     assert "git diff --check" in publish_doc
     assert "After staging files" in publish_doc
