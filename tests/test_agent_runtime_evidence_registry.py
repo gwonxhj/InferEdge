@@ -776,6 +776,14 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Verify the PR is" in publish_doc
     assert "closed as merged" in publish_doc
     assert "git push origin --delete codex/<merged-topic>" in publish_doc
+    assert "`--allow-dirty`" in publish_doc
+    assert "`--allow-missing-remote`" in publish_doc
+    assert "`--allow-placeholder-remote`" in publish_doc
+    assert "`--skip-remote-check`" in publish_doc
+    assert "diagnostic" in publish_doc
+    assert "escape hatches" in publish_doc
+    assert "Do not use them for normal branch publish" in publish_doc
+    assert "bypass the blocked-state evidence" in publish_doc
     assert "git switch -c codex/<topic> origin/main" in publish_doc
     assert "git switch -c codex/<next-task> origin/main" in publish_doc
     assert "git push -u origin codex/<topic>" in publish_doc
