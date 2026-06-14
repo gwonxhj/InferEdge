@@ -16,8 +16,8 @@ decision.
 | Operation layer | InferEdgeOrchestrator queue/deadline/fallback and worker-health evidence |
 | TensorRT Jetson FP16 | 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
-| Jetson device-local replay | 96 frames, 155.86 ms mean, max 45.5 C / 1000 MB RAM |
-| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM |
+| Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
+| Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
 | Jetson operation-summary quick-scan registry | Latest `c04abc9` 96-frame and 5-minute rows with `Duration Comparison Summary`, `Operation Quick Scan Summary`, and `operation_summary` labels |
 
 Jetson evidence uses the same terms as the demo and evidence reports:
@@ -135,7 +135,7 @@ Historical duration alignment is tracked as `EdgeEnv/AIGuard duration handoff al
 |---|---|---|
 | Device-local ONNX replay | Jetson Orin Nano 25W, 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | Real ONNX probe and telemetry handoff, not decoded YOLO accuracy |
 | EdgeEnv preservation replay | EdgeEnv run evidence stores `runtime_operation_summary`; Lab preserves `Runtime Intelligence EdgeEnv Preservation` | Registry/report preservation, not a deployment decision override |
-| 5-minute-class sustained replay | 3600 frames, 281 `tegrastats` samples, Vision mean 152.77 ms, max 50.375 C / 1038 MB RAM | Smoke/Starter sustained evidence, not thermal endurance validation |
+| 5-minute-class sustained replay | 3600 frames, 281 `tegrastats` samples, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | Smoke/Starter sustained evidence, not thermal endurance validation |
 | Operation-summary quick-scan registry | Latest registry with 96-frame and 5-minute-class rows exposing duration, queue/deadline/fallback pressure, and `operation_summary` labels before the full registry table | Quick-scan navigation metadata, not a Lab report owner or production runtime operation proof |
 
 Submission-facing Lab evidence snapshot:
