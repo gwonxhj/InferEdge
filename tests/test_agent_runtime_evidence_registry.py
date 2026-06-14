@@ -709,6 +709,15 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
     assert (
+        "Jetson device-local replay | 96 frames, 155.86 ms mean, "
+        "156.877 ms p95, max 45.5 C / 1000 MB RAM"
+    ) in korean_readme
+    assert (
+        "Jetson 5-minute-class sustained replay | 3600 frames, "
+        "Vision mean 152.77 ms, p95 156.948 ms, "
+        "max 50.375 C / 1038 MB RAM"
+    ) in korean_readme
+    assert (
         "[Jetson 디바이스 로컬 evidence quick guide]"
         "(docs/evidence/jetson_device_local_agent_runtime_report.ko.md)"
         in korean_readme
