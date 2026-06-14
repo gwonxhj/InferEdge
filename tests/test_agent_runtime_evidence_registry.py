@@ -703,6 +703,15 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
 
     assert readme.startswith("# InferEdge\n\nLanguage: English | [한국어](README.ko.md)")
     assert korean_readme.startswith("# InferEdge\n\n언어: [English](README.md) | 한국어")
+    assert (
+        "Real device replay | Jetson Orin Nano ONNX replay: "
+        "155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM"
+    ) in readme
+    assert (
+        "Sustained operation smoke | 5-minute-class Jetson replay: "
+        "3600 frames, 152.77 ms mean, 156.948 ms p95, "
+        "50.375 C, 1038 MB RAM"
+    ) in readme
     assert "대표 README와 가장 최신 상세 설명" in korean_readme
     assert "[English README](README.md)" in korean_readme
     assert "Lab-owned deployment decision" in korean_readme

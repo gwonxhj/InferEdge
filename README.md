@@ -17,8 +17,8 @@ The short version:
 | Operation layer | Orchestrator queue/deadline/fallback and worker-health evidence |
 | Jetson TensorRT result | YOLOv8n TensorRT FP16: 10.066 ms mean, 15.548 ms p99, 99.34 FPS |
 | CPU baseline | ONNX Runtime CPU: 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
-| Real device replay | Jetson Orin Nano ONNX replay: 155.86 ms mean, 45.5 C, 1000 MB RAM |
-| Sustained operation smoke | 5-minute-class Jetson replay: 3600 frames, 50.375 C, 1038 MB RAM |
+| Real device replay | Jetson Orin Nano ONNX replay: 155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM |
+| Sustained operation smoke | 5-minute-class Jetson replay: 3600 frames, 152.77 ms mean, 156.948 ms p95, 50.375 C, 1038 MB RAM |
 
 ## Quick Start
 
