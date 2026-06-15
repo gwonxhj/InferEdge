@@ -25,11 +25,13 @@ InferEdge entrypoint repo는 split repository 구조를 clone, inspect, smoke te
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
+| Jetson quick-scan registry | 연결된 metric snapshot 값과 `Duration Comparison Summary`, `Operation Quick Scan Summary` local reviewer navigation |
 
 Jetson evidence는 submission-facing metric을 보여주는 `representative snapshot`
 report와 local reviewer navigation을 위한 `latest registry`를 분리합니다.
-`quick-scan navigation`은 duration과 queue/deadline/fallback pressure metadata를
-노출하지만 production runtime operation proof가 아닙니다.
+registry는 연결된 metric snapshot 값을 참조하지만 metric record owner가
+되지는 않습니다. `quick-scan navigation`은 duration과 queue/deadline/fallback
+pressure metadata를 노출하지만 production runtime operation proof가 아닙니다.
 
 ## Pipeline
 

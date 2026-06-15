@@ -28,10 +28,12 @@ Can deployed workloads stay stable under load?
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
+| Jetson quick-scan registry | Linked metric snapshot values plus `Duration Comparison Summary` and `Operation Quick Scan Summary` for local reviewer navigation |
 
 Jetson evidence is split between `representative snapshot` reports for
 submission-facing metrics and the `latest registry` for local reviewer
-navigation. `quick-scan navigation` exposes duration and
+navigation. The registry references the linked metric snapshot values without
+becoming the metric record owner. `quick-scan navigation` exposes duration and
 queue/deadline/fallback pressure metadata; it is not production runtime
 operation proof.
 

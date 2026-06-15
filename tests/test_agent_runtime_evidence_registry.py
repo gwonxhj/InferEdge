@@ -771,6 +771,8 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
         assert "local reviewer navigation" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
         assert_jetson_max_resource_evidence_terms(normalized_text)
+        assert_linked_quick_scan_snapshot_context(normalized_text)
+        assert "metric record owner" in normalized_text
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
