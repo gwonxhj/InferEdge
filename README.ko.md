@@ -95,7 +95,7 @@ InferEdgeOrchestrator operation context
 | YOLOv8 subset validation | 10 images, 89 boxes, simplified mAP@50 0.1410 |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class sustained replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
-| Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label, Lab preservation context. [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
+| Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, 연결된 metric snapshot(`155.86` / `156.877` ms, `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, `50.375 C` / `1038 MB`), `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label, Lab preservation context. [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 세부 evidence는 [English README](README.md)의 Evidence Snapshot과
 `docs/evidence/` 문서를 기준으로 확인하세요. Jetson 기록만 빠르게 확인하려면
@@ -173,7 +173,7 @@ registry / comparability / regression evidence owner입니다.
 | [파이프라인 맵](docs/pipeline_map.ko.md) | 레포별 책임과 contract boundary |
 | [Publish InferEdge Entrypoint](docs/publish_inferedge.md) | 안전한 branch publish, PR 생성/merge, readiness check |
 | [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md) | Runtime Operation / Agent Runtime smoke 흐름 |
-| [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label이 포함된 최신 registry |
+| [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | 연결된 metric snapshot 값과 `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label이 포함된 최신 registry |
 | [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
 | [Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md) | 현재 Jetson device-local replay evidence |
 | [Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md), [대표 스냅샷 HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html) | 현재 Jetson 5-minute-class sustained evidence |
