@@ -149,6 +149,12 @@ def assert_readme_quick_scan_snapshot_terms(text: str) -> None:
     ) in text
 
 
+def assert_linked_quick_scan_snapshot_context(text: str) -> None:
+    assert "linked metric snapshot" in text or "연결된 metric snapshot" in text
+    assert_short_jetson_source_values(text)
+    assert_sustained_jetson_source_values(text)
+
+
 def assert_short_jetson_source_values(text: str) -> None:
     assert JETSON_SHORT_REPLAY_MEAN_MS in text
     assert JETSON_SHORT_REPLAY_P95_MS in text
@@ -701,6 +707,7 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
         assert "Operation Quick Scan Summary" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
         assert_jetson_comma_resource_evidence_terms(normalized_text)
+        assert_linked_quick_scan_snapshot_context(normalized_text)
         assert "submission-facing metric snapshot" in normalized_text
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
@@ -723,6 +730,7 @@ def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
         assert "Operation Quick Scan Summary" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
         assert_jetson_max_resource_evidence_terms(normalized_text)
+        assert_linked_quick_scan_snapshot_context(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
@@ -743,6 +751,7 @@ def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
         assert "submission-facing metric report" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
         assert_jetson_max_resource_evidence_terms(normalized_text)
+        assert_linked_quick_scan_snapshot_context(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
