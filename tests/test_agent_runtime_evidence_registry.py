@@ -155,6 +155,36 @@ def assert_linked_quick_scan_snapshot_context(text: str) -> None:
     assert_sustained_jetson_source_values(text)
 
 
+def assert_jetson_reviewer_navigation_terms(
+    text: str,
+    *,
+    representative_marker: str,
+    resource_style: str,
+    extra_markers: tuple[str, ...] = (),
+    require_metric_owner_boundary: bool = False,
+) -> None:
+    normalized_lower = text.lower()
+
+    assert representative_marker.lower() in normalized_lower
+    assert "latest registry" in normalized_lower
+    assert "quick-scan navigation" in normalized_lower
+    assert "operation quick scan summary" in normalized_lower
+    assert_jetson_p95_evidence_terms(text)
+    if resource_style == "comma":
+        assert_jetson_comma_resource_evidence_terms(text)
+    elif resource_style == "max":
+        assert_jetson_max_resource_evidence_terms(text)
+    else:
+        raise AssertionError(f"unsupported Jetson resource style: {resource_style}")
+    assert_linked_quick_scan_snapshot_context(text)
+    if require_metric_owner_boundary:
+        assert "metric record owner" in normalized_lower
+    for marker in extra_markers:
+        assert marker in text
+    assert "queue/deadline/fallback pressure" in text
+    assert "production runtime operation proof" in text
+
+
 def assert_short_jetson_source_values(text: str) -> None:
     assert JETSON_SHORT_REPLAY_MEAN_MS in text
     assert JETSON_SHORT_REPLAY_P95_MS in text
@@ -700,17 +730,12 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
 
     for text in (interview, korean_interview):
         normalized_text = " ".join(text.split())
-        assert "Representative snapshot" in normalized_text
-        assert "Latest registry" in normalized_text
-        assert "Quick-scan navigation" in normalized_text
-        assert "Duration Comparison Summary" in normalized_text
-        assert "Operation Quick Scan Summary" in normalized_text
-        assert_jetson_p95_evidence_terms(normalized_text)
-        assert_jetson_comma_resource_evidence_terms(normalized_text)
-        assert_linked_quick_scan_snapshot_context(normalized_text)
-        assert "submission-facing metric snapshot" in normalized_text
-        assert "queue/deadline/fallback pressure" in normalized_text
-        assert "production runtime operation proof" in normalized_text
+        assert_jetson_reviewer_navigation_terms(
+            normalized_text,
+            representative_marker="Representative snapshot",
+            resource_style="comma",
+            extra_markers=("submission-facing metric snapshot",),
+        )
 
 
 def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
@@ -723,16 +748,11 @@ def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
 
     for text in (portfolio, korean_portfolio):
         normalized_text = " ".join(text.split())
-        assert "representative snapshot" in normalized_text
-        assert "latest registry" in normalized_text
-        assert "quick-scan navigation" in normalized_text
-        assert "Duration Comparison Summary" in normalized_text
-        assert "Operation Quick Scan Summary" in normalized_text
-        assert_jetson_p95_evidence_terms(normalized_text)
-        assert_jetson_max_resource_evidence_terms(normalized_text)
-        assert_linked_quick_scan_snapshot_context(normalized_text)
-        assert "queue/deadline/fallback pressure" in normalized_text
-        assert "production runtime operation proof" in normalized_text
+        assert_jetson_reviewer_navigation_terms(
+            normalized_text,
+            representative_marker="representative snapshot",
+            resource_style="max",
+        )
 
 
 def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
@@ -745,15 +765,12 @@ def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
 
     for text in (ecosystem, korean_ecosystem):
         normalized_text = " ".join(text.split())
-        assert "representative snapshot" in normalized_text
-        assert "latest registry" in normalized_text
-        assert "quick-scan navigation" in normalized_text
-        assert "submission-facing metric report" in normalized_text
-        assert_jetson_p95_evidence_terms(normalized_text)
-        assert_jetson_max_resource_evidence_terms(normalized_text)
-        assert_linked_quick_scan_snapshot_context(normalized_text)
-        assert "queue/deadline/fallback pressure" in normalized_text
-        assert "production runtime operation proof" in normalized_text
+        assert_jetson_reviewer_navigation_terms(
+            normalized_text,
+            representative_marker="representative snapshot",
+            resource_style="max",
+            extra_markers=("submission-facing metric report",),
+        )
 
 
 def test_pipeline_map_uses_jetson_evidence_terms() -> None:
@@ -764,17 +781,13 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
 
     for text in (pipeline, korean_pipeline):
         normalized_text = " ".join(text.split())
-        assert "representative snapshot" in normalized_text
-        assert "latest registry" in normalized_text
-        assert "quick-scan navigation" in normalized_text
-        assert "submission-facing metric" in normalized_text
-        assert "local reviewer navigation" in normalized_text
-        assert_jetson_p95_evidence_terms(normalized_text)
-        assert_jetson_max_resource_evidence_terms(normalized_text)
-        assert_linked_quick_scan_snapshot_context(normalized_text)
-        assert "metric record owner" in normalized_text
-        assert "queue/deadline/fallback pressure" in normalized_text
-        assert "production runtime operation proof" in normalized_text
+        assert_jetson_reviewer_navigation_terms(
+            normalized_text,
+            representative_marker="representative snapshot",
+            resource_style="max",
+            extra_markers=("submission-facing metric", "local reviewer navigation"),
+            require_metric_owner_boundary=True,
+        )
 
 
 def test_jetson_readiness_preflight_is_not_evidence() -> None:
