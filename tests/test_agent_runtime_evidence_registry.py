@@ -951,6 +951,13 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "The PR body should include" in publish_doc
     assert "`Summary` and `Tests` section" in publish_doc
     assert "exact validation commands that passed" in publish_doc
+    assert "GitHub Auth Fallback" in publish_doc
+    assert "Use the GitHub connector/app" in publish_doc
+    assert "`gh` CLI is a fallback path" in publish_doc
+    assert "gh auth status" in publish_doc
+    assert "invalid token" in publish_doc
+    assert "gh auth login -h github.com" in publish_doc
+    assert "note that in the PR body" in publish_doc
     assert "Final Status Check" in publish_doc
     assert "git status --short --branch" in publish_doc
     assert "git diff --stat" in publish_doc
