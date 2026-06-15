@@ -27,6 +27,10 @@ RUNTIME_INTELLIGENCE_SMOKE_GATE_ORDER = [
     "Lab Runtime Intelligence artifact smoke",
     "Lab Runtime Intelligence report marker gate",
 ]
+JETSON_SHORT_REPLAY_MEAN_MS = "155.86"
+JETSON_SHORT_REPLAY_P95_MS = "156.877"
+JETSON_SUSTAINED_REPLAY_MEAN_MS = "152.77"
+JETSON_SUSTAINED_REPLAY_P95_MS = "156.948"
 
 
 def load_script_module(name: str, relative_path: str):
@@ -58,42 +62,52 @@ def assert_markers_in_order(
 
 
 def assert_jetson_p95_evidence_terms(text: str) -> None:
-    assert "96 frames, 155.86 ms mean, 156.877 ms p95" in text
-    assert "Vision mean 152.77 ms, p95 156.948 ms" in text
+    assert (
+        f"96 frames, {JETSON_SHORT_REPLAY_MEAN_MS} ms mean, "
+        f"{JETSON_SHORT_REPLAY_P95_MS} ms p95"
+    ) in text
+    assert (
+        f"Vision mean {JETSON_SUSTAINED_REPLAY_MEAN_MS} ms, "
+        f"p95 {JETSON_SUSTAINED_REPLAY_P95_MS} ms"
+    ) in text
 
 
 def assert_readme_top_jetson_p95_evidence_terms(text: str) -> None:
     assert (
         "Real device replay | Jetson Orin Nano ONNX replay: "
-        "155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM"
+        f"{JETSON_SHORT_REPLAY_MEAN_MS} ms mean, "
+        f"{JETSON_SHORT_REPLAY_P95_MS} ms p95, 45.5 C, 1000 MB RAM"
     ) in text
     assert (
         "Sustained operation smoke | 5-minute-class Jetson replay: "
-        "3600 frames, 152.77 ms mean, 156.948 ms p95, "
+        f"3600 frames, {JETSON_SUSTAINED_REPLAY_MEAN_MS} ms mean, "
+        f"{JETSON_SUSTAINED_REPLAY_P95_MS} ms p95, "
         "50.375 C, 1038 MB RAM"
     ) in text
 
 
 def assert_korean_readme_jetson_p95_evidence_terms(text: str) -> None:
     assert (
-        "Jetson device-local replay | 96 frames, 155.86 ms mean, "
-        "156.877 ms p95, max 45.5 C / 1000 MB RAM"
+        f"Jetson device-local replay | 96 frames, {JETSON_SHORT_REPLAY_MEAN_MS} "
+        f"ms mean, {JETSON_SHORT_REPLAY_P95_MS} ms p95, "
+        "max 45.5 C / 1000 MB RAM"
     ) in text
     assert (
         "Jetson 5-minute-class sustained replay | 3600 frames, "
-        "Vision mean 152.77 ms, p95 156.948 ms, "
+        f"Vision mean {JETSON_SUSTAINED_REPLAY_MEAN_MS} ms, "
+        f"p95 {JETSON_SUSTAINED_REPLAY_P95_MS} ms, "
         "max 50.375 C / 1038 MB RAM"
     ) in text
 
 
 def assert_short_jetson_p95_source_values(text: str) -> None:
-    assert "155.86" in text
-    assert "156.877" in text
+    assert JETSON_SHORT_REPLAY_MEAN_MS in text
+    assert JETSON_SHORT_REPLAY_P95_MS in text
 
 
 def assert_sustained_jetson_p95_source_values(text: str) -> None:
-    assert "152.77" in text
-    assert "156.948" in text
+    assert JETSON_SUSTAINED_REPLAY_MEAN_MS in text
+    assert JETSON_SUSTAINED_REPLAY_P95_MS in text
 
 
 def section_by_heading(text: str, heading: str) -> str:
