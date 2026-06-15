@@ -86,6 +86,16 @@ def assert_korean_readme_jetson_p95_evidence_terms(text: str) -> None:
     ) in text
 
 
+def assert_short_jetson_p95_source_values(text: str) -> None:
+    assert "155.86" in text
+    assert "156.877" in text
+
+
+def assert_sustained_jetson_p95_source_values(text: str) -> None:
+    assert "152.77" in text
+    assert "156.948" in text
+
+
 def section_by_heading(text: str, heading: str) -> str:
     start = text.find(heading)
     assert start != -1, f"expected section heading {heading!r}"
@@ -561,6 +571,25 @@ def test_jetson_evidence_terms_align_snapshot_registry_navigation() -> None:
         assert "quick-scan navigation" in text
         assert "Relationship To Latest Registry" in text or "최신 registry와의 관계" in text
         assert "metric snapshot" in text or "metric record" in text
+
+    for path in (
+        ROOT / "docs" / "evidence" / "jetson_device_local_agent_runtime_report.md",
+        ROOT / "docs" / "evidence" / "jetson_device_local_agent_runtime_report.ko.md",
+    ):
+        assert_short_jetson_p95_source_values(path.read_text(encoding="utf-8"))
+
+    for path in (
+        ROOT / "docs" / "evidence" / "jetson_device_local_5min_sustained_report.md",
+        ROOT
+        / "docs"
+        / "evidence"
+        / "jetson_device_local_5min_sustained_report.ko.md",
+        ROOT
+        / "docs"
+        / "evidence"
+        / "jetson_device_local_5min_sustained_report.html",
+    ):
+        assert_sustained_jetson_p95_source_values(path.read_text(encoding="utf-8"))
 
 
 def test_interview_narrative_uses_jetson_evidence_terms() -> None:
