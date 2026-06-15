@@ -79,6 +79,22 @@ The PR body should include a short `Summary` and `Tests` section. List the
 exact validation commands that passed so reviewers can connect the merge to the
 local checks.
 
+## GitHub Auth Fallback
+
+Use the GitHub connector/app for PR creation and merge when it is available.
+The `gh` CLI is a fallback path, not a required source of validation evidence.
+
+If `gh auth status` reports an invalid token, do not treat that as a failed
+test or smoke result. Either re-authenticate before using the CLI fallback:
+
+```bash
+gh auth login -h github.com
+```
+
+or continue with the authenticated GitHub connector/app. When the connector is
+used because the local `gh` token is invalid, note that in the PR body so the
+publish path remains auditable.
+
 ## Final Status Check
 
 Before considering the publish step complete, verify the local checkout has no
