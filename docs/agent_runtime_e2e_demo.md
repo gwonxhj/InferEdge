@@ -791,6 +791,7 @@ opening each full report first.
 | Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
 | Registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` and `5-minute-class sustained replay (3600 frames)` |
+| Linked metric snapshots | `96-frame: 155.86 ms mean / 156.877 ms p95, max 45.5 C / 1000 MB RAM`; `5-minute-class: 152.77 ms mean / 156.948 ms p95, max 50.375 C / 1038 MB RAM` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
 | Parsed `tegrastats` samples | `10` and `281` |
@@ -801,6 +802,10 @@ opening each full report first.
 | Operation quick-scan registry section | `Operation Quick Scan Summary` before `## Runs` |
 | Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
+
+The linked metric snapshot row copies the values from the short and sustained
+Jetson evidence reports for reviewer navigation only; those reports remain the
+metric records.
 
 Terminology used by the linked Jetson evidence reports:
 
