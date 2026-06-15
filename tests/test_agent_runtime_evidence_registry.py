@@ -641,6 +641,31 @@ def test_jetson_evidence_terms_align_snapshot_registry_navigation() -> None:
         assert_sustained_jetson_source_values(path.read_text(encoding="utf-8"))
 
 
+def test_latest_jetson_quick_scan_registry_preserves_snapshot_values() -> None:
+    doc_sections = [
+        (
+            ROOT / "docs" / "agent_runtime_e2e_demo.md",
+            "### Latest Jetson Quick-Scan Registry",
+            "Linked metric snapshots",
+        ),
+        (
+            ROOT / "docs" / "agent_runtime_e2e_demo.ko.md",
+            "## 최근 Jetson quick-scan marker 재현",
+            "연결된 metric snapshot",
+        ),
+    ]
+
+    for path, heading, snapshot_label in doc_sections:
+        section = section_by_heading(path.read_text(encoding="utf-8"), heading)
+
+        assert snapshot_label in section
+        assert "Operation Quick Scan Summary" in section
+        assert "metric record" in section
+        assert "production runtime operation proof" in section
+        assert_short_jetson_source_values(section)
+        assert_sustained_jetson_source_values(section)
+
+
 def test_interview_narrative_uses_jetson_evidence_terms() -> None:
     interview = (ROOT / "docs" / "interview_narrative.md").read_text(
         encoding="utf-8"

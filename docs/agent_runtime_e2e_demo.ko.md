@@ -189,6 +189,7 @@ full report를 열기 전에 duration / operation context를 확인할 수 있�
 | Registry Markdown | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.md` |
 | Registry JSON | `/tmp/inferedge_agent_runtime_jetson_operation_summary_duration_registry_20260609T122600Z.json` |
 | Duration rows | `short 96-frame-class replay (96 frames)` / `5-minute-class sustained replay (3600 frames)` |
+| 연결된 metric snapshot | `96-frame: 155.86 ms mean / 156.877 ms p95, max 45.5 C / 1000 MB RAM`; `5-minute-class: 152.77 ms mean / 156.948 ms p95, max 50.375 C / 1038 MB RAM` |
 | 96-frame queue/drop/fallback/deadline | `6 / 93 / 93 / 50` |
 | 5-minute queue/drop/fallback/deadline | `6 / 3597 / 3597 / 1802` |
 | Parsed `tegrastats` samples | `10` / `281` |
@@ -199,6 +200,10 @@ full report를 열기 전에 duration / operation context를 확인할 수 있�
 | Operation quick-scan registry section | `## Runs` 앞의 `Operation Quick Scan Summary` |
 | Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | 두 row 모두 `blocked/high`, `blocked` |
+
+연결된 metric snapshot row는 reviewer navigation을 위해 short/sustained
+Jetson evidence report의 값을 복사한 것이며, metric record의 소유권은 해당
+report에 남아 있습니다.
 
 연결된 Jetson evidence report에서 사용하는 용어 기준:
 
