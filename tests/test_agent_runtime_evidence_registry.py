@@ -131,6 +131,24 @@ def assert_korean_readme_jetson_p95_evidence_terms(text: str) -> None:
     ) in text
 
 
+def assert_readme_quick_scan_snapshot_terms(text: str) -> None:
+    assert "Jetson operation-summary quick-scan registry" in text
+    assert "linked metric snapshots" in text or "연결된 metric snapshot" in text
+    assert f"`{JETSON_SHORT_REPLAY_MEAN_MS}` / `{JETSON_SHORT_REPLAY_P95_MS}` ms" in text
+    assert (
+        f"`{JETSON_SHORT_REPLAY_MAX_TEMP_C} C` / "
+        f"`{JETSON_SHORT_REPLAY_MAX_RAM_MB} MB`"
+    ) in text
+    assert (
+        f"`{JETSON_SUSTAINED_REPLAY_MEAN_MS}` / "
+        f"`{JETSON_SUSTAINED_REPLAY_P95_MS}` ms"
+    ) in text
+    assert (
+        f"`{JETSON_SUSTAINED_REPLAY_MAX_TEMP_C} C` / "
+        f"`{JETSON_SUSTAINED_REPLAY_MAX_RAM_MB} MB`"
+    ) in text
+
+
 def assert_short_jetson_source_values(text: str) -> None:
     assert JETSON_SHORT_REPLAY_MEAN_MS in text
     assert JETSON_SHORT_REPLAY_P95_MS in text
@@ -838,6 +856,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert readme.startswith("# InferEdge\n\nLanguage: English | [한국어](README.ko.md)")
     assert korean_readme.startswith("# InferEdge\n\n언어: [English](README.md) | 한국어")
     assert_readme_top_jetson_p95_evidence_terms(readme)
+    assert_readme_quick_scan_snapshot_terms(readme)
     assert "대표 README와 가장 최신 상세 설명" in korean_readme
     assert "[English README](README.md)" in korean_readme
     assert "Lab-owned deployment decision" in korean_readme
@@ -850,6 +869,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
     assert_korean_readme_jetson_p95_evidence_terms(korean_readme)
+    assert_readme_quick_scan_snapshot_terms(korean_readme)
     assert (
         "[Jetson 디바이스 로컬 evidence quick guide]"
         "(docs/evidence/jetson_device_local_agent_runtime_report.ko.md)"
