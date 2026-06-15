@@ -24,11 +24,13 @@ InferEdge는 Edge AI inference 프로젝트에서 자주 섞이는 세 질문을
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
+| Jetson quick-scan registry | 연결된 metric snapshot과 `Duration Comparison Summary`, `Operation Quick Scan Summary` reviewer navigation |
 
 Jetson evidence는 compact reviewer terms를 사용합니다. `representative snapshot`은
 submission-facing metric report, `latest registry`는 최신 local navigation
-record, `quick-scan navigation`은 duration과 queue/deadline/fallback pressure를
-보는 metadata입니다. production runtime operation proof가 아닙니다.
+record이며 연결된 metric snapshot 값을 참조합니다. `quick-scan navigation`은
+duration과 queue/deadline/fallback pressure를 보는 metadata입니다. production
+runtime operation proof나 metric record owner가 아닙니다.
 
 ## Layer 역할
 

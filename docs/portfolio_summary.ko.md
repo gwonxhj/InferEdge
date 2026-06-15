@@ -25,11 +25,12 @@ decision으로 연결하는 local-first Edge AI inference validation pipeline입
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
-| Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
+| Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, 연결된 metric snapshot(`155.86` / `156.877` ms, max `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, max `50.375 C` / `1038 MB`), `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 Jetson evidence는 demo / evidence report와 같은 용어를 사용합니다.
 `representative snapshot`은 submission-facing metric report,
-`latest registry`는 최신 local navigation record,
+`latest registry`는 source report를 대체하지 않고 연결된 metric snapshot 값을
+참조하는 최신 local navigation record,
 `quick-scan navigation`은 duration과 queue/deadline/fallback pressure를 먼저
 보는 reviewer metadata이며 production runtime operation proof가 아닙니다.
 
@@ -85,7 +86,7 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 | remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
 
 이 quick-scan registry는 `latest registry` 기반의 `quick-scan navigation`
-metadata입니다. 대표 metric은 각 `representative snapshot` report에서
+metadata이며 연결된 metric snapshot 값을 함께 보여줍니다. 대표 metric은 각 `representative snapshot` report에서
 확인하며, registry가 Lab report owner나 production runtime operation proof가
 되는 것은 아닙니다.
 

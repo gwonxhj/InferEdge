@@ -32,14 +32,14 @@ report, deterministic warning, deployment decision ownership까지 evidence chai
 | Speedup | ONNX Runtime CPU 대비 약 4.51x FPS | backend comparison evidence |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM | ONNX probe + telemetry handoff evidence |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
-| Jetson quick-scan registry | 96-frame / 5-minute rows, `Operation Quick Scan Summary` | queue/deadline/fallback pressure를 먼저 보는 reviewer navigation evidence |
+| Jetson quick-scan registry | 96-frame / 5-minute rows, 연결된 metric snapshot, `Operation Quick Scan Summary` | queue/deadline/fallback pressure를 먼저 보는 reviewer navigation evidence |
 
 demo / evidence report와 같은 Jetson evidence 용어를 사용합니다.
 
 | 용어 | 인터뷰 표현 |
 |---|---|
 | Representative snapshot | 96-frame / 5-minute Markdown/HTML report는 submission-facing metric snapshot이며, 최신 registry 자체가 아닙니다. |
-| Latest registry | `c04abc9` operation-summary registry는 96-frame / 5-minute row를 비교하는 최신 local navigation record입니다. |
+| Latest registry | `c04abc9` operation-summary registry는 96-frame / 5-minute row와 연결된 metric snapshot 값(`155.86` / `156.877` ms, `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, `50.375 C` / `1038 MB`)을 비교하는 최신 local navigation record이며 source report를 대체하지 않습니다. |
 | Quick-scan navigation | `Duration Comparison Summary`와 `Operation Quick Scan Summary`는 full report를 열기 전에 duration과 queue/deadline/fallback pressure를 훑어보는 reviewer navigation입니다. |
 
 ## 역할 설명

@@ -34,14 +34,14 @@ generation, deterministic warnings, and deployment decision ownership.
 | Speedup | about 4.51x FPS over ONNX Runtime CPU | Backend comparison evidence, not a universal benchmark claim |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, 45.5 C, 1000 MB RAM | ONNX probe + telemetry handoff evidence |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, 50.375 C, 1038 MB RAM | Smoke/Starter sustained operation evidence |
-| Jetson quick-scan registry | 96-frame and 5-minute rows with `Operation Quick Scan Summary` | Reviewer navigation for queue/deadline/fallback pressure, not production control evidence |
+| Jetson quick-scan registry | 96-frame and 5-minute rows with linked metric snapshots and `Operation Quick Scan Summary` | Reviewer navigation for queue/deadline/fallback pressure, not production control evidence |
 
 Use the same Jetson evidence terms as the demo and evidence reports:
 
 | Term | Interview phrasing |
 |---|---|
 | Representative snapshot | The 96-frame and 5-minute Markdown/HTML reports are submission-facing metric snapshots, not the latest registry itself. |
-| Latest registry | The `c04abc9` operation-summary registry is the latest local navigation record for comparing the 96-frame and 5-minute rows. |
+| Latest registry | The `c04abc9` operation-summary registry is the latest local navigation record for comparing the 96-frame and 5-minute rows, including linked metric snapshot values (`155.86` / `156.877` ms, `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, `50.375 C` / `1038 MB`) without replacing the source reports. |
 | Quick-scan navigation | `Duration Comparison Summary` and `Operation Quick Scan Summary` help reviewers scan duration and queue/deadline/fallback pressure before opening full reports. |
 
 ## Architecture Explanation
