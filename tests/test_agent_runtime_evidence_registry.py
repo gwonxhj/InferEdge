@@ -29,8 +29,12 @@ RUNTIME_INTELLIGENCE_SMOKE_GATE_ORDER = [
 ]
 JETSON_SHORT_REPLAY_MEAN_MS = "155.86"
 JETSON_SHORT_REPLAY_P95_MS = "156.877"
+JETSON_SHORT_REPLAY_MAX_TEMP_C = "45.5"
+JETSON_SHORT_REPLAY_MAX_RAM_MB = "1000"
 JETSON_SUSTAINED_REPLAY_MEAN_MS = "152.77"
 JETSON_SUSTAINED_REPLAY_P95_MS = "156.948"
+JETSON_SUSTAINED_REPLAY_MAX_TEMP_C = "50.375"
+JETSON_SUSTAINED_REPLAY_MAX_RAM_MB = "1038"
 
 
 def load_script_module(name: str, relative_path: str):
@@ -72,17 +76,42 @@ def assert_jetson_p95_evidence_terms(text: str) -> None:
     ) in text
 
 
+def assert_jetson_max_resource_evidence_terms(text: str) -> None:
+    assert (
+        f"max {JETSON_SHORT_REPLAY_MAX_TEMP_C} C / "
+        f"{JETSON_SHORT_REPLAY_MAX_RAM_MB} MB"
+    ) in text
+    assert (
+        f"max {JETSON_SUSTAINED_REPLAY_MAX_TEMP_C} C / "
+        f"{JETSON_SUSTAINED_REPLAY_MAX_RAM_MB} MB"
+    ) in text
+
+
+def assert_jetson_comma_resource_evidence_terms(text: str) -> None:
+    assert (
+        f"{JETSON_SHORT_REPLAY_MAX_TEMP_C} C, "
+        f"{JETSON_SHORT_REPLAY_MAX_RAM_MB} MB RAM"
+    ) in text
+    assert (
+        f"{JETSON_SUSTAINED_REPLAY_MAX_TEMP_C} C, "
+        f"{JETSON_SUSTAINED_REPLAY_MAX_RAM_MB} MB RAM"
+    ) in text
+
+
 def assert_readme_top_jetson_p95_evidence_terms(text: str) -> None:
     assert (
         "Real device replay | Jetson Orin Nano ONNX replay: "
         f"{JETSON_SHORT_REPLAY_MEAN_MS} ms mean, "
-        f"{JETSON_SHORT_REPLAY_P95_MS} ms p95, 45.5 C, 1000 MB RAM"
+        f"{JETSON_SHORT_REPLAY_P95_MS} ms p95, "
+        f"{JETSON_SHORT_REPLAY_MAX_TEMP_C} C, "
+        f"{JETSON_SHORT_REPLAY_MAX_RAM_MB} MB RAM"
     ) in text
     assert (
         "Sustained operation smoke | 5-minute-class Jetson replay: "
         f"3600 frames, {JETSON_SUSTAINED_REPLAY_MEAN_MS} ms mean, "
         f"{JETSON_SUSTAINED_REPLAY_P95_MS} ms p95, "
-        "50.375 C, 1038 MB RAM"
+        f"{JETSON_SUSTAINED_REPLAY_MAX_TEMP_C} C, "
+        f"{JETSON_SUSTAINED_REPLAY_MAX_RAM_MB} MB RAM"
     ) in text
 
 
@@ -90,24 +119,30 @@ def assert_korean_readme_jetson_p95_evidence_terms(text: str) -> None:
     assert (
         f"Jetson device-local replay | 96 frames, {JETSON_SHORT_REPLAY_MEAN_MS} "
         f"ms mean, {JETSON_SHORT_REPLAY_P95_MS} ms p95, "
-        "max 45.5 C / 1000 MB RAM"
+        f"max {JETSON_SHORT_REPLAY_MAX_TEMP_C} C / "
+        f"{JETSON_SHORT_REPLAY_MAX_RAM_MB} MB RAM"
     ) in text
     assert (
         "Jetson 5-minute-class sustained replay | 3600 frames, "
         f"Vision mean {JETSON_SUSTAINED_REPLAY_MEAN_MS} ms, "
         f"p95 {JETSON_SUSTAINED_REPLAY_P95_MS} ms, "
-        "max 50.375 C / 1038 MB RAM"
+        f"max {JETSON_SUSTAINED_REPLAY_MAX_TEMP_C} C / "
+        f"{JETSON_SUSTAINED_REPLAY_MAX_RAM_MB} MB RAM"
     ) in text
 
 
-def assert_short_jetson_p95_source_values(text: str) -> None:
+def assert_short_jetson_source_values(text: str) -> None:
     assert JETSON_SHORT_REPLAY_MEAN_MS in text
     assert JETSON_SHORT_REPLAY_P95_MS in text
+    assert JETSON_SHORT_REPLAY_MAX_TEMP_C in text
+    assert JETSON_SHORT_REPLAY_MAX_RAM_MB in text
 
 
-def assert_sustained_jetson_p95_source_values(text: str) -> None:
+def assert_sustained_jetson_source_values(text: str) -> None:
     assert JETSON_SUSTAINED_REPLAY_MEAN_MS in text
     assert JETSON_SUSTAINED_REPLAY_P95_MS in text
+    assert JETSON_SUSTAINED_REPLAY_MAX_TEMP_C in text
+    assert JETSON_SUSTAINED_REPLAY_MAX_RAM_MB in text
 
 
 def section_by_heading(text: str, heading: str) -> str:
@@ -590,7 +625,7 @@ def test_jetson_evidence_terms_align_snapshot_registry_navigation() -> None:
         ROOT / "docs" / "evidence" / "jetson_device_local_agent_runtime_report.md",
         ROOT / "docs" / "evidence" / "jetson_device_local_agent_runtime_report.ko.md",
     ):
-        assert_short_jetson_p95_source_values(path.read_text(encoding="utf-8"))
+        assert_short_jetson_source_values(path.read_text(encoding="utf-8"))
 
     for path in (
         ROOT / "docs" / "evidence" / "jetson_device_local_5min_sustained_report.md",
@@ -603,7 +638,7 @@ def test_jetson_evidence_terms_align_snapshot_registry_navigation() -> None:
         / "evidence"
         / "jetson_device_local_5min_sustained_report.html",
     ):
-        assert_sustained_jetson_p95_source_values(path.read_text(encoding="utf-8"))
+        assert_sustained_jetson_source_values(path.read_text(encoding="utf-8"))
 
 
 def test_interview_narrative_uses_jetson_evidence_terms() -> None:
@@ -622,6 +657,7 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
         assert "Duration Comparison Summary" in normalized_text
         assert "Operation Quick Scan Summary" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
+        assert_jetson_comma_resource_evidence_terms(normalized_text)
         assert "submission-facing metric snapshot" in normalized_text
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
@@ -643,6 +679,7 @@ def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
         assert "Duration Comparison Summary" in normalized_text
         assert "Operation Quick Scan Summary" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
+        assert_jetson_max_resource_evidence_terms(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
@@ -662,6 +699,7 @@ def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
         assert "quick-scan navigation" in normalized_text
         assert "submission-facing metric report" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
+        assert_jetson_max_resource_evidence_terms(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
@@ -680,6 +718,7 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
         assert "submission-facing metric" in normalized_text
         assert "local reviewer navigation" in normalized_text
         assert_jetson_p95_evidence_terms(normalized_text)
+        assert_jetson_max_resource_evidence_terms(normalized_text)
         assert "queue/deadline/fallback pressure" in normalized_text
         assert "production runtime operation proof" in normalized_text
 
