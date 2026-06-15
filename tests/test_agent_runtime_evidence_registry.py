@@ -958,6 +958,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "If any unexpected file appears" in publish_doc
     assert "git log --oneline -3 origin/main" in publish_doc
     assert "not run `git pull` into a stale or unrelated local `main`" in publish_doc
+    assert "git merge --ff-only origin/main" in publish_doc
+    assert "fatal: refusing to merge unrelated histories" in publish_doc
+    assert "Do not retry with" in publish_doc
+    assert "`--allow-unrelated-histories`" in publish_doc
+    assert "force reset" in publish_doc
+    assert "create a fresh branch from" in publish_doc
     assert "Optional Branch Cleanup" in publish_doc
     assert "Never delete `main`" in publish_doc
     assert "git branch --merged origin/main" in publish_doc

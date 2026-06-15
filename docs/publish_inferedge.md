@@ -129,6 +129,14 @@ from `origin/main` instead:
 git switch -c codex/<next-task> origin/main
 ```
 
+If you accidentally switch to a stale local `main` and
+`git merge --ff-only origin/main` reports
+`fatal: refusing to merge unrelated histories`, stop there. Do not retry with
+`--allow-unrelated-histories`, force reset, or force push as a routine publish
+step. Switch back to a clean review branch or create a fresh branch from
+`origin/main`; only repoint local `main` after separately confirming no
+local-only commits need to be preserved.
+
 Delete merged local or remote branches only when you are sure they are no
 longer needed for review or audit.
 
