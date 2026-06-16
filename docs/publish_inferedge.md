@@ -161,6 +161,19 @@ longer needed for review or audit.
 Branch cleanup is optional. Keep merged branches if they are still useful for
 review, audit, or comparing local logs. Never delete `main`.
 
+Before deleting anything, make a cleanup inventory and treat it as audit input,
+not a deletion list:
+
+```bash
+git fetch origin main
+git branch --list 'codex/*' --format='%(refname:short)'
+git branch --merged origin/main
+```
+
+The first command list shows local `codex/*` branches that might be cleanup
+candidates. The `--merged` list only proves regular merge ancestry, so it is
+not sufficient for squash-merged pull requests.
+
 Before deleting a local branch, verify it is merged into the current
 `origin/main`:
 
@@ -185,6 +198,9 @@ Squash-merged branches may not appear in `git branch --merged origin/main`
 because their branch commits were copied into new commits on `main`. In that
 case, do not delete the branch based on `--merged` alone. Verify the PR is
 closed as merged and keep the branch if review or audit context is still useful.
+When the local `gh` token is invalid, use the authenticated GitHub connector/app
+or GitHub PR page to confirm the PR merged state before deleting any local or
+remote branch.
 
 ## Blocked States
 
