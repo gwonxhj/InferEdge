@@ -973,11 +973,19 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "create a fresh branch from" in publish_doc
     assert "Optional Branch Cleanup" in publish_doc
     assert "Never delete `main`" in publish_doc
+    assert "make a cleanup inventory" in publish_doc
+    assert "not a deletion list" in publish_doc
+    assert "git branch --list 'codex/*' --format='%(refname:short)'" in publish_doc
     assert "git branch --merged origin/main" in publish_doc
+    assert "only proves regular merge ancestry" in publish_doc
+    assert "not sufficient for squash-merged pull requests" in publish_doc
     assert "Squash-merged branches may not appear" in publish_doc
     assert "do not delete the branch based on `--merged` alone" in publish_doc
     assert "Verify the PR is" in publish_doc
     assert "closed as merged" in publish_doc
+    assert "local `gh` token is invalid" in publish_doc
+    assert "GitHub connector/app" in publish_doc
+    assert "GitHub PR page" in publish_doc
     assert "git push origin --delete codex/<merged-topic>" in publish_doc
     assert "`--allow-dirty`" in publish_doc
     assert "`--allow-missing-remote`" in publish_doc
