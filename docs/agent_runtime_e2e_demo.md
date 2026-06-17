@@ -888,7 +888,12 @@ For a local-only gate that does not start the fallback HTTP worker, run
 `bash scripts/smoke_remote_fallback_registry_marker.sh`. It creates a synthetic
 remote fallback bundle, rebuilds the evidence index and registry, and requires
 `aiguard=remote_execution_recovered_by_fallback` plus
-`lab=Remote fallback starter evidence` in the registry Markdown.
+`lab=Remote fallback starter evidence` in the registry Markdown. The same gate
+also checks the generated evidence index and registry for `Duration source`,
+`Duration scope label`, `source=entrypoint_requested_frames`, and
+`Duration Sources`, so the bounded fallback starter remains tied to the
+entrypoint-requested replay scope instead of looking like a live production
+runtime duration claim.
 
 For a fixture-only quick-scan registry gate, run
 `bash scripts/smoke_quick_scan_registry_summary.sh`. It creates a synthetic

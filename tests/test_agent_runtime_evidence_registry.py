@@ -554,6 +554,10 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
         encoding="utf-8"
     )
+    korean_demo_doc = (
+        ROOT / "docs" / "agent_runtime_e2e_demo.ko.md"
+    ).read_text(encoding="utf-8")
+    normalized_demo_doc = " ".join(demo_doc.split())
 
     assert "fixture-only remote fallback evidence bundle" in script
     assert "build_agent_runtime_evidence_index.py" in script
@@ -566,6 +570,18 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
         assert "smoke_remote_fallback_registry_marker.sh" in text
         assert "lab=Remote fallback starter evidence" in text
     assert "Duration Comparison Summary" in demo_doc
+    assert "Duration source" in demo_doc
+    assert "Duration scope label" in demo_doc
+    assert "source=entrypoint_requested_frames" in demo_doc
+    assert "Duration Sources" in demo_doc
+    assert "entrypoint-requested replay scope" in demo_doc
+    assert "live production runtime duration claim" in normalized_demo_doc
+    assert "Remote fallback registry marker smoke" in korean_demo_doc
+    assert "Duration source" in korean_demo_doc
+    assert "Duration scope label" in korean_demo_doc
+    assert "source=entrypoint_requested_frames" in korean_demo_doc
+    assert "Duration Sources" in korean_demo_doc
+    assert "production remote execution" in korean_demo_doc
     assert "source=entrypoint_requested_frames" in script
     assert "Duration Sources" in script
 
