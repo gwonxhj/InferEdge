@@ -211,6 +211,7 @@ and [Pipeline Map](docs/pipeline_map.md)
 | Ecosystem diagram and layer split | [InferEdge Ecosystem 1-Page Summary](docs/ecosystem_1page.md) ([한국어: InferEdge 생태계 1페이지 요약](docs/ecosystem_1page.ko.md)) |
 | 30-second portfolio narrative | [Portfolio Summary](docs/portfolio_summary.md) ([한국어: 포트폴리오 요약](docs/portfolio_summary.ko.md)) |
 | Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
+| Clean-clone submission rehearsal and current reviewer delta | [Final Submission Rehearsal](docs/final_submission_rehearsal.md) |
 | Safe publish, PR, and merge workflow | [Publish InferEdge Entrypoint](docs/publish_inferedge.md) |
 | Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)) |
 | Latest Jetson operation-summary quick-scan registry | linked metric snapshots plus [`Duration Comparison Summary` and `Operation Quick Scan Summary`](docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry) ([한국어: 최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)) |
