@@ -48,6 +48,9 @@ For shared reviewer marker-gate details across the Lab report summary, copied CI
 artifact summary, and generated `00_evidence_index.*` artifacts, point reviewers
 to [Agent Runtime E2E Demo](agent_runtime_e2e_demo.md). This interview narrative
 stays at speaking-guide level and is not the detailed marker vocabulary owner.
+The short interview phrasing is: the smoke-gated evidence-index boundary keeps
+`00_evidence_index.md` as reviewer navigation, not a Lab report owner or source
+contract.
 
 ## Architecture Explanation
 
