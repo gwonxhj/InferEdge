@@ -49,7 +49,8 @@ bash scripts/check_publish_ready.sh
 See [Publish InferEdge Entrypoint](docs/publish_inferedge.md) for the
 non-fast-forward and unrelated-history blocked states, bundled PR merge step,
 PR changed-file/status gate, PR `Summary` / `Tests` recording, final status check,
-local checkout safety, optional branch cleanup, and diagnostic escape-hatch flags.
+local checkout safety, stale-main apparent untracked-file recovery, optional
+branch cleanup, and diagnostic escape-hatch flags.
 Do not force push over the existing public `main` history.
 
 ## Architecture
