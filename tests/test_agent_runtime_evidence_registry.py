@@ -449,6 +449,18 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "INFEREDGE_AGENT_RUNTIME_EDGEENV_SMOKE_OUT" in smoke_script
     assert "demo_agent_runtime_e2e.sh\" --device-local --edgeenv-run-evidence" in smoke_script
     assert "Agent Runtime EdgeEnv preservation marker gate" in smoke_script
+    assert "agent_edgeenv_lab_markers=(" in smoke_script
+    assert "agent_edgeenv_index_common_markers=(" in smoke_script
+    assert "agent_edgeenv_index_json_markers=(" in smoke_script
+    assert "agent_edgeenv_index_md_markers=(" in smoke_script
+    assert (
+        'require_markers "$index_json" "${agent_edgeenv_index_common_markers[@]}"'
+        in smoke_script
+    )
+    assert (
+        'require_markers "$index_md" "${agent_edgeenv_index_common_markers[@]}"'
+        in smoke_script
+    )
     assert "preservation_identity_label" in smoke_script
     assert "preservation_details_label" in smoke_script
     assert "Runtime operation summary" in smoke_script
