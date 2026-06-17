@@ -583,6 +583,9 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     assert "Duration Sources" in korean_demo_doc
     assert "production remote execution" in korean_demo_doc
     assert "source=entrypoint_requested_frames" in script
+    assert "reviewer navigation context" in script
+    assert "do not make the index a Lab report owner" in script
+    assert "not as a new source contract" in script
     assert "Duration Sources" in script
 
 
@@ -625,6 +628,11 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "does not make this registry a Lab report owner" in script
     assert "Operation Quick Scan Summary must appear before ## Runs" in script
     assert "Quick-scan registry summary smoke: pass" in script
+    assert "reviewer navigation context" in script
+    assert "do not make the index a Lab report owner" in script
+    assert "not as a new source contract" in script
+    assert "raw quick-scan marker labels appear" in script
+    assert "reviewer-navigation bug" in script
     assert "raw marker labels leak" in demo_doc
     assert "Raw Marker Label" in demo_doc
     assert "edgeenv_lab_report_operation_quick_scan_raw_marker" in demo_doc
