@@ -1496,8 +1496,12 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "does not claim a new clean-clone run" in normalized_delta
     assert "Runtime Intelligence artifact gate" in delta
     assert "Operation quick-scan registry" in delta
+    assert "Shared reviewer marker-gate details" in delta
     assert "Runtime operation / Jetson evidence snapshot" in delta
     assert "Safe publish and PR path" in delta
+    assert "copied CI artifact summaries" in delta
+    assert "generated `00_evidence_index.*` artifacts" in delta
+    assert "detailed marker vocabulary owner" in delta
     assert "not production observability or a GitLab control plane" in delta
     assert "not a Lab report owner or production runtime proof" in delta
     assert "live Jetson execution is not implied" in delta
