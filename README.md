@@ -152,6 +152,9 @@ For the generated artifact list and the split between operation-smoke and
 Runtime Intelligence smoke gates, see
 [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md#smoke-gate-split)
 ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)).
+That guide also explains why shared reviewer marker gates keep Lab report
+summaries, copied CI artifact summaries, and generated `00_evidence_index.*`
+artifacts aligned without expanding the README's detailed marker vocabulary.
 
 ## Agent Runtime / Jetson Commands
 
