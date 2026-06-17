@@ -1169,6 +1169,15 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
         in normalized_publish_doc
     )
     assert "PR merged state as the deciding evidence" in publish_doc
+    assert "merged PR confirmation checklist" in publish_doc
+    assert "Match the branch name to its GitHub pull request" in publish_doc
+    assert "closed as merged, not merely closed" in publish_doc
+    assert "merge commit is visible on the current `origin/main`" in publish_doc
+    assert (
+        "no longer needed for review, audit, or comparing local logs"
+        in normalized_publish_doc
+    )
+    assert "Keep the branch when any of those checks is uncertain" in publish_doc
     assert "only proves regular merge ancestry" in normalized_publish_doc
     assert "Squash-merged branches may not appear" in publish_doc
     assert "do not delete the branch based on `--merged` alone" in publish_doc
