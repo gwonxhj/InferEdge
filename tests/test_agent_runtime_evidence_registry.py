@@ -1125,6 +1125,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Do not commit, push, open a PR, or merge" in publish_doc
     assert "verify the changed file list" in publish_doc
     assert "the pull request is mergeable" in publish_doc
+    assert "Use this PR merge gate inside the bundled step" in publish_doc
+    assert "PR changed-file list matches the local diff scope" in publish_doc
+    assert "not a draft" in publish_doc
+    assert "commit status checks have no failures" in publish_doc
+    assert "no failing GitHub statuses were reported" in publish_doc
+    assert "expected head SHA" in publish_doc
     assert "The PR body should include" in publish_doc
     assert "`Summary` and `Tests` section" in publish_doc
     assert "exact validation commands that passed" in publish_doc
@@ -1216,6 +1222,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "force push" in readme
     assert "public `main`" in readme
     assert "bundled PR merge step" in readme
+    assert "PR changed-file/status gate" in readme
     assert "PR `Summary` / `Tests` recording" in readme
     assert "final status check" in readme
     assert "local checkout safety" in readme
@@ -1224,6 +1231,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "scripts/check_publish_ready.sh" in korean_readme
     assert "docs/publish_inferedge.md" in korean_readme
     assert "PR 생성과 merge까지 한 단계" in korean_readme
+    assert "PR changed-file/status gate" in korean_readme
     assert "PR `Summary` / `Tests` 기록" in korean_readme
     assert "최종 상태 확인" in korean_readme
     assert "local checkout" in korean_readme

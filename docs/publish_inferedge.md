@@ -80,6 +80,16 @@ Before merging, verify the changed file list is scoped to the intended task and
 the pull request is mergeable. After merging, fetch `origin/main`, confirm the
 new merge commit, and start the next task from `origin/main`.
 
+Use this PR merge gate inside the bundled step:
+
+1. Confirm the PR changed-file list matches the local diff scope.
+2. Confirm the PR is not a draft and GitHub reports it as mergeable.
+3. Confirm commit status checks have no failures. If the repository has no
+   configured checks, record that no failing GitHub statuses were reported and
+   rely on the local validation commands listed in the PR body.
+4. Merge with the expected head SHA so a moved branch cannot be merged by
+   accident.
+
 The PR body should include a short `Summary` and `Tests` section. List the
 exact validation commands that passed so reviewers can connect the merge to the
 local checks.
