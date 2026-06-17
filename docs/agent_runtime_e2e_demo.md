@@ -84,7 +84,19 @@ configured output directory:
 | `aiguard_edgeenv_handoff_alignment.json` / `aiguard_edgeenv_handoff_alignment.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
 
 The `Validated Review Path` gate summary intentionally keeps the detailed
-marker vocabulary outside the README. The current required markers are:
+marker vocabulary outside the README. The broader Runtime Intelligence report
+gate also keeps the surrounding duration and reviewer-focus markers here:
+
+- `Validated Duration Traceability`
+- `duration_handoff_alignment: EdgeEnv/AIGuard report context preserved`
+- `duration_source: source=entrypoint_requested_frames`
+- `duration_scope_label: scope_label=source=entrypoint_requested_frames`
+- `duration_label: short 96-frame-class replay (96 frames)`
+- `Validated Reviewer Focus`
+- `reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated`
+- `reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report`
+
+The current required review-path markers are:
 
 - `review_path_section: short Review Path section rendered`
 - `review_path_fast_path: readable Review Path fast path rendered`

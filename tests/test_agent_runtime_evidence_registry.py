@@ -1012,6 +1012,9 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
     demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
         encoding="utf-8"
     )
+    demo_doc_ko = (ROOT / "docs" / "agent_runtime_e2e_demo.ko.md").read_text(
+        encoding="utf-8"
+    )
 
     for text in (readme, portfolio):
         assert "Runtime Intelligence artifact gate" in text
@@ -1028,10 +1031,27 @@ def test_runtime_intelligence_status_preserves_local_first_boundary() -> None:
 
     assert "Production observability platform or GitLab control plane" in readme
     assert "production control plane" in portfolio
+    runtime_report_gate_markers = [
+        "Validated Duration Traceability",
+        "duration_handoff_alignment: EdgeEnv/AIGuard report context preserved",
+        "duration_source: source=entrypoint_requested_frames",
+        "duration_scope_label: scope_label=source=entrypoint_requested_frames",
+        "duration_label: short 96-frame-class replay (96 frames)",
+        "Validated Reviewer Focus",
+        "reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated",
+        "reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report",
+        "Validated Review Path",
+        "review_path_section: short Review Path section rendered",
+        "review_path_fast_path: readable Review Path fast path rendered",
+        "review_path: Reviewer Focus -> Detailed Evidence Rows guidance validated",
+        "review_path_scope: comparable regression / telemetry replay / operation evidence preserved",
+        "review_path_artifact_gate_summary: artifact gate summary reference row validated",
+    ]
+    for text in (demo_doc, demo_doc_ko):
+        for marker in runtime_report_gate_markers:
+            assert marker in text
+
     for text in (demo_doc,):
-        assert "Validated Duration Traceability" in text
-        assert "Validated Reviewer Focus" in text
-        assert "reviewer_focus_operation_quick_scan" in text
         assert "runtime_intelligence_ci_artifact_gate_summary.md" in text
         assert "lab_expected_report_markers" in text
         assert "lab_report_contract_context" in text
