@@ -94,6 +94,11 @@ should not be described as production SSH/HTTP execution, long-lived worker
 operation, secure tunnel operation, production retry/failover, cloud
 orchestration, or a production observability platform.
 
+Detailed shared reviewer marker-gate vocabulary for Lab report summaries and
+generated `00_evidence_index.*` artifacts stays in
+[Agent Runtime E2E Demo](agent_runtime_e2e_demo.md). This pipeline map remains
+the repository contract-boundary view, not the detailed marker vocabulary owner.
+
 The submission-ready diagram is in
 [Ecosystem 1-Page Summary](ecosystem_1page.md)
 ([한국어: 생태계 1페이지 요약](ecosystem_1page.ko.md)).
