@@ -489,8 +489,12 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "operation_summary: mode=timeout_threshold_exceeded" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
     assert "require_markers()" in smoke_script
+    assert "require_artifact()" in smoke_script
+    assert "require_artifacts()" in smoke_script
+    assert "runtime_intelligence_required_artifacts=(" in smoke_script
     assert "runtime_report_gate_markers=(" in smoke_script
     assert "runtime_summary_common_markers=(" in smoke_script
+    assert 'require_artifacts "${runtime_intelligence_required_artifacts[@]}"' in smoke_script
     assert (
         'require_markers "$gate_summary" "${runtime_report_gate_markers[@]}"'
         in smoke_script
@@ -508,6 +512,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
         in smoke_script
     )
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
+    assert "edgeenv_runtime_regression.md" in smoke_script
+    assert "edgeenv_runtime_regression.html" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
     assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in smoke_script
     assert (
@@ -549,6 +555,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     )
     assert "runtime_anomaly_summary.md" in smoke_script
     assert "runtime_anomaly_summary.html" in smoke_script
+    assert "aiguard_edgeenv_handoff_alignment.json" in smoke_script
+    assert "aiguard_edgeenv_handoff_alignment.md" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation run" in smoke_script
     assert "Jetson/device-local EdgeEnv preservation details" in smoke_script
     assert "identity=jetson_device_local_preservation" in smoke_script
