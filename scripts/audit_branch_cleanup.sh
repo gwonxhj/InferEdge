@@ -66,11 +66,13 @@ echo
 
 echo "Local cleanup inventory (audit input, not a deletion list):"
 local_found=0
+local_count=0
 while IFS= read -r local_branch; do
   if [[ -z "$local_branch" ]]; then
     continue
   fi
   local_found=1
+  local_count=$((local_count + 1))
   if [[ "$local_branch" == "$CURRENT_BRANCH" ]]; then
     echo "- $local_branch (current; do not delete while checked out)"
   else
@@ -84,11 +86,13 @@ echo
 
 echo "Remote cleanup inventory (audit input, not a deletion list):"
 remote_found=0
+remote_count=0
 while IFS= read -r remote_branch; do
   if [[ -z "$remote_branch" ]]; then
     continue
   fi
   remote_found=1
+  remote_count=$((remote_count + 1))
   echo "- $remote_branch"
 done < <(git branch -r --list "origin/$BRANCH_PATTERN" --format='%(refname:short)')
 if [[ "$remote_found" -eq 0 ]]; then
@@ -98,13 +102,32 @@ echo
 
 if git rev-parse --verify --quiet origin/main >/dev/null; then
   echo "Regular-merge ancestry candidates:"
-  git branch --merged origin/main --format='%(refname:short)' \
-    | grep -E "^${BRANCH_PATTERN//\*/.*}$" \
-    | sed 's/^/- /' \
-    || echo "- <none>"
+  regular_count=0
+  while IFS= read -r merged_branch; do
+    if [[ -z "$merged_branch" ]]; then
+      continue
+    fi
+    regular_count=$((regular_count + 1))
+    echo "- $merged_branch"
+  done < <(
+    git branch --merged origin/main --format='%(refname:short)' \
+      | grep -E "^${BRANCH_PATTERN//\*/.*}$" \
+      || true
+  )
+  if [[ "$regular_count" -eq 0 ]]; then
+    echo "- <none>"
+  fi
 else
   echo "Regular-merge ancestry candidates: origin/main missing"
+  regular_count=0
 fi
+echo
+
+echo "Cleanup audit summary:"
+echo "- Local inventory entries: $local_count"
+echo "- Remote inventory entries: $remote_count"
+echo "- Regular-merge ancestry entries: $regular_count"
+echo "- A zero regular-merge count does not mean zero squash-merged PR branches."
 echo
 
 cat <<'EOF'
