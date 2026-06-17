@@ -154,6 +154,9 @@ Jetson 작업이 필요한 경우는 `--capture-tegrastats`,
 ownership, EdgeEnv comparability ownership, AIGuard deterministic diagnosis
 ownership을 바꾸지 않으며, device-local starter를 production operation으로
 격상하지 않습니다.
+entrypoint `scripts/smoke_all.sh`는 generated evidence index의 이 boundary
+문구도 gate하므로 navigation layer가 source contract나 report owner처럼
+조용히 바뀌지 않게 막습니다.
 
 2026-06-09 KST (`20260608T232814Z` UTC)에 entrypoint가 Lab의
 `Validated Reviewer Focus` summary marker를 gate하기 시작한 뒤 같은 경로를
