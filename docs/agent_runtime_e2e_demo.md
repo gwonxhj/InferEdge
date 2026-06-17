@@ -62,6 +62,14 @@ artifact-bundle gate; the quick-scan registry smoke is a reviewer-navigation
 marker gate. No path makes Orchestrator or AIGuard the final deployment
 decision owner; Lab remains the report and decision owner.
 
+`scripts/smoke_all.sh` keeps the reviewer marker gates as shared marker lists
+for the Lab report summaries and generated `00_evidence_index.*` artifacts.
+That structure is intentional: the Lab report, copied CI artifact summary, and
+entrypoint evidence index must preserve the same reviewer marker vocabulary for
+duration, reviewer-focus, EdgeEnv preservation, and operation quick-scan
+evidence. Format-specific labels stay separate, but the shared marker
+vocabulary should not drift.
+
 Runtime Intelligence smoke writes these reviewer-facing artifacts under the
 configured output directory:
 
