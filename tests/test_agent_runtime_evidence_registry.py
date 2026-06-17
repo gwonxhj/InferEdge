@@ -1241,6 +1241,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/ecosystem_1page.md",
             "docs/portfolio_summary.md",
             "docs/pipeline_map.md",
+            "docs/final_submission_rehearsal.md",
             "docs/publish_inferedge.md",
             "docs/agent_runtime_e2e_demo.md",
             "docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry",
@@ -1256,6 +1257,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/ecosystem_1page.ko.md",
             "docs/portfolio_summary.ko.md",
             "docs/pipeline_map.ko.md",
+            "docs/final_submission_rehearsal.md",
             "docs/publish_inferedge.md",
             "docs/agent_runtime_e2e_demo.ko.md",
             "docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현",
@@ -1311,6 +1313,36 @@ def test_entrypoint_reviewer_path_anchor_fragments_exist() -> None:
         ("README.ko.md", "## 먼저 볼 문서"),
     ]:
         assert_local_markdown_link_fragments_exist(doc_path, section_heading)
+
+
+def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
+    rehearsal = (ROOT / "docs" / "final_submission_rehearsal.md").read_text(
+        encoding="utf-8"
+    )
+    delta = section_by_heading(rehearsal, "## Current Reviewer Path Delta")
+    normalized_delta = " ".join(delta.split())
+
+    assert "historical clean-clone record from 2026-05-14" in delta
+    assert "does not claim a new clean-clone run" in normalized_delta
+    assert "Runtime Intelligence artifact gate" in delta
+    assert "Operation quick-scan registry" in delta
+    assert "Runtime operation / Jetson evidence snapshot" in delta
+    assert "Safe publish and PR path" in delta
+    assert "not production observability or a GitLab control plane" in delta
+    assert "not a Lab report owner or production runtime proof" in delta
+    assert "live Jetson execution is not implied" in delta
+    assert "do not force push over public `main`" in delta
+    assert_markers_in_order(
+        delta,
+        [
+            "Start with `README.md`",
+            "Follow `## Docs & Review Path`",
+            "Use this rehearsal for the clean-clone baseline",
+            "Use `docs/agent_runtime_e2e_demo.md`",
+            "Use `docs/publish_inferedge.md`",
+        ],
+        label="final submission rehearsal current reviewer order",
+    )
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:

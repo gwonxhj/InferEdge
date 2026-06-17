@@ -164,6 +164,36 @@ The summary gives the intended 30-second structure:
 
 No wording conflict was found between validation, evidence registry, and operation-control responsibilities.
 
+## Current Reviewer Path Delta
+
+This rehearsal is a historical clean-clone record from 2026-05-14. The accepted
+clone and smoke commands remain the base reviewer entrypoint, but the current
+README reviewer path now adds Runtime Intelligence and operation quick-scan
+navigation on top of the original Core 4 rehearsal.
+
+Current reviewer additions:
+
+| Addition | Where to inspect | Boundary |
+|---|---|---|
+| Runtime Intelligence artifact gate | `README.md` Runtime Intelligence Smoke and `docs/agent_runtime_e2e_demo.md#smoke-gate-split` | Local-first artifact smoke; not production observability or a GitLab control plane |
+| Operation quick-scan registry | `docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry` | Reviewer navigation metadata; not a Lab report owner or production runtime proof |
+| Runtime operation / Jetson evidence snapshot | `docs/evidence/jetson_device_local_agent_runtime_report.md` and `docs/evidence/jetson_device_local_5min_sustained_report.md` | Committed replay evidence; live Jetson execution is not implied by this rehearsal |
+| Safe publish and PR path | `docs/publish_inferedge.md` | Review branch workflow; do not force push over public `main` |
+
+Current reviewer order:
+
+1. Start with `README.md`.
+2. Follow `## Docs & Review Path`.
+3. Use this rehearsal for the clean-clone baseline.
+4. Use `docs/agent_runtime_e2e_demo.md` for Runtime Intelligence, operation
+   quick-scan, remote fallback, and Jetson/device-local navigation details.
+5. Use `docs/publish_inferedge.md` only for branch publish, PR, and merge
+   safety.
+
+This delta does not change the original rehearsal result and does not claim a
+new clean-clone run. It documents how reviewers should connect the historical
+submission rehearsal to the current evidence-navigation path.
+
 ## Submission Gate
 
 Status: pass after smoke script hardening.
