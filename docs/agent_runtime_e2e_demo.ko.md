@@ -59,6 +59,7 @@ local run evidence / comparability / registry context를 보존합니다.
 |---|---|---|
 | Agent runtime operation smoke | generated operation scenario bundle에서 manifest, Runtime result, Orchestrator, AIGuard, Lab report 연결을 확인 | Runtime regression comparability나 CI artifact bundle completeness를 검증하지 않음 |
 | Runtime Intelligence artifact smoke | committed Orchestrator -> EdgeEnv -> AIGuard -> Lab bundle의 report rows, owner boundary, CI artifact shape를 검증 | production observability, GitLab control plane, live remote execution을 증명하지 않음 |
+| Remote fallback registry marker smoke | `bash scripts/smoke_remote_fallback_registry_marker.sh`로 fixture-only remote fallback bundle을 만들고 `Remote fallback starter evidence`, `Duration source`, `Duration scope label`, `source=entrypoint_requested_frames`, `Duration Sources`를 확인 | fallback starter가 entrypoint-requested replay scope에 묶여 있음을 보존하며 production remote execution이나 live runtime duration claim을 증명하지 않음 |
 | Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh`로 fixture-only device-local preservation bundle을 registry까지 재생성하고 `Operation Quick Scan Summary`, `Reviewer operation quick scan`, queue/deadline/fallback marker를 확인 | live Jetson 실행, thermal endurance validation, production scheduling, Lab ownership 이전을 증명하지 않음 |
 
 Runtime Intelligence smoke는 configured output directory 아래에 다음
