@@ -913,6 +913,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     publish_doc = (ROOT / "docs" / "publish_inferedge.md").read_text(
         encoding="utf-8"
     )
+    normalized_publish_doc = " ".join(publish_doc.split())
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
 
@@ -975,10 +976,10 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Never delete `main`" in publish_doc
     assert "make a cleanup inventory" in publish_doc
     assert "not a deletion list" in publish_doc
-    assert "git branch --list 'codex/*' --format='%(refname:short)'" in publish_doc
-    assert "git branch --merged origin/main" in publish_doc
+    assert "bash scripts/audit_branch_cleanup.sh --fetch" in publish_doc
+    assert "regular merge ancestry" in publish_doc
+    assert "not sufficient for squash-merged pull requests" in normalized_publish_doc
     assert "only proves regular merge ancestry" in publish_doc
-    assert "not sufficient for squash-merged pull requests" in publish_doc
     assert "Squash-merged branches may not appear" in publish_doc
     assert "do not delete the branch based on `--merged` alone" in publish_doc
     assert "Verify the PR is" in publish_doc
@@ -1075,6 +1076,39 @@ def test_publish_readiness_help_output_lists_safety_boundaries() -> None:
     assert "origin remote placeholder detection" in output
     assert "origin branch fast-forward safety" in output
     assert "suggested push command" in output
+    assert result.stderr == ""
+
+
+def test_branch_cleanup_audit_script_is_inventory_only() -> None:
+    script = (ROOT / "scripts" / "audit_branch_cleanup.sh").read_text(
+        encoding="utf-8"
+    )
+    result = subprocess.run(
+        ["bash", "scripts/audit_branch_cleanup.sh", "--help"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    output = result.stdout
+    normalized_output = " ".join(output.split())
+
+    assert "InferEdge branch cleanup audit" in script
+    assert "git fetch origin main" in script
+    assert "git branch --list" in script
+    assert "git branch --merged origin/main" in script
+    assert "git branch -d" not in script
+    assert "git branch -D" not in script
+    assert "git push origin --delete" not in script
+    assert "not a deletion list" in script
+    assert "Squash-merged branches may not appear" in script
+    assert "Verify the PR is closed as merged" in script
+    assert "GitHub connector/app" in script
+
+    assert "bash scripts/audit_branch_cleanup.sh [options]" in output
+    assert "--fetch" in output
+    assert "--branch-pattern <glob>" in output
+    assert "It never deletes local or remote branches" in normalized_output
     assert result.stderr == ""
 
 
