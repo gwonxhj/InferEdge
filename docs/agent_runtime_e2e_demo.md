@@ -825,6 +825,12 @@ only; they do not make the registry a Lab report owner. The detailed `## Runs`
 table and registry JSON still preserve the raw `Reviewer operation quick scan`
 marker context, so reviewers can identify queue/deadline/fallback pressure
 before opening each bundle without losing traceability.
+The fixture-only quick-scan smoke enforces this split: raw marker labels such
+as `raw_marker=reviewer_focus_operation_quick_scan` must stay out of the compact
+`Operation Quick Scan Summary`, while the detailed `## Runs` table and registry
+JSON must keep `Raw Marker`, `Raw Marker Label`,
+`edgeenv_lab_report_operation_quick_scan_raw_marker`, and
+`edgeenv_lab_report_operation_quick_scan_raw_marker_label`.
 
 Historical reference: the previous Jetson duration registry used entrypoint
 commit `d38df87`, paired
@@ -901,8 +907,9 @@ device-local EdgeEnv preservation bundle, rebuilds the evidence index and run
 registry, and requires `Operation Quick Scan Summary` before `## Runs` with
 `Reviewer operation quick scan`, `raw_marker=reviewer_focus_operation_quick_scan`,
 queue/deadline/fallback markers, reviewer navigation metadata, and the
-Lab-owner boundary wording. This gate does not
-need a live Jetson or Orchestrator worker.
+Lab-owner boundary wording. It also fails if detailed raw marker labels leak
+into the compact summary instead of remaining in the detailed run table and
+registry JSON. This gate does not need a live Jetson or Orchestrator worker.
 
 For a focused runtime-operation comparison, generate one device-local
 probe/process bundle and one remote fallback bundle, then build a registry from
