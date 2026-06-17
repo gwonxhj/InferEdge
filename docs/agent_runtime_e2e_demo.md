@@ -693,6 +693,9 @@ The index also carries the Lab report marker contract vocabulary, including
 `aiguard_validates_expected_report_markers=false`. These are reviewer
 navigation markers only; they do not make the entrypoint, AIGuard, or CI the
 Lab report owner.
+The entrypoint `scripts/smoke_all.sh` gates that boundary wording in the
+generated evidence index, so the navigation layer cannot silently become a
+source contract or report owner in the portfolio smoke.
 
 The EdgeEnv preservation marker path was replayed on Jetson with the latest
 entrypoint/Lab main branches and an existing `~/InferEdgeEnv` clone. The

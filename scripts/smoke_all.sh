@@ -350,6 +350,9 @@ require_agent_runtime_edgeenv_markers() {
     "Duration class"
     "Duration source"
     "Duration scope label"
+    "reviewer navigation context"
+    "do not make the index a Lab report owner"
+    "not as a new source contract"
   )
 
   require_markers "$lab_md" "${agent_edgeenv_lab_markers[@]}"

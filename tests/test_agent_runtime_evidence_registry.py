@@ -575,6 +575,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "max_total_queue_depth=7" in smoke_script
     assert "deadline_missed_count=2" in smoke_script
     assert "fallback_count=1" in smoke_script
+    assert "reviewer navigation context" in smoke_script
+    assert "do not make the index a Lab report owner" in smoke_script
+    assert "not as a new source contract" in smoke_script
     assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
     assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
     assert "INFEREDGE_REMOTE_FALLBACK_REGISTRY_SMOKE_OUT" in smoke_script
