@@ -216,7 +216,7 @@ and [Pipeline Map](docs/pipeline_map.md)
 | Repository responsibilities and contract boundaries | [Pipeline Map](docs/pipeline_map.md) ([한국어: 파이프라인 맵](docs/pipeline_map.ko.md)) |
 | Clean-clone submission rehearsal and current reviewer delta | [Final Submission Rehearsal](docs/final_submission_rehearsal.md) |
 | Safe publish, PR, and merge workflow | [Publish InferEdge Entrypoint](docs/publish_inferedge.md) |
-| Agent Runtime / Runtime Operation smoke details | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)) |
+| Agent Runtime / Runtime Operation smoke details and shared marker-gate owner | [`docs/agent_runtime_e2e_demo.md`](docs/agent_runtime_e2e_demo.md) ([한국어: 에이전트 런타임 e2e 데모 문서](docs/agent_runtime_e2e_demo.ko.md)) |
 | Latest Jetson operation-summary quick-scan registry | linked metric snapshots plus [`Duration Comparison Summary` and `Operation Quick Scan Summary`](docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry) ([한국어: 최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)) |
 | Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) ([한국어: 인터뷰 내러티브](docs/interview_narrative.ko.md)) |
 | Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
