@@ -588,6 +588,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
         "Detailed marker vocabulary lives in the Agent Runtime E2E demo docs"
         in readme
     )
+    assert "shared reviewer marker gates" in readme
+    assert "generated `00_evidence_index.*`" in readme
+    assert "without expanding the README's detailed marker vocabulary" in readme
     assert "README -> Lab report -> gate summary reading order" in readme
     assert "short Review Path section" not in readme
     assert "artifact gate summary reference row" not in readme
@@ -1033,6 +1036,9 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[포트폴리오 요약](docs/portfolio_summary.ko.md)" in korean_readme
     assert "[파이프라인 맵](docs/pipeline_map.ko.md)" in korean_readme
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
+    assert "공통 reviewer marker gate" in korean_readme
+    assert "generated `00_evidence_index.*`" in korean_readme
+    assert "README에는 세부 marker vocabulary를 늘리지 않고" in korean_readme
     assert_korean_readme_jetson_p95_evidence_terms(korean_readme)
     assert_readme_quick_scan_snapshot_terms(korean_readme)
     assert (
