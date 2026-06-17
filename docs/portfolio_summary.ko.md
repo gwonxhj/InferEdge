@@ -79,8 +79,9 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 generated `00_evidence_index.*` artifact를 어떻게 맞추는지는 Agent Runtime
 demo 문서에서 설명합니다. generated evidence index를 reviewer navigation으로
 유지하고 Lab report owner나 source contract가 되지 않게 막는 smoke-gated
-boundary wording도 그 문서에 둡니다. 이 요약 문서는 세부 marker vocabulary owner가
-아닙니다.
+boundary wording도 그 문서에 둡니다. run registry도 같은 boundary를
+machine-readable `evidence_index_boundary_summary` metadata로 보존합니다.
+이 요약 문서는 세부 marker vocabulary owner가 아닙니다.
 
 | 리뷰 질문 | evidence path |
 |---|---|
@@ -93,7 +94,7 @@ boundary wording도 그 문서에 둡니다. 이 요약 문서는 세부 marker 
 | remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
 
 이 quick-scan registry는 `latest registry` 기반의 `quick-scan navigation`
-metadata이며 연결된 metric snapshot 값을 함께 보여줍니다. 대표 metric은 각 `representative snapshot` report에서
+metadata이며 연결된 metric snapshot 값과 `evidence_index_boundary_summary`를 함께 보여줍니다. 대표 metric은 각 `representative snapshot` report에서
 확인하며, registry가 Lab report owner나 production runtime operation proof가
 되는 것은 아닙니다.
 

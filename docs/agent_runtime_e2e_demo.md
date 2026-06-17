@@ -851,6 +851,9 @@ only; they do not make the registry a Lab report owner. The detailed `## Runs`
 table and registry JSON still preserve the raw `Reviewer operation quick scan`
 marker context, so reviewers can identify queue/deadline/fallback pressure
 before opening each bundle without losing traceability.
+The registry JSON also preserves each run's `evidence_index_boundary` and an
+aggregated `evidence_index_boundary_summary`, so the reviewer-navigation
+boundary remains machine-readable across multi-run views.
 The fixture-only quick-scan smoke enforces this split: raw marker labels such
 as `raw_marker=reviewer_focus_operation_quick_scan` must stay out of the compact
 `Operation Quick Scan Summary`, while the detailed `## Runs` table and registry
