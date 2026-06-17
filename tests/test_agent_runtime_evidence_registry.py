@@ -2298,6 +2298,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "Reviewer operation quick scan:" in runs_block
     assert "reviewer-facing navigation metadata" in markdown
     assert "Lab report marker context" in markdown
+    assert "raw quick-scan marker labels appear" in markdown
+    assert "reviewer-navigation bug" in markdown
+    assert "detailed rows and JSON traceability fields" in markdown
     assert "does not make this registry a Lab report owner" in markdown
 
 
