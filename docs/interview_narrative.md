@@ -44,6 +44,11 @@ Use the same Jetson evidence terms as the demo and evidence reports:
 | Latest registry | The `c04abc9` operation-summary registry is the latest local navigation record for comparing the 96-frame and 5-minute rows, including linked metric snapshot values (`155.86` / `156.877` ms, `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, `50.375 C` / `1038 MB`) without replacing the source reports. |
 | Quick-scan navigation | `Duration Comparison Summary` and `Operation Quick Scan Summary` help reviewers scan duration and queue/deadline/fallback pressure before opening full reports. |
 
+For shared reviewer marker-gate details across the Lab report summary, copied CI
+artifact summary, and generated `00_evidence_index.*` artifacts, point reviewers
+to [Agent Runtime E2E Demo](agent_runtime_e2e_demo.md). This interview narrative
+stays at speaking-guide level and is not the detailed marker vocabulary owner.
+
 ## Architecture Explanation
 
 ```text

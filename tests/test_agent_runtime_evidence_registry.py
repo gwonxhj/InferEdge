@@ -880,6 +880,16 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
             resource_style="comma",
             extra_markers=("submission-facing metric snapshot",),
         )
+        assert (
+            "shared reviewer marker-gate" in normalized_text
+            or "공통 reviewer marker-gate" in normalized_text
+        )
+        assert "generated `00_evidence_index.*`" in normalized_text
+        assert "Agent Runtime E2E Demo" in normalized_text
+        assert (
+            "detailed marker vocabulary owner" in normalized_text
+            or "세부 marker vocabulary owner" in normalized_text
+        )
 
 
 def test_portfolio_summary_uses_jetson_evidence_terms() -> None:

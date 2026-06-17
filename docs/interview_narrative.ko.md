@@ -42,6 +42,11 @@ demo / evidence report와 같은 Jetson evidence 용어를 사용합니다.
 | Latest registry | `c04abc9` operation-summary registry는 96-frame / 5-minute row와 연결된 metric snapshot 값(`155.86` / `156.877` ms, `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, `50.375 C` / `1038 MB`)을 비교하는 최신 local navigation record이며 source report를 대체하지 않습니다. |
 | Quick-scan navigation | `Duration Comparison Summary`와 `Operation Quick Scan Summary`는 full report를 열기 전에 duration과 queue/deadline/fallback pressure를 훑어보는 reviewer navigation입니다. |
 
+Lab report summary, 복사된 CI artifact summary, generated
+`00_evidence_index.*` artifact를 맞추는 공통 reviewer marker-gate 상세는
+[Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)에 둡니다. 이 인터뷰
+내러티브는 말하기 흐름만 유지하며 세부 marker vocabulary owner가 아닙니다.
+
 ## 역할 설명
 
 | Repository | 인터뷰 표현 | 경계 |
