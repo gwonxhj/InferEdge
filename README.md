@@ -137,6 +137,19 @@ remote-dispatch boundary rows, Runtime replay duration scope, and compact
 queue/deadline/fallback operation markers without making CI a runtime control
 plane.
 
+Curated reviewer sample handoff:
+
+- `examples/telemetry/agent_scheduler_delay_sample.json` stays an Orchestrator
+  sample input for the `scheduler_delay_pattern` AIGuard evidence path.
+- `examples/telemetry/remote_fallback_recovery_sample.json` stays an
+  Orchestrator sample input for the `remote_execution_recovered_by_fallback`
+  AIGuard evidence path.
+
+These sample paths are reviewer anchors for the
+`Orchestrator -> EdgeEnv -> AIGuard -> Lab` handoff. They are not Forge
+artifacts, Runtime benchmark outputs, Lab decision-policy inputs, or completed
+production remote execution.
+
 Reviewer path:
 
 | Step | What to inspect | Why it matters |

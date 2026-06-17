@@ -109,6 +109,13 @@ remote fallback marker path reproducible without a live HTTP worker. It must
 preserve `remote_execution_recovered_by_fallback` and
 `lab=Remote fallback starter evidence` in the generated registry/report path.
 
+Curated sample handoff stays bounded to reviewer traceability:
+
+| Orchestrator sample input | Downstream evidence path | Boundary |
+|---|---|---|
+| `examples/telemetry/agent_scheduler_delay_sample.json` | AIGuard `scheduler_delay_pattern`, then Lab runtime-operation context | Not a Runtime benchmark output or Lab decision-policy input |
+| `examples/telemetry/remote_fallback_recovery_sample.json` | AIGuard `remote_execution_recovered_by_fallback`, then Lab remote fallback starter evidence | Not production remote execution |
+
 ## Runtime Intelligence Review Path
 
 Detailed marker vocabulary is protected by smoke gates and the Agent Runtime
