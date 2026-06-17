@@ -1163,6 +1163,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "cleanup inventory only" in publish_doc
     assert "regular merge ancestry" in publish_doc
     assert "not sufficient for squash-merged pull requests" in normalized_publish_doc
+    assert "zero regular-merge ancestry entries" in publish_doc
+    assert (
+        "does not mean there are zero squash-merged PR branches"
+        in normalized_publish_doc
+    )
+    assert "PR merged state as the deciding evidence" in publish_doc
     assert "only proves regular merge ancestry" in normalized_publish_doc
     assert "Squash-merged branches may not appear" in publish_doc
     assert "do not delete the branch based on `--merged` alone" in publish_doc
@@ -1285,6 +1291,11 @@ def test_branch_cleanup_audit_script_is_inventory_only() -> None:
     assert "Remote cleanup inventory" in script
     assert "git branch -r --list" in script
     assert "origin/$BRANCH_PATTERN" in script
+    assert "Cleanup audit summary" in script
+    assert "Local inventory entries" in script
+    assert "Remote inventory entries" in script
+    assert "Regular-merge ancestry entries" in script
+    assert "does not mean zero squash-merged PR branches" in script
     assert "git fetch origin main" in script
     assert "git branch --list" in script
     assert "git branch --merged origin/main" in script
