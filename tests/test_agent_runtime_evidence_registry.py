@@ -1423,6 +1423,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         [
             "[Portfolio Summary](portfolio_summary.md)",
             "[Pipeline Map](pipeline_map.md)",
+            "[Agent Runtime E2E Demo](agent_runtime_e2e_demo.md)",
             "[Interview Narrative](interview_narrative.md)",
             "bash scripts/clone_all.sh --locked",
             "bash scripts/smoke_all.sh",
@@ -1434,6 +1435,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         [
             "[포트폴리오 요약](portfolio_summary.ko.md)",
             "[파이프라인 맵](pipeline_map.ko.md)",
+            "[Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)",
             "[인터뷰 내러티브](interview_narrative.ko.md)",
             "[InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)",
         ],
@@ -1445,6 +1447,10 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         assert "Lab-owned deployment decision" in normalized_text
         assert "production observability" in normalized_text
         assert "cloud control plane" in normalized_text
+    assert "shared reviewer marker-gate details" in ecosystem
+    assert "generated `00_evidence_index.*`" in " ".join(ecosystem.split())
+    assert "공통 reviewer marker-gate 상세" in " ".join(korean_ecosystem.split())
+    assert "generated `00_evidence_index.*`" in " ".join(korean_ecosystem.split())
 
 
 def test_entrypoint_reviewer_path_local_links_exist() -> None:

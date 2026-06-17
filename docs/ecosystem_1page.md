@@ -145,8 +145,11 @@ post-deployment operation context.
    narrative.
 3. Read [Pipeline Map](pipeline_map.md)
    ([한국어: 파이프라인 맵](pipeline_map.ko.md)) for repository responsibilities.
-4. Read [Interview Narrative](interview_narrative.md) for speaking notes.
-5. Run the local submission smoke:
+4. Use [Agent Runtime E2E Demo](agent_runtime_e2e_demo.md) when you need the
+   shared reviewer marker-gate details for Lab report summaries and generated
+   `00_evidence_index.*` artifacts.
+5. Read [Interview Narrative](interview_narrative.md) for speaking notes.
+6. Run the local submission smoke:
 
 ```bash
 bash scripts/clone_all.sh --locked
