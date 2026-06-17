@@ -476,6 +476,25 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "operation_summary: mode=device_local_starter" in smoke_script
     assert "operation_summary: mode=timeout_threshold_exceeded" in smoke_script
     assert "Lab Runtime Intelligence report marker gate" in smoke_script
+    assert "require_markers()" in smoke_script
+    assert "runtime_report_gate_markers=(" in smoke_script
+    assert "runtime_summary_common_markers=(" in smoke_script
+    assert (
+        'require_markers "$gate_summary" "${runtime_report_gate_markers[@]}"'
+        in smoke_script
+    )
+    assert (
+        'require_markers "$ci_summary" "${runtime_report_gate_markers[@]}"'
+        in smoke_script
+    )
+    assert (
+        'require_markers "$summary_md" "${runtime_summary_common_markers[@]}"'
+        in smoke_script
+    )
+    assert (
+        'require_markers "$summary_html" "${runtime_summary_common_markers[@]}"'
+        in smoke_script
+    )
     assert "runtime_intelligence_bundle_manifest_gate_summary.md" in smoke_script
     assert "expected_report_markers: remote fallback Lab context row declared" in smoke_script
     assert "aiguard_raw_context: max_total_queue_depth traceability preserved" in smoke_script
