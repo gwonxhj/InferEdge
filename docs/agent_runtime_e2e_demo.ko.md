@@ -76,7 +76,19 @@ reviewer-facing artifact를 같은 순서로 기록합니다.
 | `aiguard_edgeenv_handoff_alignment.json` / `aiguard_edgeenv_handoff_alignment.md` | smoke에서 사용하는 precomputed AIGuard/EdgeEnv handoff alignment fixture 보존 |
 
 `Validated Review Path` gate summary의 세부 marker vocabulary는 README가
-아니라 이 문서에 보존합니다. 현재 필수 marker는 다음입니다.
+아니라 이 문서에 보존합니다. 더 넓은 Runtime Intelligence report gate가
+요구하는 duration / reviewer-focus marker도 여기에 함께 보존합니다.
+
+- `Validated Duration Traceability`
+- `duration_handoff_alignment: EdgeEnv/AIGuard report context preserved`
+- `duration_source: source=entrypoint_requested_frames`
+- `duration_scope_label: scope_label=source=entrypoint_requested_frames`
+- `duration_label: short 96-frame-class replay (96 frames)`
+- `Validated Reviewer Focus`
+- `reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated`
+- `reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report`
+
+현재 필수 review-path marker는 다음입니다.
 
 - `review_path_section: short Review Path section rendered`
 - `review_path_fast_path: readable Review Path fast path rendered`
