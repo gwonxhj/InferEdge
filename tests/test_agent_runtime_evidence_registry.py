@@ -720,6 +720,11 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     assert '"lab_report_owner": false' in script
     assert '"source_contract": false' in script
     assert '"deployment_decision_owner": false' in script
+    assert "evidence_index_boundary_summary" in script
+    assert '"all_runs_match": true' in script
+    assert "Evidence index boundary: role=reviewer_navigation_metadata" in script
+    assert "lab_report_owner=False" in script
+    assert "source_contract=False" in script
     assert "reviewer navigation context" in script
     assert "do not make the index a Lab report owner" in script
     assert "not a Lab report owner or source contract" in script
@@ -772,6 +777,11 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
         "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
         in script
     )
+    assert "evidence_index_boundary_summary" in script
+    assert '"all_runs_match": true' in script
+    assert "Evidence index boundary: role=reviewer_navigation_metadata" in script
+    assert "lab_report_owner=False" in script
+    assert "source_contract=False" in script
     assert "reviewer navigation metadata" in script
     assert "does not make this registry a Lab report owner" in script
     assert "Operation Quick Scan Summary must appear before ## Runs" in script
@@ -2375,6 +2385,12 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     write_json(
         run_dir / "00_evidence_index.json",
         {
+            "evidence_index_boundary": {
+                "role": "reviewer_navigation_metadata",
+                "lab_report_owner": False,
+                "source_contract": False,
+                "deployment_decision_owner": False,
+            },
             "operation_path": "device_local_starter",
             "run_summary": {
                 "scenario_label": "device_local_sustained_starter",
@@ -2455,6 +2471,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                     "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
                     "deadline_missed=0, fallback=1, dropped=1"
                 ),
+                "lab_report_marker_context_boundary": (
+                    "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
+                ),
                 "preservation_identity_label": (
                     "identity=jetson_device_local_preservation, "
                     "path=device_local_starter, run=run-edgeenv-runtime-operation"
@@ -2476,7 +2495,26 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         output_base=tmp_path,
     )
 
+    assert registry["evidence_index_boundary_summary"] == {
+        "expected": {
+            "role": "reviewer_navigation_metadata",
+            "lab_report_owner": False,
+            "source_contract": False,
+            "deployment_decision_owner": False,
+        },
+        "run_count": 1,
+        "present_count": 1,
+        "matching_count": 1,
+        "all_runs_match": True,
+        "role": "run_registry_navigation_summary",
+    }
     run = registry["runs"][0]
+    assert run["evidence_index_boundary"] == {
+        "role": "reviewer_navigation_metadata",
+        "lab_report_owner": False,
+        "source_contract": False,
+        "deployment_decision_owner": False,
+    }
     assert run["producer_sources"] == [
         "image_file",
         "fastapi_request_fixture",
@@ -2573,6 +2611,12 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "quick starter smoke (4 frames)" in markdown
     assert "entrypoint_requested_frames" in markdown
     assert "source=entrypoint_requested_frames" in markdown
+    assert "Evidence index boundary: role=reviewer_navigation_metadata" in markdown
+    assert "lab_report_owner=False" in markdown
+    assert "source_contract=False" in markdown
+    assert "deployment_decision_owner=False" in markdown
+    assert "matching_runs=1/1" in markdown
+    assert "all_runs_match=True" in markdown
     assert "## Duration Comparison Summary" in markdown
     assert "## Operation Quick Scan Summary" in markdown
     assert markdown.index("## Operation Quick Scan Summary") < markdown.index(
