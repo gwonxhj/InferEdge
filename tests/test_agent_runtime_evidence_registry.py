@@ -897,6 +897,9 @@ def test_portfolio_summary_uses_jetson_evidence_terms() -> None:
             representative_marker="representative snapshot",
             resource_style="max",
         )
+        assert "shared reviewer marker" in text or "공통 reviewer marker" in text
+        assert "generated `00_evidence_index.*`" in normalized_text
+        assert "detailed marker vocabulary owner" in text or "세부 marker vocabulary owner" in text
 
 
 def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
