@@ -165,14 +165,13 @@ Before deleting anything, make a cleanup inventory and treat it as audit input,
 not a deletion list:
 
 ```bash
-git fetch origin main
-git branch --list 'codex/*' --format='%(refname:short)'
-git branch --merged origin/main
+bash scripts/audit_branch_cleanup.sh --fetch
 ```
 
-The first command list shows local `codex/*` branches that might be cleanup
-candidates. The `--merged` list only proves regular merge ancestry, so it is
-not sufficient for squash-merged pull requests.
+The audit script lists local `codex/*` branches that might be cleanup
+candidates and the subset that appears in regular merge ancestry. That
+ancestry subset only proves regular merge ancestry; it is not sufficient for
+squash-merged pull requests, so the audit output is still not a deletion list.
 
 Before deleting a local branch, verify it is merged into the current
 `origin/main`:
