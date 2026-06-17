@@ -50,7 +50,8 @@ to [Agent Runtime E2E Demo](agent_runtime_e2e_demo.md). This interview narrative
 stays at speaking-guide level and is not the detailed marker vocabulary owner.
 The short interview phrasing is: the smoke-gated evidence-index boundary keeps
 `00_evidence_index.md` as reviewer navigation, not a Lab report owner or source
-contract.
+contract. The run registry carries the same boundary as machine-readable
+`evidence_index_boundary_summary` metadata for multi-run review.
 
 ## Architecture Explanation
 
