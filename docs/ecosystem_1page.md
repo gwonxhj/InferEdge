@@ -150,6 +150,8 @@ post-deployment operation context.
    `00_evidence_index.*` artifacts.
    Its smoke-gated evidence-index boundary keeps the generated index as
    reviewer navigation, not a Lab report owner or source contract.
+   The run registry carries that boundary as machine-readable
+   `evidence_index_boundary_summary` metadata for multi-run review.
 5. Read [Interview Narrative](interview_narrative.md) for speaking notes.
 6. Run the local submission smoke:
 

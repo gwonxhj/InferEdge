@@ -997,6 +997,10 @@ def test_ecosystem_1page_uses_jetson_evidence_terms() -> None:
             resource_style="max",
             extra_markers=("submission-facing metric report",),
         )
+        assert "machine-readable" in normalized_text
+        assert "evidence_index_boundary_summary" in normalized_text
+        assert "source contract" in normalized_text
+        assert "reviewer navigation" in normalized_text
 
 
 def test_pipeline_map_uses_jetson_evidence_terms() -> None:
@@ -1019,6 +1023,8 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
         assert "contract-boundary view" in normalized_text
         assert "smoke-gated evidence-index boundary" in normalized_text
         assert "00_evidence_index.md" in normalized_text
+        assert "machine-readable" in normalized_text
+        assert "evidence_index_boundary_summary" in normalized_text
         assert "source contract" in normalized_text
         assert "reviewer navigation" in normalized_text
         assert "detailed marker vocabulary owner" in normalized_text or "세부 marker vocabulary owner" in normalized_text
