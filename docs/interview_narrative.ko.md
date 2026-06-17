@@ -46,6 +46,8 @@ Lab report summary, 복사된 CI artifact summary, generated
 `00_evidence_index.*` artifact를 맞추는 공통 reviewer marker-gate 상세는
 [Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)에 둡니다. 이 인터뷰
 내러티브는 말하기 흐름만 유지하며 세부 marker vocabulary owner가 아닙니다.
+짧게 말하면 smoke-gated evidence-index boundary는 `00_evidence_index.md`를
+Lab report owner나 source contract가 아니라 reviewer navigation으로 유지합니다.
 
 ## 역할 설명
 

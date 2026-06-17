@@ -903,6 +903,10 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
             or "공통 reviewer marker-gate" in normalized_text
         )
         assert "generated `00_evidence_index.*`" in normalized_text
+        assert "smoke-gated evidence-index boundary" in normalized_text
+        assert "00_evidence_index.md" in normalized_text
+        assert "source contract" in normalized_text
+        assert "reviewer navigation" in normalized_text
         assert "Agent Runtime E2E Demo" in normalized_text
         assert (
             "detailed marker vocabulary owner" in normalized_text
