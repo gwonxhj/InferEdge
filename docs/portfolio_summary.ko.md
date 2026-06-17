@@ -70,6 +70,13 @@ Orchestrator worker selection / fallback starter
 이 chain의 가치는 production remote operation 주장이 아니라 repo별 책임 분리입니다.
 Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 
+Curated sample handoff는 reviewer traceability 범위에만 둡니다.
+
+| Orchestrator sample input | Downstream evidence path | Boundary |
+|---|---|---|
+| `examples/telemetry/agent_scheduler_delay_sample.json` | AIGuard `scheduler_delay_pattern`, 이후 Lab runtime-operation context | Runtime benchmark output이나 Lab decision-policy input이 아님 |
+| `examples/telemetry/remote_fallback_recovery_sample.json` | AIGuard `remote_execution_recovered_by_fallback`, 이후 Lab remote fallback starter evidence | production remote execution이 아님 |
+
 ## Runtime Intelligence 검토 경로
 
 세부 marker vocabulary는 smoke gate와 Agent Runtime demo 문서에 보존합니다.

@@ -736,6 +736,35 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     assert "Duration Sources" in script
 
 
+def test_curated_sample_handoff_path_preserves_owner_boundaries() -> None:
+    docs = [
+        (ROOT / "README.md").read_text(encoding="utf-8"),
+        (ROOT / "README.ko.md").read_text(encoding="utf-8"),
+        (ROOT / "docs" / "portfolio_summary.md").read_text(encoding="utf-8"),
+        (ROOT / "docs" / "portfolio_summary.ko.md").read_text(encoding="utf-8"),
+    ]
+
+    for text in docs:
+        assert "agent_scheduler_delay_sample.json" in text
+        assert "scheduler_delay_pattern" in text
+        assert "remote_fallback_recovery_sample.json" in text
+        assert "remote_execution_recovered_by_fallback" in text
+        assert "Orchestrator sample input" in text
+        assert "Lab" in text
+
+    for text in (docs[0], docs[2]):
+        normalized_text = " ".join(text.split())
+        assert "not Forge artifacts" in normalized_text or "Not a Runtime" in text
+        assert "Runtime benchmark output" in text
+        assert "Lab decision-policy input" in text
+        assert "production remote execution" in normalized_text
+
+    for text in (docs[1], docs[3]):
+        assert "Runtime benchmark output" in text
+        assert "Lab decision-policy input" in text
+        assert "production remote execution" in text
+
+
 def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     script = (ROOT / "scripts" / "smoke_quick_scan_registry_summary.sh").read_text(
         encoding="utf-8"
