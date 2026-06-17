@@ -48,6 +48,8 @@ Lab report summary, 복사된 CI artifact summary, generated
 내러티브는 말하기 흐름만 유지하며 세부 marker vocabulary owner가 아닙니다.
 짧게 말하면 smoke-gated evidence-index boundary는 `00_evidence_index.md`를
 Lab report owner나 source contract가 아니라 reviewer navigation으로 유지합니다.
+run registry도 같은 boundary를 multi-run review용 machine-readable
+`evidence_index_boundary_summary` metadata로 보존합니다.
 
 ## 역할 설명
 
