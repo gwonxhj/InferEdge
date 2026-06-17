@@ -603,6 +603,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "shared reviewer marker gates" in readme
     assert "generated `00_evidence_index.*`" in readme
     assert "without expanding the README's detailed marker vocabulary" in readme
+    assert "not a Lab report owner or source contract" in readme
     assert "README -> Lab report -> gate summary reading order" in readme
     assert "short Review Path section" not in readme
     assert "artifact gate summary reference row" not in readme
@@ -1102,6 +1103,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "공통 reviewer marker gate" in korean_readme
     assert "generated `00_evidence_index.*`" in korean_readme
     assert "README에는 세부 marker vocabulary를 늘리지 않고" in korean_readme
+    assert "Lab report owner나 source contract가 되지 않는지" in korean_readme
     assert_korean_readme_jetson_p95_evidence_terms(korean_readme)
     assert_readme_quick_scan_snapshot_terms(korean_readme)
     assert (
