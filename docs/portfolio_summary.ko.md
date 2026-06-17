@@ -75,6 +75,11 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 세부 marker vocabulary는 smoke gate와 Agent Runtime demo 문서에 보존합니다.
 포트폴리오 요약에서는 reviewer가 먼저 확인할 evidence path만 남깁니다.
 
+공통 reviewer marker gate가 Lab report summary, 복사된 CI artifact summary,
+generated `00_evidence_index.*` artifact를 어떻게 맞추는지는 Agent Runtime
+demo 문서에서 설명합니다. 이 요약 문서는 세부 marker vocabulary owner가
+아닙니다.
+
 | 리뷰 질문 | evidence path |
 |---|---|
 | evidence chain이 끝까지 이어지는가? | `runtime_intelligence_bundle_manifest_gate_summary.md`의 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |

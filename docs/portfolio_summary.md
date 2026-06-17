@@ -115,6 +115,11 @@ Detailed marker vocabulary is protected by smoke gates and the Agent Runtime
 demo document. The portfolio view stays focused on what a reviewer should open
 first.
 
+The Agent Runtime demo also explains the shared reviewer marker gates that keep
+Lab report summaries, copied CI artifact summaries, and generated
+`00_evidence_index.*` artifacts aligned. This summary intentionally does not
+become the detailed marker vocabulary owner.
+
 | Reviewer question | Evidence path |
 |---|---|
 | Is the evidence chain complete? | `runtime_intelligence_bundle_manifest_gate_summary.md` for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
