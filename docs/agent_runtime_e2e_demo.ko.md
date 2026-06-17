@@ -90,6 +90,13 @@ decision owner가 되지 않습니다.
 gate이며, reviewer navigation metadata와 Lab-owner boundary wording이 registry에
 남는지만 좁게 확인합니다.
 
+`scripts/smoke_all.sh`는 Lab report summary, 복사된 CI artifact summary,
+generated `00_evidence_index.*` artifact가 같은 reviewer marker vocabulary를
+보존하는지 공통 marker list로 확인합니다. 즉 duration traceability,
+reviewer-focus, EdgeEnv preservation, operation quick-scan marker가 Lab report와
+entrypoint evidence index 사이에서 어긋나지 않아야 합니다. JSON/Markdown
+format-specific label은 분리하지만, 공통 marker vocabulary는 drift되면 안 됩니다.
+
 ## Jetson evidence 해석
 
 Jetson 경로는 실제 device-local starter evidence와 telemetry handoff를 보여줍니다.

@@ -597,6 +597,13 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "queue pressure" in readme
 
     for doc_text in (demo_doc, demo_doc_ko):
+        assert "shared marker" in doc_text or "공통 marker" in doc_text
+        assert (
+            "same reviewer marker vocabulary" in doc_text
+            or "같은 reviewer marker vocabulary" in doc_text
+        )
+        assert "Format-specific" in doc_text or "format-specific" in doc_text
+        assert "drift" in doc_text
         assert "review_path_section: short Review Path section rendered" in doc_text
         assert "review_path_fast_path: readable Review Path fast path rendered" in doc_text
         assert (
