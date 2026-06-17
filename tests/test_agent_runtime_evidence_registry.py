@@ -1106,7 +1106,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     )
     normalized_publish_doc = " ".join(publish_doc.split())
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    normalized_readme = " ".join(readme.split())
     korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+    normalized_korean_readme = " ".join(korean_readme.split())
 
     assert "InferEdge publish readiness" in script
     assert "check_origin_branch_state" in script
@@ -1181,6 +1183,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "`--allow-unrelated-histories`" in publish_doc
     assert "force reset" in publish_doc
     assert "create a fresh branch from" in publish_doc
+    assert "normal repo paths as `??` untracked files" in normalized_publish_doc
+    assert "checkout mismatch signal" in publish_doc
+    assert "Do not delete those apparent untracked files" in normalized_publish_doc
+    assert "`git clean`" in publish_doc
+    assert "return to the previous review branch" in publish_doc
+    assert "git switch -" in publish_doc
     assert "Optional Branch Cleanup" in publish_doc
     assert "Never delete `main`" in publish_doc
     assert "make a cleanup inventory" in publish_doc
@@ -1270,7 +1278,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "PR `Summary` / `Tests` recording" in readme
     assert "final status check" in readme
     assert "local checkout safety" in readme
-    assert "optional branch cleanup" in readme
+    assert "stale-main apparent untracked-file recovery" in readme
+    assert "optional branch cleanup" in normalized_readme
     assert "diagnostic escape-hatch flags" in readme
     assert "scripts/check_publish_ready.sh" in korean_readme
     assert "docs/publish_inferedge.md" in korean_readme
@@ -1280,7 +1289,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "최종 상태 확인" in korean_readme
     assert "local checkout" in korean_readme
     assert "safety" in korean_readme
-    assert "optional branch cleanup" in korean_readme
+    assert "정상 repo 파일이 untracked처럼 보이는 경우" in normalized_korean_readme
+    assert "optional branch cleanup" in normalized_korean_readme
     assert "diagnostic escape-hatch flag" in korean_readme
     assert "force push하지 않습니다" in korean_readme
 

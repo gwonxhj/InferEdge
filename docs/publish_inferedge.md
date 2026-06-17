@@ -173,6 +173,19 @@ step. Switch back to a clean review branch or create a fresh branch from
 `origin/main`; only repoint local `main` after separately confirming no
 local-only commits need to be preserved.
 
+If `git status --short --branch` on the stale local `main` shows normal repo
+paths as `??` untracked files, treat that as a checkout mismatch signal. Do not
+delete those apparent untracked files with `rm`, `git clean`, or similar cleanup
+commands. Leave the stale `main`, return to the previous review branch or create
+a fresh branch from `origin/main`, and verify the working tree there:
+
+```bash
+git switch -
+# or:
+git switch -c codex/<next-task> origin/main
+git status --short --branch
+```
+
 Delete merged local or remote branches only when you are sure they are no
 longer needed for review or audit.
 
