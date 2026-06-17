@@ -966,6 +966,10 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
         assert "generated `00_evidence_index.*`" in normalized_text
         assert "marker-gate" in normalized_text
         assert "contract-boundary view" in normalized_text
+        assert "smoke-gated evidence-index boundary" in normalized_text
+        assert "00_evidence_index.md" in normalized_text
+        assert "source contract" in normalized_text
+        assert "reviewer navigation" in normalized_text
         assert "detailed marker vocabulary owner" in normalized_text or "세부 marker vocabulary owner" in normalized_text
 
 

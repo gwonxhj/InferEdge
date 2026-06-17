@@ -84,6 +84,8 @@ Lab report summary와 generated `00_evidence_index.*` artifact의 공통 reviewe
 marker-gate 상세 vocabulary는 [Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)에
 둡니다. 이 pipeline map은 repo contract-boundary view이며 세부 marker
 vocabulary owner가 아닙니다.
+smoke-gated evidence-index boundary는 `00_evidence_index.md`를 Lab report
+owner나 source contract가 아니라 reviewer navigation으로 유지합니다.
 
 ## Contract Boundaries
 

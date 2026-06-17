@@ -98,6 +98,8 @@ Detailed shared reviewer marker-gate vocabulary for Lab report summaries and
 generated `00_evidence_index.*` artifacts stays in
 [Agent Runtime E2E Demo](agent_runtime_e2e_demo.md). This pipeline map remains
 the repository contract-boundary view, not the detailed marker vocabulary owner.
+The smoke-gated evidence-index boundary keeps `00_evidence_index.md` as reviewer
+navigation rather than a Lab report owner or source contract.
 
 The submission-ready diagram is in
 [Ecosystem 1-Page Summary](ecosystem_1page.md)
