@@ -619,6 +619,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "short Review Path section" not in readme
     assert "artifact gate summary reference row" not in readme
     assert "Operation Quick Scan Summary" in readme
+    assert "evidence_index_boundary_summary" in readme
     assert "max_total_queue_depth" in readme
     assert "raw_marker=reviewer_focus_operation_quick_scan" in readme
     assert "queue pressure" in readme
@@ -629,6 +630,9 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
             "same reviewer marker vocabulary" in doc_text
             or "같은 reviewer marker vocabulary" in doc_text
         )
+        assert "evidence_index_boundary" in doc_text
+        assert "evidence_index_boundary_summary" in doc_text
+        assert "machine-readable" in doc_text
         assert "Lab report owner" in doc_text
         assert "source contract" in doc_text
         assert "Format-specific" in doc_text or "format-specific" in doc_text
@@ -1142,6 +1146,7 @@ def test_readme_language_selector_links_to_korean_readme() -> None:
     assert "[Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md)" in korean_readme
     assert "공통 reviewer marker gate" in korean_readme
     assert "generated `00_evidence_index.*`" in korean_readme
+    assert "evidence_index_boundary_summary" in korean_readme
     assert "README에는 세부 marker vocabulary를 늘리지 않고" in korean_readme
     assert "Lab report owner나 source contract가 되지 않는지" in korean_readme
     assert_korean_readme_jetson_p95_evidence_terms(korean_readme)
@@ -1674,8 +1679,10 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     normalized_portfolio_ko = " ".join(portfolio_ko.split())
     assert "smoke-gated boundary wording" in normalized_portfolio
     assert "not a Lab report owner or source contract" in normalized_portfolio
+    assert "machine-readable `evidence_index_boundary_summary`" in normalized_portfolio
     assert "smoke-gated boundary wording" in normalized_portfolio_ko
     assert "Lab report owner나 source contract가 되지 않게" in normalized_portfolio_ko
+    assert "machine-readable `evidence_index_boundary_summary`" in normalized_portfolio_ko
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:

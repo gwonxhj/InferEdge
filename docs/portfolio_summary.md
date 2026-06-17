@@ -119,8 +119,9 @@ The Agent Runtime demo also explains the shared reviewer marker gates that keep
 Lab report summaries, copied CI artifact summaries, and generated
 `00_evidence_index.*` artifacts aligned. It also records the smoke-gated
 boundary wording that keeps the generated evidence index as reviewer navigation,
-not a Lab report owner or source contract. This summary intentionally does not
-become the detailed marker vocabulary owner.
+not a Lab report owner or source contract. The run registry now carries the same
+boundary as machine-readable `evidence_index_boundary_summary` metadata. This
+summary intentionally does not become the detailed marker vocabulary owner.
 
 | Reviewer question | Evidence path |
 |---|---|
@@ -144,7 +145,7 @@ Historical duration alignment is tracked as `EdgeEnv/AIGuard duration handoff al
 | Device-local ONNX replay | Jetson Orin Nano 25W, 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | Real ONNX probe and telemetry handoff, not decoded YOLO accuracy |
 | EdgeEnv preservation replay | EdgeEnv run evidence stores `runtime_operation_summary`; Lab preserves `Runtime Intelligence EdgeEnv Preservation` | Registry/report preservation, not a deployment decision override |
 | 5-minute-class sustained replay | 3600 frames, 281 `tegrastats` samples, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | Smoke/Starter sustained evidence, not thermal endurance validation |
-| Operation-summary quick-scan registry | Latest registry with 96-frame and 5-minute-class rows exposing linked metric snapshots, duration, queue/deadline/fallback pressure, and `operation_summary` labels before the full registry table | Quick-scan navigation metadata, not a Lab report owner, metric record owner, or production runtime operation proof |
+| Operation-summary quick-scan registry | Latest registry with 96-frame and 5-minute-class rows exposing linked metric snapshots, duration, queue/deadline/fallback pressure, `operation_summary` labels, and `evidence_index_boundary_summary` before the full registry table | Quick-scan navigation metadata, not a Lab report owner, metric record owner, or production runtime operation proof |
 
 Submission-facing Lab evidence snapshot:
 [`Jetson Device-Local Agent Runtime Evidence Report`](evidence/jetson_device_local_agent_runtime_report.md)
