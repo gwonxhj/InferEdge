@@ -923,7 +923,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "do not force push" in script
     assert "Upstream status: different branch" in script
     assert "git push -u origin $branch_name" in script
+    assert "print_local_main_safety" in script
+    assert "Local main safety: upstream matches origin/main" in script
+    assert "Local main safety: review before publishing" in script
+    assert "start review work from origin/main" in script
     assert "origin remote placeholder detection" in script
+    assert "local main checkout safety" in script
     assert "--allow-dirty" in script
     assert "--allow-missing-remote" in script
     assert "--allow-placeholder-remote" in script
@@ -933,6 +938,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Do not force push" in publish_doc
     assert "Origin branch state: unrelated-history" in publish_doc
     assert "Upstream status: different branch" in publish_doc
+    assert "Local main safety: review before publishing" in publish_doc
+    assert "local `main` checkout safety" in publish_doc
+    assert "Do not push local `main` directly" in publish_doc
     assert "`origin` remote placeholder detection" in publish_doc
     assert "whitespace and patch sanity check" in publish_doc
     assert "git diff --check" in publish_doc
@@ -942,6 +950,10 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Local Checkout Safety" in publish_doc
     assert "If local `main` has unrelated" in publish_doc
     assert "history, do not use it as the base for new work" in publish_doc
+    assert (
+        "Treat that as a prompt to stop and start from `origin/main`"
+        in normalized_publish_doc
+    )
     assert "origin/main` as the source of truth" in publish_doc
     assert "After PR Merge" in publish_doc
     assert "Bundled PR Merge Step" in publish_doc

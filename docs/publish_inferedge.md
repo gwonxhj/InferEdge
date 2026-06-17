@@ -46,6 +46,7 @@ The readiness check verifies:
 - `origin` remote placeholder detection
 - `origin` remote reachability
 - `origin` branch fast-forward safety
+- local `main` checkout safety
 - suggested push command
 
 ## Safe Branch Publish
@@ -63,6 +64,10 @@ git push -u origin codex/<topic>
 
 If the check reports `Upstream status: different branch`, use the suggested
 `git push -u origin <current-branch>` command instead of plain `git push`.
+
+If the check reports `Local main safety: review before publishing`, stop there.
+Do not push local `main` directly; create a review branch from `origin/main`
+and publish the branch instead.
 
 ## Bundled PR Merge Step
 
@@ -115,6 +120,11 @@ Some local workspaces may have a `main` branch that was created before this
 repository was connected to `gwonxhj/InferEdge`. If local `main` has unrelated
 history, do not use it as the base for new work and do not force push it over
 the public `main` branch.
+
+The readiness check prints `Local main safety: review before publishing` when
+the current branch is `main` but it is not tracking `origin/main`. Treat that as
+a prompt to stop and start from `origin/main`, not as a reason to repair the
+history with force push or `--allow-unrelated-histories`.
 
 For new work, use the remote-tracking branch directly:
 
