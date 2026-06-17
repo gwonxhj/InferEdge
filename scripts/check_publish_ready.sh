@@ -28,6 +28,7 @@ Checks:
   - origin remote placeholder detection
   - origin remote reachability
   - origin branch fast-forward safety
+  - local main checkout safety
   - suggested push command
 EOF
 }
@@ -135,6 +136,22 @@ print_push_guidance() {
   fi
 }
 
+print_local_main_safety() {
+  local branch_name="$1"
+  local upstream="${2:-}"
+
+  if [[ "$branch_name" != "main" ]]; then
+    return 0
+  fi
+
+  if [[ "$upstream" == "origin/main" ]]; then
+    echo "Local main safety: upstream matches origin/main"
+  else
+    echo "Local main safety: review before publishing"
+    echo "Reason: local main is not tracking origin/main; start review work from origin/main instead of pushing local main."
+  fi
+}
+
 ROOT_DIR="$(git rev-parse --show-toplevel)"
 cd "$ROOT_DIR"
 
@@ -145,12 +162,14 @@ if [[ -z "$branch" ]]; then
   exit 1
 fi
 
+upstream_ref="$(git rev-parse --abbrev-ref --symbolic-full-name '@{u}' 2>/dev/null || true)"
 latest_commit="$(git rev-parse --short HEAD)"
 latest_subject="$(git log -1 --pretty=%s)"
 status_short="$(git status --short)"
 
 echo "InferEdge publish readiness"
 echo "Branch: $branch"
+print_local_main_safety "$branch" "$upstream_ref"
 echo "Latest commit: $latest_commit $latest_subject"
 
 if [[ -n "$status_short" ]]; then
