@@ -225,6 +225,12 @@ compact queue/deadline/fallback, `operation_summary`, preservation label만
 registry JSON에 계속 보존되므로, source contract를 바꾸지 않고 Lab report
 gate marker까지 추적할 수 있습니다. 그래서 각 bundle을 열기 전에
 queue/deadline/fallback pressure를 먼저 식별할 수 있습니다.
+fixture-only quick-scan smoke는 이 분리를 강제합니다.
+`raw_marker=reviewer_focus_operation_quick_scan` 같은 raw marker label은
+compact `Operation Quick Scan Summary`에 새면 안 되고, detailed `## Runs`
+table과 registry JSON의 `Raw Marker`, `Raw Marker Label`,
+`edgeenv_lab_report_operation_quick_scan_raw_marker`,
+`edgeenv_lab_report_operation_quick_scan_raw_marker_label`에 남아야 합니다.
 
 Historical reference: 이전 Jetson duration registry는 entrypoint commit
 `d38df87` 기준으로

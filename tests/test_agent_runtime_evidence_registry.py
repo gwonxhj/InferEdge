@@ -594,6 +594,12 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
         encoding="utf-8"
     )
+    demo_doc = (ROOT / "docs" / "agent_runtime_e2e_demo.md").read_text(
+        encoding="utf-8"
+    )
+    korean_demo_doc = (
+        ROOT / "docs" / "agent_runtime_e2e_demo.ko.md"
+    ).read_text(encoding="utf-8")
     interview = (ROOT / "docs" / "interview_narrative.md").read_text(
         encoding="utf-8"
     )
@@ -619,6 +625,14 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "does not make this registry a Lab report owner" in script
     assert "Operation Quick Scan Summary must appear before ## Runs" in script
     assert "Quick-scan registry summary smoke: pass" in script
+    assert "raw marker labels leak" in demo_doc
+    assert "Raw Marker Label" in demo_doc
+    assert "edgeenv_lab_report_operation_quick_scan_raw_marker" in demo_doc
+    assert "edgeenv_lab_report_operation_quick_scan_raw_marker_label" in demo_doc
+    assert "compact `Operation Quick Scan Summary`에 새면 안 되고" in korean_demo_doc
+    assert "Raw Marker Label" in korean_demo_doc
+    assert "edgeenv_lab_report_operation_quick_scan_raw_marker" in korean_demo_doc
+    assert "edgeenv_lab_report_operation_quick_scan_raw_marker_label" in korean_demo_doc
     for text in (readme, portfolio, interview):
         assert "Operation Quick Scan Summary" in text
         assert "quick-scan registry" in text
