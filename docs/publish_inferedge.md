@@ -196,6 +196,16 @@ so the audit output is still not a deletion list. If the audit summary reports
 zero regular-merge ancestry entries, that does not mean there are zero
 squash-merged PR branches; use the PR merged state as the deciding evidence.
 
+Use this merged PR confirmation checklist before deleting any local or remote
+branch:
+
+1. Match the branch name to its GitHub pull request.
+2. Confirm the pull request is closed as merged, not merely closed.
+3. Confirm the merge commit is visible on the current `origin/main`.
+4. Confirm the branch is no longer needed for review, audit, or comparing local
+   logs.
+5. Keep the branch when any of those checks is uncertain.
+
 Before deleting a local branch, verify it is merged into the current
 `origin/main`:
 
