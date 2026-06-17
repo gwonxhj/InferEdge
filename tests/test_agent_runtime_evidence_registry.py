@@ -935,6 +935,10 @@ def test_pipeline_map_uses_jetson_evidence_terms() -> None:
             extra_markers=("submission-facing metric", "local reviewer navigation"),
             require_metric_owner_boundary=True,
         )
+        assert "generated `00_evidence_index.*`" in normalized_text
+        assert "marker-gate" in normalized_text
+        assert "contract-boundary view" in normalized_text
+        assert "detailed marker vocabulary owner" in normalized_text or "세부 marker vocabulary owner" in normalized_text
 
 
 def test_jetson_readiness_preflight_is_not_evidence() -> None:

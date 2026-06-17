@@ -80,6 +80,11 @@ Orchestrator remote dispatch / device-local starter
 secure tunnel operation, cloud orchestration, production observability platform으로
 설명하지 않습니다.
 
+Lab report summary와 generated `00_evidence_index.*` artifact의 공통 reviewer
+marker-gate 상세 vocabulary는 [Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)에
+둡니다. 이 pipeline map은 repo contract-boundary view이며 세부 marker
+vocabulary owner가 아닙니다.
+
 ## Contract Boundaries
 
 조용히 깨뜨리면 안 되는 contract:
