@@ -85,6 +85,9 @@ LAB_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL = (
     f"raw_marker={LAB_OPERATION_QUICK_SCAN_RAW_MARKER}"
 )
 LAB_REPORT_MARKER_CONTEXT_ROLE = "lab_report_contract_context"
+EVIDENCE_INDEX_BOUNDARY_ROLE = (
+    "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
+)
 LAB_RUNTIME_INTELLIGENCE_REPORT_MARKERS = [
     "Runtime Intelligence Risk Summary",
     "Runtime replay duration scope",
@@ -1087,10 +1090,19 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
         edgeenv_summary["lab_report_marker_context_role"] = (
             LAB_REPORT_MARKER_CONTEXT_ROLE
         )
+        edgeenv_summary["lab_report_marker_context_boundary"] = (
+            EVIDENCE_INDEX_BOUNDARY_ROLE
+        )
         edgeenv_summary["aiguard_validates_expected_report_markers"] = False
 
     return {
         "schema_version": "inferedge-agent-runtime-evidence-index-v1",
+        "evidence_index_boundary": {
+            "role": "reviewer_navigation_metadata",
+            "lab_report_owner": False,
+            "source_contract": False,
+            "deployment_decision_owner": False,
+        },
         "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "output_dir": str(output_dir),
         "files": files,
@@ -1356,6 +1368,7 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
                 f"| lab_report_operation_quick_scan_label | {md_value(edgeenv['lab_report_operation_quick_scan_label'])} |",
                 f"| lab_expected_report_markers | {md_value(edgeenv['lab_expected_report_markers'])} |",
                 f"| lab_report_marker_context_role | {md_value(edgeenv['lab_report_marker_context_role'])} |",
+                f"| lab_report_marker_context_boundary | {md_value(edgeenv['lab_report_marker_context_boundary'])} |",
                 f"| aiguard_validates_expected_report_markers | {md_value(edgeenv['aiguard_validates_expected_report_markers'])} |",
             ]
         )

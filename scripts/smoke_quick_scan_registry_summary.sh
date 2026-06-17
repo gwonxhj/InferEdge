@@ -245,6 +245,12 @@ PY
   --output-json "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json" \
   --output-md "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 
+grep -q '"evidence_index_boundary"' "$BUNDLE_DIR/00_evidence_index.json"
+grep -q '"role": "reviewer_navigation_metadata"' "$BUNDLE_DIR/00_evidence_index.json"
+grep -q '"lab_report_owner": false' "$BUNDLE_DIR/00_evidence_index.json"
+grep -q '"source_contract": false' "$BUNDLE_DIR/00_evidence_index.json"
+grep -q '"deployment_decision_owner": false' "$BUNDLE_DIR/00_evidence_index.json"
+grep -q '"lab_report_marker_context_boundary": "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"' "$BUNDLE_DIR/00_evidence_index.json"
 grep -q "Reviewer operation quick scan" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_report_operation_quick_scan_raw_marker" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$BUNDLE_DIR/00_evidence_index.md"

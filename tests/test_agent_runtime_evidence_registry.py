@@ -575,6 +575,16 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "max_total_queue_depth=7" in smoke_script
     assert "deadline_missed_count=2" in smoke_script
     assert "fallback_count=1" in smoke_script
+    assert "evidence_index_boundary" in smoke_script
+    assert "reviewer_navigation_metadata" in smoke_script
+    assert '\\"lab_report_owner\\": false' in smoke_script
+    assert '\\"source_contract\\": false' in smoke_script
+    assert '\\"deployment_decision_owner\\": false' in smoke_script
+    assert "lab_report_marker_context_boundary" in smoke_script
+    assert (
+        "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
+        in smoke_script
+    )
     assert "reviewer navigation context" in smoke_script
     assert "do not make the index a Lab report owner" in smoke_script
     assert "not a Lab report owner or source contract" in smoke_script
@@ -705,6 +715,11 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     assert "Duration Sources" in korean_demo_doc
     assert "production remote execution" in korean_demo_doc
     assert "source=entrypoint_requested_frames" in script
+    assert "evidence_index_boundary" in script
+    assert "reviewer_navigation_metadata" in script
+    assert '"lab_report_owner": false' in script
+    assert '"source_contract": false' in script
+    assert '"deployment_decision_owner": false' in script
     assert "reviewer navigation context" in script
     assert "do not make the index a Lab report owner" in script
     assert "not a Lab report owner or source contract" in script
@@ -747,6 +762,16 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "fallback_count=93" in script
     assert "operation_summary: mode=device_local_starter" in script
     assert "operation_summary: mode=timeout_threshold_exceeded" in script
+    assert "evidence_index_boundary" in script
+    assert "reviewer_navigation_metadata" in script
+    assert '"lab_report_owner": false' in script
+    assert '"source_contract": false' in script
+    assert '"deployment_decision_owner": false' in script
+    assert "lab_report_marker_context_boundary" in script
+    assert (
+        "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
+        in script
+    )
     assert "reviewer navigation metadata" in script
     assert "does not make this registry a Lab report owner" in script
     assert "Operation Quick Scan Summary must appear before ## Runs" in script
@@ -2036,6 +2061,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
 
     index = index_module.build_summary(tmp_path, requested_frames="4")
 
+    assert index["evidence_index_boundary"] == {
+        "role": "reviewer_navigation_metadata",
+        "lab_report_owner": False,
+        "source_contract": False,
+        "deployment_decision_owner": False,
+    }
     run_summary = index["run_summary"]
     edgeenv_summary = index["edgeenv_summary"]
     assert index["operation_path"] == "device_local_starter"
@@ -2144,6 +2175,9 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert edgeenv_summary["lab_report_marker_context_role"] == (
         "lab_report_contract_context"
     )
+    assert edgeenv_summary["lab_report_marker_context_boundary"] == (
+        "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
+    )
     assert edgeenv_summary["aiguard_validates_expected_report_markers"] is False
 
     md_path = tmp_path / "00_evidence_index.md"
@@ -2179,6 +2213,8 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "lab_report_operation_quick_scan_label" in markdown
     assert "lab_expected_report_markers" in markdown
     assert "lab_report_contract_context" in markdown
+    assert "lab_report_marker_context_boundary" in markdown
+    assert "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract" in markdown
     assert "aiguard_validates_expected_report_markers" in markdown
     assert "reviewer navigation context" in markdown
     assert "do not make the index a Lab report owner" in markdown

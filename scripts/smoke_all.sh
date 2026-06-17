@@ -333,9 +333,16 @@ require_agent_runtime_edgeenv_markers() {
     "operation_summary: mode=device_local_starter"
     "lab_expected_report_markers"
     "lab_report_contract_context"
+    "lab_report_marker_context_boundary"
+    "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
     "aiguard_validates_expected_report_markers"
   )
   local agent_edgeenv_index_json_markers=(
+    "evidence_index_boundary"
+    "reviewer_navigation_metadata"
+    "\"lab_report_owner\": false"
+    "\"source_contract\": false"
+    "\"deployment_decision_owner\": false"
     "preservation_identity_label"
     "preservation_details_label"
     "queue_backlog_threshold_exceeded"
@@ -352,6 +359,8 @@ require_agent_runtime_edgeenv_markers() {
     "Duration scope label"
     "reviewer navigation context"
     "do not make the index a Lab report owner"
+    "lab_report_marker_context_boundary"
+    "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
     "not a Lab report owner or source contract"
     "not as a new source contract"
   )

@@ -132,6 +132,11 @@ PY
   --output-json "$OUTPUT_DIR/agent_runtime_registry.json" \
   --output-md "$OUTPUT_DIR/agent_runtime_registry.md"
 
+grep -q '"evidence_index_boundary"' "$OUTPUT_DIR/00_evidence_index.json"
+grep -q '"role": "reviewer_navigation_metadata"' "$OUTPUT_DIR/00_evidence_index.json"
+grep -q '"lab_report_owner": false' "$OUTPUT_DIR/00_evidence_index.json"
+grep -q '"source_contract": false' "$OUTPUT_DIR/00_evidence_index.json"
+grep -q '"deployment_decision_owner": false' "$OUTPUT_DIR/00_evidence_index.json"
 grep -q "remote_execution_recovered_by_fallback" "$OUTPUT_DIR/00_evidence_index.md"
 grep -q "Remote fallback starter evidence" "$OUTPUT_DIR/00_evidence_index.md"
 grep -q "Duration source" "$OUTPUT_DIR/00_evidence_index.md"
