@@ -1585,10 +1585,14 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "Runtime Intelligence artifact gate" in delta
     assert "Operation quick-scan registry" in delta
     assert "Shared reviewer marker-gate details" in delta
+    assert "Evidence index boundary gate" in delta
     assert "Runtime operation / Jetson evidence snapshot" in delta
     assert "Safe publish and PR path" in delta
     assert "copied CI artifact summaries" in delta
     assert "generated `00_evidence_index.*` artifacts" in delta
+    assert "generated `00_evidence_index.md` boundary wording" in delta
+    assert "cannot become a Lab report owner or source contract" in delta
+    assert "evidence-index boundary wording" in delta
     assert "detailed marker vocabulary owner" in delta
     assert "not production observability or a GitLab control plane" in delta
     assert "not a Lab report owner or production runtime proof" in delta
@@ -1605,6 +1609,19 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
         ],
         label="final submission rehearsal current reviewer order",
     )
+
+    portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
+        encoding="utf-8"
+    )
+    normalized_portfolio = " ".join(portfolio.split())
+    portfolio_ko = (ROOT / "docs" / "portfolio_summary.ko.md").read_text(
+        encoding="utf-8"
+    )
+    normalized_portfolio_ko = " ".join(portfolio_ko.split())
+    assert "smoke-gated boundary wording" in normalized_portfolio
+    assert "not a Lab report owner or source contract" in normalized_portfolio
+    assert "smoke-gated boundary wording" in normalized_portfolio_ko
+    assert "Lab report owner나 source contract가 되지 않게" in normalized_portfolio_ko
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:
