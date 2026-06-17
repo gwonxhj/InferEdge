@@ -1159,9 +1159,11 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "make a cleanup inventory" in publish_doc
     assert "not a deletion list" in publish_doc
     assert "bash scripts/audit_branch_cleanup.sh --fetch" in publish_doc
+    assert "matching `origin/codex/*` remote branches" in normalized_publish_doc
+    assert "cleanup inventory only" in publish_doc
     assert "regular merge ancestry" in publish_doc
     assert "not sufficient for squash-merged pull requests" in normalized_publish_doc
-    assert "only proves regular merge ancestry" in publish_doc
+    assert "only proves regular merge ancestry" in normalized_publish_doc
     assert "Squash-merged branches may not appear" in publish_doc
     assert "do not delete the branch based on `--merged` alone" in publish_doc
     assert "Verify the PR is" in publish_doc
@@ -1280,6 +1282,9 @@ def test_branch_cleanup_audit_script_is_inventory_only() -> None:
     assert "InferEdge branch cleanup audit" in script
     assert "CURRENT_BRANCH=\"$(git branch --show-current)\"" in script
     assert "(current; do not delete while checked out)" in script
+    assert "Remote cleanup inventory" in script
+    assert "git branch -r --list" in script
+    assert "origin/$BRANCH_PATTERN" in script
     assert "git fetch origin main" in script
     assert "git branch --list" in script
     assert "git branch --merged origin/main" in script
@@ -1288,6 +1293,7 @@ def test_branch_cleanup_audit_script_is_inventory_only() -> None:
     assert "git push origin --delete" not in script
     assert "not a deletion list" in script
     assert "Do not delete the current checked-out branch" in script
+    assert "Remote inventory entries are branch refs to inspect" in script
     assert "Squash-merged branches may not appear" in script
     assert "Verify the PR is closed as merged" in script
     assert "GitHub connector/app" in script
@@ -1295,6 +1301,7 @@ def test_branch_cleanup_audit_script_is_inventory_only() -> None:
     assert "bash scripts/audit_branch_cleanup.sh [options]" in output
     assert "--fetch" in output
     assert "--branch-pattern <glob>" in output
+    assert "Matching origin/<glob> remote branches" in normalized_output
     assert "It never deletes local or remote branches" in normalized_output
     assert result.stderr == ""
 
