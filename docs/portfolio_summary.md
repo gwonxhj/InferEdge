@@ -117,7 +117,9 @@ first.
 
 The Agent Runtime demo also explains the shared reviewer marker gates that keep
 Lab report summaries, copied CI artifact summaries, and generated
-`00_evidence_index.*` artifacts aligned. This summary intentionally does not
+`00_evidence_index.*` artifacts aligned. It also records the smoke-gated
+boundary wording that keeps the generated evidence index as reviewer navigation,
+not a Lab report owner or source contract. This summary intentionally does not
 become the detailed marker vocabulary owner.
 
 | Reviewer question | Evidence path |

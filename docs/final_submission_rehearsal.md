@@ -178,6 +178,7 @@ Current reviewer additions:
 | Runtime Intelligence artifact gate | `README.md` Runtime Intelligence Smoke and `docs/agent_runtime_e2e_demo.md#smoke-gate-split` | Local-first artifact smoke; not production observability or a GitLab control plane |
 | Operation quick-scan registry | `docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry` | Reviewer navigation metadata; not a Lab report owner or production runtime proof |
 | Shared reviewer marker-gate details | `docs/agent_runtime_e2e_demo.md` shared marker-gate sections | Keeps Lab report summaries, copied CI artifact summaries, and generated `00_evidence_index.*` artifacts aligned without making this rehearsal the detailed marker vocabulary owner |
+| Evidence index boundary gate | `scripts/smoke_all.sh` and `docs/agent_runtime_e2e_demo.md` evidence-index sections | Gates the generated `00_evidence_index.md` boundary wording so reviewer navigation cannot become a Lab report owner or source contract |
 | Runtime operation / Jetson evidence snapshot | `docs/evidence/jetson_device_local_agent_runtime_report.md` and `docs/evidence/jetson_device_local_5min_sustained_report.md` | Committed replay evidence; live Jetson execution is not implied by this rehearsal |
 | Safe publish and PR path | `docs/publish_inferedge.md` | Review branch workflow; do not force push over public `main` |
 
@@ -187,7 +188,8 @@ Current reviewer order:
 2. Follow `## Docs & Review Path`.
 3. Use this rehearsal for the clean-clone baseline.
 4. Use `docs/agent_runtime_e2e_demo.md` for Runtime Intelligence, operation
-   quick-scan, shared marker-gate details, remote fallback, and
+   quick-scan, shared marker-gate details, evidence-index boundary wording,
+   remote fallback, and
    Jetson/device-local navigation details.
 5. Use `docs/publish_inferedge.md` only for branch publish, PR, and merge
    safety.

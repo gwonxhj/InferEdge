@@ -77,7 +77,9 @@ Lab-owned deployment decision은 계속 InferEdgeLab이 소유합니다.
 
 공통 reviewer marker gate가 Lab report summary, 복사된 CI artifact summary,
 generated `00_evidence_index.*` artifact를 어떻게 맞추는지는 Agent Runtime
-demo 문서에서 설명합니다. 이 요약 문서는 세부 marker vocabulary owner가
+demo 문서에서 설명합니다. generated evidence index를 reviewer navigation으로
+유지하고 Lab report owner나 source contract가 되지 않게 막는 smoke-gated
+boundary wording도 그 문서에 둡니다. 이 요약 문서는 세부 marker vocabulary owner가
 아닙니다.
 
 | 리뷰 질문 | evidence path |
