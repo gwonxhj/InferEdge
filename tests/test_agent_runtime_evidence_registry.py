@@ -1094,6 +1094,8 @@ def test_branch_cleanup_audit_script_is_inventory_only() -> None:
     normalized_output = " ".join(output.split())
 
     assert "InferEdge branch cleanup audit" in script
+    assert "CURRENT_BRANCH=\"$(git branch --show-current)\"" in script
+    assert "(current; do not delete while checked out)" in script
     assert "git fetch origin main" in script
     assert "git branch --list" in script
     assert "git branch --merged origin/main" in script
@@ -1101,6 +1103,7 @@ def test_branch_cleanup_audit_script_is_inventory_only() -> None:
     assert "git branch -D" not in script
     assert "git push origin --delete" not in script
     assert "not a deletion list" in script
+    assert "Do not delete the current checked-out branch" in script
     assert "Squash-merged branches may not appear" in script
     assert "Verify the PR is closed as merged" in script
     assert "GitHub connector/app" in script

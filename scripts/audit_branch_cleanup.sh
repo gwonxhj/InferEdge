@@ -53,7 +53,8 @@ if [[ "$FETCH_ORIGIN" -eq 1 ]]; then
 fi
 
 echo "InferEdge branch cleanup audit"
-echo "Current branch: $(git branch --show-current)"
+CURRENT_BRANCH="$(git branch --show-current)"
+echo "Current branch: $CURRENT_BRANCH"
 echo "Branch pattern: $BRANCH_PATTERN"
 if git rev-parse --verify --quiet origin/main >/dev/null; then
   echo "Origin main: $(git rev-parse --short origin/main) $(git log -1 --pretty=%s origin/main)"
@@ -63,9 +64,16 @@ fi
 echo
 
 echo "Local cleanup inventory (audit input, not a deletion list):"
-if ! git branch --list "$BRANCH_PATTERN" --format='%(refname:short)' | sed 's/^/- /'; then
-  echo "- <unable to list local branches>"
-fi
+while IFS= read -r local_branch; do
+  if [[ -z "$local_branch" ]]; then
+    continue
+  fi
+  if [[ "$local_branch" == "$CURRENT_BRANCH" ]]; then
+    echo "- $local_branch (current; do not delete while checked out)"
+  else
+    echo "- $local_branch"
+  fi
+done < <(git branch --list "$BRANCH_PATTERN" --format='%(refname:short)')
 echo
 
 if git rev-parse --verify --quiet origin/main >/dev/null; then
@@ -82,6 +90,7 @@ echo
 cat <<'EOF'
 Cleanup rule:
 - Do not delete main.
+- Do not delete the current checked-out branch.
 - Do not delete any branch from this inventory alone.
 - Squash-merged branches may not appear in git branch --merged origin/main.
 - Verify the PR is closed as merged before deleting a local or remote branch.
