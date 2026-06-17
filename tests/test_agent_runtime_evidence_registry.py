@@ -860,6 +860,12 @@ def test_latest_jetson_quick_scan_registry_preserves_snapshot_values() -> None:
         assert "Operation Quick Scan Summary" in section
         assert "metric record" in section
         assert "production runtime operation proof" in section
+        assert "Lab report owner" in section
+        assert "EdgeEnv comparability gate" in section
+        assert "deployment decision" in section
+        assert "Raw Marker" in section
+        assert "raw marker label" in section
+        assert "detailed `## Runs`" in section
         assert_short_jetson_source_values(section)
         assert_sustained_jetson_source_values(section)
 
