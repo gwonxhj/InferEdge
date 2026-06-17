@@ -102,8 +102,11 @@ InferEdgeOrchestrator
 
 1. [포트폴리오 요약](portfolio_summary.ko.md)을 읽고 30초 narrative를 확인합니다.
 2. [파이프라인 맵](pipeline_map.ko.md)에서 repo별 책임과 contract boundary를 확인합니다.
-3. [인터뷰 내러티브](interview_narrative.ko.md)에서 면접/리뷰어 설명 흐름을 확인합니다.
-4. 필요하면 영어 canonical 문서인
+3. Lab report summary와 generated `00_evidence_index.*` artifact 사이의 공통
+   reviewer marker-gate 상세가 필요하면 [Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)를
+   확인합니다.
+4. [인터뷰 내러티브](interview_narrative.ko.md)에서 면접/리뷰어 설명 흐름을 확인합니다.
+5. 필요하면 영어 canonical 문서인
    [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)를 기준으로 세부 내용을 확인합니다.
 
 ## Cross-Repo Quick Guide Path
