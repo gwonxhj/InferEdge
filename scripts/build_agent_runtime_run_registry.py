@@ -72,6 +72,48 @@ def make_relative(path: Path, base: Path) -> str:
         return str(path)
 
 
+def normalized_index_boundary(index: dict[str, Any]) -> dict[str, Any]:
+    boundary = index.get("evidence_index_boundary")
+    if not isinstance(boundary, dict):
+        return {
+            "role": "unknown",
+            "lab_report_owner": "unknown",
+            "source_contract": "unknown",
+            "deployment_decision_owner": "unknown",
+        }
+    return {
+        "role": boundary.get("role", "unknown"),
+        "lab_report_owner": boundary.get("lab_report_owner", "unknown"),
+        "source_contract": boundary.get("source_contract", "unknown"),
+        "deployment_decision_owner": boundary.get(
+            "deployment_decision_owner", "unknown"
+        ),
+    }
+
+
+def evidence_index_boundary_summary(runs: list[dict[str, Any]]) -> dict[str, Any]:
+    boundaries = [
+        run.get("evidence_index_boundary")
+        for run in runs
+        if isinstance(run.get("evidence_index_boundary"), dict)
+    ]
+    expected = {
+        "role": "reviewer_navigation_metadata",
+        "lab_report_owner": False,
+        "source_contract": False,
+        "deployment_decision_owner": False,
+    }
+    matching = [boundary for boundary in boundaries if boundary == expected]
+    return {
+        "expected": expected,
+        "run_count": len(runs),
+        "present_count": len(boundaries),
+        "matching_count": len(matching),
+        "all_runs_match": len(runs) == len(matching),
+        "role": "run_registry_navigation_summary",
+    }
+
+
 def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]:
     runs = []
     for index_path in index_paths:
@@ -109,6 +151,7 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 "lab_markdown_report": make_relative(lab_md_path, output_base)
                 if lab_md_path.exists()
                 else None,
+                "evidence_index_boundary": normalized_index_boundary(index),
                 "operation_path": index.get("operation_path", "unknown"),
                 "scenario_label": run_summary.get("scenario_label", "unknown"),
                 "scenario_category": run_summary.get("scenario_category", "unknown"),
@@ -288,6 +331,7 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
         "schema_version": "inferedge-agent-runtime-run-registry-v1",
         "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "run_count": len(runs),
+        "evidence_index_boundary_summary": evidence_index_boundary_summary(runs),
         "runs": runs,
         "notes": [
             "This registry is derived from 00_evidence_index.json files.",
@@ -437,6 +481,10 @@ def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]
 
 
 def write_markdown(registry: dict[str, Any], path: Path) -> None:
+    boundary = registry.get("evidence_index_boundary_summary", {})
+    expected_boundary = (
+        boundary.get("expected") if isinstance(boundary.get("expected"), dict) else {}
+    )
     lines = [
         "# Agent Runtime Run Registry",
         "",
@@ -445,6 +493,14 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         "",
         f"- Run count: {registry['run_count']}",
         f"- Created at: {registry['created_at']}",
+        "- Evidence index boundary: "
+        f"role={md_value(expected_boundary.get('role'))}; "
+        f"lab_report_owner={md_value(expected_boundary.get('lab_report_owner'))}; "
+        f"source_contract={md_value(expected_boundary.get('source_contract'))}; "
+        f"deployment_decision_owner={md_value(expected_boundary.get('deployment_decision_owner'))}; "
+        f"matching_runs={md_value(boundary.get('matching_count'))}/"
+        f"{md_value(boundary.get('run_count'))}; "
+        f"all_runs_match={md_value(boundary.get('all_runs_match'))}",
         "",
         "## Duration Comparison Summary",
         "",
