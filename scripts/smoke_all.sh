@@ -77,6 +77,21 @@ require_marker() {
   fi
 }
 
+require_artifact() {
+  local file="$1"
+  if [[ ! -f "$file" ]]; then
+    echo "missing required artifact: $file" >&2
+    exit 1
+  fi
+}
+
+require_artifacts() {
+  local file
+  for file in "$@"; do
+    require_artifact "$file"
+  done
+}
+
 require_markers() {
   local file="$1"
   shift
@@ -208,6 +223,17 @@ require_runtime_intelligence_report_markers() {
   local ci_summary="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_intelligence_ci_artifact_gate_summary.md"
   local summary_md="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.md"
   local summary_html="$RUNTIME_INTELLIGENCE_SMOKE_OUT/runtime_anomaly_summary.html"
+  local runtime_intelligence_required_artifacts=(
+    "$bundle_summary"
+    "$RUNTIME_INTELLIGENCE_SMOKE_OUT/edgeenv_runtime_regression.md"
+    "$RUNTIME_INTELLIGENCE_SMOKE_OUT/edgeenv_runtime_regression.html"
+    "$summary_md"
+    "$summary_html"
+    "$gate_summary"
+    "$ci_summary"
+    "$RUNTIME_INTELLIGENCE_SMOKE_OUT/aiguard_edgeenv_handoff_alignment.json"
+    "$RUNTIME_INTELLIGENCE_SMOKE_OUT/aiguard_edgeenv_handoff_alignment.md"
+  )
   local runtime_report_gate_markers=(
     "Validated Duration Traceability"
     "duration_handoff_alignment: EdgeEnv/AIGuard report context preserved"
@@ -247,6 +273,7 @@ require_runtime_intelligence_report_markers() {
     "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback"
   )
 
+  require_artifacts "${runtime_intelligence_required_artifacts[@]}"
   require_marker "$bundle_summary" "expected_report_markers: remote fallback Lab context row declared"
   require_marker "$bundle_summary" "aiguard_raw_context: max_total_queue_depth traceability preserved"
   require_marker "$bundle_summary" "reviewer_path_gate: README/ecosystem reviewer path gate context declared"

@@ -83,6 +83,9 @@ configured output directory:
 | `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape, including the copied `Validated Reviewer Focus` and `Validated Review Path` markers, without making CI a production control plane |
 | `aiguard_edgeenv_handoff_alignment.json` / `aiguard_edgeenv_handoff_alignment.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
 
+The entrypoint `scripts/smoke_all.sh` gates the presence of these generated
+Runtime Intelligence artifacts before checking their reviewer marker vocabulary.
+
 The `Validated Review Path` gate summary intentionally keeps the detailed
 marker vocabulary outside the README. The broader Runtime Intelligence report
 gate also keeps the surrounding duration and reviewer-focus markers here:

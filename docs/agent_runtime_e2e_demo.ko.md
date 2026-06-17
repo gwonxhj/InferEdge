@@ -75,6 +75,9 @@ reviewer-facing artifact를 같은 순서로 기록합니다.
 | `runtime_intelligence_ci_artifact_gate_summary.md` | optional CI artifact bundle shape와 복사된 `Validated Reviewer Focus` / `Validated Review Path` marker를 확인하되 CI를 production control plane으로 만들지 않음 |
 | `aiguard_edgeenv_handoff_alignment.json` / `aiguard_edgeenv_handoff_alignment.md` | smoke에서 사용하는 precomputed AIGuard/EdgeEnv handoff alignment fixture 보존 |
 
+entrypoint `scripts/smoke_all.sh`는 reviewer marker vocabulary를 확인하기 전에
+생성된 Runtime Intelligence artifact의 존재 여부를 먼저 gate합니다.
+
 `Validated Review Path` gate summary의 세부 marker vocabulary는 README가
 아니라 이 문서에 보존합니다. 더 넓은 Runtime Intelligence report gate가
 요구하는 duration / reviewer-focus marker도 여기에 함께 보존합니다.
