@@ -1645,11 +1645,17 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "Operation quick-scan registry" in delta
     assert "Shared reviewer marker-gate details" in delta
     assert "Evidence index boundary gate" in delta
+    assert "Registry boundary summary" in delta
     assert "Runtime operation / Jetson evidence snapshot" in delta
     assert "Safe publish and PR path" in delta
     assert "copied CI artifact summaries" in delta
     assert "generated `00_evidence_index.*` artifacts" in delta
     assert "generated `00_evidence_index.md` boundary wording" in delta
+    assert "agent_runtime_registry.json" in delta
+    assert "build_agent_runtime_run_registry.py" in delta
+    assert "evidence_index_boundary" in delta
+    assert "evidence_index_boundary_summary" in delta
+    assert "machine-readable reviewer-navigation metadata" in delta
     assert "cannot become a Lab report owner or source contract" in delta
     assert "evidence-index boundary wording" in delta
     assert "detailed marker vocabulary owner" in delta
