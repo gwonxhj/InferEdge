@@ -1912,6 +1912,11 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "lab_expected_report_markers" in markdown
     assert "lab_report_contract_context" in markdown
     assert "aiguard_validates_expected_report_markers" in markdown
+    assert "reviewer navigation context" in markdown
+    assert "do not make the index a Lab report owner" in markdown
+    assert "make AIGuard validate Lab report marker contracts" in markdown
+    assert "Raw quick-scan marker labels are preserved here for traceability" in markdown
+    assert "not as a new source contract" in markdown
 
 
 def test_evidence_index_labels_runtime_duration_classes(tmp_path: Path) -> None:

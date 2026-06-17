@@ -1368,6 +1368,8 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             "- The index is intentionally small and derived from generated evidence.",
             "- Treat `05_lab_agent_runtime_report.md` as the human-readable decision context.",
             "- Treat `03_orchestration_summary.json`, `04_aiguard_guard_analysis.json`, and `05_lab_agent_runtime_report.json` as the main machine-readable contracts.",
+            "- Lab report marker rows in this index are reviewer navigation context; they do not make the index a Lab report owner or make AIGuard validate Lab report marker contracts.",
+            "- Raw quick-scan marker labels are preserved here for traceability to the Lab-owned Runtime Intelligence report, not as a new source contract.",
             "",
         ]
     )
