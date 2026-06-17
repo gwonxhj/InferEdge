@@ -296,6 +296,7 @@ require_agent_runtime_edgeenv_markers() {
     "lab_report_operation_quick_scan_marker"
     "Reviewer operation quick scan"
     "lab_report_operation_quick_scan_raw_marker"
+    "lab_report_operation_quick_scan_raw_marker_label"
     "raw_marker=reviewer_focus_operation_quick_scan"
     "lab_report_operation_quick_scan_label"
     "edgeenv_runtime_operation_summary_label"
