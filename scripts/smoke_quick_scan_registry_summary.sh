@@ -296,12 +296,15 @@ summary_block = markdown[summary:runs]
 runs_block = markdown[runs:]
 for marker in (
     "Raw Marker",
+    "Raw Marker Label",
     "raw_marker=reviewer_focus_operation_quick_scan",
     "Reviewer operation quick scan:",
 ):
     if marker in summary_block:
         raise SystemExit(f"summary leaked detailed marker: {marker}")
 for marker in (
+    "Raw Marker",
+    "Raw Marker Label",
     "raw_marker=reviewer_focus_operation_quick_scan",
     "Reviewer operation quick scan:",
 ):

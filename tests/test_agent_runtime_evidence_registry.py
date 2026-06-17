@@ -2474,6 +2474,7 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     ]
     runs_block = markdown[markdown.index("## Runs") :]
     assert "Raw Marker" not in summary_block
+    assert "Raw Marker Label" not in summary_block
     assert "raw_marker=reviewer_focus_operation_quick_scan" not in summary_block
     assert "Reviewer operation quick scan:" not in summary_block
     assert (
@@ -2489,6 +2490,8 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     ) in summary_block
     assert "operation_summary: mode=timeout_threshold_exceeded" in runs_block
     assert "operation_summary: mode=device_local_starter" in runs_block
+    assert "Raw Marker" in runs_block
+    assert "Raw Marker Label" in runs_block
     assert "raw_marker=reviewer_focus_operation_quick_scan" in runs_block
     assert "Reviewer operation quick scan:" in runs_block
     assert "reviewer-facing navigation metadata" in markdown
