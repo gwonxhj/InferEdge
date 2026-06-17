@@ -352,6 +352,7 @@ require_agent_runtime_edgeenv_markers() {
     "Duration scope label"
     "reviewer navigation context"
     "do not make the index a Lab report owner"
+    "not a Lab report owner or source contract"
     "not as a new source contract"
   )
 

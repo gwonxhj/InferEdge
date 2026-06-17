@@ -577,6 +577,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "fallback_count=1" in smoke_script
     assert "reviewer navigation context" in smoke_script
     assert "do not make the index a Lab report owner" in smoke_script
+    assert "not a Lab report owner or source contract" in smoke_script
     assert "not as a new source contract" in smoke_script
     assert "lab=Remote fallback starter evidence; evidence=remote_execution_recovered_by_fallback" in smoke_script
     assert "smoke_remote_fallback_registry_marker.sh" in smoke_script
@@ -706,6 +707,7 @@ def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     assert "source=entrypoint_requested_frames" in script
     assert "reviewer navigation context" in script
     assert "do not make the index a Lab report owner" in script
+    assert "not a Lab report owner or source contract" in script
     assert "not as a new source contract" in script
     assert "Duration Sources" in script
 
@@ -751,6 +753,7 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "Quick-scan registry summary smoke: pass" in script
     assert "reviewer navigation context" in script
     assert "do not make the index a Lab report owner" in script
+    assert "not a Lab report owner or source contract" in script
     assert "not as a new source contract" in script
     assert "raw quick-scan marker labels appear" in script
     assert "reviewer-navigation bug" in script
@@ -2181,6 +2184,7 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "do not make the index a Lab report owner" in markdown
     assert "make AIGuard validate Lab report marker contracts" in markdown
     assert "Raw quick-scan marker labels are preserved here for traceability" in markdown
+    assert "not a Lab report owner or source contract" in markdown
     assert "not as a new source contract" in markdown
 
 
