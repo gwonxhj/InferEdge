@@ -105,6 +105,8 @@ InferEdgeOrchestrator
 3. Lab report summary와 generated `00_evidence_index.*` artifact 사이의 공통
    reviewer marker-gate 상세가 필요하면 [Agent Runtime E2E Demo](agent_runtime_e2e_demo.ko.md)를
    확인합니다.
+   smoke-gated evidence-index boundary는 generated index를 Lab report owner나
+   source contract가 아니라 reviewer navigation으로 유지합니다.
 4. [인터뷰 내러티브](interview_narrative.ko.md)에서 면접/리뷰어 설명 흐름을 확인합니다.
 5. 필요하면 영어 canonical 문서인
    [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)를 기준으로 세부 내용을 확인합니다.

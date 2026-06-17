@@ -148,6 +148,8 @@ post-deployment operation context.
 4. Use [Agent Runtime E2E Demo](agent_runtime_e2e_demo.md) when you need the
    shared reviewer marker-gate details for Lab report summaries and generated
    `00_evidence_index.*` artifacts.
+   Its smoke-gated evidence-index boundary keeps the generated index as
+   reviewer navigation, not a Lab report owner or source contract.
 5. Read [Interview Narrative](interview_narrative.md) for speaking notes.
 6. Run the local submission smoke:
 

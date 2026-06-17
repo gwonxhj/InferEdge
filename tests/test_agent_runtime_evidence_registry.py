@@ -1555,8 +1555,12 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         assert "cloud control plane" in normalized_text
     assert "shared reviewer marker-gate details" in ecosystem
     assert "generated `00_evidence_index.*`" in " ".join(ecosystem.split())
+    assert "smoke-gated evidence-index boundary" in " ".join(ecosystem.split())
+    assert "not a Lab report owner or source contract" in " ".join(ecosystem.split())
     assert "공통 reviewer marker-gate 상세" in " ".join(korean_ecosystem.split())
     assert "generated `00_evidence_index.*`" in " ".join(korean_ecosystem.split())
+    assert "smoke-gated evidence-index boundary" in " ".join(korean_ecosystem.split())
+    assert "Lab report owner나 source contract가 아니라" in " ".join(korean_ecosystem.split())
 
 
 def test_entrypoint_reviewer_path_local_links_exist() -> None:
