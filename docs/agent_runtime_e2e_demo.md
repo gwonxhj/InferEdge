@@ -1029,8 +1029,8 @@ bash scripts/demo_agent_runtime_e2e.sh
 
 | Output | Purpose |
 |---|---|
-| `00_evidence_index.json` | Compact machine-readable navigation index for generated evidence files |
-| `00_evidence_index.md` | Human-readable evidence bundle index and decision summary |
+| `00_evidence_index.json` | Compact machine-readable navigation index for generated evidence files; preserves marker context without becoming a Lab report owner or source contract |
+| `00_evidence_index.md` | Human-readable evidence bundle index and decision summary; reviewer navigation only, not a Lab report owner or source contract |
 | `01_forge_agent_manifest_vision.json` | Agent workload handoff contract example |
 | `02_runtime_result_agent.json` | Runtime result with backward-compatible `agent` block |
 | `03_orchestration_summary.json` | Profiled multi-workload scheduler policy decision evidence |

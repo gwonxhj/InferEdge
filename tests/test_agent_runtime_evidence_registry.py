@@ -618,6 +618,8 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
             "same reviewer marker vocabulary" in doc_text
             or "같은 reviewer marker vocabulary" in doc_text
         )
+        assert "Lab report owner" in doc_text
+        assert "source contract" in doc_text
         assert "Format-specific" in doc_text or "format-specific" in doc_text
         assert "drift" in doc_text
         assert "review_path_section: short Review Path section rendered" in doc_text
