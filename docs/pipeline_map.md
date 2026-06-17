@@ -100,6 +100,8 @@ generated `00_evidence_index.*` artifacts stays in
 the repository contract-boundary view, not the detailed marker vocabulary owner.
 The smoke-gated evidence-index boundary keeps `00_evidence_index.md` as reviewer
 navigation rather than a Lab report owner or source contract.
+The run registry carries the same boundary as machine-readable
+`evidence_index_boundary_summary` metadata for multi-run review.
 
 The submission-ready diagram is in
 [Ecosystem 1-Page Summary](ecosystem_1page.md)
