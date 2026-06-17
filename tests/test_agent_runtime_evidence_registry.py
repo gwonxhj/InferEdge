@@ -309,6 +309,71 @@ def assert_local_markdown_link_fragments_exist(
     )
 
 
+def markdown_docs() -> list[Path]:
+    return sorted(
+        path
+        for path in [
+            ROOT / "README.md",
+            ROOT / "README.ko.md",
+            *ROOT.glob("docs/**/*.md"),
+        ]
+        if path.exists()
+    )
+
+
+def markdown_links(text: str) -> list[str]:
+    links: list[str] = []
+    in_code_block = False
+    for line in text.splitlines():
+        if line.lstrip().startswith("```"):
+            in_code_block = not in_code_block
+            continue
+        if in_code_block:
+            continue
+        links.extend(match.group(1) for match in MARKDOWN_LINK_RE.finditer(line))
+    return links
+
+
+def test_repo_local_markdown_links_are_resolvable() -> None:
+    checked_links = []
+    checked_fragments = []
+
+    for source_path in markdown_docs():
+        source_text = source_path.read_text(encoding="utf-8")
+        for raw_target in markdown_links(source_text):
+            target = normalized_link_target(raw_target)
+            if target.startswith(("http://", "https://", "mailto:")):
+                continue
+
+            link_path, _, fragment = target.partition("#")
+            if not link_path and not fragment:
+                continue
+
+            target_path = (
+                source_path if not link_path else source_path.parent / link_path
+            )
+            checked_links.append(f"{source_path.relative_to(ROOT)} -> {target}")
+            assert target_path.exists(), (
+                f"{source_path.relative_to(ROOT)}: missing local link target "
+                f"{target!r} -> {target_path}"
+            )
+
+            if fragment and target_path.suffix.lower() == ".md":
+                anchors = markdown_heading_anchors(
+                    target_path.read_text(encoding="utf-8")
+                )
+                checked_fragments.append(
+                    f"{source_path.relative_to(ROOT)} -> {target}"
+                )
+                assert fragment in anchors, (
+                    f"{source_path.relative_to(ROOT)}: missing heading anchor "
+                    f"#{fragment!r} in {target_path}"
+                )
+
+    assert checked_links, "expected repo-local Markdown links to validate"
+    assert checked_fragments, "expected repo-local Markdown anchor links to validate"
+
+
 def test_marker_order_helper_reports_context_for_missing_marker() -> None:
     try:
         assert_markers_in_order(
