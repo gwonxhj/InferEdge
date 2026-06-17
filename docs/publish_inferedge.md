@@ -188,10 +188,11 @@ not a deletion list:
 bash scripts/audit_branch_cleanup.sh --fetch
 ```
 
-The audit script lists local `codex/*` branches that might be cleanup
-candidates and the subset that appears in regular merge ancestry. That
-ancestry subset only proves regular merge ancestry; it is not sufficient for
-squash-merged pull requests, so the audit output is still not a deletion list.
+The audit script lists local `codex/*` branches, matching `origin/codex/*`
+remote branches, and the local subset that appears in regular merge ancestry.
+Those entries are cleanup inventory only. The ancestry subset only proves
+regular merge ancestry; it is not sufficient for squash-merged pull requests,
+so the audit output is still not a deletion list.
 
 Before deleting a local branch, verify it is merged into the current
 `origin/main`:
