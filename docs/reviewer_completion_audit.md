@@ -54,7 +54,8 @@ The clean locked clone validates the current `repos.lock` snapshot. The current
 lock now includes the refreshed Lab decision policy, Runtime Jetson evidence
 depth audit, AIGuard detector-depth hardening, and AIGuard calibration drift
 additive-evidence, baseline profile stability metadata, and sequence-level
-disappearance evidence plus temporal continuity demo commits.
+disappearance evidence plus temporal continuity demo commits, along with
+Orchestrator PR #115 operation-risk CLI first-read polish.
 
 ## Boundaries
 
