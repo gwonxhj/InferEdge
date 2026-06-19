@@ -6,6 +6,10 @@ Use this as a speaking guide. The goal is to explain InferEdge as a
 local-first Edge AI inference validation and runtime-evidence ecosystem without
 overclaiming production readiness.
 
+Use it after the entrypoint `README.md` and its `## Docs & Review Path`.
+The README remains the reviewer entrypoint; this narrative only turns that
+path into a 30-45 second spoken explanation.
+
 ## 45-Second Answer
 
 InferEdge is a local-first Edge AI inference validation portfolio. It turns an

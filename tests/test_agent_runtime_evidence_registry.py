@@ -1044,6 +1044,10 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
 
     for text in (interview, korean_interview):
         normalized_text = " ".join(text.split())
+        assert "`README.md`" in normalized_text
+        assert "`## Docs & Review Path`" in normalized_text
+        assert "reviewer entrypoint" in normalized_text
+        assert "30-45" in normalized_text
         assert_jetson_reviewer_navigation_terms(
             normalized_text,
             representative_marker="Representative snapshot",

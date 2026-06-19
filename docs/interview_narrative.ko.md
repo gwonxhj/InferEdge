@@ -5,6 +5,10 @@
 이 문서는 한국어 빠른 안내서입니다. 대표/canonical 문서는
 [InferEdge Interview Narrative](interview_narrative.md)입니다.
 
+이 문서는 entrypoint `README.md`와 `## Docs & Review Path`를 확인한 뒤 쓰는
+speaking guide입니다. README가 reviewer entrypoint이고, 이 내러티브는 그 경로를
+30-45초 말하기 흐름으로 바꾸는 역할만 합니다.
+
 ## 45초 답변
 
 InferEdge는 ONNX 모델을 build provenance, real runtime evidence, structured
