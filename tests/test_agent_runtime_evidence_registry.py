@@ -1917,7 +1917,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "InferEdgeAIGuard PR #107",
         "PR #108 adds per-class detection drift evidence",
         "PR #109 bounds the calibration drift policy before implementation",
-        "Complete for disappearance and per-class drift; calibration drift is policy-gated but not implemented",
+        "PR #110 implements calibration drift as additive baseline-comparison evidence",
+        "Complete for disappearance, per-class drift, and review-level calibration drift evidence",
         "metadata.json",
         "manifest.json",
         "Runtime `result.json`",
@@ -1930,7 +1931,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         assert marker in status_doc
 
     assert "AIGuard per-class drift |" not in status_doc
-    assert "AIGuard calibration drift implementation" in status_doc
+    assert "AIGuard calibration drift implementation" not in status_doc
+    assert "AIGuard baseline profile stability hardening" in status_doc
 
     assert_markers_in_order(
         status_doc,
