@@ -1918,7 +1918,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "PR #108 adds per-class detection drift evidence",
         "PR #109 bounds the calibration drift policy before implementation",
         "PR #110 implements calibration drift as additive baseline-comparison evidence",
-        "Complete for disappearance, per-class drift, and review-level calibration drift evidence",
+        "PR #111 adds baseline profile stability audit metadata",
+        "Complete for disappearance, per-class drift, review-level calibration drift, and baseline profile stability audit metadata",
         "metadata.json",
         "manifest.json",
         "Runtime `result.json`",
@@ -1932,7 +1933,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
 
     assert "AIGuard per-class drift |" not in status_doc
     assert "AIGuard calibration drift implementation" not in status_doc
-    assert "AIGuard baseline profile stability hardening" in status_doc
+    assert "AIGuard baseline profile stability hardening" not in status_doc
+    assert "AIGuard sequence-level disappearance hardening" in status_doc
 
     assert_markers_in_order(
         status_doc,
