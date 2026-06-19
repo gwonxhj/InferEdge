@@ -1920,7 +1920,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "PR #110 implements calibration drift as additive baseline-comparison evidence",
         "PR #111 adds baseline profile stability audit metadata",
         "PR #112 adds sequence-level disappearance evidence",
-        "Complete for disappearance, per-class drift, review-level calibration drift, baseline profile stability audit metadata, and sequence-level disappearance evidence",
+        "PR #113 adds a temporal profile continuity demo case",
+        "Complete for disappearance, per-class drift, review-level calibration drift, baseline profile stability audit metadata, sequence-level disappearance evidence, and the temporal continuity demo case",
         "metadata.json",
         "manifest.json",
         "Runtime `result.json`",
@@ -1936,7 +1937,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
     assert "AIGuard calibration drift implementation" not in status_doc
     assert "AIGuard baseline profile stability hardening" not in status_doc
     assert "AIGuard sequence-level disappearance hardening" not in status_doc
-    assert "AIGuard temporal profile continuity demo" in status_doc
+    assert "AIGuard temporal profile continuity demo" not in status_doc
+    assert "Runtime Operation v2 polish" in status_doc
 
     assert_markers_in_order(
         status_doc,
