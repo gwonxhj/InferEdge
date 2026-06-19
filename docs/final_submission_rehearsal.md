@@ -200,6 +200,11 @@ This delta does not change the original rehearsal result and does not claim a
 new clean-clone run. It documents how reviewers should connect the historical
 submission rehearsal to the current evidence-navigation path.
 
+2026-06-19 update: the locked clone path was refreshed so `repos.lock` now
+includes the smoke-required Orchestrator and Env repositories in addition to
+Core 4. A clean `/private/tmp` locked clone plus `smoke_all.sh` passed with the
+policy-pressure alignment commits included.
+
 ## Submission Gate
 
 Status: pass after smoke script hardening.
@@ -229,6 +234,8 @@ repos/InferEdgeAIGuard/docs/detector_validation_matrix.md
 ## Notes
 
 - `scripts/smoke_all.sh` now installs the Lab package before calling Lab console scripts.
-- No Core 4 schema, result JSON, compare output, or repository lock changed.
+- No Core 4 schema, result JSON, or compare output changed. The repository lock
+  was refreshed on 2026-06-19 so locked clone covers the current smoke-required
+  Orchestrator and Env repos as well as Core 4.
 - This rehearsal does not claim production SaaS readiness.
 - This rehearsal does not include live Jetson execution; it validates the locked local submission smoke and committed Jetson evidence path.

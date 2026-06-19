@@ -9,10 +9,10 @@ usage() {
   cat <<'USAGE'
 Usage: bash scripts/clone_all.sh [--locked|--latest]
 
-Clone all InferEdge Core repositories into ./repos by default.
+Clone all InferEdge smoke repositories into ./repos by default.
 
 Options:
-  --locked  Clone/fetch and checkout the verified commit in repos.lock.
+  --locked  Clone/fetch and checkout the verified smoke commit in repos.lock.
   --latest  Clone/fetch the latest main branch. This is the default.
 
 Environment:
@@ -56,4 +56,3 @@ done < "$LOCK_FILE"
 
 echo
 echo "InferEdge repositories are ready in: $DEST_ROOT"
-

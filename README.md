@@ -22,7 +22,7 @@ The short version:
 
 ## Quick Start
 
-Clone the entrypoint and pinned Core 4 repositories:
+Clone the entrypoint and pinned smoke repositories:
 
 ```bash
 git clone https://github.com/gwonxhj/InferEdge.git
@@ -36,9 +36,9 @@ Run the local portfolio smoke:
 bash scripts/smoke_all.sh
 ```
 
-That smoke checks Forge, Runtime, Lab, AIGuard, and the local-first Runtime
-Intelligence artifact chain. It validates reviewer-facing report markers and
-contract boundaries. Boundary marker: Production observability platform or GitLab control plane is out of scope.
+That smoke checks Forge, Runtime, Lab, AIGuard, Orchestrator, Env, and the
+local-first Runtime Intelligence artifact chain. It validates reviewer-facing
+report markers and contract boundaries. Boundary marker: Production observability platform or GitLab control plane is out of scope.
 
 For safe review-branch publishing, run:
 
@@ -262,8 +262,8 @@ context.
 
 | File | Purpose |
 |---|---|
-| `repos.lock` | Pinned Core 4 clone snapshot for Forge, Runtime, Lab, and AIGuard |
-| `repos.yaml` | Supporting ecosystem references such as Orchestrator starter evidence |
+| `repos.lock` | Pinned smoke snapshot for Forge, Runtime, Lab, AIGuard, Orchestrator, and Env |
+| `repos.yaml` | Ecosystem role map and supporting reference context |
 | `scripts/clone_all.sh` | Clone pinned repositories into `repos/` |
 | `scripts/update_all.sh` | Pull all cloned repositories |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |

@@ -9,10 +9,10 @@ usage() {
   cat <<'USAGE'
 Usage: bash scripts/update_all.sh [--locked|--latest]
 
-Update existing InferEdge Core repository clones.
+Update existing InferEdge smoke repository clones.
 
 Options:
-  --locked  Checkout the verified commit in repos.lock.
+  --locked  Checkout the verified smoke commit in repos.lock.
   --latest  Fast-forward the main branch. This is the default.
 
 Environment:
@@ -54,4 +54,3 @@ done < "$LOCK_FILE"
 
 echo
 echo "InferEdge repositories updated in: $DEST_ROOT"
-
