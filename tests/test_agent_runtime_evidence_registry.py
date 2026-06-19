@@ -701,6 +701,12 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
     pipeline_ko = (ROOT / "docs" / "pipeline_map.ko.md").read_text(
         encoding="utf-8"
     )
+    ecosystem = (ROOT / "docs" / "ecosystem_1page.md").read_text(
+        encoding="utf-8"
+    )
+    ecosystem_ko = (ROOT / "docs" / "ecosystem_1page.ko.md").read_text(
+        encoding="utf-8"
+    )
 
     required_repos = set(
         re.findall(
@@ -735,12 +741,12 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
         in repos_yaml
     )
     assert "Core clone/update scripts stay scoped" not in repos_yaml
-    for text in (portfolio, pipeline):
+    for text in (portfolio, pipeline, ecosystem):
         assert "repos.lock" in text
         assert "pinned smoke" in text
         assert "repos.yaml" in text
         assert "historical supporting" in text
-    for text in (portfolio_ko, pipeline_ko):
+    for text in (portfolio_ko, pipeline_ko, ecosystem_ko):
         assert "repos.lock" in text
         assert "pinned smoke" in text
         assert "repos.yaml" in text

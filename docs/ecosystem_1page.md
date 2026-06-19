@@ -160,6 +160,10 @@ bash scripts/clone_all.sh --locked
 bash scripts/smoke_all.sh
 ```
 
+`repos.lock` is the pinned smoke snapshot used by `clone_all.sh --locked`.
+`repos.yaml` remains the ecosystem role map and historical supporting-reference
+record; it does not replace the locked smoke snapshot.
+
 Then inspect the individual repository evidence:
 
 - InferEdgeLab Local Studio and deployment decision evidence

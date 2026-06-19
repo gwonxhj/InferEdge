@@ -113,6 +113,10 @@ InferEdgeOrchestrator
 5. 필요하면 영어 canonical 문서인
    [InferEdge Ecosystem 1-Page Summary](ecosystem_1page.md)를 기준으로 세부 내용을 확인합니다.
 
+로컬 제출 smoke를 재현할 때 `repos.lock`은 `clone_all.sh --locked`가 사용하는
+pinned smoke snapshot입니다. `repos.yaml`은 ecosystem role map과
+historical supporting reference 기록이며, locked smoke snapshot을 대체하지 않습니다.
+
 ## Cross-Repo Quick Guide Path
 
 한국어로 각 repo의 역할을 빠르게 확인할 때는 아래 순서로 봅니다. 이 경로는
