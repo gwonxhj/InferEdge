@@ -1647,6 +1647,10 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
     assert "## 먼저 볼 문서" in korean_readme
     assert "## Reviewer Path" in ecosystem
     assert "## Reviewer Path" in korean_ecosystem
+    assert "quick ecosystem map after entering through `README.md`" in ecosystem
+    assert "`## Docs & Review Path`" in ecosystem
+    assert "빠른 ecosystem map" in korean_ecosystem
+    assert "`## Docs & Review Path`" in korean_ecosystem
     assert (
         "Agent Runtime / Runtime Operation smoke details and shared marker-gate owner"
         in readme

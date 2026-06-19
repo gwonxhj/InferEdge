@@ -100,6 +100,9 @@ InferEdgeOrchestrator
 
 ## Reviewer Path
 
+이 페이지는 `README.md`와 `## Docs & Review Path`를 통해 진입한 뒤 보는
+빠른 ecosystem map입니다.
+
 1. [포트폴리오 요약](portfolio_summary.ko.md)을 읽고 30초 narrative를 확인합니다.
 2. [파이프라인 맵](pipeline_map.ko.md)에서 repo별 책임과 contract boundary를 확인합니다.
 3. Lab report summary와 generated `00_evidence_index.*` artifact 사이의 공통

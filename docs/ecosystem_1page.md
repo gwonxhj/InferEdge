@@ -139,7 +139,10 @@ post-deployment operation context.
 
 ## Reviewer Path
 
-1. Start here for the ecosystem diagram and role split.
+Use this page as the quick ecosystem map after entering through `README.md`
+and its `## Docs & Review Path`.
+
+1. Confirm the ecosystem diagram and role split here.
 2. Read [Portfolio Summary](portfolio_summary.md)
    ([한국어: 포트폴리오 요약](portfolio_summary.ko.md)) for the 30-second
    narrative.
