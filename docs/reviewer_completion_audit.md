@@ -53,7 +53,7 @@ bash scripts/check_publish_ready.sh
 The clean locked clone validates the current `repos.lock` snapshot. The current
 lock now includes the refreshed Lab decision policy, Runtime Jetson evidence
 depth audit, AIGuard detector-depth hardening, and AIGuard calibration drift
-additive-evidence commits.
+additive-evidence plus baseline profile stability metadata commits.
 
 ## Boundaries
 
