@@ -238,6 +238,7 @@ and [Pipeline Map](docs/pipeline_map.md)
 | Latest Jetson operation-summary quick-scan registry | linked metric snapshots plus [`Duration Comparison Summary` and `Operation Quick Scan Summary`](docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry) ([한국어: 최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현)) |
 | Interview-ready explanation | [Interview Narrative](docs/interview_narrative.md) ([한국어: 인터뷰 내러티브](docs/interview_narrative.ko.md)) |
 | Current reviewer completion evidence | [Reviewer Completion Audit](docs/reviewer_completion_audit.md) |
+| Current Core4 roadmap status | [Core4 Roadmap Status](docs/core4_roadmap_status.md) |
 | Current Jetson device-local evidence | [`Jetson Device-Local Agent Runtime Evidence Report`](docs/evidence/jetson_device_local_agent_runtime_report.md) ([한국어: Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md)) |
 | Current Jetson 5-minute-class evidence | [`Jetson Device-Local 5-Minute Sustained Smoke Report`](docs/evidence/jetson_device_local_5min_sustained_report.md) ([한국어: Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md)), [`Snapshot HTML report`](docs/evidence/jetson_device_local_5min_sustained_report.html) ([한국어: 대표 스냅샷 HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html)) |
 
