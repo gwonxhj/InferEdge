@@ -50,8 +50,9 @@ git diff --check
 bash scripts/check_publish_ready.sh
 ```
 
-The clean locked clone validates the current `repos.lock` snapshot, including
-the refreshed Forge and Runtime sample handoff boundary commits.
+The clean locked clone validates the current `repos.lock` snapshot. The current
+lock now includes the refreshed Lab decision policy, Runtime Jetson evidence
+depth audit, and AIGuard detector-depth hardening commits.
 
 ## Boundaries
 
