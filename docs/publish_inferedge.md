@@ -49,6 +49,13 @@ The readiness check verifies:
 - local `main` checkout safety
 - suggested push command
 
+Expected safe output on `main` includes
+`Local main safety: upstream matches origin/main`,
+`Origin branch state: publishable`, `Upstream: origin/main`, and
+`Suggested publish command: git push`. Treat any
+`Publish readiness: blocked` or `Publish readiness: failed` line as a stop
+signal, not as a prompt to bypass the check.
+
 ## Safe Branch Publish
 
 Start from the current remote `main` and publish a review branch:
@@ -252,6 +259,11 @@ remote branch.
 If the check reports `Origin reachability: failed`, the URL points to a
 repository that does not exist or that your authenticated GitHub account cannot
 access. Create the repository first or replace `origin` with the correct URL.
+
+`Origin branch state: publishable` is the only normal remote branch state for a
+direct push to the current branch. It means `origin/<branch>` is already an
+ancestor of the local branch and a normal push can update the remote without
+rewriting history.
 
 If the check reports `Origin branch state: unrelated-history`, `local-behind`,
 or `diverged`, the remote branch already contains commits that cannot be

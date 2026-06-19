@@ -1311,9 +1311,17 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "public InferEdge ecosystem entrypoint" in publish_doc
     assert "Do not force push" in publish_doc
     assert "Origin branch state: unrelated-history" in publish_doc
+    assert "Origin branch state: publishable" in publish_doc
     assert "Upstream status: different branch" in publish_doc
+    assert "Suggested publish command: git push" in publish_doc
+    assert "Publish readiness: blocked" in publish_doc
+    assert "Publish readiness: failed" in publish_doc
+    assert "stop signal" in normalized_publish_doc
     assert "Local main safety: review before publishing" in publish_doc
+    assert "Local main safety: upstream matches origin/main" in publish_doc
     assert "local `main` checkout safety" in publish_doc
+    assert "only normal remote branch state" in publish_doc
+    assert "without rewriting history" in normalized_publish_doc
     assert "Do not push local `main` directly" in publish_doc
     assert "`origin` remote placeholder detection" in publish_doc
     assert "whitespace and patch sanity check" in publish_doc
