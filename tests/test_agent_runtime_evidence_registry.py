@@ -690,6 +690,7 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
         encoding="utf-8"
     )
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    repos_yaml = (ROOT / "repos.yaml").read_text(encoding="utf-8")
 
     required_repos = set(
         re.findall(
@@ -717,6 +718,13 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
     assert "Update existing InferEdge smoke repository clones" in update_script
     assert "Pinned smoke snapshot" in readme
     assert "Orchestrator, and Env" in readme
+    assert "supporting_reference_commit" in repos_yaml
+    assert "historical supporting reference only" in repos_yaml
+    assert (
+        "current smoke clone/update pins the live repository in repos.lock"
+        in repos_yaml
+    )
+    assert "Core clone/update scripts stay scoped" not in repos_yaml
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
