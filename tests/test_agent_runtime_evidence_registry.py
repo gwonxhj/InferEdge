@@ -1809,6 +1809,38 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "smoke-gated boundary wording" in normalized_portfolio_ko
     assert "Lab report owner나 source contract가 되지 않게" in normalized_portfolio_ko
     assert "machine-readable `evidence_index_boundary_summary`" in normalized_portfolio_ko
+    assert "start from the entrypoint README" in normalized_portfolio
+    assert "`## Docs & Review Path`" in normalized_portfolio
+    assert "entrypoint README에서 시작" in normalized_portfolio_ko
+    assert "`## Docs & Review Path`" in normalized_portfolio_ko
+    assert_markers_in_order(
+        normalized_portfolio,
+        [
+            "`README.md`",
+            "`docs/ecosystem_1page.md`",
+            "This summary",
+            "`docs/pipeline_map.md`",
+            "`docs/final_submission_rehearsal.md`",
+            "`docs/agent_runtime_e2e_demo.md`",
+            "`docs/interview_narrative.md`",
+            "Current evidence reports",
+        ],
+        label="portfolio_summary What To Show First",
+    )
+    assert_markers_in_order(
+        normalized_portfolio_ko,
+        [
+            "`README.md`",
+            "`docs/ecosystem_1page.ko.md`",
+            "이 요약",
+            "`docs/pipeline_map.ko.md`",
+            "`docs/final_submission_rehearsal.md`",
+            "`docs/agent_runtime_e2e_demo.ko.md`",
+            "`docs/interview_narrative.ko.md`",
+            "현재 evidence reports",
+        ],
+        label="portfolio_summary.ko 먼저 보여줄 것",
+    )
 
 
 def test_cross_repo_quick_guide_path_preserves_lifecycle_order() -> None:

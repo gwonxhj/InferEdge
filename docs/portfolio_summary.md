@@ -171,16 +171,18 @@ For the latest operation-summary quick-scan registry, see
 
 ## What To Show First
 
-For an external reviewer, use this order:
+For an external reviewer, start from the entrypoint README and keep the same
+order used by `## Docs & Review Path`:
 
-1. `docs/ecosystem_1page.md`
-2. This summary
-3. `README.md`
+1. `README.md`
+2. `docs/ecosystem_1page.md`
+3. This summary
 4. `docs/pipeline_map.md`
-5. `docs/interview_narrative.md` ([한국어: 인터뷰 내러티브](interview_narrative.ko.md))
-6. InferEdgeLab Local Studio / report evidence
-7. InferEdge-Runtime Jetson/runtime reports
-8. InferEdgeAIGuard detector validation matrix
+5. `docs/final_submission_rehearsal.md`
+6. `docs/agent_runtime_e2e_demo.md`
+7. `docs/interview_narrative.md` ([한국어: 인터뷰 내러티브](interview_narrative.ko.md))
+8. Current evidence reports: Lab Local Studio / reports, Runtime Jetson reports,
+   AIGuard detector validation matrix, and Jetson sustained evidence snapshots
 
 ## What Not To Claim
 
