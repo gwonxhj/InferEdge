@@ -47,10 +47,11 @@ bash scripts/check_publish_ready.sh
 ```
 
 [Publish InferEdge Entrypoint](docs/publish_inferedge.md)는
-non-fast-forward와 unrelated-history 차단 상태, PR 생성과 merge까지 한 단계로
-묶는 기준, PR changed-file/status gate, PR `Summary` / `Tests` 기록, 최종 상태 확인,
-local checkout safety, stale-main에서 정상 repo 파일이 untracked처럼 보이는 경우의
-복구 기준, optional branch cleanup, diagnostic escape-hatch flag 경계를 설명합니다.
+non-fast-forward와 unrelated-history 차단 상태, branch publish + PR 생성 +
+PR merge를 한 단계로 묶는 기준, PR changed-file/status gate, PR `Summary` /
+`Tests` 기록, 최종 상태 확인, local checkout safety, stale-main에서 정상 repo
+파일이 untracked처럼 보이는 경우의 복구 기준, optional branch cleanup,
+diagnostic escape-hatch flag 경계를 설명합니다.
 기존 public `main` history 위에 force push하지 않습니다.
 
 ## 핵심 흐름

@@ -1340,6 +1340,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "After PR Merge" in publish_doc
     assert "Bundled PR Merge Step" in publish_doc
     assert "PR creation, and PR merge as one execution step" in publish_doc
+    assert "Do not split the validated publish, PR creation, and merge handoff" in publish_doc
+    assert "unresolved review comment requires stopping" in normalized_publish_doc
     assert "Do not commit, push, open a PR, or merge" in publish_doc
     assert "verify the changed file list" in publish_doc
     assert "the pull request is mergeable" in publish_doc
@@ -1462,9 +1464,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Do not" in readme
     assert "force push" in readme
     assert "public `main`" in readme
-    assert "bundled PR merge step" in readme
+    assert "bundled branch publish + PR creation + PR merge step" in normalized_readme
     assert "PR changed-file/status gate" in readme
-    assert "PR `Summary` / `Tests` recording" in readme
+    assert "PR `Summary` / `Tests` recording" in normalized_readme
     assert "final status check" in readme
     assert "local checkout safety" in readme
     assert "stale-main apparent untracked-file recovery" in readme
@@ -1472,9 +1474,10 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "diagnostic escape-hatch flags" in readme
     assert "scripts/check_publish_ready.sh" in korean_readme
     assert "docs/publish_inferedge.md" in korean_readme
-    assert "PR 생성과 merge까지 한 단계" in korean_readme
+    assert "branch publish + PR 생성 +" in normalized_korean_readme
+    assert "PR merge를 한 단계로 묶는 기준" in normalized_korean_readme
     assert "PR changed-file/status gate" in korean_readme
-    assert "PR `Summary` / `Tests` 기록" in korean_readme
+    assert "PR `Summary` / `Tests` 기록" in normalized_korean_readme
     assert "최종 상태 확인" in korean_readme
     assert "local checkout" in korean_readme
     assert "safety" in korean_readme

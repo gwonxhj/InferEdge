@@ -83,6 +83,10 @@ publishing, PR creation, and PR merge as one execution step after local
 validation passes. Do not commit, push, open a PR, or merge while any required
 test or smoke check is failing.
 
+Do not split the validated publish, PR creation, and merge handoff into
+separate reviewer instructions unless a failed check or unresolved review
+comment requires stopping.
+
 Before merging, verify the changed file list is scoped to the intended task and
 the pull request is mergeable. After merging, fetch `origin/main`, confirm the
 new merge commit, and start the next task from `origin/main`.
