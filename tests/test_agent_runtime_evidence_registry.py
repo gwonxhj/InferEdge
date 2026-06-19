@@ -1655,6 +1655,9 @@ def test_core_docs_language_selectors_link_to_korean_guides() -> None:
 def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+    completion_audit = (ROOT / "docs" / "reviewer_completion_audit.md").read_text(
+        encoding="utf-8"
+    )
     ecosystem = (ROOT / "docs" / "ecosystem_1page.md").read_text(
         encoding="utf-8"
     )
@@ -1693,6 +1696,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/agent_runtime_e2e_demo.md",
             "docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry",
             "docs/interview_narrative.md",
+            "docs/reviewer_completion_audit.md",
             "docs/evidence/jetson_device_local_agent_runtime_report.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.md",
         ],
@@ -1709,6 +1713,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/agent_runtime_e2e_demo.ko.md",
             "docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현",
             "docs/interview_narrative.ko.md",
+            "docs/reviewer_completion_audit.md",
             "docs/evidence/jetson_device_local_agent_runtime_report.ko.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.ko.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.html",
@@ -1752,6 +1757,20 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
     assert "generated `00_evidence_index.*`" in " ".join(korean_ecosystem.split())
     assert "smoke-gated evidence-index boundary" in " ".join(korean_ecosystem.split())
     assert "Lab report owner나 source contract가 아니라" in " ".join(korean_ecosystem.split())
+    assert "Reviewer Completion Audit" in readme
+    assert "Reviewer Completion Audit" in korean_readme
+    for marker in [
+        "reviewer navigation artifact",
+        "Requirement Evidence",
+        "Current Verification Snapshot",
+        "INFEREDGE_REPOS_DIR=/private/tmp/inferedge-master-locked-current-20260619-1 bash scripts/smoke_all.sh",
+        "python -m pytest -q",
+        "bash scripts/check_publish_ready.sh",
+        "not a Lab report owner",
+        "source contract",
+        "Jetson hardware is not required",
+    ]:
+        assert marker in completion_audit
 
 
 def test_entrypoint_reviewer_path_local_links_exist() -> None:
