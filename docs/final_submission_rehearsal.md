@@ -212,6 +212,12 @@ policy-pressure alignment commits included. `repos.yaml` remains a role map and
 historical supporting-reference record; it does not replace `repos.lock` as the
 locked smoke snapshot.
 
+2026-06-19 follow-up: the pinned smoke snapshot was refreshed again after the
+current sibling Forge and Runtime `origin/main` heads passed `smoke_all.sh`.
+The refresh captures the Forge and Runtime sample handoff boundary docs while
+keeping Lab, AIGuard, Orchestrator, and Env at their existing smoke-passing
+commits.
+
 ## Submission Gate
 
 Status: pass after smoke script hardening.

@@ -1812,6 +1812,13 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
         "does not replace `repos.lock` as the locked smoke snapshot"
         in normalized_delta
     )
+    assert "pinned smoke snapshot was refreshed again" in delta
+    assert (
+        "current sibling Forge and Runtime `origin/main` heads passed `smoke_all.sh`"
+        in delta
+    )
+    assert "sample handoff boundary docs" in delta
+    assert "Lab, AIGuard, Orchestrator, and Env" in delta
     assert "do not force push over public `main`" in delta
     assert_markers_in_order(
         delta,
