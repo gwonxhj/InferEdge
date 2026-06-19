@@ -1697,6 +1697,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry",
             "docs/interview_narrative.md",
             "docs/reviewer_completion_audit.md",
+            "docs/core4_roadmap_status.md",
             "docs/evidence/jetson_device_local_agent_runtime_report.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.md",
         ],
@@ -1714,6 +1715,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
             "docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현",
             "docs/interview_narrative.ko.md",
             "docs/reviewer_completion_audit.md",
+            "docs/core4_roadmap_status.md",
             "docs/evidence/jetson_device_local_agent_runtime_report.ko.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.ko.md",
             "docs/evidence/jetson_device_local_5min_sustained_report.html",
@@ -1896,6 +1898,44 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
             "현재 evidence reports",
         ],
         label="portfolio_summary.ko 먼저 보여줄 것",
+    )
+
+
+def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
+    status_doc = (ROOT / "docs" / "core4_roadmap_status.md").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    korean_readme = (ROOT / "README.ko.md").read_text(encoding="utf-8")
+
+    assert "[Core4 Roadmap Status](docs/core4_roadmap_status.md)" in readme
+    assert "[Core4 Roadmap Status](docs/core4_roadmap_status.md)" in korean_readme
+    for marker in (
+        "InferEdgeLab PR #374",
+        "InferEdgeLab PR #375",
+        "InferEdge-Runtime PR #67",
+        "InferEdgeAIGuard PR #107",
+        "metadata.json",
+        "manifest.json",
+        "Runtime `result.json`",
+        "Lab compare output",
+        "AIGuard `guard_analysis`",
+        "Lab remains the final deployment decision owner",
+        "No new benchmark, Jetson run, or sustained evidence is claimed here.",
+        "Jetson hardware is required for fresh sustained Runtime evidence collection.",
+    ):
+        assert marker in status_doc
+
+    assert_markers_in_order(
+        status_doc,
+        [
+            "Core 4 Contract Conformance Suite",
+            "Lab Decision Policy Versioning",
+            "Runtime Real-Device Evidence Depth",
+            "AIGuard Detector Matrix Depth",
+            "Documentation Cleanup",
+        ],
+        label="Core4 roadmap status order",
     )
 
 

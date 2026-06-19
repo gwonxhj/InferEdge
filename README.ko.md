@@ -201,6 +201,7 @@ registry / comparability / regression evidence owner입니다.
 | [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | 연결된 metric snapshot 값과 `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label이 포함된 최신 registry |
 | [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
 | [Reviewer Completion Audit](docs/reviewer_completion_audit.md) | 현재 reviewer path, pinned smoke snapshot, publish safety 검증 근거 |
+| [Core4 Roadmap Status](docs/core4_roadmap_status.md) | Core4 6개월 보완 roadmap의 완료/대기 상태와 portfolio 개선 후보 |
 | [Jetson 디바이스 로컬 에이전트 런타임 증거 보고서](docs/evidence/jetson_device_local_agent_runtime_report.ko.md) | 현재 Jetson device-local replay evidence |
 | [Jetson 디바이스 로컬 5분급 지속 스모크 보고서](docs/evidence/jetson_device_local_5min_sustained_report.ko.md), [대표 스냅샷 HTML 보고서](docs/evidence/jetson_device_local_5min_sustained_report.html) | 현재 Jetson 5-minute-class sustained evidence |
 
