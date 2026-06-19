@@ -52,7 +52,7 @@ Jetson evidence는 demo / evidence report와 같은 용어를 사용합니다.
 |---|---|---|
 | Core 4 validation pipeline | 구현됨 | build provenance, Runtime evidence, Lab decision, optional AIGuard evidence 연결 |
 | Local Studio | 구현됨 | local-first evidence replay와 deployment decision 확인 |
-| Runtime Intelligence artifact gate | 구현됨 | Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence chain의 marker와 ownership boundary 검증 |
+| Runtime Intelligence artifact gate | 구현됨 | Orchestrator -> EdgeEnv -> AIGuard -> Lab evidence chain의 marker, policy-pressure handoff alignment, ownership boundary 검증 |
 | Jetson/device-local smoke | Smoke/Starter | device-local ONNX probe와 live telemetry handoff 보존 |
 | Remote dispatch/fallback | Smoke/Starter | file-based starter evidence이며 production remote execution이 아님 |
 | Cloudflare / dashboard / production worker services | Future Work | 문서화된 방향만 존재 |
@@ -92,7 +92,7 @@ machine-readable `evidence_index_boundary_summary` metadata로 보존합니다.
 
 | 리뷰 질문 | evidence path |
 |---|---|
-| evidence chain이 끝까지 이어지는가? | `runtime_intelligence_bundle_manifest_gate_summary.md`의 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle |
+| evidence chain이 끝까지 이어지는가? | `runtime_intelligence_bundle_manifest_gate_summary.md`의 `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle과 policy-pressure handoff alignment |
 | EdgeEnv fixture matrix가 보존되는가? | InferEdgeEnv `examples/regression/fixture_matrix.json`의 same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, replay-sequence fixture role |
 | report와 deployment decision은 Lab-owned인가? | `runtime_anomaly_summary.md` / `.html`의 Runtime Intelligence Risk Summary와 Lab decision context |
 | reviewer가 Lab report를 빠르게 따라갈 수 있는가? | Lab `Review Path` section과 `Validated Review Path` gate summary, `review_path_section: short Review Path section rendered`, `review_path_fast_path: readable Review Path fast path rendered`로 README -> Lab report -> gate summary 읽기 순서 확인 |
@@ -108,6 +108,10 @@ metadata이며 연결된 metric snapshot 값과 `evidence_index_boundary_summary
 Duration handoff 이력은 `EdgeEnv/AIGuard duration handoff alignment`,
 `duration_handoff_alignment_20260601`, EdgeEnv `de64d50` / AIGuard `7289899`
 marker로 추적합니다.
+Policy-pressure handoff는 EdgeEnv handoff context와 AIGuard `guard_analysis`
+raw context의 summary run ID 일치를 Lab artifact gate가 확인합니다. 이는
+operation-pressure evidence의 traceability 보강이며, Lab의 final decision
+ownership을 바꾸지 않습니다.
 
 ## 주장하지 말아야 할 것
 

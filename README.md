@@ -123,7 +123,7 @@ endurance validation.
 | Local Studio demo evidence replay | Implemented | Local browser workflow for demo evidence, compare, deployment decision, and AIGuard cases |
 | YOLOv8 COCO subset / model contract validation | Implemented | Subset evaluation plus bbox/score/contract validation |
 | AIGuard diagnosis cases | Implemented | Deterministic bbox, score, baseline, temporal, and runtime-reliability warning evidence |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle, including directly gated Jetson preservation and remote fallback Lab markers |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke for the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle, including directly gated policy-pressure alignment, Jetson preservation, and remote fallback Lab markers |
 | Orchestrator producer-backed / device-local smoke | Smoke/Starter | Queue depth, drop/fallback, policy reason, Lab operation context, and EdgeEnv preservation evidence |
 | Remote dispatch / fallback starter | Smoke/Starter | File-based worker selection, local HTTP fallback worker evidence, bounded fallback recovery, Lab-owned report context |
 | Cloudflare / dashboard / production worker services | Future Work | Documented direction only |
@@ -136,6 +136,9 @@ reproducible. The Lab's local-first Runtime Intelligence artifact preserves
 remote-dispatch boundary rows, Runtime replay duration scope, and compact
 queue/deadline/fallback operation markers without making CI a runtime control
 plane.
+The current handoff gate also checks that policy-pressure summary run IDs stay
+aligned between EdgeEnv handoff context and AIGuard `guard_analysis` raw context
+before Lab consumes the artifact.
 
 Curated reviewer sample handoff:
 
@@ -154,7 +157,7 @@ Reviewer path:
 
 | Step | What to inspect | Why it matters |
 |---|---|---|
-| 1 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle and owner boundary are intact. |
+| 1 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the `Orchestrator -> EdgeEnv -> AIGuard -> Lab` bundle, owner boundary, and policy-pressure handoff alignment are intact. |
 | 2 | EdgeEnv `examples/regression/fixture_matrix.json` | Confirms same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, and replay-sequence fixtures are covered before Lab consumes the evidence. |
 | 3 | `runtime_anomaly_summary.md` / `.html` | Shows the Lab-owned Runtime Intelligence Risk Summary, duration traceability, and operation quick scan in one report. |
 | 4 | Lab `Review Path` section and `Validated Review Path` gate summary | Keeps the README -> Lab report -> gate summary reading order explicit for reviewers without making CI, AIGuard, or Orchestrator the report owner. Detailed marker vocabulary lives in the Agent Runtime E2E demo docs. |

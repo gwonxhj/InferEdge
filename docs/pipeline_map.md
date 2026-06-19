@@ -102,6 +102,9 @@ The smoke-gated evidence-index boundary keeps `00_evidence_index.md` as reviewer
 navigation rather than a Lab report owner or source contract.
 The run registry carries the same boundary as machine-readable
 `evidence_index_boundary_summary` metadata for multi-run review.
+The current handoff gate also preserves policy-pressure summary run ID
+alignment from EdgeEnv handoff context into AIGuard `guard_analysis` raw context
+before Lab renders the operation-risk report.
 
 The submission-ready diagram is in
 [Ecosystem 1-Page Summary](ecosystem_1page.md)

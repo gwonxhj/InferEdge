@@ -111,6 +111,12 @@ generated `00_evidence_index.*` artifact가 같은 reviewer marker vocabulary를
 reviewer-focus, EdgeEnv preservation, operation quick-scan marker가 Lab report와
 entrypoint evidence index 사이에서 어긋나지 않아야 합니다. JSON/Markdown
 format-specific label은 분리하지만, 공통 marker vocabulary는 drift되면 안 됩니다.
+복사된 AIGuard/EdgeEnv alignment artifact는
+`handoff_policy_pressure_summary_run_ids`,
+`guard_analysis_policy_pressure_summary_run_ids`, 빈
+`policy_pressure_summary_errors`도 보존해야 합니다. 이 값은 Lab이 artifact를
+소비하기 전에 policy-pressure review evidence가 같은 EdgeEnv candidate run을
+가리키는지 확인하기 위한 traceability marker입니다.
 
 ## Jetson evidence 해석
 

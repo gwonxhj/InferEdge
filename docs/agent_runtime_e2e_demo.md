@@ -118,6 +118,11 @@ the copied AIGuard/EdgeEnv alignment artifact. The expected context is:
 `aiguard_validates_expected_report_markers=false`. This keeps marker
 enforcement in Lab's bundle/report gates while AIGuard remains an external
 deterministic evidence provider.
+The same copied alignment artifact now also carries
+`handoff_policy_pressure_summary_run_ids`,
+`guard_analysis_policy_pressure_summary_run_ids`, and empty
+`policy_pressure_summary_errors`, proving that policy-pressure review evidence
+points back to the same EdgeEnv candidate run before Lab consumes it.
 
 ## Run
 

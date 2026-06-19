@@ -74,7 +74,7 @@ bounded operation-control context after deployment validation.
 | Local Studio | Implemented | Browser-based local workflow for demo evidence replay, compare, decision, and AIGuard cases |
 | Evaluation / contract validation | Implemented | YOLOv8 COCO subset, simplified mAP50, bbox/score/model contract evidence |
 | AIGuard diagnosis cases | Implemented | Deterministic evidence for bbox collapse, score saturation, temporal instability, baseline deviation, and runtime warnings |
-| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke protects the Orchestrator -> EdgeEnv -> AIGuard -> Lab report/bundle markers |
+| Runtime Intelligence artifact gate | Implemented | Cross-repo smoke protects the Orchestrator -> EdgeEnv -> AIGuard -> Lab report/bundle markers, including policy-pressure handoff alignment |
 | Producer-backed sustained workload path | Smoke/Starter | Reproducible scheduling/drop/fallback evidence, not a production scheduler |
 | Jetson ONNX + `tegrastats` replay | Smoke/Starter | Device-local smoke evidence with live telemetry handoff, not decoded YOLO accuracy or thermal endurance validation |
 | Remote dispatch/fallback | Smoke/Starter | Worker-selection/fallback evidence preserved through EdgeEnv, AIGuard, and Lab; not production remote execution |
@@ -103,6 +103,9 @@ Portfolio emphasis:
   deterministic evidence, not LLM root-cause guessing.
 - Lab ties the evidence back to deployment risk and remains the final decision
   owner.
+- The current Lab artifact gate requires policy-pressure summary run IDs to
+  match between EdgeEnv handoff context and AIGuard `guard_analysis`, so
+  operation-pressure evidence remains traceable without changing ownership.
 
 The fixture-only `scripts/smoke_remote_fallback_registry_marker.sh` keeps the
 remote fallback marker path reproducible without a live HTTP worker. It must

@@ -176,6 +176,7 @@ Current reviewer additions:
 | Addition | Where to inspect | Boundary |
 |---|---|---|
 | Runtime Intelligence artifact gate | `README.md` Runtime Intelligence Smoke and `docs/agent_runtime_e2e_demo.md#smoke-gate-split` | Local-first artifact smoke; not production observability or a GitLab control plane |
+| Policy-pressure handoff alignment | `README.md` Runtime Intelligence Smoke and `docs/agent_runtime_e2e_demo.md` shared marker-gate sections | Confirms EdgeEnv handoff context and AIGuard `guard_analysis` policy-pressure summary run IDs stay aligned before Lab consumes the artifact |
 | Operation quick-scan registry | `docs/agent_runtime_e2e_demo.md#latest-jetson-quick-scan-registry` | Reviewer navigation metadata; not a Lab report owner or production runtime proof |
 | Shared reviewer marker-gate details | `docs/agent_runtime_e2e_demo.md` shared marker-gate sections | Keeps Lab report summaries, copied CI artifact summaries, and generated `00_evidence_index.*` artifacts aligned without making this rehearsal the detailed marker vocabulary owner |
 | Evidence index boundary gate | `scripts/smoke_all.sh` and `docs/agent_runtime_e2e_demo.md` evidence-index sections | Gates the generated `00_evidence_index.md` boundary wording so reviewer navigation cannot become a Lab report owner or source contract |

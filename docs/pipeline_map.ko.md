@@ -88,6 +88,9 @@ smoke-gated evidence-index boundary는 `00_evidence_index.md`를 Lab report
 owner나 source contract가 아니라 reviewer navigation으로 유지합니다.
 run registry도 같은 boundary를 multi-run review용 machine-readable
 `evidence_index_boundary_summary` metadata로 보존합니다.
+현재 handoff gate는 EdgeEnv handoff context의 policy-pressure summary run ID가
+AIGuard `guard_analysis` raw context까지 보존되는지도 확인한 뒤 Lab
+operation-risk report로 넘깁니다.
 
 ## Contract Boundaries
 
