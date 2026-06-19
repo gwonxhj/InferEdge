@@ -55,7 +55,8 @@ lock now includes the refreshed Lab decision policy, Runtime Jetson evidence
 depth audit, AIGuard detector-depth hardening, and AIGuard calibration drift
 additive-evidence, baseline profile stability metadata, and sequence-level
 disappearance evidence plus temporal continuity demo commits, along with
-Orchestrator PR #115 operation-risk CLI first-read polish.
+Orchestrator PR #115 operation-risk CLI first-read polish and Lab PR #376
+operation-risk report first-read preservation.
 
 ## Boundaries
 
