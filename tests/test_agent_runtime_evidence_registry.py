@@ -679,6 +679,46 @@ def test_runtime_intelligence_demo_docs_preserve_artifact_and_gate_order() -> No
     )
 
 
+def test_repos_lock_covers_smoke_all_required_repositories() -> None:
+    smoke_script = (ROOT / "scripts" / "smoke_all.sh").read_text(
+        encoding="utf-8"
+    )
+    clone_script = (ROOT / "scripts" / "clone_all.sh").read_text(
+        encoding="utf-8"
+    )
+    update_script = (ROOT / "scripts" / "update_all.sh").read_text(
+        encoding="utf-8"
+    )
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+
+    required_repos = set(
+        re.findall(
+            r'^\w+="\$\((?:require_repo) ([^)]+)\)"',
+            smoke_script,
+            re.MULTILINE,
+        )
+    )
+    locked_repos = set()
+    for line in (ROOT / "repos.lock").read_text(encoding="utf-8").splitlines():
+        if not line or line.startswith("#") or line.startswith("name"):
+            continue
+        locked_repos.add(line.split("\t")[0])
+
+    assert required_repos == {
+        "InferEdgeForge",
+        "InferEdge-Runtime",
+        "InferEdgeLab",
+        "InferEdgeAIGuard",
+        "InferEdgeOrchestrator",
+        "InferEdgeEnv",
+    }
+    assert locked_repos == required_repos
+    assert "Clone all InferEdge smoke repositories" in clone_script
+    assert "Update existing InferEdge smoke repository clones" in update_script
+    assert "Pinned smoke snapshot" in readme
+    assert "Orchestrator, and Env" in readme
+
+
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:
     script = (ROOT / "scripts" / "smoke_remote_fallback_registry_marker.sh").read_text(
         encoding="utf-8"
