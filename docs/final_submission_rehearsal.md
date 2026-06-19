@@ -4,6 +4,10 @@ Date: 2026-05-14
 
 This document records the final submission rehearsal for the InferEdge multi-repository portfolio entrypoint.
 
+This is a historical clean-clone record from 2026-05-14. For the current
+reviewer path, use the `Current Reviewer Path Delta` section below; later
+navigation updates do not turn this record into a fresh clean-clone claim.
+
 The purpose is to prove the reviewer path from a clean clone:
 
 1. clone the entrypoint repository

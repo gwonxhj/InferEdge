@@ -1656,6 +1656,12 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         in readme
     )
     assert "Runtime Operation / Agent Runtime smoke 흐름과 공통 marker-gate 상세 owner" in korean_readme
+    assert (
+        "Historical clean-clone rehearsal and current reviewer delta; "
+        "not a fresh clean-clone claim"
+        in readme
+    )
+    assert "최신 clean-clone 재실행 주장 아님" in korean_readme
 
     assert_markers_in_order(
         readme,
@@ -1756,6 +1762,7 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
 
     assert "historical clean-clone record from 2026-05-14" in delta
     assert "does not claim a new clean-clone run" in normalized_delta
+    assert "fresh clean-clone claim" in rehearsal
     assert "Runtime Intelligence artifact gate" in delta
     assert "Operation quick-scan registry" in delta
     assert "Shared reviewer marker-gate details" in delta
