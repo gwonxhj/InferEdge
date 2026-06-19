@@ -1758,6 +1758,7 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "Evidence index boundary gate" in delta
     assert "Registry boundary summary" in delta
     assert "Runtime operation / Jetson evidence snapshot" in delta
+    assert "Locked smoke repository map" in delta
     assert "Safe publish and PR path" in delta
     assert "copied CI artifact summaries" in delta
     assert "generated `00_evidence_index.*` artifacts" in delta
@@ -1773,6 +1774,14 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "not production observability or a GitLab control plane" in delta
     assert "not a Lab report owner or production runtime proof" in delta
     assert "live Jetson execution is not implied" in delta
+    assert "`repos.lock` is the pinned smoke snapshot" in delta
+    assert "`repos.yaml` remains the ecosystem role map" in delta
+    assert "historical supporting-reference record" in delta
+    assert "not the locked clone source" in delta
+    assert (
+        "does not replace `repos.lock` as the locked smoke snapshot"
+        in normalized_delta
+    )
     assert "do not force push over public `main`" in delta
     assert_markers_in_order(
         delta,
