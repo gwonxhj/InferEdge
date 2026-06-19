@@ -18,6 +18,9 @@ Forge -> Runtime -> Lab (+ optional AIGuard)
 Runtime Operation and Runtime Intelligence evidence can strengthen the
 portfolio, but they do not replace the Core4 validation contract and do not move
 the final deployment decision away from Lab.
+InferEdgeOrchestrator PR #115 adds an `operation-risk` first-read line to the
+sustained CLI output so reviewers can see queue/deadline/fallback risk level,
+primary reasons, and affected tasks before opening the full JSON evidence.
 
 ## Current Status
 
@@ -55,6 +58,10 @@ turns reviewer claims into contract-aware checks:
 - AIGuard portfolio demo now includes a temporal profile continuity case that
   shows sequence disappearance, class flip, and bbox jump evidence together in
   one compact reviewer fixture.
+- Orchestrator sustained CLI output now surfaces the existing
+  `operation_risk_rollup` as an `operation-risk` first-read line, improving
+  reviewer scanability without changing Lab ownership or the JSON source
+  evidence.
 - Documentation cleanup keeps the project framed as a local-first validation
   workflow, not a production SaaS, AI OS, or generic monitoring stack.
 
@@ -66,7 +73,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 polish | Shows constrained edge workload reliability under queue/deadline/fallback pressure | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Boundaries
 

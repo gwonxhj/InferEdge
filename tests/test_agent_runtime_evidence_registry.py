@@ -1921,6 +1921,7 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "PR #111 adds baseline profile stability audit metadata",
         "PR #112 adds sequence-level disappearance evidence",
         "PR #113 adds a temporal profile continuity demo case",
+        "InferEdgeOrchestrator PR #115 adds an `operation-risk` first-read line",
         "Complete for disappearance, per-class drift, review-level calibration drift, baseline profile stability audit metadata, sequence-level disappearance evidence, and the temporal continuity demo case",
         "metadata.json",
         "manifest.json",
@@ -1938,7 +1939,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
     assert "AIGuard baseline profile stability hardening" not in status_doc
     assert "AIGuard sequence-level disappearance hardening" not in status_doc
     assert "AIGuard temporal profile continuity demo" not in status_doc
-    assert "Runtime Operation v2 polish" in status_doc
+    assert "Runtime Operation v2 deeper polish" in status_doc
+    assert "PR #115 first-read CLI polish" in status_doc
 
     assert_markers_in_order(
         status_doc,
