@@ -730,10 +730,14 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
         "InferEdgeEnv",
     }
     assert locked_repos == required_repos
-    assert "Clone all InferEdge smoke repositories" in clone_script
-    assert "Update existing InferEdge smoke repository clones" in update_script
+    assert "Clone all InferEdge pinned smoke repositories" in clone_script
+    assert "InferEdge pinned smoke repositories are ready" in clone_script
+    assert "Update existing InferEdge pinned smoke repository clones" in update_script
+    assert "InferEdge pinned smoke repositories updated" in update_script
     assert "Pinned smoke snapshot" in readme
     assert "Orchestrator, and Env" in readme
+    assert "Clone pinned smoke repositories into `repos/`" in readme
+    assert "Update existing pinned smoke repository clones" in readme
     assert "supporting_reference_commit" in repos_yaml
     assert "historical supporting reference only" in repos_yaml
     assert (

@@ -9,7 +9,7 @@ usage() {
   cat <<'USAGE'
 Usage: bash scripts/update_all.sh [--locked|--latest]
 
-Update existing InferEdge smoke repository clones.
+Update existing InferEdge pinned smoke repository clones.
 
 Options:
   --locked  Checkout the verified smoke commit in repos.lock.
@@ -53,4 +53,4 @@ while IFS=$'\t' read -r name url branch commit path; do
 done < "$LOCK_FILE"
 
 echo
-echo "InferEdge repositories updated in: $DEST_ROOT"
+echo "InferEdge pinned smoke repositories updated in: $DEST_ROOT"

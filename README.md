@@ -264,8 +264,8 @@ context.
 |---|---|
 | `repos.lock` | Pinned smoke snapshot for Forge, Runtime, Lab, AIGuard, Orchestrator, and Env |
 | `repos.yaml` | Ecosystem role map and supporting reference context |
-| `scripts/clone_all.sh` | Clone pinned repositories into `repos/` |
-| `scripts/update_all.sh` | Pull all cloned repositories |
+| `scripts/clone_all.sh` | Clone pinned smoke repositories into `repos/` |
+| `scripts/update_all.sh` | Update existing pinned smoke repository clones |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
 | `scripts/check_publish_ready.sh` | Check publish readiness and block unsafe remote branch updates |
 | `scripts/smoke_quick_scan_registry_summary.sh` | Build a fixture-only `Operation Quick Scan Summary` registry gate; Jetson is not required |

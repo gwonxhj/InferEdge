@@ -9,7 +9,7 @@ usage() {
   cat <<'USAGE'
 Usage: bash scripts/clone_all.sh [--locked|--latest]
 
-Clone all InferEdge smoke repositories into ./repos by default.
+Clone all InferEdge pinned smoke repositories into ./repos by default.
 
 Options:
   --locked  Clone/fetch and checkout the verified smoke commit in repos.lock.
@@ -55,4 +55,4 @@ while IFS=$'\t' read -r name url branch commit path; do
 done < "$LOCK_FILE"
 
 echo
-echo "InferEdge repositories are ready in: $DEST_ROOT"
+echo "InferEdge pinned smoke repositories are ready in: $DEST_ROOT"
