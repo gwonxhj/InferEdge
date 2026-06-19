@@ -113,6 +113,10 @@ bash scripts/clone_all.sh --locked
 bash scripts/smoke_all.sh
 ```
 
+`repos.lock`은 이 명령의 authoritative pinned smoke clone 목록입니다.
+`repos.yaml`은 ecosystem role map과 historical supporting-reference 기록이며,
+locked smoke snapshot을 대체하지 않습니다.
+
 ## Scope Boundary
 
 InferEdge는 production SaaS platform, production observability platform,

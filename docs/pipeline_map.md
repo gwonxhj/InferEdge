@@ -139,6 +139,10 @@ For local development where the repos already exist elsewhere:
 INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub bash scripts/smoke_all.sh
 ```
 
+`repos.lock` is the authoritative pinned smoke clone list for this command.
+`repos.yaml` is the ecosystem role map and historical supporting-reference
+record; it is not a replacement for the locked smoke snapshot.
+
 ## Scope Boundary
 
 InferEdge is not presented as a production SaaS platform, production

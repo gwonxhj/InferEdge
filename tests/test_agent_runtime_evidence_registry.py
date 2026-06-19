@@ -691,6 +691,16 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
     )
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     repos_yaml = (ROOT / "repos.yaml").read_text(encoding="utf-8")
+    portfolio = (ROOT / "docs" / "portfolio_summary.md").read_text(
+        encoding="utf-8"
+    )
+    portfolio_ko = (ROOT / "docs" / "portfolio_summary.ko.md").read_text(
+        encoding="utf-8"
+    )
+    pipeline = (ROOT / "docs" / "pipeline_map.md").read_text(encoding="utf-8")
+    pipeline_ko = (ROOT / "docs" / "pipeline_map.ko.md").read_text(
+        encoding="utf-8"
+    )
 
     required_repos = set(
         re.findall(
@@ -725,6 +735,16 @@ def test_repos_lock_covers_smoke_all_required_repositories() -> None:
         in repos_yaml
     )
     assert "Core clone/update scripts stay scoped" not in repos_yaml
+    for text in (portfolio, pipeline):
+        assert "repos.lock" in text
+        assert "pinned smoke" in text
+        assert "repos.yaml" in text
+        assert "historical supporting" in text
+    for text in (portfolio_ko, pipeline_ko):
+        assert "repos.lock" in text
+        assert "pinned smoke" in text
+        assert "repos.yaml" in text
+        assert "historical supporting" in text
 
 
 def test_remote_fallback_registry_marker_smoke_is_fixture_only() -> None:

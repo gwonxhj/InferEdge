@@ -210,5 +210,8 @@ INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub bash scripts/smoke_all.
 
 The smoke validates Core 4 contract health, remote fallback marker preservation,
 Agent Runtime EdgeEnv preservation, and the Runtime Intelligence artifact gate.
+`repos.lock` is the pinned smoke snapshot used by `clone_all.sh`; `repos.yaml`
+keeps the ecosystem role map and historical supporting references such as
+curated Orchestrator sample handoffs.
 For full command history and generated artifact details, use
 [`docs/agent_runtime_e2e_demo.md`](agent_runtime_e2e_demo.md).
