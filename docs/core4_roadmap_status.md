@@ -146,6 +146,26 @@ created. Keep the committed Jetson reports as the current reviewer evidence
 until the target device is powered on, reachable over SSH with `BatchMode=yes`,
 and the readiness preflight passes.
 
+### Runtime Operation v2 Scoped Starter Plan
+
+If Jetson sustained capture remains blocked, the safer portfolio improvement is
+to start Runtime Operation v2 as a scoped operation-evidence task, not as a new
+product surface.
+
+- Owner repo: `InferEdgeOrchestrator`.
+- First evidence target: a fixture-backed sustained workload pressure scenario
+  that records queue-depth timeline, worker-health trend, deadline/drop/fallback
+  counts, and scheduler decision reasons.
+- Supporting repos: `InferEdgeEnv`, `InferEdgeAIGuard`, and `InferEdgeLab` may
+  consume the Orchestrator evidence only after the source artifact is stable.
+- Required boundary: no `metadata.json`, `manifest.json`, Runtime `result.json`,
+  Lab compare output, Lab deployment decision, or AIGuard `guard_analysis`
+  contract change is implied by this starter plan.
+- Completion rule: do not mark Runtime Operation v2 as implemented until the
+  Orchestrator source artifact, EdgeEnv preservation path, AIGuard deterministic
+  evidence, Lab-owned report context, and entrypoint smoke/reviewer marker gate
+  all pass together.
+
 ## Boundaries
 
 - This status document is not a source contract.
