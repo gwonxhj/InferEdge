@@ -36,6 +36,7 @@ output, Lab deployment decision output, or AIGuard `guard_analysis` contracts.
 | Branch publish, PR creation, and merge are one bundled handoff after validation | `docs/publish_inferedge.md` `## Bundled PR Merge Step`; README publish summary | Pass |
 | Lab remains the final deployment decision owner | README Cross-Repo Quick Guide Path, pipeline map, portfolio summary, interview narrative | Pass |
 | Runtime operation evidence stays bounded | README Runtime Intelligence Smoke, Agent Runtime E2E Demo, portfolio summary, pipeline map | Pass |
+| Operation-risk first-read path is visible from the reviewer entrypoint | README `## Docs & Review Path`, portfolio Runtime Intelligence Review Path, ecosystem 1-page, and interview narrative preserve `operation-risk` first-read as reviewer navigation only | Pass |
 
 ## Current Verification Snapshot
 
@@ -58,6 +59,9 @@ disappearance evidence plus temporal continuity demo commits, along with
 Orchestrator PR #115 operation-risk CLI first-read polish and Lab PR #376
 operation-risk report first-read preservation, plus EdgeEnv PR #155 Lab handoff
 first-read preservation.
+InferEdge entrypoint PRs #258, #259, and #260 align the same first-read path
+across portfolio summary, ecosystem 1-page, interview narrative, and README
+reviewer path links without changing Lab-owned decision authority.
 
 ## Boundaries
 
