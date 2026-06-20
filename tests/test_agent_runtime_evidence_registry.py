@@ -1982,10 +1982,13 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "InferEdgeOrchestrator PR #115 adds an `operation-risk` first-read line",
         "InferEdgeLab PR #376 preserves the same `first_read` marker",
         "InferEdgeEnv PR #155 carries the operation risk `first_read` marker",
-        "InferEdge entrypoint PRs #258-#263 close the reviewer-facing loop",
+        "InferEdge entrypoint PRs #258-#265 close the reviewer-facing loop",
         "README, portfolio summary, ecosystem 1-page, interview narrative, completion",
         "audit, generated evidence indexes/run registries, and the cross-repo Runtime",
         "Intelligence report marker gate",
+        "PR #265 keeps the reviewer completion audit aligned",
+        "artifact and gate",
+        "coverage so the status document and audit document",
         "first_read=review_operation_risk_context",
         "Complete for disappearance, per-class drift, review-level calibration drift, baseline profile stability audit metadata, sequence-level disappearance evidence, and the temporal continuity demo case",
         "Complete for the current first-read reviewer path; future cleanup remains bounded",
@@ -2009,7 +2012,7 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
     assert "PR #115 first-read CLI polish" in status_doc
     assert "PR #376 Lab report first-read polish" in status_doc
     assert "PR #155 EdgeEnv handoff first-read polish" in status_doc
-    assert "PR #258-#263 reviewer path / artifact / gate alignment" in status_doc
+    assert "PR #258-#265 reviewer path / artifact / audit / gate alignment" in status_doc
 
     assert_markers_in_order(
         status_doc,
