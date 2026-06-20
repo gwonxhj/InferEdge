@@ -2011,6 +2011,16 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "Lab remains the final deployment decision owner",
         "No new benchmark, Jetson run, or sustained evidence is claimed here.",
         "Jetson hardware is required for fresh sustained Runtime evidence collection.",
+        "Portfolio Improvement Decision Log",
+        "Current direction",
+        "Stronger portfolio direction",
+        "Prefer the stronger direction later",
+        "requires Jetson hardware and must be recorded as new evidence",
+        "Defer as a separate Runtime Operation v2 task",
+        "Start the fresh Jetson direction only after",
+        "scripts/check_jetson_sustained_readiness.sh",
+        "no `metadata.json`",
+        "Lab deployment decision",
     ):
         assert marker in status_doc
 
@@ -2020,6 +2030,8 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
     assert "AIGuard sequence-level disappearance hardening" not in status_doc
     assert "AIGuard temporal profile continuity demo" not in status_doc
     assert "Runtime Operation v2 deeper polish" in status_doc
+    assert "fresh sustained Jetson run with current main branches" in status_doc
+    assert "operation evidence" in status_doc
     assert "PR #115 first-read CLI polish" in status_doc
     assert "PR #376 Lab report first-read polish" in status_doc
     assert "PR #155 EdgeEnv handoff first-read polish" in status_doc

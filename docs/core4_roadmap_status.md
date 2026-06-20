@@ -111,6 +111,22 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
 | Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
+## Portfolio Improvement Decision Log
+
+Use this section when deciding whether to keep polishing the current evidence
+path or split a stronger portfolio direction into a later task.
+
+| Decision point | Current direction | Stronger portfolio direction | Decision |
+|---|---|---|---|
+| Runtime evidence depth | Keep the committed Jetson fixtures and Runtime evidence-depth audit as the current reviewer evidence | Capture a fresh sustained Jetson run with current main branches, p95/p99, thermal, memory, power, and operation quick-scan registry evidence | Prefer the stronger direction later; it requires Jetson hardware and must be recorded as new evidence, not inferred from existing fixtures |
+| Runtime Operation polish | Keep operation-risk first-read as reviewer navigation across Orchestrator, EdgeEnv, Lab, entrypoint artifacts, audit, and smoke gates | Add deeper sustained workload pressure evidence only if it preserves Lab final-decision ownership and stays bounded as operation evidence | Defer as a separate Runtime Operation v2 task; do not mix it into Core4 completion status unless the evidence boundary or smoke gate changes |
+
+Start the fresh Jetson direction only after `scripts/check_jetson_sustained_readiness.sh`
+passes against the target device. Start the Runtime Operation v2 direction only
+with a scoped plan that names the owner repo and confirms no `metadata.json`,
+`manifest.json`, Runtime `result.json`, Lab compare output, Lab deployment
+decision, or AIGuard `guard_analysis` contract change is being implied.
+
 ## Boundaries
 
 - This status document is not a source contract.
