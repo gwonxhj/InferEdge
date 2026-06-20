@@ -99,6 +99,7 @@ echo "  vision_input: $VISION_INPUT"
 echo "  vision_onnx_model: $VISION_ONNX_MODEL"
 echo
 
+set +e
 ssh \
   -o BatchMode=yes \
   -o ConnectTimeout="$CONNECT_TIMEOUT_SEC" \
@@ -130,6 +131,25 @@ ssh \
    fi
    test -x scripts/demo_jetson_5min_sustained.sh
    echo sustained_runner=available"
+ssh_status=$?
+set -e
+
+if [[ "$ssh_status" -ne 0 ]]; then
+  cat <<EOF >&2
+
+Jetson readiness preflight failed.
+
+No new Jetson evidence was created. Keep using the committed Jetson reports
+until this preflight passes against the target device.
+
+Next checks:
+  - verify the Jetson is powered on and reachable: $SSH_TARGET
+  - verify SSH key access works with BatchMode=yes
+  - verify the target paths above still exist on the Jetson
+
+EOF
+  exit "$ssh_status"
+fi
 
 cat <<'EOF'
 

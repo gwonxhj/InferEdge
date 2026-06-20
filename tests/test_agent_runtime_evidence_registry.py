@@ -1184,6 +1184,11 @@ def test_jetson_readiness_preflight_is_not_evidence() -> None:
     assert "miniconda3/envs/yolo_env/bin/python" in script
     assert "--edgeenv-run-evidence" in script
     assert "This preflight does not create evidence" in script
+    assert "Jetson readiness preflight failed." in script
+    assert "No new Jetson evidence was created." in script
+    assert "Keep using the committed Jetson reports" in script
+    assert "verify the Jetson is powered on and reachable" in script
+    assert "verify SSH key access works with BatchMode=yes" in script
     assert "INFEREDGE_ENV_REPO" in runner
     assert "--edgeenv-run-evidence" in runner
     for text in (readme, demo_doc):
