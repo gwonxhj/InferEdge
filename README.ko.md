@@ -197,7 +197,7 @@ registry / comparability / regression evidence owner입니다.
 | [파이프라인 맵](docs/pipeline_map.ko.md) | 레포별 책임과 contract boundary |
 | [Final Submission Rehearsal](docs/final_submission_rehearsal.md) | historical clean-clone rehearsal와 현재 reviewer delta; 최신 clean-clone 재실행 주장 아님 |
 | [Publish InferEdge Entrypoint](docs/publish_inferedge.md) | 안전한 branch publish, PR 생성/merge, readiness check |
-| [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md) | Runtime Operation / Agent Runtime smoke 흐름과 공통 marker-gate 상세 owner |
+| [Agent Runtime E2E Demo](docs/agent_runtime_e2e_demo.ko.md), [포트폴리오 Runtime Intelligence 검토 경로](docs/portfolio_summary.ko.md#runtime-intelligence-검토-경로), [인터뷰 내러티브](docs/interview_narrative.ko.md) | Runtime Operation / Agent Runtime smoke 흐름, `operation-risk` first-read path, 공통 marker-gate 상세 owner |
 | [최근 Jetson quick-scan marker 재현](docs/agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) | 연결된 metric snapshot 값과 `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label이 포함된 최신 registry |
 | [인터뷰 내러티브](docs/interview_narrative.ko.md) | 면접/리뷰어 설명용 45초 답변과 deep-dive 질문 |
 | [Reviewer Completion Audit](docs/reviewer_completion_audit.md) | 현재 reviewer path, pinned smoke snapshot, publish safety 검증 근거 |
