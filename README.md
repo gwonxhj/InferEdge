@@ -43,6 +43,12 @@ report markers and contract boundaries. Boundary marker: Production observabilit
 Reviewer verification set:
 
 ```bash
+bash scripts/check_reviewer_verification_set.sh
+```
+
+That helper runs:
+
+```bash
 python -m pytest -q
 git diff --check
 bash scripts/smoke_all.sh
@@ -285,6 +291,7 @@ context.
 | `scripts/clone_all.sh` | Clone pinned smoke repositories into `repos/` |
 | `scripts/update_all.sh` | Update existing pinned smoke repository clones |
 | `scripts/smoke_all.sh` | Run cross-repo portfolio smoke checks |
+| `scripts/check_reviewer_verification_set.sh` | Run the README reviewer verification set in command order |
 | `scripts/check_publish_ready.sh` | Check publish readiness and block unsafe remote branch updates |
 | `scripts/smoke_quick_scan_registry_summary.sh` | Build a fixture-only `Operation Quick Scan Summary` registry gate; Jetson is not required |
 | `scripts/demo_agent_runtime_e2e.sh` | Generate local Agent Runtime evidence bundles |

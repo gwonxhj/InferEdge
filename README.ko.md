@@ -39,6 +39,12 @@ platform 또는 GitLab control plane이 아닙니다.
 Reviewer verification set:
 
 ```bash
+bash scripts/check_reviewer_verification_set.sh
+```
+
+이 helper는 아래 명령을 순서대로 실행합니다.
+
+```bash
 python -m pytest -q
 git diff --check
 bash scripts/smoke_all.sh
