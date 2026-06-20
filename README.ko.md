@@ -36,6 +36,21 @@ bash scripts/smoke_all.sh
 reviewer-facing evidence와 contract boundary 검증이며, production observability
 platform 또는 GitLab control plane이 아닙니다.
 
+Reviewer verification set:
+
+```bash
+python -m pytest -q
+git diff --check
+bash scripts/smoke_all.sh
+bash scripts/check_publish_ready.sh
+```
+
+이 검증 세트는 reviewer completion audit에서 참조하는 entrypoint 검증
+기준입니다. `scripts/smoke_all.sh`는 `scripts/clone_all.sh --locked` 이후
+실행하거나 `INFEREDGE_REPOS_DIR`이 sibling InferEdge repos를 가리키게 한 뒤
+실행합니다. 이 검증 세트에는 Jetson hardware가 필요하지 않으며, fresh
+sustained Jetson capture는 이후 별도 evidence 작업입니다.
+
 `bash scripts/smoke_quick_scan_registry_summary.sh`는 Jetson 없이 committed
 fixture만으로 `Operation Quick Scan Summary` registry marker와
 `Reviewer operation quick scan` navigation row를 확인하는 좁은 gate입니다.
