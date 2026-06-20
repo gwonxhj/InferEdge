@@ -263,6 +263,7 @@ require_runtime_intelligence_report_markers() {
     "Orchestrator queue/deadline/fallback markers"
     "Operation quick scan"
     "Reviewer operation quick scan"
+    "first_read=review_operation_risk_context"
     "raw_marker=reviewer_focus_operation_quick_scan"
     "queue_pressure_reason=queue_backlog_threshold_exceeded"
     "max_total_queue_depth=7"

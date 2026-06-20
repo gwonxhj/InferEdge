@@ -70,7 +70,7 @@ reviewer-facing artifact를 같은 순서로 기록합니다.
 | EdgeEnv `examples/regression/fixture_matrix.json` | Lab smoke 전에 sibling EdgeEnv repo의 same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, replay-sequence fixture role이 유지되는지 확인 |
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | committed bundle manifest, EdgeEnv handoff alignment, artifact role, owner boundary, source repository mapping 확인 |
 | `edgeenv_runtime_regression.md` / `edgeenv_runtime_regression.html` | AIGuard enrichment 전의 same-condition EdgeEnv runtime regression evidence 확인 |
-| `runtime_anomaly_summary.md` / `runtime_anomaly_summary.html` | EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, `Operation quick scan`, `operation_risk_summary`, remote-dispatch boundary row를 포함한 Lab-owned Runtime Intelligence Risk Summary 확인 |
+| `runtime_anomaly_summary.md` / `runtime_anomaly_summary.html` | EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, `Operation quick scan`, `operation_risk_summary` / `first_read=review_operation_risk_context`, remote-dispatch boundary row를 포함한 Lab-owned Runtime Intelligence Risk Summary 확인 |
 | `runtime_anomaly_gate_summary.md` | generated Markdown/HTML report가 Runtime Intelligence row, Lab ownership wording, `Validated Duration Traceability`, `Validated Reviewer Focus`, `Validated Review Path`를 유지하는지 확인 |
 | `runtime_intelligence_ci_artifact_gate_summary.md` | optional CI artifact bundle shape와 복사된 `Validated Reviewer Focus` / `Validated Review Path` marker를 확인하되 CI를 production control plane으로 만들지 않음 |
 | `aiguard_edgeenv_handoff_alignment.json` / `aiguard_edgeenv_handoff_alignment.md` | smoke에서 사용하는 precomputed AIGuard/EdgeEnv handoff alignment fixture 보존 |
@@ -90,6 +90,7 @@ entrypoint `scripts/smoke_all.sh`는 reviewer marker vocabulary를 확인하기 
 - `Validated Reviewer Focus`
 - `reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated`
 - `reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report`
+- `first_read=review_operation_risk_context`
 
 현재 필수 review-path marker는 다음입니다.
 
