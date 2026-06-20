@@ -56,6 +56,10 @@ bash scripts/check_publish_ready.sh
 실행하거나 `INFEREDGE_REPOS_DIR`이 sibling InferEdge repos를 가리키게 한 뒤
 실행합니다. 이 검증 세트에는 Jetson hardware가 필요하지 않으며, fresh
 sustained Jetson capture는 이후 별도 evidence 작업입니다.
+sibling repos나 remote access가 준비되지 않았을 때는
+`bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready`
+로 local-only check를 먼저 실행할 수 있지만, full reviewer verification set을
+대체하지는 않습니다.
 
 `bash scripts/smoke_quick_scan_registry_summary.sh`는 Jetson 없이 committed
 fixture만으로 `Operation Quick Scan Summary` registry marker와
