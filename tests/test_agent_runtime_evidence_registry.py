@@ -1793,6 +1793,13 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         "not a Lab report owner",
         "source contract",
         "Jetson hardware is not required",
+        "Operation-risk first-read path is visible from the reviewer entrypoint",
+        "README `## Docs & Review Path`",
+        "portfolio Runtime Intelligence Review Path",
+        "ecosystem 1-page",
+        "interview narrative",
+        "PRs #258, #259, and #260",
+        "without changing Lab-owned decision authority",
     ]:
         assert marker in completion_audit
 
