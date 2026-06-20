@@ -54,7 +54,7 @@ different parts of the ecosystem.
 |---|---|---|---|
 | Agent runtime operation smoke | `bash scripts/demo_agent_runtime_e2e.sh` or the Agent Runtime EdgeEnv stage inside `bash scripts/smoke_all.sh` | File-based agent manifest, Runtime `result.agent`, Orchestrator operation evidence, AIGuard runtime warning evidence, Lab agent-runtime report, optional remote-dispatch starter markers, optional EdgeEnv run preservation identity/details labels, and duration-class navigation labels are connected in one generated bundle | Runtime regression comparability, telemetry-history replay, or CI artifact bundle completeness |
 | Runtime Intelligence artifact smoke | `bash scripts/smoke_all.sh` or Lab's `bash scripts/smoke_runtime_intelligence_chain.sh --output-dir <dir>` | The committed Orchestrator -> EdgeEnv -> AIGuard -> Lab Runtime Intelligence bundle keeps manifest alignment, telemetry-history coverage, Runtime Intelligence Risk Summary rows, EdgeEnv-preserved `operation_risk_summary` navigation context, AIGuard `edgeenv_orchestrator_operation_risk_summary` evidence, remote-dispatch boundary rows, report gates, and optional CI artifact outputs | Production observability, GitLab as a control plane, live remote execution, or a production scheduler |
-| Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh` | A fixture-only device-local preservation bundle rebuilds the evidence index and run registry with `Operation Quick Scan Summary` before `## Runs`, `Reviewer operation quick scan`, queue/deadline/fallback markers, and Lab-owner boundary wording | Live Jetson execution, thermal endurance validation, production scheduling, or Lab ownership transfer |
+| Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh` | A fixture-only device-local preservation bundle rebuilds the evidence index and run registry with `Operation Quick Scan Summary` before `## Runs`, `Reviewer operation quick scan`, `operation_risk_first_read_label`, `first_read=review_operation_risk_context`, queue/deadline/fallback markers, and Lab-owner boundary wording | Live Jetson execution, thermal endurance validation, production scheduling, or Lab ownership transfer |
 
 Keep these gates local-first. The agent runtime smoke is the operational
 scenario replay; the Runtime Intelligence smoke is the regression/anomaly
@@ -860,6 +860,11 @@ before opening each bundle without losing traceability.
 The registry JSON also preserves each run's `evidence_index_boundary` and an
 aggregated `evidence_index_boundary_summary`, so the reviewer-navigation
 boundary remains machine-readable across multi-run views.
+The same registry preserves the operation-risk first-read path as reviewer
+navigation metadata through `operation_risk_first_read_label`,
+`first_read=review_operation_risk_context`, and registry JSON
+`operation_risk_rollup_first_reads`. These labels point reviewers to the first
+operation-risk context to inspect without changing Lab-owned decision authority.
 The fixture-only quick-scan smoke enforces this split: raw marker labels such
 as `raw_marker=reviewer_focus_operation_quick_scan` must stay out of the compact
 `Operation Quick Scan Summary`, while the detailed `## Runs` table and registry

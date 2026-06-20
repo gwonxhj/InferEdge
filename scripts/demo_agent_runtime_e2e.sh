@@ -841,6 +841,7 @@ runtime_events["producer_event_count"] = producer_event_count
 data["operation_risk_summary"] = {
     "schema_version": "inferedge-entrypoint-operation-risk-summary-v1",
     "evidence_role": "derived_navigation_context",
+    "first_read": "review_operation_risk_context",
     "decision_owner": "lab",
     "scheduler_owner": "orchestrator",
     "queue_pressure_reason": queue_pressure_reason,
