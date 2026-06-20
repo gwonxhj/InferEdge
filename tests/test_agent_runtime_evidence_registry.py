@@ -1456,6 +1456,11 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "git switch -c codex/<next-task> origin/main" in publish_doc
     assert "git push -u origin codex/<topic>" in publish_doc
     assert "Jetson hardware is not required" in publish_doc
+    assert "README reviewer verification helper" in publish_doc
+    assert "same local verification order" in publish_doc
+    assert "bash scripts/check_reviewer_verification_set.sh" in publish_doc
+    assert "`--dry-run`" in publish_doc
+    assert "does not replace the staged `git diff --cached --check`" in publish_doc
 
     assert_markers_in_order(
         section_by_heading(publish_doc, "## Pre-publish Checks"),
@@ -1465,6 +1470,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "git diff --cached --check",
             "bash scripts/smoke_all.sh",
             "bash scripts/check_publish_ready.sh",
+            "bash scripts/check_reviewer_verification_set.sh",
+            "does not replace the staged `git diff --cached --check`",
         ],
         label="docs/publish_inferedge.md pre-publish command order",
     )
