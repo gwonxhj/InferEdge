@@ -1487,6 +1487,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
 
     assert "scripts/check_publish_ready.sh" in readme
     assert "docs/publish_inferedge.md" in readme
+    assert "Reviewer verification set:" in readme
+    assert "entrypoint verification set" in readme
+    assert "reviewer completion" in readme
+    assert "INFEREDGE_REPOS_DIR" in readme
+    assert "Jetson hardware is not required for this verification set" in normalized_readme
+    assert "fresh sustained Jetson capture remains a separate later evidence task" in normalized_readme
     assert "Do not" in readme
     assert "force push" in readme
     assert "public `main`" in readme
@@ -1498,14 +1504,50 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "stale-main apparent untracked-file recovery" in readme
     assert "optional branch cleanup" in normalized_readme
     assert "diagnostic escape-hatch flags" in readme
+    assert_markers_in_order(
+        section_by_heading(readme, "## Quick Start"),
+        [
+            "bash scripts/clone_all.sh --locked",
+            "bash scripts/smoke_all.sh",
+            "Reviewer verification set:",
+            "python -m pytest -q",
+            "git diff --check",
+            "bash scripts/smoke_all.sh",
+            "bash scripts/check_publish_ready.sh",
+            "fresh sustained Jetson",
+            "separate later evidence task",
+        ],
+        label="README reviewer verification set",
+    )
     assert "scripts/check_publish_ready.sh" in korean_readme
     assert "docs/publish_inferedge.md" in korean_readme
+    assert "Reviewer verification set:" in korean_readme
+    assert "reviewer completion audit에서 참조하는 entrypoint 검증" in korean_readme
+    assert "INFEREDGE_REPOS_DIR" in korean_readme
+    assert "Jetson hardware가 필요하지 않으며" in normalized_korean_readme
+    assert "fresh sustained Jetson capture는 이후 별도 evidence 작업" in normalized_korean_readme
     assert "branch publish + PR 생성 +" in normalized_korean_readme
     assert "PR merge를 한 단계로 묶는 기준" in normalized_korean_readme
     assert "PR changed-file/status gate" in korean_readme
     assert "PR `Summary` / `Tests` 기록" in normalized_korean_readme
     assert "최종 상태 확인" in korean_readme
     assert "local checkout" in korean_readme
+    assert_markers_in_order(
+        section_by_heading(korean_readme, "## Quick Start"),
+        [
+            "bash scripts/clone_all.sh --locked",
+            "bash scripts/smoke_all.sh",
+            "Reviewer verification set:",
+            "python -m pytest -q",
+            "git diff --check",
+            "bash scripts/smoke_all.sh",
+            "bash scripts/check_publish_ready.sh",
+            "fresh",
+            "sustained Jetson capture",
+            "이후 별도 evidence 작업",
+        ],
+        label="README.ko reviewer verification set",
+    )
     assert "safety" in korean_readme
     assert "정상 repo 파일이 untracked처럼 보이는 경우" in normalized_korean_readme
     assert "optional branch cleanup" in normalized_korean_readme

@@ -40,6 +40,21 @@ That smoke checks Forge, Runtime, Lab, AIGuard, Orchestrator, Env, and the
 local-first Runtime Intelligence artifact chain. It validates reviewer-facing
 report markers and contract boundaries. Boundary marker: Production observability platform or GitLab control plane is out of scope.
 
+Reviewer verification set:
+
+```bash
+python -m pytest -q
+git diff --check
+bash scripts/smoke_all.sh
+bash scripts/check_publish_ready.sh
+```
+
+This is the entrypoint verification set referenced by the reviewer completion
+audit. Run `scripts/smoke_all.sh` after `scripts/clone_all.sh --locked` or with
+`INFEREDGE_REPOS_DIR` pointing at the sibling InferEdge repositories. Jetson
+hardware is not required for this verification set; fresh sustained Jetson
+capture remains a separate later evidence task.
+
 For safe review-branch publishing, run:
 
 ```bash
