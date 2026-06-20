@@ -1,6 +1,6 @@
 # InferEdge Core4 Roadmap Status
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This document records the current Core4 six-month completion roadmap status for
 reviewers. It is a roadmap/status artifact only. It does not change
@@ -27,10 +27,13 @@ the Lab-owned deployment risk report.
 InferEdgeEnv PR #155 carries the operation risk `first_read` marker in the
 Runtime Intelligence Lab handoff summary and CLI output so the reviewer path is
 visible before opening the raw telemetry feed.
-InferEdge entrypoint PRs #258-#263 close the reviewer-facing loop by aligning
+InferEdge entrypoint PRs #258-#265 close the reviewer-facing loop by aligning
 README, portfolio summary, ecosystem 1-page, interview narrative, completion
 audit, generated evidence indexes/run registries, and the cross-repo Runtime
 Intelligence report marker gate around `first_read=review_operation_risk_context`.
+PR #265 keeps the reviewer completion audit aligned with the artifact and gate
+coverage so the status document and audit document describe the same first-read
+evidence boundary.
 
 ## Current Status
 
@@ -83,9 +86,10 @@ turns reviewer claims into contract-aware checks:
 - InferEdge entrypoint now exposes the same first-read path from README through
   portfolio/ecosystem/interview/audit docs, generated
   `operation_risk_first_read_label` / `operation_risk_rollup_first_reads`
-  artifacts, and the cross-repo Runtime Intelligence smoke gate. This improves
-  reviewer scanability without turning the index, registry, Orchestrator,
-  EdgeEnv, or AIGuard into a deployment decision owner.
+  artifacts, the reviewer completion audit, and the cross-repo Runtime
+  Intelligence smoke gate. This improves reviewer scanability without turning
+  the index, registry, audit, Orchestrator, EdgeEnv, or AIGuard into a
+  deployment decision owner.
 - Documentation cleanup keeps the project framed as a local-first validation
   workflow, not a production SaaS, AI OS, or generic monitoring stack.
 
@@ -97,7 +101,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and PR #258-#263 reviewer path / artifact / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and PR #258-#265 reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Boundaries
 
