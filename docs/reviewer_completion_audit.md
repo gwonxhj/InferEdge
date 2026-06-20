@@ -1,6 +1,6 @@
 # InferEdge Reviewer Completion Audit
 
-Date: 2026-06-19
+Date: 2026-06-20
 
 This audit records the current evidence that the entrypoint reviewer path,
 pinned smoke snapshot, and publish safety flow are aligned.
@@ -37,6 +37,7 @@ output, Lab deployment decision output, or AIGuard `guard_analysis` contracts.
 | Lab remains the final deployment decision owner | README Cross-Repo Quick Guide Path, pipeline map, portfolio summary, interview narrative | Pass |
 | Runtime operation evidence stays bounded | README Runtime Intelligence Smoke, Agent Runtime E2E Demo, portfolio summary, pipeline map | Pass |
 | Operation-risk first-read path is visible from the reviewer entrypoint | README `## Docs & Review Path`, portfolio Runtime Intelligence Review Path, ecosystem 1-page, and interview narrative preserve `operation-risk` first-read as reviewer navigation only | Pass |
+| First-read artifacts and smoke gates preserve the same marker | Generated evidence indexes/run registries expose `operation_risk_first_read_label` and `operation_risk_rollup_first_reads`; the Runtime Intelligence report marker gate checks `first_read=review_operation_risk_context` | Pass |
 
 ## Current Verification Snapshot
 
@@ -61,7 +62,10 @@ operation-risk report first-read preservation, plus EdgeEnv PR #155 Lab handoff
 first-read preservation.
 InferEdge entrypoint PRs #258, #259, and #260 align the same first-read path
 across portfolio summary, ecosystem 1-page, interview narrative, and README
-reviewer path links without changing Lab-owned decision authority.
+reviewer path links without changing Lab-owned decision authority. PRs #262 and
+#263 carry the same marker into generated evidence indexes/run registries and
+the Runtime Intelligence report marker gate. PR #264 records the completed
+first-read status in the Core4 roadmap status.
 
 ## Boundaries
 

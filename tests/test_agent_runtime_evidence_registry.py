@@ -1814,6 +1814,13 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         "interview narrative",
         "PRs #258, #259, and #260",
         "without changing Lab-owned decision authority",
+        "First-read artifacts and smoke gates preserve the same marker",
+        "operation_risk_first_read_label",
+        "operation_risk_rollup_first_reads",
+        "Runtime Intelligence report marker gate",
+        "PRs #262 and",
+        "PR #264 records the completed",
+        "first-read status in the Core4 roadmap status",
     ]:
         assert marker in completion_audit
 
