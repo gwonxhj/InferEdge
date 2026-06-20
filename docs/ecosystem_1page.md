@@ -120,6 +120,11 @@ InferEdgeOrchestrator
   evidence.
 - Lab owns the Runtime Intelligence / operation-risk report and final
   deployment decision.
+- The first-read path is smoke-protected reviewer navigation: Orchestrator CLI
+  surfaces the operation-risk first-read, EdgeEnv handoff preserves
+  `operation_risk_rollup_first_reads`, and Lab renders
+  `first_read=review_operation_risk_context` in the Runtime Intelligence
+  report.
 
 This is not production remote execution, a cloud control plane, secure
 multi-device orchestration, or a production observability platform.

@@ -97,6 +97,7 @@ machine-readable `evidence_index_boundary_summary` metadata로 보존합니다.
 | report와 deployment decision은 Lab-owned인가? | `runtime_anomaly_summary.md` / `.html`의 Runtime Intelligence Risk Summary와 Lab decision context |
 | reviewer가 Lab report를 빠르게 따라갈 수 있는가? | Lab `Review Path` section과 `Validated Review Path` gate summary, `review_path_section: short Review Path section rendered`, `review_path_fast_path: readable Review Path fast path rendered`로 README -> Lab report -> gate summary 읽기 순서 확인 |
 | operation pressure를 빠르게 볼 수 있는가? | `Duration Comparison Summary`, `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count, `operation_summary` label |
+| operation-risk first-read가 chain 끝까지 남는가? | Orchestrator CLI `operation-risk` first-read -> EdgeEnv `operation_risk_rollup_first_reads` handoff -> Lab Runtime Intelligence report `first_read=review_operation_risk_context`; reviewer navigation이며 decision owner 변경이 아님 |
 | Jetson/device-local context가 handoff 이후에도 남는가? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | remote fallback은 bounded starter evidence로 남는가? | `Remote fallback starter evidence`, `remote_execution_recovered_by_fallback`; production remote execution 주장은 아님 |
 
