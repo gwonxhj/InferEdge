@@ -27,13 +27,21 @@ the Lab-owned deployment risk report.
 InferEdgeEnv PR #155 carries the operation risk `first_read` marker in the
 Runtime Intelligence Lab handoff summary and CLI output so the reviewer path is
 visible before opening the raw telemetry feed.
-InferEdge entrypoint PRs #258-#265 close the reviewer-facing loop by aligning
-README, portfolio summary, ecosystem 1-page, interview narrative, completion
-audit, generated evidence indexes/run registries, and the cross-repo Runtime
-Intelligence report marker gate around `first_read=review_operation_risk_context`.
-PR #265 keeps the reviewer completion audit aligned with the artifact and gate
-coverage so the status document and audit document describe the same first-read
-evidence boundary.
+InferEdge entrypoint first-read PR series closes the reviewer-facing loop by
+aligning README, portfolio summary, ecosystem 1-page, interview narrative,
+completion audit, generated evidence indexes/run registries, and the cross-repo
+Runtime Intelligence report marker gate around
+`first_read=review_operation_risk_context`.
+PRs #258-#265 are historical anchors for that alignment, but current completion
+is proved by the evidence rows, marker gates, and tests in this repo rather than
+by appending every sync-only PR number to this status document.
+
+## Evidence Maintenance Rule
+
+PR references in this file are traceability anchors. Do not advance them only
+because a documentation-only synchronization PR was merged. Update the status
+claim only when the reviewer-facing evidence boundary changes, a smoke/test gate
+changes, or a new Core4 roadmap item becomes current evidence.
 
 ## Current Status
 
@@ -101,7 +109,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and PR #258-#265 reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Boundaries
 

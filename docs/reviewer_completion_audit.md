@@ -67,6 +67,11 @@ reviewer path links without changing Lab-owned decision authority. PRs #262 and
 the Runtime Intelligence report marker gate. PR #264 records the completed
 first-read status in the Core4 roadmap status.
 
+PR numbers in this audit are historical traceability anchors. Current reviewer
+completion is proved by the requirement evidence rows, the verification
+snapshot, and the tests that guard those markers, not by appending every
+documentation-only synchronization PR number to the audit.
+
 ## Boundaries
 
 - This audit is reviewer navigation metadata only.
