@@ -57,6 +57,13 @@ The short interview phrasing is: the smoke-gated evidence-index boundary keeps
 contract. The run registry carries the same boundary as machine-readable
 `evidence_index_boundary_summary` metadata for multi-run review.
 
+For the Runtime Operation first-read path, say: Orchestrator surfaces the
+`operation-risk` first-read, EdgeEnv preserves
+`operation_risk_rollup_first_reads`, and Lab renders
+`first_read=review_operation_risk_context` in the Runtime Intelligence report.
+That is reviewer navigation for faster risk-context review, not a change in
+Lab-owned decision authority.
+
 ## Architecture Explanation
 
 ```text
@@ -130,6 +137,8 @@ Good phrasing:
   before opening the full report."
 - "The registry is quick-scan navigation metadata, not production runtime
   operation proof."
+- "The operation-risk first-read gives reviewers the first thing to inspect
+  across Orchestrator, EdgeEnv, and Lab without changing the decision owner."
 
 Avoid phrasing:
 

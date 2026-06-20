@@ -1065,6 +1065,14 @@ def test_interview_narrative_uses_jetson_evidence_terms() -> None:
         assert "evidence_index_boundary_summary" in normalized_text
         assert "source contract" in normalized_text
         assert "reviewer navigation" in normalized_text
+        assert "operation-risk" in normalized_text
+        assert "first-read" in normalized_text
+        assert "operation_risk_rollup_first_reads" in normalized_text
+        assert "first_read=review_operation_risk_context" in normalized_text
+        assert (
+            "not a change in Lab-owned decision authority" in normalized_text
+            or "Lab-owned decision authority를 바꾸지 않습니다" in normalized_text
+        )
         assert "Agent Runtime E2E Demo" in normalized_text
         assert (
             "detailed marker vocabulary owner" in normalized_text
