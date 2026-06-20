@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
 import re
 import subprocess
 from pathlib import Path
@@ -1460,6 +1461,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "same local verification order" in publish_doc
     assert "bash scripts/check_reviewer_verification_set.sh" in publish_doc
     assert "`--dry-run`" in publish_doc
+    assert "`--log-dir /tmp/inferedge_reviewer_verification_logs`" in publish_doc
     assert "does not replace the staged `git diff --cached --check`" in publish_doc
 
     assert_markers_in_order(
@@ -1471,6 +1473,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "bash scripts/smoke_all.sh",
             "bash scripts/check_publish_ready.sh",
             "bash scripts/check_reviewer_verification_set.sh",
+            "--log-dir /tmp/inferedge_reviewer_verification_logs",
             "does not replace the staged `git diff --cached --check`",
         ],
         label="docs/publish_inferedge.md pre-publish command order",
@@ -1508,6 +1511,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Jetson hardware is not required for this verification set" in normalized_readme
     assert "fresh sustained Jetson capture remains a separate later evidence task" in normalized_readme
     assert "--skip-smoke --skip-publish-ready" in readme
+    assert "--log-dir /tmp/inferedge_reviewer_verification_logs" in readme
+    assert "per-step logs" in readme
     assert "local-only check" in readme
     assert "does not replace the full reviewer verification set" in readme
     assert "Do not" in readme
@@ -1537,6 +1542,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "separate later evidence task",
             "--skip-smoke --skip-publish-ready",
             "does not replace the full reviewer verification set",
+            "--log-dir /tmp/inferedge_reviewer_verification_logs",
+            "per-step logs",
         ],
         label="README reviewer verification set",
     )
@@ -1550,6 +1557,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "Jetson hardware가 필요하지 않으며" in normalized_korean_readme
     assert "fresh sustained Jetson capture는 이후 별도 evidence 작업" in normalized_korean_readme
     assert "--skip-smoke --skip-publish-ready" in korean_readme
+    assert "--log-dir /tmp/inferedge_reviewer_verification_logs" in korean_readme
+    assert "단계별 전체 로그" in korean_readme
     assert "local-only check" in korean_readme
     assert "full reviewer verification set을 대체하지는 않습니다" in normalized_korean_readme
     assert "branch publish + PR 생성 +" in normalized_korean_readme
@@ -1576,6 +1585,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "--skip-smoke --skip-publish-ready",
             "full reviewer verification set",
             "대체하지는 않습니다",
+            "--log-dir /tmp/inferedge_reviewer_verification_logs",
+            "단계별 전체 로그",
         ],
         label="README.ko reviewer verification set",
     )
@@ -1625,6 +1636,8 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
         "--skip-smoke",
         "--skip-publish-ready",
         "--full-smoke",
+        "--log-dir",
+        "per-step logs",
         "local-only check",
     ):
         assert marker in script
@@ -1644,6 +1657,7 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
     assert "--skip-smoke" in help_output
     assert "--skip-publish-ready" in help_output
     assert "--full-smoke" in help_output
+    assert "--log-dir DIR" in help_output
     assert "--skip-smoke --skip-publish-ready" in help_output
     assert "local-only check" in help_output
     assert help_result.stderr == ""
@@ -1669,6 +1683,77 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
         label="reviewer verification helper dry-run order",
     )
     assert dry_run.stderr == ""
+
+    dry_run_with_log_dir = subprocess.run(
+        [
+            "bash",
+            "scripts/check_reviewer_verification_set.sh",
+            "--dry-run",
+            "--log-dir",
+            "/tmp/inferedge_reviewer_verification_logs",
+        ],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert "mode: dry-run" in dry_run_with_log_dir.stdout
+    assert "log_dir: /tmp/inferedge_reviewer_verification_logs" in (
+        dry_run_with_log_dir.stdout
+    )
+    assert "would_run: python -m pytest -q" in dry_run_with_log_dir.stdout
+    assert dry_run_with_log_dir.stderr == ""
+
+
+def test_reviewer_verification_helper_log_dir_preserves_step_failure(
+    tmp_path: Path,
+) -> None:
+    temp_root = tmp_path / "entrypoint"
+    scripts_dir = temp_root / "scripts"
+    scripts_dir.mkdir(parents=True)
+    helper = scripts_dir / "check_reviewer_verification_set.sh"
+    helper.write_text(
+        (ROOT / "scripts" / "check_reviewer_verification_set.sh").read_text(
+            encoding="utf-8"
+        ),
+        encoding="utf-8",
+    )
+
+    fake_bin = tmp_path / "bin"
+    fake_bin.mkdir()
+    for name in ("python", "git"):
+        fake = fake_bin / name
+        fake.write_text("#!/bin/bash\nexit 0\n", encoding="utf-8")
+        fake.chmod(0o755)
+
+    fake_bash = fake_bin / "bash"
+    fake_bash.write_text(
+        """#!/bin/bash
+if [[ "$1" == "scripts/check_publish_ready.sh" ]]; then
+  echo "publish readiness failed"
+  exit 7
+fi
+exit 0
+""",
+        encoding="utf-8",
+    )
+    fake_bash.chmod(0o755)
+
+    log_dir = tmp_path / "logs"
+    result = subprocess.run(
+        ["/bin/bash", str(helper), "--log-dir", str(log_dir)],
+        cwd=temp_root,
+        text=True,
+        capture_output=True,
+        env={**os.environ, "PATH": f"{fake_bin}:{os.environ['PATH']}"},
+        check=False,
+    )
+
+    assert result.returncode == 7
+    assert "failed: Publish readiness (exit 7)" in result.stderr
+    publish_log = log_dir / "04_Publish_readiness.log"
+    assert publish_log.exists()
+    assert "publish readiness failed" in publish_log.read_text(encoding="utf-8")
 
 
 def test_branch_cleanup_audit_script_is_inventory_only() -> None:

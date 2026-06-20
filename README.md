@@ -63,6 +63,9 @@ capture remains a separate later evidence task.
 If sibling repositories or remote access are unavailable, use
 `bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready`
 as the local-only check; it does not replace the full reviewer verification set.
+For long full-smoke output, use
+`bash scripts/check_reviewer_verification_set.sh --log-dir /tmp/inferedge_reviewer_verification_logs`
+to keep the terminal summary compact while preserving per-step logs.
 
 For safe review-branch publishing, run:
 

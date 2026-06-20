@@ -6,6 +6,8 @@ DRY_RUN=0
 SKIP_SMOKE=0
 SKIP_PUBLISH_READY=0
 FULL_SMOKE=0
+LOG_DIR=""
+STEP_INDEX=0
 
 usage() {
   cat <<'USAGE'
@@ -24,6 +26,8 @@ Options:
   --skip-smoke           Skip the cross-repo portfolio smoke.
   --skip-publish-ready   Skip the publish readiness check.
   --full-smoke           Pass --full to scripts/smoke_all.sh.
+  --log-dir DIR          Write each step's full output to DIR and print only
+                         step status unless a step fails; preserves per-step logs.
   -h, --help             Show this help.
 
 Notes:
@@ -54,6 +58,25 @@ while [[ $# -gt 0 ]]; do
       FULL_SMOKE=1
       shift
       ;;
+    --log-dir)
+      shift
+      if [[ $# -eq 0 ]]; then
+        echo "--log-dir requires a directory path" >&2
+        usage
+        exit 2
+      fi
+      LOG_DIR="$1"
+      shift
+      ;;
+    --log-dir=*)
+      LOG_DIR="${1#*=}"
+      if [[ -z "$LOG_DIR" ]]; then
+        echo "--log-dir requires a directory path" >&2
+        usage
+        exit 2
+      fi
+      shift
+      ;;
     -h|--help)
       usage
       exit 0
@@ -68,6 +91,10 @@ done
 
 cd "$ROOT_DIR"
 
+if [[ -n "$LOG_DIR" && "$DRY_RUN" -eq 0 ]]; then
+  mkdir -p "$LOG_DIR"
+fi
+
 run_step() {
   local label="$1"
   shift
@@ -78,6 +105,24 @@ run_step() {
     printf ' %q' "$@"
     printf '\n'
     return 0
+  fi
+  if [[ -n "$LOG_DIR" ]]; then
+    STEP_INDEX=$((STEP_INDEX + 1))
+    local safe_label="${label//[^A-Za-z0-9._-]/_}"
+    local log_file
+    log_file="$LOG_DIR/$(printf "%02d" "$STEP_INDEX")_${safe_label}.log"
+    echo "log: $log_file"
+    if "$@" >"$log_file" 2>&1; then
+      echo "pass: $label"
+      return 0
+    else
+      local status=$?
+      echo "failed: $label (exit $status)" >&2
+      echo "log: $log_file" >&2
+      echo "last 80 log lines:" >&2
+      tail -n 80 "$log_file" >&2 || true
+      return "$status"
+    fi
   fi
   "$@"
 }
@@ -92,6 +137,9 @@ if [[ "$SKIP_SMOKE" -eq 1 ]]; then
 fi
 if [[ "$SKIP_PUBLISH_READY" -eq 1 ]]; then
   echo "  publish_readiness: skipped"
+fi
+if [[ -n "$LOG_DIR" ]]; then
+  echo "  log_dir: $LOG_DIR"
 fi
 
 run_step "Local pytest" python -m pytest -q
