@@ -24,6 +24,9 @@ primary reasons, and affected tasks before opening the full JSON evidence.
 InferEdgeLab PR #376 preserves the same `first_read` marker in the Lab Runtime
 Intelligence Markdown/HTML report so the CLI-first reviewer path carries into
 the Lab-owned deployment risk report.
+InferEdgeEnv PR #155 carries the operation risk `first_read` marker in the
+Runtime Intelligence Lab handoff summary and CLI output so the reviewer path is
+visible before opening the raw telemetry feed.
 
 ## Current Status
 
@@ -69,6 +72,10 @@ turns reviewer claims into contract-aware checks:
   `first_read=review_operation_risk_context` for AIGuard/EdgeEnv operation risk
   rollup evidence, aligning the report review path with the Orchestrator CLI
   first-read signal.
+- EdgeEnv Lab handoff now reports
+  `candidate:review_operation_risk_context` for preserved Orchestrator
+  `operation_risk_rollup` context, keeping the first-read path visible before
+  Lab/AIGuard consume the handoff bundle.
 - Documentation cleanup keeps the project framed as a local-first validation
   workflow, not a production SaaS, AI OS, or generic monitoring stack.
 
@@ -80,7 +87,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish and PR #376 Lab report first-read polish | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, and PR #155 EdgeEnv handoff first-read polish | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Boundaries
 
