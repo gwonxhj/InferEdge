@@ -2060,6 +2060,8 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         "PRs #262 and",
         "PR #264 records the completed",
         "first-read status in the Core4 roadmap status",
+        "Orchestrator PR #116",
+        "worker-health trend source artifact",
         "PR numbers in this audit are historical traceability anchors",
         "Current reviewer",
         "completion is proved by the requirement evidence rows",
@@ -2226,6 +2228,9 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "PR #112 adds sequence-level disappearance evidence",
         "PR #113 adds a temporal profile continuity demo case",
         "InferEdgeOrchestrator PR #115 adds an `operation-risk` first-read line",
+        "InferEdgeOrchestrator PR #116 adds a supplemental `worker_health_trend` block",
+        "scheduler-delay/fallback/resource degradation",
+        "Lab-owned decision boundaries",
         "InferEdgeLab PR #376 preserves the same `first_read` marker",
         "InferEdgeEnv PR #155 carries the operation risk `first_read` marker",
         "InferEdge entrypoint first-read PR series closes the reviewer-facing loop",
@@ -2297,6 +2302,7 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
     assert "fresh sustained Jetson run with current main branches" in status_doc
     assert "operation evidence" in status_doc
     assert "PR #115 first-read CLI polish" in status_doc
+    assert "PR #116 Orchestrator worker-health trend source artifact" in status_doc
     assert "PR #376 Lab report first-read polish" in status_doc
     assert "PR #155 EdgeEnv handoff first-read polish" in status_doc
     assert "current reviewer path / artifact / audit / gate alignment" in status_doc

@@ -21,6 +21,10 @@ the final deployment decision away from Lab.
 InferEdgeOrchestrator PR #115 adds an `operation-risk` first-read line to the
 sustained CLI output so reviewers can see queue/deadline/fallback risk level,
 primary reasons, and affected tasks before opening the full JSON evidence.
+InferEdgeOrchestrator PR #116 adds a supplemental `worker_health_trend` block to
+the sustained operation timeline summary so reviewers can inspect health-state
+counts, health-state task groups, scheduler-delay/fallback/resource degradation
+context, and Lab-owned decision boundaries before downstream consumption.
 InferEdgeLab PR #376 preserves the same `first_read` marker in the Lab Runtime
 Intelligence Markdown/HTML report so the CLI-first reviewer path carries into
 the Lab-owned deployment risk report.
@@ -114,7 +118,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 

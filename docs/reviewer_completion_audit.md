@@ -61,9 +61,10 @@ lock now includes the refreshed Lab decision policy, Runtime Jetson evidence
 depth audit, AIGuard detector-depth hardening, and AIGuard calibration drift
 additive-evidence, baseline profile stability metadata, and sequence-level
 disappearance evidence plus temporal continuity demo commits, along with
-Orchestrator PR #115 operation-risk CLI first-read polish and Lab PR #376
-operation-risk report first-read preservation, plus EdgeEnv PR #155 Lab handoff
-first-read preservation.
+Orchestrator PR #115 operation-risk CLI first-read polish, Orchestrator PR #116
+worker-health trend source artifact, Lab PR #376 operation-risk report
+first-read preservation, plus EdgeEnv PR #155 Lab handoff first-read
+preservation.
 InferEdge entrypoint PRs #258, #259, and #260 align the same first-read path
 across portfolio summary, ecosystem 1-page, interview narrative, and README
 reviewer path links without changing Lab-owned decision authority. PRs #262 and
