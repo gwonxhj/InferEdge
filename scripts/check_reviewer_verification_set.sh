@@ -29,6 +29,8 @@ Options:
 Notes:
   - Run scripts/clone_all.sh --locked before the smoke, or set
     INFEREDGE_REPOS_DIR to sibling InferEdge repositories.
+  - For a local-only check when sibling repos or remote access are unavailable:
+    bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready
   - Jetson hardware is not required for this verification set.
   - Fresh sustained Jetson capture is a separate later evidence task.
 USAGE

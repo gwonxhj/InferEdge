@@ -1507,6 +1507,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "INFEREDGE_REPOS_DIR" in readme
     assert "Jetson hardware is not required for this verification set" in normalized_readme
     assert "fresh sustained Jetson capture remains a separate later evidence task" in normalized_readme
+    assert "--skip-smoke --skip-publish-ready" in readme
+    assert "local-only check" in readme
+    assert "does not replace the full reviewer verification set" in readme
     assert "Do not" in readme
     assert "force push" in readme
     assert "public `main`" in readme
@@ -1532,6 +1535,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "bash scripts/check_publish_ready.sh",
             "fresh sustained Jetson",
             "separate later evidence task",
+            "--skip-smoke --skip-publish-ready",
+            "does not replace the full reviewer verification set",
         ],
         label="README reviewer verification set",
     )
@@ -1544,6 +1549,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "INFEREDGE_REPOS_DIR" in korean_readme
     assert "Jetson hardware가 필요하지 않으며" in normalized_korean_readme
     assert "fresh sustained Jetson capture는 이후 별도 evidence 작업" in normalized_korean_readme
+    assert "--skip-smoke --skip-publish-ready" in korean_readme
+    assert "local-only check" in korean_readme
+    assert "full reviewer verification set을 대체하지는 않습니다" in normalized_korean_readme
     assert "branch publish + PR 생성 +" in normalized_korean_readme
     assert "PR merge를 한 단계로 묶는 기준" in normalized_korean_readme
     assert "PR changed-file/status gate" in korean_readme
@@ -1565,6 +1573,9 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "fresh",
             "sustained Jetson capture",
             "이후 별도 evidence 작업",
+            "--skip-smoke --skip-publish-ready",
+            "full reviewer verification set",
+            "대체하지는 않습니다",
         ],
         label="README.ko reviewer verification set",
     )
@@ -1614,6 +1625,7 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
         "--skip-smoke",
         "--skip-publish-ready",
         "--full-smoke",
+        "local-only check",
     ):
         assert marker in script
 
@@ -1632,6 +1644,8 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
     assert "--skip-smoke" in help_output
     assert "--skip-publish-ready" in help_output
     assert "--full-smoke" in help_output
+    assert "--skip-smoke --skip-publish-ready" in help_output
+    assert "local-only check" in help_output
     assert help_result.stderr == ""
 
     dry_run = subprocess.run(

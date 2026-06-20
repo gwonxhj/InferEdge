@@ -60,6 +60,9 @@ audit. Run `scripts/smoke_all.sh` after `scripts/clone_all.sh --locked` or with
 `INFEREDGE_REPOS_DIR` pointing at the sibling InferEdge repositories. Jetson
 hardware is not required for this verification set; fresh sustained Jetson
 capture remains a separate later evidence task.
+If sibling repositories or remote access are unavailable, use
+`bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready`
+as the local-only check; it does not replace the full reviewer verification set.
 
 For safe review-branch publishing, run:
 
