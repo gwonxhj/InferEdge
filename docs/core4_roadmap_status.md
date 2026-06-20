@@ -132,6 +132,20 @@ with a scoped plan that names the owner repo and confirms no `metadata.json`,
 `manifest.json`, Runtime `result.json`, Lab compare output, Lab deployment
 decision, or AIGuard `guard_analysis` contract change is being implied.
 
+### Fresh Jetson Readiness Attempt
+
+On 2026-06-21 KST, the fresh sustained Jetson direction was checked with:
+
+```bash
+bash scripts/check_jetson_sustained_readiness.sh --edgeenv-run-evidence
+```
+
+The sandboxed run failed with SSH `Operation not permitted`; the approved
+network run reached `192.168.35.35:22` but timed out. No new Jetson evidence was
+created. Keep the committed Jetson reports as the current reviewer evidence
+until the target device is powered on, reachable over SSH with `BatchMode=yes`,
+and the readiness preflight passes.
+
 ## Boundaries
 
 - This status document is not a source contract.
