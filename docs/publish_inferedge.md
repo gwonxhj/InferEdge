@@ -37,6 +37,16 @@ Before pushing, run the publish readiness check:
 bash scripts/check_publish_ready.sh
 ```
 
+The README reviewer verification helper runs the same local verification order
+as a single entrypoint:
+
+```bash
+bash scripts/check_reviewer_verification_set.sh
+```
+
+Use `--dry-run` on that helper when you only need to confirm the command order.
+It does not replace the staged `git diff --cached --check` before committing.
+
 The readiness check verifies:
 
 - current branch
