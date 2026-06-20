@@ -1197,6 +1197,14 @@ def test_jetson_readiness_preflight_is_not_evidence() -> None:
         assert "does not" in text
         assert "new evidence" in text
         assert "--edgeenv-run-evidence" in text
+        assert (
+            "ssh -o BatchMode=yes -o ConnectTimeout=8 "
+            "risenano01@nano01.local 'hostname'"
+        ) in text
+        assert "fix" in text
+        assert "power" in text
+        assert "network" in text
+        assert "SSH" in text
 
 
 def test_entrypoint_lab_report_can_use_local_lab_module() -> None:

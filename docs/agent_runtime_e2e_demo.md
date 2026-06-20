@@ -611,6 +611,7 @@ From a development machine, run the readiness preflight before starting a
 repeat Jetson smoke:
 
 ```bash
+ssh -o BatchMode=yes -o ConnectTimeout=8 risenano01@nano01.local 'hostname'
 bash scripts/check_jetson_sustained_readiness.sh
 ```
 
@@ -618,7 +619,9 @@ The preflight checks SSH reachability, `tegrastats`, the clean Forge fixture
 repo, the Vision input, the ONNX model path, and the sustained runner. It does
 not run inference, capture `tegrastats`, or produce new evidence. If it fails,
 fix the target connectivity or input setup first and continue treating the
-latest committed Jetson report as the latest confirmed evidence.
+latest committed Jetson report as the latest confirmed evidence. If the SSH
+probe cannot print the Jetson hostname, do not start the sustained runner; fix
+power, network, SSH key, or hostname resolution first.
 
 The script writes generated evidence under:
 
