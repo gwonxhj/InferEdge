@@ -27,6 +27,10 @@ the Lab-owned deployment risk report.
 InferEdgeEnv PR #155 carries the operation risk `first_read` marker in the
 Runtime Intelligence Lab handoff summary and CLI output so the reviewer path is
 visible before opening the raw telemetry feed.
+InferEdge entrypoint PRs #258-#263 close the reviewer-facing loop by aligning
+README, portfolio summary, ecosystem 1-page, interview narrative, completion
+audit, generated evidence indexes/run registries, and the cross-repo Runtime
+Intelligence report marker gate around `first_read=review_operation_risk_context`.
 
 ## Current Status
 
@@ -36,7 +40,7 @@ visible before opening the raw telemetry feed.
 | Lab Decision Policy Versioning | InferEdgeLab PR #375 documents the Lab decision policy rule surface and guards docs/code alignment | Complete for documented policy rules |
 | Runtime Real-Device Evidence Depth | InferEdge-Runtime PR #67 adds a Jetson evidence depth audit for current 15W/25W fixtures, p95/p99, thermal/memory/power starter evidence, and sustained evidence criteria | Complete as an audit; fresh sustained capture still requires Jetson hardware |
 | AIGuard Detector Matrix Depth | InferEdgeAIGuard PR #107 adds deterministic detection disappearance evidence for candidate zero detections against non-empty baseline evidence; PR #108 adds per-class detection drift evidence for class-specific disappearance with stable total counts; PR #109 bounds the calibration drift policy before implementation; PR #110 implements calibration drift as additive baseline-comparison evidence; PR #111 adds baseline profile stability audit metadata for saved profile sample count and coverage; PR #112 adds sequence-level disappearance evidence for repeated zero-detection frame streaks; PR #113 adds a temporal profile continuity demo case that combines sequence disappearance, class flip, and bbox jump evidence | Complete for disappearance, per-class drift, review-level calibration drift, baseline profile stability audit metadata, sequence-level disappearance evidence, and the temporal continuity demo case |
-| Documentation Cleanup | This entrypoint preserves local-first validation wording, production SaaS/AI OS boundaries, Lab decision ownership, and deterministic AIGuard wording across reviewer-facing docs | In progress through small bounded cleanup passes |
+| Documentation Cleanup | This entrypoint preserves local-first validation wording, production SaaS/AI OS boundaries, Lab decision ownership, deterministic AIGuard wording, and the operation-risk first-read reviewer path across reviewer-facing docs, generated indexes/registries, and smoke gates | Complete for the current first-read reviewer path; future cleanup remains bounded |
 
 ## Portfolio Impact
 
@@ -76,6 +80,12 @@ turns reviewer claims into contract-aware checks:
   `candidate:review_operation_risk_context` for preserved Orchestrator
   `operation_risk_rollup` context, keeping the first-read path visible before
   Lab/AIGuard consume the handoff bundle.
+- InferEdge entrypoint now exposes the same first-read path from README through
+  portfolio/ecosystem/interview/audit docs, generated
+  `operation_risk_first_read_label` / `operation_risk_rollup_first_reads`
+  artifacts, and the cross-repo Runtime Intelligence smoke gate. This improves
+  reviewer scanability without turning the index, registry, Orchestrator,
+  EdgeEnv, or AIGuard into a deployment decision owner.
 - Documentation cleanup keeps the project framed as a local-first validation
   workflow, not a production SaaS, AI OS, or generic monitoring stack.
 
@@ -87,7 +97,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, and PR #155 EdgeEnv handoff first-read polish | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and PR #258-#263 reviewer path / artifact / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Boundaries
 
