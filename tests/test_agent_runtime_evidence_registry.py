@@ -1914,9 +1914,13 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         "INFEREDGE_REPOS_DIR=/private/tmp/inferedge-master-locked-current-20260619-1 bash scripts/smoke_all.sh",
         "python -m pytest -q",
         "bash scripts/check_publish_ready.sh",
+        "bash scripts/check_reviewer_verification_set.sh --dry-run",
         "not a Lab report owner",
         "source contract",
         "Jetson hardware is not required",
+        "README reviewer verification set has an executable helper",
+        "helper dry-run preserves",
+        "`pytest`, `git diff --check`, `smoke_all`, and `check_publish_ready` order",
         "Operation-risk first-read path is visible from the reviewer entrypoint",
         "README `## Docs & Review Path`",
         "portfolio Runtime Intelligence Review Path",
@@ -1936,6 +1940,8 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         "completion is proved by the requirement evidence rows",
         "not by appending every",
         "documentation-only synchronization PR number",
+        "single local entrypoint",
+        "preserving the individual command evidence",
     ]:
         assert marker in completion_audit
 
