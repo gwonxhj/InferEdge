@@ -56,7 +56,8 @@ depth audit, AIGuard detector-depth hardening, and AIGuard calibration drift
 additive-evidence, baseline profile stability metadata, and sequence-level
 disappearance evidence plus temporal continuity demo commits, along with
 Orchestrator PR #115 operation-risk CLI first-read polish and Lab PR #376
-operation-risk report first-read preservation.
+operation-risk report first-read preservation, plus EdgeEnv PR #155 Lab handoff
+first-read preservation.
 
 ## Boundaries
 
