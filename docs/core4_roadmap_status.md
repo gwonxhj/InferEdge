@@ -118,7 +118,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #156 EdgeEnv worker-health trend handoff preservation, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 
