@@ -33,8 +33,9 @@ completion audit, generated evidence indexes/run registries, and the cross-repo
 Runtime Intelligence report marker gate around
 `first_read=review_operation_risk_context`.
 PRs #258-#265 are historical anchors for that alignment, but current completion
-is proved by the evidence rows, marker gates, and tests in this repo rather than
-by appending every sync-only PR number to this status document.
+is proved by the evidence rows, reviewer completion audit verification snapshot,
+marker gates, and tests in this repo rather than by appending every sync-only PR
+number to this status document.
 
 ## Evidence Maintenance Rule
 
@@ -98,6 +99,10 @@ turns reviewer claims into contract-aware checks:
   Intelligence smoke gate. This improves reviewer scanability without turning
   the index, registry, audit, Orchestrator, EdgeEnv, or AIGuard into a
   deployment decision owner.
+- The reviewer completion audit now records the `--log-dir` full verification
+  snapshot, so long cross-repo smoke output remains reproducible as per-step
+  logs while the Core4 status stays tied to evidence rows and tests instead of
+  synchronization PR counting.
 - Documentation cleanup keeps the project framed as a local-first validation
   workflow, not a production SaaS, AI OS, or generic monitoring stack.
 
