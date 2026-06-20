@@ -129,6 +129,7 @@ write_json(
         },
         "operation_risk_summary": {
             "schema_version": "inferedge-entrypoint-operation-risk-summary-v1",
+            "first_read": "review_operation_risk_context",
             "queue_pressure_reason": "queue_backlog_threshold_exceeded",
             "max_pressure_task": "vision_agent",
             "device_local_event_count": 99,
@@ -261,6 +262,8 @@ grep -q "edgeenv_runtime_operation_summary_label" "$BUNDLE_DIR/00_evidence_index
 grep -q "operation_summary: mode=timeout_threshold_exceeded" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_report_operation_summary_label" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "operation_summary: mode=device_local_starter" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "operation_risk_first_read_label" "$BUNDLE_DIR/00_evidence_index.md"
+grep -q "first_read=review_operation_risk_context" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_expected_report_markers" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "lab_report_contract_context" "$BUNDLE_DIR/00_evidence_index.md"
 grep -q "aiguard_validates_expected_report_markers" "$BUNDLE_DIR/00_evidence_index.md"
@@ -275,6 +278,9 @@ grep -q "lab_report_owner=False" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.
 grep -q "source_contract=False" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "operation_summary: mode=device_local_starter" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "operation_summary: mode=timeout_threshold_exceeded" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "Operation risk first reads: review_operation_risk_context" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "Operation Risk First Read" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
+grep -q "first_read=review_operation_risk_context" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "Raw Marker" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "Raw Marker Label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.md"
@@ -293,6 +299,8 @@ grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker" "$OUTPUT_DIR/agent_
 grep -q "edgeenv_lab_report_operation_quick_scan_raw_marker_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "edgeenv_runtime_operation_summary_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "edgeenv_lab_report_operation_summary_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
+grep -q "operation_risk_rollup_first_reads" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
+grep -q "operation_risk_first_read_label" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 grep -q "raw_marker=reviewer_focus_operation_quick_scan" "$OUTPUT_DIR/agent_runtime_quick_scan_registry.json"
 

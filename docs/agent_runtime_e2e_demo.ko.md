@@ -60,7 +60,7 @@ local run evidence / comparability / registry context를 보존합니다.
 | Agent runtime operation smoke | generated operation scenario bundle에서 manifest, Runtime result, Orchestrator, AIGuard, Lab report 연결을 확인 | Runtime regression comparability나 CI artifact bundle completeness를 검증하지 않음 |
 | Runtime Intelligence artifact smoke | committed Orchestrator -> EdgeEnv -> AIGuard -> Lab bundle의 report rows, owner boundary, CI artifact shape를 검증 | production observability, GitLab control plane, live remote execution을 증명하지 않음 |
 | Remote fallback registry marker smoke | `bash scripts/smoke_remote_fallback_registry_marker.sh`로 fixture-only remote fallback bundle을 만들고 `Remote fallback starter evidence`, `Duration source`, `Duration scope label`, `source=entrypoint_requested_frames`, `Duration Sources`를 확인 | fallback starter가 entrypoint-requested replay scope에 묶여 있음을 보존하며 production remote execution이나 live runtime duration claim을 증명하지 않음 |
-| Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh`로 fixture-only device-local preservation bundle을 registry까지 재생성하고 `Operation Quick Scan Summary`, `Reviewer operation quick scan`, queue/deadline/fallback marker를 확인 | live Jetson 실행, thermal endurance validation, production scheduling, Lab ownership 이전을 증명하지 않음 |
+| Operation quick-scan registry smoke | `bash scripts/smoke_quick_scan_registry_summary.sh`로 fixture-only device-local preservation bundle을 registry까지 재생성하고 `Operation Quick Scan Summary`, `Reviewer operation quick scan`, `operation_risk_first_read_label`, `first_read=review_operation_risk_context`, queue/deadline/fallback marker를 확인 | live Jetson 실행, thermal endurance validation, production scheduling, Lab ownership 이전을 증명하지 않음 |
 
 Runtime Intelligence smoke는 configured output directory 아래에 다음
 reviewer-facing artifact를 같은 순서로 기록합니다.
@@ -259,6 +259,12 @@ queue/deadline/fallback pressure를 먼저 식별할 수 있습니다.
 registry JSON은 각 run의 `evidence_index_boundary`와 aggregated
 `evidence_index_boundary_summary`도 보존하므로, multi-run view에서도
 reviewer-navigation boundary가 machine-readable하게 남습니다.
+같은 registry는 operation-risk first-read path도 reviewer navigation metadata로
+보존합니다. `operation_risk_first_read_label`,
+`first_read=review_operation_risk_context`, registry JSON의
+`operation_risk_rollup_first_reads`는 reviewer가 먼저 볼 operation-risk
+context를 빠르게 찾기 위한 label이며 Lab-owned decision authority를 바꾸지
+않습니다.
 fixture-only quick-scan smoke는 이 분리를 강제합니다.
 `raw_marker=reviewer_focus_operation_quick_scan` 같은 raw marker label은
 compact `Operation Quick Scan Summary`에 새면 안 되고, detailed `## Runs`

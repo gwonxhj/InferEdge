@@ -84,6 +84,8 @@ LAB_OPERATION_QUICK_SCAN_RAW_MARKER = "reviewer_focus_operation_quick_scan"
 LAB_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL = (
     f"raw_marker={LAB_OPERATION_QUICK_SCAN_RAW_MARKER}"
 )
+OPERATION_RISK_FIRST_READ = "review_operation_risk_context"
+OPERATION_RISK_FIRST_READ_LABEL = f"first_read={OPERATION_RISK_FIRST_READ}"
 LAB_REPORT_MARKER_CONTEXT_ROLE = "lab_report_contract_context"
 EVIDENCE_INDEX_BOUNDARY_ROLE = (
     "reviewer_navigation_metadata_not_lab_report_owner_or_source_contract"
@@ -753,7 +755,28 @@ def build_summary(output_dir: Path, requested_frames: str | None = None) -> dict
                 ),
             )
         ),
+        "operation_risk_first_read": first_value(
+            orchestration,
+            [
+                ("operation_risk_summary", "first_read"),
+                ("operation_risk_summary", "review_first_read"),
+                ("operation_risk_rollup", "first_read"),
+            ],
+            (
+                OPERATION_RISK_FIRST_READ
+                if first_dict(
+                    orchestration,
+                    [("operation_risk_summary",), ("operation_risk_rollup",)],
+                )
+                else "unknown"
+            ),
+        ),
     }
+    run_summary["operation_risk_first_read_label"] = (
+        f"first_read={run_summary['operation_risk_first_read']}"
+        if run_summary["operation_risk_first_read"] not in (None, "", "unknown")
+        else "unknown"
+    )
     run_summary["duration_class"] = duration_class_from_frames(run_summary.get("frames"))
     run_summary["duration_label"] = duration_label_from_class(
         run_summary["duration_class"],
@@ -1289,6 +1312,8 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             f"| runtime_operation_recommended_action | {md_value(run['runtime_operation_recommended_action'])} |",
             f"| runtime_operation_risk_labels | {md_value(run['runtime_operation_risk_labels'])} |",
             f"| runtime_operation_evidence_gaps | {md_value(run['runtime_operation_evidence_gaps'])} |",
+            f"| operation_risk_first_read | {md_value(run['operation_risk_first_read'])} |",
+            f"| operation_risk_first_read_label | {md_value(run['operation_risk_first_read_label'])} |",
             "",
             "## Guard And Decision",
             "",
@@ -1382,6 +1407,7 @@ def write_markdown(index: dict[str, Any], path: Path) -> None:
             "- Treat `05_lab_agent_runtime_report.md` as the human-readable decision context.",
             "- Treat `03_orchestration_summary.json`, `04_aiguard_guard_analysis.json`, and `05_lab_agent_runtime_report.json` as the main machine-readable contracts.",
             "- Lab report marker rows in this index are reviewer navigation context; they do not make the index a Lab report owner or make AIGuard validate Lab report marker contracts.",
+            f"- The `operation_risk_first_read_label` row preserves `{OPERATION_RISK_FIRST_READ_LABEL}` as reviewer navigation metadata for the operation-risk report path.",
             "- Raw quick-scan marker labels are preserved here for traceability to the Lab-owned Runtime Intelligence report, not as a new source contract; the index remains reviewer navigation metadata, not a Lab report owner or source contract.",
             "",
         ]

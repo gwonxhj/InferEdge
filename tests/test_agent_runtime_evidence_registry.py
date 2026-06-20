@@ -878,6 +878,11 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "fallback_count=93" in script
     assert "operation_summary: mode=device_local_starter" in script
     assert "operation_summary: mode=timeout_threshold_exceeded" in script
+    assert "operation_risk_first_read_label" in script
+    assert "first_read=review_operation_risk_context" in script
+    assert "Operation risk first reads: review_operation_risk_context" in script
+    assert "Operation Risk First Read" in script
+    assert "operation_risk_rollup_first_reads" in script
     assert "evidence_index_boundary" in script
     assert "reviewer_navigation_metadata" in script
     assert '"lab_report_owner": false' in script
@@ -907,10 +912,16 @@ def test_quick_scan_registry_summary_smoke_is_fixture_only() -> None:
     assert "Raw Marker Label" in demo_doc
     assert "edgeenv_lab_report_operation_quick_scan_raw_marker" in demo_doc
     assert "edgeenv_lab_report_operation_quick_scan_raw_marker_label" in demo_doc
+    assert "operation_risk_first_read_label" in demo_doc
+    assert "first_read=review_operation_risk_context" in demo_doc
+    assert "operation_risk_rollup_first_reads" in demo_doc
     assert "compact `Operation Quick Scan Summary`에 새면 안 되고" in korean_demo_doc
     assert "Raw Marker Label" in korean_demo_doc
     assert "edgeenv_lab_report_operation_quick_scan_raw_marker" in korean_demo_doc
     assert "edgeenv_lab_report_operation_quick_scan_raw_marker_label" in korean_demo_doc
+    assert "operation_risk_first_read_label" in korean_demo_doc
+    assert "first_read=review_operation_risk_context" in korean_demo_doc
+    assert "operation_risk_rollup_first_reads" in korean_demo_doc
     for text in (readme, portfolio, interview):
         assert "Operation Quick Scan Summary" in text
         assert "quick-scan registry" in text
@@ -1192,6 +1203,7 @@ def test_entrypoint_lab_report_can_use_local_lab_module() -> None:
     assert "-m inferedgelab.cli" in script
     assert "--edgeenv-run-show" in script
     assert "Runtime Intelligence EdgeEnv Preservation" in script
+    assert '"first_read": "review_operation_risk_context"' in script
     assert "python -m inferedgelab.cli" in demo_doc
 
 
@@ -2309,6 +2321,7 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
             },
             "operation_risk_summary": {
                 "schema_version": "inferedge-entrypoint-operation-risk-summary-v1",
+                "first_read": "review_operation_risk_context",
                 "queue_pressure_reason": (
                     "max_total_queue_depth_exceeded_overload_threshold"
                 ),
@@ -2433,6 +2446,12 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert run_summary["runtime_operation_evidence_gaps"] == [
         "thermal_memory_evidence_missing"
     ]
+    assert run_summary["operation_risk_first_read"] == (
+        "review_operation_risk_context"
+    )
+    assert run_summary["operation_risk_first_read_label"] == (
+        "first_read=review_operation_risk_context"
+    )
     assert edgeenv_summary["run_id"] == "run-edgeenv-runtime-operation"
     assert edgeenv_summary["has_runtime_operation_summary"] is True
     assert edgeenv_summary["runtime_operation_schema_version"] == (
@@ -2529,6 +2548,10 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "operation_summary_label" in markdown
     assert "lab_report_operation_summary_label" in markdown
     assert "operation_summary: mode=device_local_starter" in markdown
+    assert "operation_risk_first_read" in markdown
+    assert "review_operation_risk_context" in markdown
+    assert "operation_risk_first_read_label" in markdown
+    assert "first_read=review_operation_risk_context" in markdown
     assert "lab_report_operation_quick_scan_focus_marker" in markdown
     assert "Operation quick scan" in markdown
     assert "lab_report_operation_quick_scan_marker" in markdown
@@ -2547,6 +2570,7 @@ def test_evidence_index_preserves_device_local_override_producers(tmp_path: Path
     assert "reviewer navigation context" in markdown
     assert "do not make the index a Lab report owner" in markdown
     assert "make AIGuard validate Lab report marker contracts" in markdown
+    assert "operation_risk_first_read_label" in markdown
     assert "Raw quick-scan marker labels are preserved here for traceability" in markdown
     assert "not a Lab report owner or source contract" in markdown
     assert "not as a new source contract" in markdown
@@ -2747,6 +2771,10 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
                     "runtime_timeout_observed",
                     "latency_budget_exceeded",
                 ],
+                "operation_risk_first_read": "review_operation_risk_context",
+                "operation_risk_first_read_label": (
+                    "first_read=review_operation_risk_context"
+                ),
                 "queue_pressure_reason": (
                     "max_total_queue_depth_exceeded_overload_threshold"
                 ),
@@ -2826,6 +2854,9 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         "all_runs_match": True,
         "role": "run_registry_navigation_summary",
     }
+    assert registry["operation_risk_rollup_first_reads"] == [
+        "review_operation_risk_context"
+    ]
     run = registry["runs"][0]
     assert run["evidence_index_boundary"] == {
         "role": "reviewer_navigation_metadata",
@@ -2863,6 +2894,10 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         "runtime_timeout_observed",
         "latency_budget_exceeded",
     ]
+    assert run["operation_risk_first_read"] == "review_operation_risk_context"
+    assert run["operation_risk_first_read_label"] == (
+        "first_read=review_operation_risk_context"
+    )
     assert run["edgeenv_run_id"] == "run-edgeenv-runtime-operation"
     assert run["edgeenv_has_runtime_operation_summary"] is True
     assert run["edgeenv_runtime_operation_health_reason"] == (
@@ -2913,6 +2948,10 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     markdown = md_path.read_text(encoding="utf-8")
     assert "Operation Quick Scan Raw Marker" in markdown
     assert "Operation Quick Scan Raw Marker Label" in markdown
+    assert "Operation risk first reads: review_operation_risk_context" in markdown
+    assert "Operation Risk First Read" in markdown
+    assert "Operation Risk First Read Label" in markdown
+    assert "first_read=review_operation_risk_context" in markdown
     assert "reviewer_focus_operation_quick_scan" in markdown
     assert "raw_marker=reviewer_focus_operation_quick_scan" in markdown
     assert "lab_preservation=present" in markdown
@@ -2960,6 +2999,7 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
         "max_queue=5, "
         "queue_pressure=max_total_queue_depth_exceeded_overload_threshold, "
         "deadline_missed=0, fallback=1, dropped=1 | "
+        "review_operation_risk_context | "
         "max_total_queue_depth_exceeded_overload_threshold | "
         "5 | 0 | 1 | jetson_device_local_preservation, "
         "path=device_local_starter, run=run-edgeenv-runtime-operation | "
@@ -2967,6 +3007,7 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     ) in summary_block
     assert "operation_summary: mode=timeout_threshold_exceeded" in runs_block
     assert "operation_summary: mode=device_local_starter" in runs_block
+    assert "first_read=review_operation_risk_context" in runs_block
     assert "Raw Marker" in runs_block
     assert "Raw Marker Label" in runs_block
     assert "raw_marker=reviewer_focus_operation_quick_scan" in runs_block
@@ -2977,6 +3018,7 @@ def test_run_registry_surfaces_device_local_override_producers(tmp_path: Path) -
     assert "reviewer-navigation bug" in markdown
     assert "detailed rows and JSON traceability fields" in markdown
     assert "does not make this registry a Lab report owner" in markdown
+    assert "not a decision owner change" in markdown
 
 
 def test_run_registry_summarizes_duration_comparison_before_runs(tmp_path: Path) -> None:

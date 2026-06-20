@@ -14,6 +14,8 @@ REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER = "reviewer_focus_operation_quick
 REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL = (
     f"raw_marker={REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}"
 )
+OPERATION_RISK_FIRST_READ = "review_operation_risk_context"
+OPERATION_RISK_FIRST_READ_LABEL = f"first_read={OPERATION_RISK_FIRST_READ}"
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -114,6 +116,18 @@ def evidence_index_boundary_summary(runs: list[dict[str, Any]]) -> dict[str, Any
     }
 
 
+def operation_risk_rollup_first_reads(runs: list[dict[str, Any]]) -> list[str]:
+    values: list[str] = []
+    for run in runs:
+        value = run.get("operation_risk_first_read")
+        if value in (None, "", "unknown"):
+            continue
+        text = str(value)
+        if text not in values:
+            values.append(text)
+    return values
+
+
 def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]:
     runs = []
     for index_path in index_paths:
@@ -197,6 +211,12 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
                 ),
                 "runtime_operation_risk_labels": run_summary.get(
                     "runtime_operation_risk_labels", []
+                ),
+                "operation_risk_first_read": run_summary.get(
+                    "operation_risk_first_read", "unknown"
+                ),
+                "operation_risk_first_read_label": run_summary.get(
+                    "operation_risk_first_read_label", "unknown"
                 ),
                 "guard_verdict": guard_summary.get("guard_verdict", "unknown"),
                 "severity": guard_summary.get("severity", "unknown"),
@@ -332,6 +352,7 @@ def build_registry(index_paths: list[Path], output_base: Path) -> dict[str, Any]
         "created_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat(),
         "run_count": len(runs),
         "evidence_index_boundary_summary": evidence_index_boundary_summary(runs),
+        "operation_risk_rollup_first_reads": operation_risk_rollup_first_reads(runs),
         "runs": runs,
         "notes": [
             "This registry is derived from 00_evidence_index.json files.",
@@ -462,6 +483,10 @@ def operation_quick_scan_rows(runs: list[dict[str, Any]]) -> list[dict[str, Any]
                     "edgeenv_lab_report_operation_summary_label",
                     "unknown",
                 ),
+                "first_read": run.get("operation_risk_first_read", "unknown"),
+                "first_read_label": run.get(
+                    "operation_risk_first_read_label", "unknown"
+                ),
                 "queue_reason": run.get("queue_pressure_reason", "unknown"),
                 "queue_max": run.get("max_total_queue_depth", "unknown"),
                 "deadline_missed": run.get("deadline_missed_count", "unknown"),
@@ -501,6 +526,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
         f"matching_runs={md_value(boundary.get('matching_count'))}/"
         f"{md_value(boundary.get('run_count'))}; "
         f"all_runs_match={md_value(boundary.get('all_runs_match'))}",
+        f"- Operation risk first reads: {md_value(registry.get('operation_risk_rollup_first_reads'))}",
         "",
         "## Duration Comparison Summary",
         "",
@@ -540,8 +566,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
     if quick_scan_rows:
         lines.extend(
             [
-                "| Run | Duration Label | Frames | Operation Path | Operation Summary | Queue | Depth | Deadline Miss | Fallback | Preservation | Lab Decision | Guard |",
-                "|---|---|---:|---|---|---|---:|---:|---:|---|---|---|",
+                "| Run | Duration Label | Frames | Operation Path | Operation Summary | First Read | Queue | Depth | Deadline Miss | Fallback | Preservation | Lab Decision | Guard |",
+                "|---|---|---:|---|---|---|---|---:|---:|---:|---|---|---|",
             ]
         )
         for row in quick_scan_rows:
@@ -554,6 +580,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                         md_value(row["frames"]),
                         md_value(row["operation_path"]),
                         md_value(row["operation_summary"]),
+                        md_value(row["first_read"]),
                         md_value(row["queue_reason"]),
                         md_value(row["queue_max"]),
                         md_value(row["deadline_missed"]),
@@ -573,8 +600,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "",
             "## Runs",
             "",
-            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Summary | EdgeEnv Runtime Operation Summary | Operation Quick Scan Raw Marker | Operation Quick Scan Raw Marker Label | Operation Quick Scan | EdgeEnv |",
-            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|---|---|---|---|",
+            "| Run | Operation Path | Duration Class | Duration Label | Duration Source | Duration Scope | Scenario Label | Category | Mode | Frames | Queue Max | Queue Reason | Max Pressure Task | Dropped | Fallback | Deadline Missed | Tegrastats Samples | Producer Sources | Device-Local Producers | Device-Local Events | Producer Events | Runtime Action | Runtime Risk Labels | Operation Risk First Read | Operation Risk First Read Label | Producer Stages | Guard | Lab Decision | Remote | Remote Boundary | Operation Summary | EdgeEnv Runtime Operation Summary | Operation Quick Scan Raw Marker | Operation Quick Scan Raw Marker Label | Operation Quick Scan | EdgeEnv |",
+            "|---|---|---|---|---|---|---|---|---|---:|---:|---|---|---:|---:|---:|---:|---|---:|---:|---:|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|",
         ]
     )
     for run in registry["runs"]:
@@ -607,6 +634,8 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
                     md_value(run["producer_event_count"]),
                     md_value(run["runtime_operation_recommended_action"]),
                     md_value(run["runtime_operation_risk_labels"]),
+                    md_value(run["operation_risk_first_read"]),
+                    md_value(run["operation_risk_first_read_label"]),
                     md_value(run["producer_stages"]),
                     f"{md_value(run['guard_verdict'])}/{md_value(run['severity'])}",
                     md_value(run["lab_decision"]),
@@ -639,6 +668,7 @@ def write_markdown(registry: dict[str, Any], path: Path) -> None:
             "- The `Operation Quick Scan Summary` table keeps only compact queue/deadline/fallback and preservation labels; raw Lab report markers remain in the detailed `## Runs` table and registry JSON as Lab report marker context.",
             "- If raw quick-scan marker labels appear in `Operation Quick Scan Summary`, treat the registry as a reviewer-navigation bug; those labels belong in the detailed rows and JSON traceability fields.",
             "- The `Operation Summary` column uses the shared `operation_summary: mode/max_queue/queue_pressure/deadline_missed/fallback/dropped` vocabulary so EdgeEnv and Lab handoff evidence can be scanned consistently.",
+            f"- The `Operation Risk First Read` and `Operation Risk First Read Label` columns preserve `{OPERATION_RISK_FIRST_READ}` / `{OPERATION_RISK_FIRST_READ_LABEL}` as reviewer navigation metadata, not a decision owner change.",
             f"- The detailed `Operation Quick Scan Raw Marker` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER}` as additive reviewer-navigation metadata when Lab quick-scan marker context is present.",
             f"- The detailed `Operation Quick Scan Raw Marker Label` column preserves `{REVIEWER_FOCUS_OPERATION_QUICK_SCAN_RAW_MARKER_LABEL}` so the registry vocabulary matches the Lab Runtime Intelligence report row.",
             "- Missing fields are preserved as `unknown` so partial run bundles can still be inspected.",
