@@ -1682,10 +1682,16 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
     assert "빠른 ecosystem map" in korean_ecosystem
     assert "`## Docs & Review Path`" in korean_ecosystem
     assert (
-        "Agent Runtime / Runtime Operation smoke details and shared marker-gate owner"
+        "Agent Runtime / Runtime Operation smoke details, `operation-risk` first-read path, and shared marker-gate owner"
         in readme
     )
-    assert "Runtime Operation / Agent Runtime smoke 흐름과 공통 marker-gate 상세 owner" in korean_readme
+    assert "Runtime Operation / Agent Runtime smoke 흐름" in korean_readme
+    assert "`operation-risk` first-read path" in readme
+    assert "`operation-risk` first-read path" in korean_readme
+    assert "docs/portfolio_summary.md#runtime-intelligence-review-path" in readme
+    assert "docs/portfolio_summary.ko.md#runtime-intelligence-검토-경로" in korean_readme
+    assert "docs/interview_narrative.md" in readme
+    assert "docs/interview_narrative.ko.md" in korean_readme
     assert (
         "Historical clean-clone rehearsal and current reviewer delta; "
         "not a fresh clean-clone claim"
