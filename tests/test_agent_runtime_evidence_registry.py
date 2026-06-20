@@ -569,6 +569,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
     assert "Orchestrator queue/deadline/fallback markers" in smoke_script
     assert "Operation quick scan" in smoke_script
     assert "Reviewer operation quick scan" in smoke_script
+    assert "first_read=review_operation_risk_context" in smoke_script
     assert "lab_report_operation_quick_scan_raw_marker_label" in smoke_script
     assert "raw_marker=reviewer_focus_operation_quick_scan" in smoke_script
     assert "queue_pressure_reason=queue_backlog_threshold_exceeded" in smoke_script
@@ -639,6 +640,7 @@ def test_cross_repo_smoke_runs_runtime_intelligence_artifact_gate() -> None:
         assert "drift" in doc_text
         assert "review_path_section: short Review Path section rendered" in doc_text
         assert "review_path_fast_path: readable Review Path fast path rendered" in doc_text
+        assert "first_read=review_operation_risk_context" in doc_text
         assert (
             "review_path_artifact_gate_summary: artifact gate summary reference row validated"
             in doc_text

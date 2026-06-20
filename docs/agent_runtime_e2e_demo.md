@@ -78,7 +78,7 @@ configured output directory:
 | EdgeEnv `examples/regression/fixture_matrix.json` | Gated from the sibling EdgeEnv repo before the Lab smoke so same-condition, runtime-comparison, target-comparison, protocol-mismatch, telemetry-gap, and replay-sequence fixture roles stay aligned |
 | `runtime_intelligence_bundle_manifest_gate_summary.md` | Confirms the committed bundle manifest, EdgeEnv handoff alignment, artifact roles, owner boundaries, and source repository mapping |
 | `edgeenv_runtime_regression.md` / `edgeenv_runtime_regression.html` | Shows same-condition EdgeEnv runtime regression evidence without AIGuard enrichment |
-| `runtime_anomaly_summary.md` / `runtime_anomaly_summary.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, promoted `Operation quick scan` reviewer focus, preserved `operation_risk_summary` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |
+| `runtime_anomaly_summary.md` / `runtime_anomaly_summary.html` | Shows the Lab-owned Runtime Intelligence Risk Summary with EdgeEnv regression, AIGuard deterministic runtime evidence, telemetry coverage, promoted `Operation quick scan` reviewer focus, preserved `operation_risk_summary` / `first_read=review_operation_risk_context` markers, AIGuard operation-risk summary evidence, and remote-dispatch boundary rows |
 | `runtime_anomaly_gate_summary.md` | Confirms the generated Markdown/HTML report still contains required Runtime Intelligence rows, Lab ownership wording, `Validated Duration Traceability`, `Validated Reviewer Focus`, and `Validated Review Path` reviewer navigation context |
 | `runtime_intelligence_ci_artifact_gate_summary.md` | Confirms the optional CI artifact bundle shape, including the copied `Validated Reviewer Focus` and `Validated Review Path` markers, without making CI a production control plane |
 | `aiguard_edgeenv_handoff_alignment.json` / `aiguard_edgeenv_handoff_alignment.md` | Preserves the precomputed AIGuard/EdgeEnv handoff alignment fixture used by the smoke |
@@ -98,6 +98,7 @@ gate also keeps the surrounding duration and reviewer-focus markers here:
 - `Validated Reviewer Focus`
 - `reviewer_focus_operation_quick_scan: Reviewer Focus / Operation quick scan marker validated`
 - `reviewer_focus_operation_quick_scan_raw_marker: raw marker preserved in Lab report`
+- `first_read=review_operation_risk_context`
 
 The current required review-path markers are:
 
