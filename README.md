@@ -222,6 +222,7 @@ bash scripts/demo_agent_runtime_e2e.sh --remote-dispatch
 For repeat Jetson sustained runs, start with the readiness preflight:
 
 ```bash
+ssh -o BatchMode=yes -o ConnectTimeout=8 risenano01@nano01.local 'hostname'
 bash scripts/check_jetson_sustained_readiness.sh
 bash scripts/demo_jetson_5min_sustained.sh --edgeenv-run-evidence
 ```
@@ -229,7 +230,9 @@ bash scripts/demo_jetson_5min_sustained.sh --edgeenv-run-evidence
 `check_jetson_sustained_readiness.sh` only checks SSH, `tegrastats`, repo
 cleanliness, model availability, and EdgeEnv CLI availability. It does not
 create new evidence. If the target Jetson is offline, keep using the committed
-reports above instead of implying fresh Jetson runtime evidence.
+reports above instead of implying fresh Jetson runtime evidence. If the SSH
+probe times out, fix power, network, and SSH reachability before rerunning the
+readiness preflight.
 
 For the clean replay procedure, see
 [`Clean Jetson Replay Runbook`](docs/agent_runtime_e2e_demo.md#clean-jetson-replay-runbook)
