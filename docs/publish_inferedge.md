@@ -45,6 +45,8 @@ bash scripts/check_reviewer_verification_set.sh
 ```
 
 Use `--dry-run` on that helper when you only need to confirm the command order.
+Use `--log-dir /tmp/inferedge_reviewer_verification_logs` when full smoke output
+is too long for the terminal but the per-step logs should be preserved.
 It does not replace the staged `git diff --cached --check` before committing.
 
 The readiness check verifies:
