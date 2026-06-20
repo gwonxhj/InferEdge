@@ -33,6 +33,7 @@ output, Lab deployment decision output, or AIGuard `guard_analysis` contracts.
 | Historical clean-clone rehearsal is not presented as a fresh run | `docs/final_submission_rehearsal.md` top note and `## Current Reviewer Path Delta` | Pass |
 | Cross-repo smoke covers the current pinned snapshot | `INFEREDGE_REPOS_DIR=/private/tmp/inferedge-master-locked-current-20260619-1 bash scripts/smoke_all.sh` | Pass |
 | README reviewer verification set has an executable helper | `README.md` Quick Start points to `scripts/check_reviewer_verification_set.sh`; helper dry-run preserves `pytest`, `git diff --check`, `smoke_all`, and `check_publish_ready` order | Pass |
+| Full reviewer verification output can be preserved without terminal overflow | `scripts/check_reviewer_verification_set.sh --log-dir /tmp/inferedge_reviewer_verification_main_final` stores per-step logs while preserving step pass/fail and failing-step exit codes | Pass |
 | Publish readiness has a normal and blocked-state interpretation | `docs/publish_inferedge.md`; `scripts/check_publish_ready.sh` output contract | Pass |
 | Branch publish, PR creation, and merge are one bundled handoff after validation | `docs/publish_inferedge.md` `## Bundled PR Merge Step`; README publish summary | Pass |
 | Lab remains the final deployment decision owner | README Cross-Repo Quick Guide Path, pipeline map, portfolio summary, interview narrative | Pass |
@@ -52,6 +53,7 @@ python -m pytest -q
 git diff --check
 bash scripts/check_publish_ready.sh
 bash scripts/check_reviewer_verification_set.sh --dry-run
+INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub bash scripts/check_reviewer_verification_set.sh --log-dir /tmp/inferedge_reviewer_verification_main_final
 ```
 
 The clean locked clone validates the current `repos.lock` snapshot. The current
@@ -70,7 +72,9 @@ the Runtime Intelligence report marker gate. PR #264 records the completed
 first-read status in the Core4 roadmap status.
 The README reviewer verification helper now provides a single local entrypoint
 for the same verification set while preserving the individual command evidence
-above.
+above. The `--log-dir` full verification mode preserves long cross-repo smoke
+output as per-step logs without weakening failure propagation or requiring
+Jetson hardware.
 
 PR numbers in this audit are historical traceability anchors. Current reviewer
 completion is proved by the requirement evidence rows, the verification
