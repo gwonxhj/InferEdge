@@ -1755,10 +1755,18 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
     assert "generated `00_evidence_index.*`" in " ".join(ecosystem.split())
     assert "smoke-gated evidence-index boundary" in " ".join(ecosystem.split())
     assert "not a Lab report owner or source contract" in " ".join(ecosystem.split())
+    assert "operation-risk first-read" in ecosystem
+    assert "operation_risk_rollup_first_reads" in ecosystem
+    assert "first_read=review_operation_risk_context" in ecosystem
+    assert "smoke-protected reviewer navigation" in ecosystem
     assert "공통 reviewer marker-gate 상세" in " ".join(korean_ecosystem.split())
     assert "generated `00_evidence_index.*`" in " ".join(korean_ecosystem.split())
     assert "smoke-gated evidence-index boundary" in " ".join(korean_ecosystem.split())
     assert "Lab report owner나 source contract가 아니라" in " ".join(korean_ecosystem.split())
+    assert "operation-risk first-read" in korean_ecosystem
+    assert "operation_risk_rollup_first_reads" in korean_ecosystem
+    assert "first_read=review_operation_risk_context" in korean_ecosystem
+    assert "smoke-protected reviewer navigation" in korean_ecosystem
     assert "Reviewer Completion Audit" in readme
     assert "Reviewer Completion Audit" in korean_readme
     for marker in [
@@ -1867,6 +1875,14 @@ def test_final_submission_rehearsal_preserves_current_reviewer_delta() -> None:
     assert "smoke-gated boundary wording" in normalized_portfolio_ko
     assert "Lab report owner나 source contract가 되지 않게" in normalized_portfolio_ko
     assert "machine-readable `evidence_index_boundary_summary`" in normalized_portfolio_ko
+    assert "operation-risk first-read" in normalized_portfolio
+    assert "operation_risk_rollup_first_reads" in normalized_portfolio
+    assert "first_read=review_operation_risk_context" in normalized_portfolio
+    assert "reviewer navigation only, not a decision owner change" in normalized_portfolio
+    assert "operation-risk first-read" in normalized_portfolio_ko
+    assert "operation_risk_rollup_first_reads" in normalized_portfolio_ko
+    assert "first_read=review_operation_risk_context" in normalized_portfolio_ko
+    assert "reviewer navigation이며 decision owner 변경이 아님" in normalized_portfolio_ko
     assert "start from the entrypoint README" in normalized_portfolio
     assert "`## Docs & Review Path`" in normalized_portfolio
     assert "entrypoint README에서 시작" in normalized_portfolio_ko

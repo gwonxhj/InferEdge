@@ -85,6 +85,10 @@ InferEdgeOrchestrator
 - AIGuard는 deterministic warning/review evidence를 제공합니다.
 - Lab은 Runtime Intelligence / operation-risk report와 최종 deployment
   decision을 소유합니다.
+- first-read path는 smoke-protected reviewer navigation입니다. Orchestrator
+  CLI가 operation-risk first-read를 보여주고, EdgeEnv handoff가
+  `operation_risk_rollup_first_reads`를 보존하며, Lab Runtime Intelligence
+  report가 `first_read=review_operation_risk_context`를 렌더링합니다.
 
 ## 경계
 

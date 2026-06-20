@@ -140,6 +140,7 @@ summary intentionally does not become the detailed marker vocabulary owner.
 | Is the report Lab-owned? | `runtime_anomaly_summary.md` / `.html` for Runtime Intelligence Risk Summary and Lab decision context |
 | Can reviewers follow the Lab report quickly? | Lab `Review Path` section plus `Validated Review Path` gate summary, including `review_path_section: short Review Path section rendered` and `review_path_fast_path: readable Review Path fast path rendered`, for the README -> Lab report -> gate summary reading order |
 | Can operation pressure be scanned quickly? | `Duration Comparison Summary`, `Operation Quick Scan Summary`, queue pressure, `max_total_queue_depth`, deadline miss, fallback count, `operation_summary` labels |
+| Does the operation-risk first-read survive the chain? | Orchestrator CLI `operation-risk` first-read -> EdgeEnv `operation_risk_rollup_first_reads` handoff -> Lab Runtime Intelligence report `first_read=review_operation_risk_context`; reviewer navigation only, not a decision owner change |
 | Did Jetson/device-local context survive the handoff? | `00_evidence_index.*`, `lab_preservation=present`, `identity=jetson_device_local_preservation`, `raw_marker=reviewer_focus_operation_quick_scan` |
 | Is remote fallback bounded? | `Remote fallback starter evidence` and `remote_execution_recovered_by_fallback`, still not production remote execution |
 
