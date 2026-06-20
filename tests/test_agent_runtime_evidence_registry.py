@@ -1486,6 +1486,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     )
 
     assert "scripts/check_publish_ready.sh" in readme
+    assert "scripts/check_reviewer_verification_set.sh" in readme
+    assert "Run the README reviewer verification set in command order" in readme
     assert "docs/publish_inferedge.md" in readme
     assert "Reviewer verification set:" in readme
     assert "entrypoint verification set" in readme
@@ -1510,6 +1512,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "bash scripts/clone_all.sh --locked",
             "bash scripts/smoke_all.sh",
             "Reviewer verification set:",
+            "bash scripts/check_reviewer_verification_set.sh",
+            "That helper runs:",
             "python -m pytest -q",
             "git diff --check",
             "bash scripts/smoke_all.sh",
@@ -1520,8 +1524,10 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
         label="README reviewer verification set",
     )
     assert "scripts/check_publish_ready.sh" in korean_readme
+    assert "scripts/check_reviewer_verification_set.sh" in korean_readme
     assert "docs/publish_inferedge.md" in korean_readme
     assert "Reviewer verification set:" in korean_readme
+    assert "이 helper는 아래 명령을 순서대로 실행합니다" in korean_readme
     assert "reviewer completion audit에서 참조하는 entrypoint 검증" in korean_readme
     assert "INFEREDGE_REPOS_DIR" in korean_readme
     assert "Jetson hardware가 필요하지 않으며" in normalized_korean_readme
@@ -1538,6 +1544,8 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "bash scripts/clone_all.sh --locked",
             "bash scripts/smoke_all.sh",
             "Reviewer verification set:",
+            "bash scripts/check_reviewer_verification_set.sh",
+            "이 helper는 아래 명령을 순서대로 실행합니다",
             "python -m pytest -q",
             "git diff --check",
             "bash scripts/smoke_all.sh",
@@ -1575,6 +1583,66 @@ def test_publish_readiness_help_output_lists_safety_boundaries() -> None:
     assert "origin branch fast-forward safety" in output
     assert "suggested push command" in output
     assert result.stderr == ""
+
+
+def test_reviewer_verification_helper_preserves_command_order() -> None:
+    script = (ROOT / "scripts" / "check_reviewer_verification_set.sh").read_text(
+        encoding="utf-8"
+    )
+
+    for marker in (
+        "InferEdge reviewer verification set",
+        "python -m pytest -q",
+        "git diff --check",
+        "bash scripts/smoke_all.sh",
+        "bash scripts/check_publish_ready.sh",
+        "Jetson hardware is not required for this verification set.",
+        "Fresh sustained Jetson capture is a separate later evidence task.",
+        "--dry-run",
+        "--skip-smoke",
+        "--skip-publish-ready",
+        "--full-smoke",
+    ):
+        assert marker in script
+
+    help_result = subprocess.run(
+        ["bash", "scripts/check_reviewer_verification_set.sh", "--help"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    help_output = help_result.stdout
+    assert "Usage:" in help_output
+    assert "bash scripts/check_reviewer_verification_set.sh [options]" in help_output
+    assert "Run the InferEdge entrypoint reviewer verification set." in help_output
+    assert "--dry-run" in help_output
+    assert "--skip-smoke" in help_output
+    assert "--skip-publish-ready" in help_output
+    assert "--full-smoke" in help_output
+    assert help_result.stderr == ""
+
+    dry_run = subprocess.run(
+        ["bash", "scripts/check_reviewer_verification_set.sh", "--dry-run"],
+        cwd=ROOT,
+        text=True,
+        capture_output=True,
+        check=True,
+    )
+    assert_markers_in_order(
+        dry_run.stdout,
+        [
+            "InferEdge reviewer verification set",
+            "mode: dry-run",
+            "would_run: python -m pytest -q",
+            "would_run: git diff --check",
+            "would_run: bash scripts/smoke_all.sh",
+            "would_run: bash scripts/check_publish_ready.sh",
+            "Reviewer verification set completed.",
+        ],
+        label="reviewer verification helper dry-run order",
+    )
+    assert dry_run.stderr == ""
 
 
 def test_branch_cleanup_audit_script_is_inventory_only() -> None:
