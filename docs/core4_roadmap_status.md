@@ -48,6 +48,11 @@ the sustained operation timeline so reviewers can see overload-threshold
 windows, peak queue depth, limited/protected/fallback tasks, and the
 `review_sustained_pressure_window` first-read marker before opening raw
 timeline JSON.
+InferEdgeEnv PR #157 validates and preserves that `pressure_window` block in
+telemetry history inspection and Runtime Intelligence Lab handoff summaries,
+exposing `pressure_window_summary_run_ids` /
+`orchestrator_pressure_window_summary_run_ids` while keeping it optional
+reviewer navigation context rather than an EdgeEnv regression gate.
 InferEdge entrypoint first-read PR series closes the reviewer-facing loop by
 aligning README, portfolio summary, ecosystem 1-page, interview narrative,
 completion audit, generated evidence indexes/run registries, and the cross-repo
@@ -128,6 +133,10 @@ turns reviewer claims into contract-aware checks:
 - Orchestrator sustained operation timelines now include a `pressure_window`
   reviewer summary, making the sustained overload interval visible as
   operation evidence without making Orchestrator a deployment decision owner.
+- EdgeEnv now preserves Orchestrator `pressure_window` handoff context through
+  telemetry history inspection and Lab handoff summaries, so the overload
+  interval remains traceable without changing comparability or deployment
+  decision ownership.
 - InferEdge entrypoint now exposes the same first-read path from README through
   portfolio/ecosystem/interview/audit docs, generated
   `operation_risk_first_read_label` / `operation_risk_rollup_first_reads`
@@ -150,7 +159,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #157 EdgeEnv pressure-window handoff preservation, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 
