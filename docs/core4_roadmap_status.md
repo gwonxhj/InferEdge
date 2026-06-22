@@ -53,6 +53,11 @@ telemetry history inspection and Runtime Intelligence Lab handoff summaries,
 exposing `pressure_window_summary_run_ids` /
 `orchestrator_pressure_window_summary_run_ids` while keeping it optional
 reviewer navigation context rather than an EdgeEnv regression gate.
+InferEdgeAIGuard PR #115 consumes the EdgeEnv-preserved `pressure_window`
+summary as optional deterministic
+`edgeenv_orchestrator_pressure_window_summary` evidence, validates handoff
+run-id alignment, and preserves `scheduler_owner=orchestrator`,
+`decision_owner=lab`, and `not_a_deployment_decision=true` boundary markers.
 InferEdge entrypoint first-read PR series closes the reviewer-facing loop by
 aligning README, portfolio summary, ecosystem 1-page, interview narrative,
 completion audit, generated evidence indexes/run registries, and the cross-repo
@@ -137,6 +142,10 @@ turns reviewer claims into contract-aware checks:
   telemetry history inspection and Lab handoff summaries, so the overload
   interval remains traceable without changing comparability or deployment
   decision ownership.
+- AIGuard now emits optional
+  `edgeenv_orchestrator_pressure_window_summary` evidence from the same
+  EdgeEnv-preserved context, keeping sustained overload-window diagnosis
+  deterministic while preserving Lab final-decision ownership.
 - InferEdge entrypoint now exposes the same first-read path from README through
   portfolio/ecosystem/interview/audit docs, generated
   `operation_risk_first_read_label` / `operation_risk_rollup_first_reads`
@@ -159,7 +168,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #157 EdgeEnv pressure-window handoff preservation, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 
@@ -169,7 +178,7 @@ path or split a stronger portfolio direction into a later task.
 | Decision point | Current direction | Stronger portfolio direction | Decision |
 |---|---|---|---|
 | Runtime evidence depth | Keep the committed Jetson fixtures and Runtime evidence-depth audit as the current reviewer evidence | Capture a fresh sustained Jetson run with current main branches, p95/p99, thermal, memory, power, and operation quick-scan registry evidence | Prefer the stronger direction later; it requires Jetson hardware and must be recorded as new evidence, not inferred from existing fixtures |
-| Runtime Operation polish | Keep operation-risk first-read as reviewer navigation across Orchestrator, EdgeEnv, Lab, entrypoint artifacts, audit, and smoke gates | Add deeper sustained workload pressure evidence only if it preserves Lab final-decision ownership and stays bounded as operation evidence | Defer as a separate Runtime Operation v2 task; do not mix it into Core4 completion status unless the evidence boundary or smoke gate changes |
+| Runtime Operation polish | Keep operation-risk first-read plus pressure-window reviewer navigation across Orchestrator, EdgeEnv, AIGuard, Lab, entrypoint artifacts, audit, and smoke gates | Add deeper sustained workload pressure evidence only if it preserves Lab final-decision ownership and stays bounded as operation evidence | Defer as a separate Runtime Operation v2 task; do not mix it into Core4 completion status unless the evidence boundary or smoke gate changes |
 
 Start the fresh Jetson direction only after `scripts/check_jetson_sustained_readiness.sh`
 passes against the target device. Start the Runtime Operation v2 direction only
