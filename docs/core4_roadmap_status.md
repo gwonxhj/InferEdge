@@ -220,7 +220,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 
 | Candidate | Why it could help | Why defer |
 |---|---|---|
-| Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
+| Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Completed on 2026-06-23 KST with Jetson hardware; keep it documented as runtime-operation smoke evidence, not inferred fixture evidence |
 | Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #119 Orchestrator policy-pressure reason-count first-read output, PR #120 Orchestrator sustained scenario coverage first-read output, PR #158 EdgeEnv policy-pressure reason-count preservation, PR #159 EdgeEnv scenario coverage handoff preservation, PR #379 Lab policy-pressure reason-count report gate, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #378 Lab pressure-window report/gate evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
@@ -230,7 +230,7 @@ path or split a stronger portfolio direction into a later task.
 
 | Decision point | Current direction | Stronger portfolio direction | Decision |
 |---|---|---|---|
-| Runtime evidence depth | Keep the committed Jetson fixtures and Runtime evidence-depth audit as the current reviewer evidence | Capture a fresh sustained Jetson run with current main branches, p95/p99, thermal, memory, power, and operation quick-scan registry evidence | Prefer the stronger direction later; it requires Jetson hardware and must be recorded as new evidence, not inferred from existing fixtures |
+| Runtime evidence depth | Keep the committed Jetson fixtures and Runtime evidence-depth audit as the current reviewer evidence | Capture a fresh sustained Jetson run with current main branches, p95/p99, thermal, memory, power, and operation quick-scan registry evidence | Stronger direction started on 2026-06-23 KST after readiness preflight passed; recorded as new Jetson evidence, not inferred from fixtures |
 | Runtime Operation polish | Keep operation-risk first-read plus pressure-window reviewer navigation across Orchestrator, EdgeEnv, AIGuard, Lab, entrypoint artifacts, audit, and smoke gates | Add deeper sustained workload pressure evidence only if it preserves Lab final-decision ownership and stays bounded as operation evidence | Defer as a separate Runtime Operation v2 task; do not mix it into Core4 completion status unless the evidence boundary or smoke gate changes |
 
 Start the fresh Jetson direction only after `scripts/check_jetson_sustained_readiness.sh`
@@ -252,6 +252,41 @@ network run reached `192.168.35.35:22` but timed out. No new Jetson evidence was
 created. Keep the committed Jetson reports as the current reviewer evidence
 until the target device is powered on, reachable over SSH with `BatchMode=yes`,
 and the readiness preflight passes.
+
+### Fresh Jetson Sustained Capture
+
+On 2026-06-23 KST, the target Jetson was reachable as `nano01`, the clean Forge
+fixture repo was prepared under `/tmp/inferedge_clean_repos/InferEdgeForge`,
+and the readiness preflight passed with `--edgeenv-run-evidence`.
+
+The sustained runner then completed:
+
+```bash
+bash scripts/demo_jetson_5min_sustained.sh \
+  --edgeenv-run-evidence \
+  --output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_stronger_20260623T141718Z
+```
+
+Fresh evidence snapshot:
+
+| Field | Value |
+|---|---:|
+| Entrypoint commit | `02f31a1` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_stronger_20260623T141718Z` |
+| EdgeEnv run ID | `run-20260623-142249-499dff7a` |
+| Executed / dropped / fallback | `3603 / 3597 / 3597` |
+| Deadline missed count | `1802` |
+| Max queue depth | `6` |
+| Parsed `tegrastats` samples | `282` |
+| Max temperature / RAM | `46.625 C / 997 MB` |
+| Vision mean / p95 / p99 latency | `153.279 ms / 156.949 ms / 160.648 ms` |
+| AIGuard / Lab status | `blocked/high`, `blocked` |
+
+This changes the stronger portfolio direction from a deferred candidate to a
+fresh captured evidence path. The boundary remains unchanged: it is
+device-local runtime-operation smoke evidence and should not be described as
+decoded YOLO accuracy validation, production remote execution, or sustained
+thermal endurance validation.
 
 ### Runtime Operation v2 Scoped Starter Plan
 
@@ -278,6 +313,9 @@ product surface.
 - This status document is not a source contract.
 - This status document is not a Lab report, deployment decision, or AIGuard
   verdict.
-- No new benchmark, Jetson run, or sustained evidence is claimed here.
-- Jetson hardware is required for fresh sustained Runtime evidence collection.
+- The 2026-06-23 fresh Jetson run is claimed only as a completed
+  runtime-operation smoke capture; older fixture and representative snapshot
+  records remain separate evidence records.
+- Jetson hardware is required for additional fresh sustained Runtime evidence
+  collection.
 - Lab remains the final deployment decision owner.

@@ -1475,7 +1475,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert_markers_in_order(
         section_by_heading(publish_doc, "## Pre-publish Checks"),
         [
-            "python -m pytest -q",
+            "python -m pytest -q tests",
             "git diff --check",
             "git diff --cached --check",
             "bash scripts/smoke_all.sh",
@@ -1492,7 +1492,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "git fetch origin main",
             "git switch -c codex/<topic> origin/main",
             "git diff --check",
-            "python -m pytest -q",
+            "python -m pytest -q tests",
             "bash scripts/check_publish_ready.sh",
             "git push -u origin codex/<topic>",
         ],
@@ -1517,7 +1517,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "reviewer completion" in readme
     assert "INFEREDGE_REPOS_DIR" in readme
     assert "Jetson hardware is not required for this verification set" in normalized_readme
-    assert "fresh sustained Jetson capture remains a separate later evidence task" in normalized_readme
+    assert "additional fresh sustained Jetson captures are separate live-device evidence tasks" in normalized_readme
     assert "--skip-smoke --skip-publish-ready" in readme
     assert "--log-dir /tmp/inferedge_reviewer_verification_logs" in readme
     assert "per-step logs" in readme
@@ -1542,12 +1542,12 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "Reviewer verification set:",
             "bash scripts/check_reviewer_verification_set.sh",
             "That helper runs:",
-            "python -m pytest -q",
+            "python -m pytest -q tests",
             "git diff --check",
             "bash scripts/smoke_all.sh",
             "bash scripts/check_publish_ready.sh",
-            "fresh sustained Jetson",
-            "separate later evidence task",
+            "additional fresh sustained",
+            "separate live-device evidence tasks",
             "--skip-smoke --skip-publish-ready",
             "does not replace the full reviewer verification set",
             "--log-dir /tmp/inferedge_reviewer_verification_logs",
@@ -1563,7 +1563,7 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
     assert "reviewer completion audit에서 참조하는 entrypoint 검증" in korean_readme
     assert "INFEREDGE_REPOS_DIR" in korean_readme
     assert "Jetson hardware가 필요하지 않으며" in normalized_korean_readme
-    assert "fresh sustained Jetson capture는 이후 별도 evidence 작업" in normalized_korean_readme
+    assert "추가 fresh sustained Jetson capture는 별도 live-device evidence 작업" in normalized_korean_readme
     assert "--skip-smoke --skip-publish-ready" in korean_readme
     assert "--log-dir /tmp/inferedge_reviewer_verification_logs" in korean_readme
     assert "단계별 전체 로그" in korean_readme
@@ -1583,13 +1583,13 @@ def test_publish_readiness_preserves_safe_branch_boundary() -> None:
             "Reviewer verification set:",
             "bash scripts/check_reviewer_verification_set.sh",
             "이 helper는 아래 명령을 순서대로 실행합니다",
-            "python -m pytest -q",
+            "python -m pytest -q tests",
             "git diff --check",
             "bash scripts/smoke_all.sh",
             "bash scripts/check_publish_ready.sh",
-            "fresh",
+            "추가 fresh",
             "sustained Jetson capture",
-            "이후 별도 evidence 작업",
+            "별도 live-device evidence 작업",
             "--skip-smoke --skip-publish-ready",
             "full reviewer verification set",
             "대체하지는 않습니다",
@@ -1634,12 +1634,12 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
 
     for marker in (
         "InferEdge reviewer verification set",
-        "python -m pytest -q",
+        "python -m pytest -q tests",
         "git diff --check",
         "bash scripts/smoke_all.sh",
         "bash scripts/check_publish_ready.sh",
         "Jetson hardware is not required for this verification set.",
-        "Fresh sustained Jetson capture is a separate later evidence task.",
+        "Additional fresh sustained Jetson captures are separate live-device evidence tasks.",
         "--dry-run",
         "--skip-smoke",
         "--skip-publish-ready",
@@ -1682,7 +1682,7 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
         [
             "InferEdge reviewer verification set",
             "mode: dry-run",
-            "would_run: python -m pytest -q",
+            "would_run: python -m pytest -q tests",
             "would_run: git diff --check",
             "would_run: bash scripts/smoke_all.sh",
             "would_run: bash scripts/check_publish_ready.sh",
@@ -1709,7 +1709,7 @@ def test_reviewer_verification_helper_preserves_command_order() -> None:
     assert "log_dir: /tmp/inferedge_reviewer_verification_logs" in (
         dry_run_with_log_dir.stdout
     )
-    assert "would_run: python -m pytest -q" in dry_run_with_log_dir.stdout
+    assert "would_run: python -m pytest -q tests" in dry_run_with_log_dir.stdout
     assert dry_run_with_log_dir.stderr == ""
 
 
@@ -2031,7 +2031,7 @@ def test_entrypoint_reviewer_path_preserves_doc_order() -> None:
         "Requirement Evidence",
         "Current Verification Snapshot",
         "INFEREDGE_REPOS_DIR=/private/tmp/inferedge-master-locked-current-20260619-1 bash scripts/smoke_all.sh",
-        "python -m pytest -q",
+        "python -m pytest -q tests",
         "bash scripts/check_publish_ready.sh",
         "bash scripts/check_reviewer_verification_set.sh --dry-run",
         "not a Lab report owner",
@@ -2258,13 +2258,18 @@ def test_core4_roadmap_status_preserves_contract_boundaries() -> None:
         "Lab compare output",
         "AIGuard `guard_analysis`",
         "Lab remains the final deployment decision owner",
-        "No new benchmark, Jetson run, or sustained evidence is claimed here.",
-        "Jetson hardware is required for fresh sustained Runtime evidence collection.",
+        "The 2026-06-23 fresh Jetson run is claimed only as a completed",
+        "runtime-operation smoke capture",
+        "Jetson hardware is required for additional fresh sustained Runtime evidence",
         "Portfolio Improvement Decision Log",
         "Current direction",
         "Stronger portfolio direction",
-        "Prefer the stronger direction later",
-        "requires Jetson hardware and must be recorded as new evidence",
+        "Stronger direction started on 2026-06-23 KST after readiness preflight passed",
+        "recorded as new Jetson evidence, not inferred from fixtures",
+        "Fresh Jetson Sustained Capture",
+        "output-dir /tmp/inferedge_agent_runtime_jetson_sustained_5min_stronger_20260623T141718Z",
+        "run-20260623-142249-499dff7a",
+        "153.279 ms / 156.949 ms / 160.648 ms",
         "Defer as a separate Runtime Operation v2 task",
         "Start the fresh Jetson direction only after",
         "scripts/check_jetson_sustained_readiness.sh",

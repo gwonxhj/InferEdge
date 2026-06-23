@@ -49,7 +49,7 @@ The following commands have passed for this snapshot:
 INFEREDGE_REPOS_DIR=/Users/GwonHyeokJun/Documents/GitHub bash scripts/smoke_all.sh
 INFEREDGE_REPOS_DIR=/private/tmp/inferedge-master-locked-current-20260619-1 bash scripts/clone_all.sh --locked
 INFEREDGE_REPOS_DIR=/private/tmp/inferedge-master-locked-current-20260619-1 bash scripts/smoke_all.sh
-python -m pytest -q
+python -m pytest -q tests
 git diff --check
 bash scripts/check_publish_ready.sh
 bash scripts/check_reviewer_verification_set.sh --dry-run

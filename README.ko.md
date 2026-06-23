@@ -45,7 +45,7 @@ bash scripts/check_reviewer_verification_set.sh
 이 helper는 아래 명령을 순서대로 실행합니다.
 
 ```bash
-python -m pytest -q
+python -m pytest -q tests
 git diff --check
 bash scripts/smoke_all.sh
 bash scripts/check_publish_ready.sh
@@ -54,8 +54,8 @@ bash scripts/check_publish_ready.sh
 이 검증 세트는 reviewer completion audit에서 참조하는 entrypoint 검증
 기준입니다. `scripts/smoke_all.sh`는 `scripts/clone_all.sh --locked` 이후
 실행하거나 `INFEREDGE_REPOS_DIR`이 sibling InferEdge repos를 가리키게 한 뒤
-실행합니다. 이 검증 세트에는 Jetson hardware가 필요하지 않으며, fresh
-sustained Jetson capture는 이후 별도 evidence 작업입니다.
+실행합니다. 이 검증 세트에는 Jetson hardware가 필요하지 않으며, 추가 fresh
+sustained Jetson capture는 별도 live-device evidence 작업입니다.
 sibling repos나 remote access가 준비되지 않았을 때는
 `bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready`
 로 local-only check를 먼저 실행할 수 있지만, full reviewer verification set을

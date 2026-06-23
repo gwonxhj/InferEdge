@@ -25,6 +25,7 @@ decision으로 연결하는 local-first Edge AI inference validation pipeline입
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
+| Jetson fresh sustained capture | 2026-06-23 current-main repeat on Jetson Orin Nano 25W: 3603 executed events, Vision mean 153.279 ms, p95 156.949 ms, p99 160.648 ms, 282 `tegrastats` samples, max 46.625 C / 997 MB RAM |
 | Jetson operation-summary quick-scan registry | 최신 `c04abc9` 96-frame / 5-minute rows, 연결된 metric snapshot(`155.86` / `156.877` ms, max `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, max `50.375 C` / `1038 MB`), `Duration Comparison Summary`, `Operation Quick Scan Summary`, `operation_summary` label. [최근 Jetson quick-scan marker 재현](agent_runtime_e2e_demo.ko.md#최근-jetson-quick-scan-marker-재현) |
 
 Jetson evidence는 demo / evidence report와 같은 용어를 사용합니다.

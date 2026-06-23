@@ -49,6 +49,49 @@ navigation table. It does not upgrade either run to thermal endurance
 validation, replace this report's metric snapshot, or make the registry a Lab
 report owner.
 
+## Current-Main Fresh Capture
+
+A fresh current-main sustained capture was run on 2026-06-23 KST after the
+Jetson readiness preflight passed with `--edgeenv-run-evidence`.
+
+| Field | Value |
+|---|---|
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_stronger_20260623T141718Z` |
+| Entrypoint commit | `02f31a1` |
+| Readiness preflight | passed |
+| EdgeEnv run ID | `run-20260623-142249-499dff7a` |
+| Evidence index | `00_evidence_index.md` / `00_evidence_index.json` generated |
+| AIGuard verdict | `blocked` / `high`, confidence `0.88` |
+| Lab decision | `blocked` |
+
+Fresh capture metrics:
+
+| Metric | Value |
+|---|---:|
+| Executed count | 3603 |
+| Dropped count | 3597 |
+| Fallback count | 3597 |
+| Deadline missed count | 1802 |
+| Overload event count | 3597 |
+| Policy decision count | 3597 |
+| Max queue depth | 6 |
+| Queue depth samples | 7206 |
+| Parsed `tegrastats` samples | 282 |
+| Max temperature | 46.625 C |
+| Max RAM used | 997 MB |
+| All-agent mean latency | 78.224 ms |
+| All-agent p95 / p99 latency | 155.858 ms / 158.556 ms |
+| Vision mean latency | 153.279 ms |
+| Vision p95 / p99 latency | 156.949 ms / 160.648 ms |
+| Safety mean latency | 3.102 ms |
+| Safety p95 / p99 latency | 3.253 ms / 3.327 ms |
+
+This repeat strengthens the portfolio because it shows that the sustained
+device-local evidence path still runs on the current entrypoint and preserves
+Orchestrator, EdgeEnv, AIGuard, and Lab artifacts together. It remains
+runtime-operation smoke evidence, not production service operation or sustained
+thermal endurance validation.
+
 ## Replay Command
 
 ```bash

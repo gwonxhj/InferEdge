@@ -9,7 +9,7 @@ push over `main` to import another local repository.
 Run the focused local tests from the repository root:
 
 ```bash
-python -m pytest -q
+python -m pytest -q tests
 ```
 
 Run a whitespace and patch sanity check before staging or pushing:
@@ -76,7 +76,7 @@ Start from the current remote `main` and publish a review branch:
 git fetch origin main
 git switch -c codex/<topic> origin/main
 git diff --check
-python -m pytest -q
+python -m pytest -q tests
 bash scripts/check_publish_ready.sh
 git push -u origin codex/<topic>
 ```

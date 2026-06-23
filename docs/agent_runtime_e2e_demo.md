@@ -839,6 +839,24 @@ opening each full report first.
 | Operation quick-scan summary row | `queue=...`, `depth=...`, `deadline_miss=...`, `fallback=...`, `preservation=...` |
 | AIGuard / Lab status | `blocked/high`, `blocked` for both rows |
 
+After Jetson readiness passed again on 2026-06-23 KST, a fresh current-main
+5-minute-class sustained capture was run as a stronger portfolio evidence
+repeat. This is a new generated bundle, not a replacement for the linked
+metric snapshot row above.
+
+| Field | Fresh current-main sustained capture |
+|---|---:|
+| Entrypoint commit | `02f31a1` |
+| Output bundle | `/tmp/inferedge_agent_runtime_jetson_sustained_5min_stronger_20260623T141718Z` |
+| EdgeEnv run ID | `run-20260623-142249-499dff7a` |
+| Executed / dropped / fallback | `3603 / 3597 / 3597` |
+| Deadline missed count | `1802` |
+| Max queue depth | `6` |
+| Parsed `tegrastats` samples | `282` |
+| Max temperature / RAM | `46.625 C / 997 MB` |
+| Vision mean / p95 / p99 latency | `153.279 ms / 156.949 ms / 160.648 ms` |
+| AIGuard / Lab status | `blocked/high`, `blocked` |
+
 The linked metric snapshot row copies the values from the short and sustained
 Jetson evidence reports for reviewer navigation only; those reports remain the
 metric records.

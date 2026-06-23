@@ -49,7 +49,7 @@ bash scripts/check_reviewer_verification_set.sh
 That helper runs:
 
 ```bash
-python -m pytest -q
+python -m pytest -q tests
 git diff --check
 bash scripts/smoke_all.sh
 bash scripts/check_publish_ready.sh
@@ -58,8 +58,8 @@ bash scripts/check_publish_ready.sh
 This is the entrypoint verification set referenced by the reviewer completion
 audit. Run `scripts/smoke_all.sh` after `scripts/clone_all.sh --locked` or with
 `INFEREDGE_REPOS_DIR` pointing at the sibling InferEdge repositories. Jetson
-hardware is not required for this verification set; fresh sustained Jetson
-capture remains a separate later evidence task.
+hardware is not required for this verification set; additional fresh sustained
+Jetson captures are separate live-device evidence tasks.
 If sibling repositories or remote access are unavailable, use
 `bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready`
 as the local-only check; it does not replace the full reviewer verification set.
