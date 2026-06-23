@@ -82,6 +82,12 @@ InferEdgeOrchestrator PR #120 adds an additive
 `scenario-coverage` / `scenario_coverage` first-read line from the CLI and
 EdgeEnv feed contract checker, so reviewers can see observed cycles, timeline
 sample counts, and producer sources before opening the full JSON.
+InferEdgeEnv PR #159 validates and preserves that `scenario_coverage` block in
+runtime telemetry history inspection, Runtime Intelligence Lab handoff
+summaries, and CLI output, exposing `scenario_coverage_run_ids` /
+`orchestrator_scenario_coverage_run_ids` while keeping it optional reviewer
+navigation context rather than an EdgeEnv regression gate or deployment
+decision.
 InferEdge entrypoint first-read PR series closes the reviewer-facing loop by
 aligning README, portfolio summary, ecosystem 1-page, interview narrative,
 completion audit, generated evidence indexes/run registries, and the cross-repo
@@ -176,6 +182,10 @@ turns reviewer claims into contract-aware checks:
   scheduler cycles, queue/latency/runtime-event sample counts, producer source
   coverage, and Lab ownership boundaries, making the source evidence scope
   easier to audit before downstream preservation.
+- EdgeEnv now carries that `scenario_coverage` context through telemetry
+  history inspection and Lab handoff summaries, preserving observed scenario
+  scope as reviewer navigation without changing comparability or deployment
+  decision ownership.
 - EdgeEnv now preserves Orchestrator `pressure_window` handoff context through
   telemetry history inspection and Lab handoff summaries, so the overload
   interval remains traceable without changing comparability or deployment
@@ -211,7 +221,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #119 Orchestrator policy-pressure reason-count first-read output, PR #120 Orchestrator sustained scenario coverage first-read output, PR #158 EdgeEnv policy-pressure reason-count preservation, PR #379 Lab policy-pressure reason-count report gate, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #378 Lab pressure-window report/gate evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #119 Orchestrator policy-pressure reason-count first-read output, PR #120 Orchestrator sustained scenario coverage first-read output, PR #158 EdgeEnv policy-pressure reason-count preservation, PR #159 EdgeEnv scenario coverage handoff preservation, PR #379 Lab policy-pressure reason-count report gate, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #378 Lab pressure-window report/gate evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 
