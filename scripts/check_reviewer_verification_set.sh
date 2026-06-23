@@ -16,7 +16,7 @@ Usage: bash scripts/check_reviewer_verification_set.sh [options]
 Run the InferEdge entrypoint reviewer verification set.
 
 Default checks:
-  - python -m pytest -q
+  - python -m pytest -q tests
   - git diff --check
   - bash scripts/smoke_all.sh
   - bash scripts/check_publish_ready.sh
@@ -36,7 +36,7 @@ Notes:
   - For a local-only check when sibling repos or remote access are unavailable:
     bash scripts/check_reviewer_verification_set.sh --skip-smoke --skip-publish-ready
   - Jetson hardware is not required for this verification set.
-  - Fresh sustained Jetson capture is a separate later evidence task.
+  - Additional fresh sustained Jetson captures are separate live-device evidence tasks.
 USAGE
 }
 
@@ -142,7 +142,7 @@ if [[ -n "$LOG_DIR" ]]; then
   echo "  log_dir: $LOG_DIR"
 fi
 
-run_step "Local pytest" python -m pytest -q
+run_step "Local pytest" python -m pytest -q tests
 run_step "Patch whitespace check" git diff --check
 
 if [[ "$SKIP_SMOKE" -eq 0 ]]; then

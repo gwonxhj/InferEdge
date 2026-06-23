@@ -18,6 +18,7 @@ decision.
 | ONNX Runtime CPU baseline | 45.430 ms mean, 49.213 ms p99, 22.01 FPS |
 | Jetson device-local replay | 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM |
 | Jetson 5-minute-class replay | 3600 frames, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM |
+| Jetson fresh sustained capture | 2026-06-23 current-main repeat on Jetson Orin Nano 25W: 3603 executed events, Vision mean 153.279 ms, p95 156.949 ms, p99 160.648 ms, 282 `tegrastats` samples, max 46.625 C / 997 MB RAM |
 | Jetson operation-summary quick-scan registry | Latest `c04abc9` 96-frame and 5-minute rows with linked metric snapshots (`155.86` / `156.877` ms, max `45.5 C` / `1000 MB`; `152.77` / `156.948` ms, max `50.375 C` / `1038 MB`), `Duration Comparison Summary`, `Operation Quick Scan Summary`, and `operation_summary` labels |
 
 Jetson evidence uses the same terms as the demo and evidence reports:
@@ -156,6 +157,7 @@ Historical duration alignment is tracked as `EdgeEnv/AIGuard duration handoff al
 | Device-local ONNX replay | Jetson Orin Nano 25W, 96 frames, 155.86 ms mean, 156.877 ms p95, max 45.5 C / 1000 MB RAM | Real ONNX probe and telemetry handoff, not decoded YOLO accuracy |
 | EdgeEnv preservation replay | EdgeEnv run evidence stores `runtime_operation_summary`; Lab preserves `Runtime Intelligence EdgeEnv Preservation` | Registry/report preservation, not a deployment decision override |
 | 5-minute-class sustained replay | 3600 frames, 281 `tegrastats` samples, Vision mean 152.77 ms, p95 156.948 ms, max 50.375 C / 1038 MB RAM | Smoke/Starter sustained evidence, not thermal endurance validation |
+| Fresh current-main sustained capture | Jetson Orin Nano 25W, output bundle `/tmp/inferedge_agent_runtime_jetson_sustained_5min_stronger_20260623T141718Z`, entrypoint `02f31a1`, 3603 executed events, Vision mean 153.279 ms, p95 156.949 ms, p99 160.648 ms, max 46.625 C / 997 MB RAM | New device-local sustained evidence; still runtime-operation smoke, not production service or thermal endurance validation |
 | Operation-summary quick-scan registry | Latest registry with 96-frame and 5-minute-class rows exposing linked metric snapshots, duration, queue/deadline/fallback pressure, `operation_summary` labels, and `evidence_index_boundary_summary` before the full registry table | Quick-scan navigation metadata, not a Lab report owner, metric record owner, or production runtime operation proof |
 
 Submission-facing Lab evidence snapshot:
