@@ -58,6 +58,11 @@ summary as optional deterministic
 `edgeenv_orchestrator_pressure_window_summary` evidence, validates handoff
 run-id alignment, and preserves `scheduler_owner=orchestrator`,
 `decision_owner=lab`, and `not_a_deployment_decision=true` boundary markers.
+InferEdgeLab PR #378 surfaces the same optional AIGuard
+`edgeenv_orchestrator_pressure_window_summary` evidence in the Lab-owned
+Runtime Intelligence Markdown/HTML report, bundle gate, artifact gate, CI gate,
+and chain fixtures without making pressure-window evidence required or moving
+final deployment decision ownership away from Lab.
 InferEdge entrypoint first-read PR series closes the reviewer-facing loop by
 aligning README, portfolio summary, ecosystem 1-page, interview narrative,
 completion audit, generated evidence indexes/run registries, and the cross-repo
@@ -146,6 +151,11 @@ turns reviewer claims into contract-aware checks:
   `edgeenv_orchestrator_pressure_window_summary` evidence from the same
   EdgeEnv-preserved context, keeping sustained overload-window diagnosis
   deterministic while preserving Lab final-decision ownership.
+- Lab Runtime Intelligence reports now show that optional pressure-window
+  evidence row and validate it through bundle/artifact/CI gates, so the
+  Orchestrator -> EdgeEnv -> AIGuard -> Lab overload-window chain is visible in
+  the final Lab-owned reviewer surface without becoming a required AIGuard
+  handoff contract.
 - InferEdge entrypoint now exposes the same first-read path from README through
   portfolio/ecosystem/interview/audit docs, generated
   `operation_risk_first_read_label` / `operation_risk_rollup_first_reads`
@@ -168,7 +178,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #378 Lab pressure-window report/gate evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 
