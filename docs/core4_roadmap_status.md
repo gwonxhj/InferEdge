@@ -1,6 +1,6 @@
 # InferEdge Core4 Roadmap Status
 
-Date: 2026-06-22
+Date: 2026-06-23
 
 This document records the current Core4 six-month completion roadmap status for
 reviewers. It is a roadmap/status artifact only. It does not change
@@ -73,6 +73,10 @@ InferEdgeLab PR #378 surfaces the same optional AIGuard
 Runtime Intelligence Markdown/HTML report, bundle gate, artifact gate, CI gate,
 and chain fixtures without making pressure-window evidence required or moving
 final deployment decision ownership away from Lab.
+InferEdgeLab PR #379 tightens the Runtime Intelligence artifact bundle gate so
+the Lab-owned Markdown/HTML report must preserve AIGuard policy-pressure reason
+counts, and the compact gate summary now records `Validated Policy Pressure`
+without changing report schemas or deployment decision ownership.
 InferEdge entrypoint first-read PR series closes the reviewer-facing loop by
 aligning README, portfolio summary, ecosystem 1-page, interview narrative,
 completion audit, generated evidence indexes/run registries, and the cross-repo
@@ -159,6 +163,10 @@ turns reviewer claims into contract-aware checks:
 - EdgeEnv now carries those policy-pressure reason counts through telemetry
   history inspection and Lab handoff summaries, preserving reviewer navigation
   without changing comparability or deployment decision ownership.
+- Lab artifact gates now require the policy-pressure reason-count marker in the
+  final Runtime Intelligence Markdown/HTML report and expose it in the compact
+  gate summary, completing the Orchestrator -> EdgeEnv -> AIGuard -> Lab
+  reason-count reviewer path without changing report schemas.
 - EdgeEnv now preserves Orchestrator `pressure_window` handoff context through
   telemetry history inspection and Lab handoff summaries, so the overload
   interval remains traceable without changing comparability or deployment
@@ -194,7 +202,7 @@ from the completed Core4 cleanup so the current evidence remains clear:
 | Candidate | Why it could help | Why defer |
 |---|---|---|
 | Fresh Jetson sustained capture | Upgrades Runtime evidence from audit/starter evidence to new sustained device evidence | Requires Jetson hardware and should not be implied from existing fixtures |
-| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #119 Orchestrator policy-pressure reason-count first-read output, PR #158 EdgeEnv policy-pressure reason-count preservation, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #378 Lab pressure-window report/gate evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
+| Runtime Operation v2 deeper polish | Further strengthens constrained edge workload reliability under queue/deadline/fallback pressure beyond the InferEdgeOrchestrator PR #115 first-read CLI polish, PR #116 Orchestrator worker-health trend source artifact, PR #117 Orchestrator worker-health AIGuard candidate alignment, PR #118 Orchestrator pressure-window reviewer summary, PR #119 Orchestrator policy-pressure reason-count first-read output, PR #158 EdgeEnv policy-pressure reason-count preservation, PR #379 Lab policy-pressure reason-count report gate, PR #157 EdgeEnv pressure-window handoff preservation, InferEdgeAIGuard PR #115 pressure-window deterministic evidence, PR #378 Lab pressure-window report/gate evidence, PR #156 EdgeEnv worker-health trend handoff preservation, PR #114 AIGuard worker-health trend deterministic evidence, PR #377 Lab worker-health trend report evidence, PR #376 Lab report first-read polish, PR #155 EdgeEnv handoff first-read polish, and the current reviewer path / artifact / audit / gate alignment | Must remain an operation evidence extension, not a new production orchestration product |
 
 ## Portfolio Improvement Decision Log
 
